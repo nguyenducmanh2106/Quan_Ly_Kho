@@ -1,0 +1,9 @@
+D:\QuanLyKho\Application\Application.DATA\bin\Debug\netcoreapp3.1\Application.DATA.deps.json
+D:\QuanLyKho\Application\Application.DATA\bin\Debug\netcoreapp3.1\Application.DATA.dll
+D:\QuanLyKho\Application\Application.DATA\bin\Debug\netcoreapp3.1\Application.DATA.pdb
+D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.csprojAssemblyReference.cache
+D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.AssemblyInfoInputs.cache
+D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.AssemblyInfo.cs
+D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.csproj.CoreCompileInputs.cache
+D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.dll
+D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.pdb

@@ -1,0 +1,14 @@
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.deps.json
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.dll
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.pdb
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.AssemblyInfoInputs.cache
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.AssemblyInfo.cs
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csproj.CoreCompileInputs.cache
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.dll
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.pdb
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csprojAssemblyReference.cache
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.DATA.dll
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.MODELS.dll
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.MODELS.pdb
+D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.DATA.pdb
+D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csproj.CopyComplete

@@ -1,0 +1,12 @@
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csprojAssemblyReference.cache
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.AssemblyInfoInputs.cache
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.AssemblyInfo.cs
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csproj.CoreCompileInputs.cache
+D:\QuanLyKho\Application\Application.MODELS\bin\Debug\netcoreapp3.1\Application.MODELS.deps.json
+D:\QuanLyKho\Application\Application.MODELS\bin\Debug\netcoreapp3.1\Application.MODELS.dll
+D:\QuanLyKho\Application\Application.MODELS\bin\Debug\netcoreapp3.1\Application.MODELS.pdb
+D:\QuanLyKho\Application\Application.MODELS\bin\Debug\netcoreapp3.1\Application.DATA.dll
+D:\QuanLyKho\Application\Application.MODELS\bin\Debug\netcoreapp3.1\Application.DATA.pdb
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csproj.CopyComplete
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.dll
+D:\QuanLyKho\Application\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.pdb

@@ -1,0 +1,41 @@
+/* common */
+.loading {
+    height: -webkit-fill-available;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    text-align: center;
+    /*background: radial-gradient(black, transparent);*/
+    /*background: #fff;*/
+    /*position: fixed;*/
+    z-index: 9999;
+    top: 0;
+    width: 100%;
+    min-height:300px;
+
+    span {
+        display: inline-block;
+    }
+
+    span {
+        margin: 0 0.075em;
+        animation: loadingShrink 0.7s infinite alternate;
+
+        @for $i from 1 through 7 {
+            &:nth-child(#{$i + 1}) {
+                animation-delay: #{$i * 0.1}s;
+            }
+        }
+    }
+}
+@keyframes loadingShrink {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.8);
+    }
+}
