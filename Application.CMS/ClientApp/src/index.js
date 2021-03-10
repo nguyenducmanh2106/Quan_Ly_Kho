@@ -8,22 +8,24 @@ import RoutesModule from './routes';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
+import 'sweetalert2/src/sweetalert2.scss';
+import 'react-toastify/dist/ReactToastify.css';
 //let routes = RoutesModule.routes;
 //import App from './App';
 //import registerServiceWorker from './registerServiceWorker';
-import { ToastProvider, useToasts } from 'react-toast-notifications';
+//import { ToastProvider, useToasts } from 'react-toast-notifications';
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
 function renderApp() {
     ReactDOM.render(
-        <ToastProvider>
+        //<ToastProvider>
             <AppContainer>
                 <BrowserRouter basename={baseUrl} >
                     <RoutesModule />
                 </BrowserRouter>
-            </AppContainer>
-        </ToastProvider>,
+            </AppContainer>,
+        //</ToastProvider>,
         rootElement);
 }
 renderApp()

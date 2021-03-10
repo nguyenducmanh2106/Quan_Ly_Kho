@@ -170,6 +170,27 @@ namespace Application.API.Controllers
                 });
             }
         }
+        [HttpPost("toggle-status")]
+        public async Task<IActionResult> ToggleStatus([FromBody] Menus obj)
+        {
+            try
+            {
+
+                await _manager.ToggleStatus(obj);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
         [HttpPost("delete")]
         public async Task<IActionResult> Delete([FromBody] Menus obj)
         {

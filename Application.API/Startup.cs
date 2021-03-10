@@ -36,6 +36,8 @@ namespace Application.API
         {
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             //services.AddDbContext<APPDbContext>(opt => opt.UseOracle(Configuration.GetConnectionString("connectionString")));
+            //services.AddDbContext<APPDbContext>(options =>
+            //      options.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddDbContext<APPDbContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("connectionString"),
                    sqlServerOptionsAction: sqlOptions =>

@@ -12,9 +12,10 @@ namespace Application.REPOSITORY
     {
         IUserRepository UserRepository { get; }
         IDM_ChucVuRepository DM_ChucVuRepository { get; }
-        IUser_DonViRepository User_DonViRepository { get; }
+        IDM_DonViRepository DM_DonViRepository { get; }
         IRoleRepository RoleRepository { get; }
         IMenuRepository MenuRepository { get; }
+        IPermissionRepository PermissionRepository { get; }
         Task CreateTransaction();
         Task Commit();
         Task Rollback();
@@ -30,20 +31,23 @@ namespace Application.REPOSITORY
             _dbContext = dbContextFactory.GetContext();
             UserRepository = new UserRepository(_dbContext);
             DM_ChucVuRepository = new DM_ChucVuRepository(_dbContext);
-            User_DonViRepository = new User_DonViRepository(_dbContext);
+            DM_DonViRepository = new DM_DonViRepository(_dbContext);
             RoleRepository = new RoleRepository(_dbContext);
             MenuRepository = new MenuRepository(_dbContext);
+            PermissionRepository = new PermissionRepository(_dbContext);
         }
         public IUserRepository UserRepository { get; }
 
         public IDM_ChucVuRepository DM_ChucVuRepository { get; }
 
-        public IUser_DonViRepository User_DonViRepository { get; }
+        public IDM_DonViRepository DM_DonViRepository { get; }
 
         public IRoleRepository RoleRepository { get; }
 
 
         public IMenuRepository MenuRepository { get; }
+
+        public IPermissionRepository PermissionRepository { get; }
         #region Transaction
         public async Task CreateTransaction()
         {

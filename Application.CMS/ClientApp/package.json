@@ -35,6 +35,7 @@
     "react-select-search": "^3.0.2",
     "react-select2-component": "^5.0.0-0",
     "react-toast-notifications": "^2.4.3",
+    "react-toastify": "^7.0.3",
     "reactstrap": "^8.4.1",
     "rimraf": "^2.6.2",
     "styled-components": "^5.2.1",

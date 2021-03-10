@@ -5,10 +5,10 @@ import FormCreate from './Create';
 import FormUpdate from './Update';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
-import { ToastProvider, useToasts } from 'react-toast-notifications';
+//import { ToastProvider, useToasts } from 'react-toast-notifications';
 import ListData from './ListData';
 import Swal from 'sweetalert2';
-import 'sweetalert2/src/sweetalert2.scss';
+import { ToastContainer, toast } from 'react-toastify';
 function Menu() {
     //khai báo state
     const [state, setState] = useState();
@@ -19,7 +19,7 @@ function Menu() {
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
-    const { addToast } = useToasts();
+    //const { addToast } = useToasts();
     const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
     useEffect(() => {
         async function getData(page, pageSize) {
@@ -57,24 +57,42 @@ function Menu() {
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
-            addToast("Giá trị nhập vào sai", {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄 Giá trị nhập vào chưa chính xác", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
         else {
             var result = await postAPI('api/menu/update', JSON.stringify(ItemPosition))
             if (result.status) {
                 setAction(true)
-                addToast(result.message, {
-                    appearance: 'success',
-                    autoDismiss: true,
+                toast.success("🦄" + result.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    className: 'toast-success',
+                    progressClassName: 'success-progress-bar',
                 });
             }
             else {
-                addToast(result.message, {
-                    appearance: 'error',
-                    autoDismiss: true,
+                toast.error("🦄" + result.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    className: 'toast-error',
+                    progressClassName: 'error-progress-bar',
                 });
             }
         }
@@ -96,22 +114,84 @@ function Menu() {
             cancelButtonText: "Không",
             showLoaderOnConfirm: true,
             preConfirm: (isConfirm) => {
-                return postAPI('api/menu/delete', JSON.stringify(item)).then(data => {
-                    if (data.status) {
-                        addToast(data.message, {
-                            appearance: 'success',
-                            autoDismiss: true,
-                        });
-                        setAction(true)
-                    }
-                    else {
-                        addToast(data.message, {
-                            appearance: 'error',
-                            autoDismiss: true,
-                        });
-                    }
-                });
+                if (isConfirm) {
+                    postAPI('api/menu/delete', JSON.stringify(item)).then(data => {
+                        if (data.status) {
+                            setAction(true)
+                            toast.success("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-success',
+                                progressClassName: 'success-progress-bar',
+                            });
+                        }
+                        else {
+                            toast.error("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-error',
+                                progressClassName: 'error-progress-bar',
+                            });
+                        }
+                    });
 
+                }
+            },
+            //allowOutsideClick: () => !Swal.isLoading()
+        })
+
+    }
+    const onToggleStatus = (itemUpdateStatus) => {
+        Swal.fire({
+            title: "Bạn có chắc chắn không?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Có",
+            cancelButtonText: "Không",
+            showLoaderOnConfirm: true,
+
+            preConfirm: (isConfirm) => {
+                if (isConfirm) {
+                    postAPI('api/menu/toggle-status', JSON.stringify(itemUpdateStatus)).then(data => {
+                        if (data.status) {
+                            setAction(true)
+                            toast.success("🦄"+data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-success',
+                                progressClassName: 'success-progress-bar',
+                            });
+                           
+                        }
+                        else {
+                            toast.error("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-error',
+                                progressClassName: 'error-progress-bar',
+                            });
+                        }
+                    });
+                }
             },
             //allowOutsideClick: () => !Swal.isLoading()
         })
@@ -122,9 +202,15 @@ function Menu() {
     }
     async function onMultiDelete() {
         if (listItemRemove.length == 0) {
-            addToast("Chưa chọn dữ liệu để xoá!", {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄 Chưa chọn dữ liệu để xoá", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
         else {
@@ -141,26 +227,39 @@ function Menu() {
                 cancelButtonText: "Không",
                 showLoaderOnConfirm: true,
                 preConfirm: (isConfirm) => {
+                    if (isConfirm) {
+                        postFormData('api/menu/multidelete', formData).then(data => {
+                            if (data.status) {
+                                setAction(true)
+                                toast.success("🦄" + data.message, {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    className: 'toast-success',
+                                    progressClassName: 'success-progress-bar',
+                                });
 
-                    return postFormData('api/menu/multidelete', formData).then(data => {
-                        if (data.status) {
-                            addToast(data.message, {
-                                appearance: 'success',
-                                autoDismiss: true,
-                            });
-                            setAction(true)
+                            }
+                            else {
+                                toast.error("🦄" + data.message, {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    className: 'toast-error',
+                                    progressClassName: 'error-progress-bar',
+                                });
+                            }
+                        });
 
-                        }
-                        else {
-                            addToast(data.message, {
-                                appearance: 'error',
-                                autoDismiss: true,
-                            });
-                        }
-                    });
-
+                    }
                 },
-                //allowOutsideClick: () => !Swal.isLoading()
+                allowOutsideClick: () => !Swal.isLoading()
             })
         }
 
@@ -170,16 +269,28 @@ function Menu() {
         toggleUpdate()
         if (result.status) {
             setAction(true)
-            addToast(result.message, {
-                appearance: 'success',
-                autoDismiss: true,
+            toast.success("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-success',
+                progressClassName: 'success-progress-bar',
             });
 
         }
         else {
-            addToast(result.message, {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
 
@@ -189,16 +300,28 @@ function Menu() {
         toggle();
         if (result.status) {
             setAction(true)
-            addToast(result.message, {
-                appearance: 'success',
-                autoDismiss: true,
+            toast.success("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-success',
+                progressClassName: 'success-progress-bar',
             });
 
         }
         else {
-            addToast(result.message, {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
     }
@@ -207,7 +330,7 @@ function Menu() {
             <div className="container-fluid">
                 <div className='row form-group'>
                     <div className='col-12' style={{ textAlign: 'right' }}>
-
+                        <ToastContainer />
                         <button id="btnCreate" className=" btn btn-success btn-sm" onClick={toggle}>
                             <i className="fas fa-plus mr-2" aria-hidden="true"></i>Thêm mới
                         </button>
@@ -239,6 +362,7 @@ function Menu() {
                         onToggleFormpdate={toggleUpdate}
                         onMultiDelete={setListItemRemove}
                         onUpdateItemPosition={onUpdateItemPosition}
+                        toggleStatus={onToggleStatus}
                     />
                 </div>
             </div>

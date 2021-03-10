@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Application.REPOSITORY
 {
-    public interface IUser_DonViRepository : IRepository<User_DonVis>
+    public interface IDM_DonViRepository : IRepository<DM_DonVis>
     {
 
     }
-    public class User_DonViRepository : Repository<User_DonVis>, IUser_DonViRepository
+    public class DM_DonViRepository : Repository<DM_DonVis>, IDM_DonViRepository
     {
-        public User_DonViRepository(APPDbContext dbContext) : base(dbContext)
+        public DM_DonViRepository(APPDbContext dbContext) : base(dbContext)
         {
         }
     }

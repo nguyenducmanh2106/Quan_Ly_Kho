@@ -7,14 +7,15 @@ import FormUpdate from './Update';
 import { useForm, Controller } from "react-hook-form";
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
-import { ToastProvider, useToasts } from 'react-toast-notifications';
 import ListData from './ListData';
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss';
+import { ToastContainer, toast } from 'react-toastify';
 import SelectSearch from 'react-select-search';
 function Index() {
     //khai báo state
     const [state, setState] = useState();
+    const [search, setSearch] = useState({Name:"",Status:-1})
     const { register, handleSubmit, watch, errors, control } = useForm();
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
@@ -22,11 +23,12 @@ function Index() {
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
-    const { addToast } = useToasts();
     const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
     useEffect(() => {
         async function getData(page, pageSize) {
-            var fetchData = await getAPI(`api/dm_chucvu/list_data/?page=${page}&pageSize=${pageSize}`);
+            let name = search.Name;
+            let status = search.Status ? search.Status : -1;
+            var fetchData = await getAPI(`api/dm_chucvu/list_data/?Name=${name}&Status=${status}&page=${page}&pageSize=${pageSize}`);
             if (fetchData.status == true) {
                 setState(fetchData.result)
             }
@@ -40,24 +42,42 @@ function Index() {
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
-            addToast("Giá trị nhập vào sai", {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄 Giá trị nhập vào chưa chính xác", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
         else {
             var result = await postAPI('api/dm_chucvu/update', JSON.stringify(ItemPosition))
             if (result.status) {
                 setAction(true)
-                addToast(result.message, {
-                    appearance: 'success',
-                    autoDismiss: true,
+                toast.success("🦄" + result.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    className: 'toast-success',
+                    progressClassName: 'success-progress-bar',
                 });
             }
             else {
-                addToast(result.message, {
-                    appearance: 'error',
-                    autoDismiss: true,
+                toast.error("🦄" + result.message, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    className: 'toast-error',
+                    progressClassName: 'error-progress-bar',
                 });
             }
         }
@@ -67,11 +87,79 @@ function Index() {
         setPage(page);
         setPageSize(pageSize);
     }
+    const onChangeSearchSelect = (newValue) => {
+        
+        var valueSelect = newValue.value;
+        setSearch({ ...search, Status: valueSelect })
+    }
+    async function onHandleSearch() {
+        let name = search.Name;
+        let status = search.Status ? search.Status:-1;
+        var fetchData = await getAPI(`api/dm_chucvu/list_data?Name=${name}&Status=${status}`);
+        if (fetchData.status == true) {
+            setState(fetchData.result)
+        }
+    }
+    const onChangeSearchInput = (event) => {
+        var target = event.target;
+        var name = target.name?target.name:"";
+        var value = target.value;
+        console.log(name + ": " + value)
+        setSearch({[name]:value})
+    }
     const options = [
-        { label: 'Swedish', value: 'sv' },
-        { label: 'English', value: 'en' },
+        { label: 'Tất cả', value: -1 },
+        { label: 'Hoạt động', value: 1 },
+        { label: 'Ngừng hoạt động', value: 2 },
 
     ];
+    const onToggleStatus = (item) => {
+        Swal.fire({
+            title: "Bạn có chắc chắn không?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Có",
+            cancelButtonText: "Không",
+            showLoaderOnConfirm: true,
+            preConfirm: (isConfirm) => {
+                if (isConfirm) {
+                    postAPI('api/dm_chucvu/update', JSON.stringify(item)).then(data => {
+                        if (data.status) {
+                            setAction(true)
+                            toast.success("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-success',
+                                progressClassName: 'success-progress-bar',
+                            });
+                        }
+                        else {
+                            toast.error("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-error',
+                                progressClassName: 'error-progress-bar',
+                            });
+                        }
+                    });
+
+                }
+            },
+            //allowOutsideClick: () => !Swal.isLoading()
+        })
+
+    }
     const onDelete = (item) => {
         Swal.fire({
             title: "Bạn có chắc chắn không?",
@@ -84,22 +172,36 @@ function Index() {
             cancelButtonText: "Không",
             showLoaderOnConfirm: true,
             preConfirm: (isConfirm) => {
-                return postAPI('api/dm_chucvu/delete', JSON.stringify(item)).then(data => {
-                    if (data.status) {
-                        addToast(data.message, {
-                            appearance: 'success',
-                            autoDismiss: true,
-                        });
-                        setAction(true)
-                    }
-                    else {
-                        addToast(data.message, {
-                            appearance: 'error',
-                            autoDismiss: true,
-                        });
-                    }
-                });
+                if (isConfirm) {
+                    postAPI('api/dm_chucvu/delete', JSON.stringify(item)).then(data => {
+                        if (data.status) {
+                            setAction(true)
+                            toast.success("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-success',
+                                progressClassName: 'success-progress-bar',
+                            });
+                        }
+                        else {
+                            toast.error("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-error',
+                                progressClassName: 'error-progress-bar',
+                            });
+                        }
+                    });
 
+                }
             },
             //allowOutsideClick: () => !Swal.isLoading()
         })
@@ -110,9 +212,15 @@ function Index() {
     }
     async function onMultiDelete() {
         if (listItemRemove.length == 0) {
-            addToast("Chưa chọn dữ liệu để xoá!", {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄 Chưa chọn dữ liệu để xoá", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
         else {
@@ -129,24 +237,36 @@ function Index() {
                 cancelButtonText: "Không",
                 showLoaderOnConfirm: true,
                 preConfirm: (isConfirm) => {
+                    if (isConfirm) {
+                        postFormData('api/dm_chucvu/multidelete', formData).then(data => {
+                            if (data.status) {
+                                setAction(true)
+                                toast.success("🦄" + data.message, {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    className: 'toast-success',
+                                    progressClassName: 'success-progress-bar',
+                                });
 
-                    return postFormData('api/dm_chucvu/multidelete', formData).then(data => {
-                        if (data.status) {
-                            addToast(data.message, {
-                                appearance: 'success',
-                                autoDismiss: true,
-                            });
-                            setAction(true)
-
-                        }
-                        else {
-                            addToast(data.message, {
-                                appearance: 'error',
-                                autoDismiss: true,
-                            });
-                        }
-                    });
-
+                            }
+                            else {
+                                toast.error("🦄" + data.message, {
+                                    position: "top-right",
+                                    autoClose: 3000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    className: 'toast-error',
+                                    progressClassName: 'error-progress-bar',
+                                });
+                            }
+                        });
+                    }
                 },
                 //allowOutsideClick: () => !Swal.isLoading()
             })
@@ -158,16 +278,28 @@ function Index() {
         toggleUpdate()
         if (result.status) {
             setAction(true)
-            addToast(result.message, {
-                appearance: 'success',
-                autoDismiss: true,
+            toast.success("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-success',
+                progressClassName: 'success-progress-bar',
             });
 
         }
         else {
-            addToast(result.message, {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
 
@@ -177,16 +309,28 @@ function Index() {
         toggle();
         if (result.status) {
             setAction(true)
-            addToast(result.message, {
-                appearance: 'success',
-                autoDismiss: true,
+            toast.success("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-success',
+                progressClassName: 'success-progress-bar',
             });
 
         }
         else {
-            addToast(result.message, {
-                appearance: 'error',
-                autoDismiss: true,
+            toast.error("🦄" + result.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                className: 'toast-error',
+                progressClassName: 'error-progress-bar',
             });
         }
     }
@@ -194,15 +338,17 @@ function Index() {
         <Layout>
             <div className="container-fluid">
                 <div className="header">
+                    <ToastContainer />
                     <form id="searchForm" role="form" className="w100 pb10">
                         <div className="form-horizontal">
                             <div className="form-group mb-0">
                                 <div className="row">
                                     <div className="col-md-2 padR-0">
-                                        <input type="text" className="form-control" name="keySearch" id="keySearch" placeholder="Tên/Mã chức vụ" />
+                                        <input type="text" className="form-control" onChange={onChangeSearchInput} name="Name" id="Name" placeholder="Tên/Mã chức vụ" />
                                     </div>
                                     <div className="col-md-2 padR-0">
-                                        <Select options={options} search={true} placeholder="Chọn" />
+                                        <Select options={options} search={true} name="Status" placeholder="Chọn" onChange={onChangeSearchSelect} />
+                                        
                                     </div>
 
                                 </div>
@@ -211,7 +357,7 @@ function Index() {
                     </form>
                     <div className='row form-group'>
                         <div className='col-12' style={{ textAlign: 'right' }}>
-                            <button href="javascript:void(0)" className="btn btn-primary btn-sm">
+                            <button onClick={onHandleSearch} className="btn btn-primary btn-sm">
                                 <i className="fa fa-search" aria-hidden="true" /> Tìm kiếm
                                             </button>
                             <button id="btnCreate" className=" btn btn-success btn-sm" onClick={toggle}>
@@ -245,6 +391,7 @@ function Index() {
                         onToggleFormpdate={toggleUpdate}
                         onMultiDelete={setListItemRemove}
                         onUpdateItemPosition={onUpdateItemPosition}
+                        toggleStatus={onToggleStatus}
                     />
                 </div>
             </div>

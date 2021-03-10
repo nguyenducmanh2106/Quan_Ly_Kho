@@ -39,6 +39,10 @@ function Table(props) {
         item.ordering = Number.parseInt(target.value)
         props.onUpdateItemPosition(item)
     }
+    const toggleStatus = (status, itemUpdateStatus) => {
+        itemUpdateStatus.status = status
+        props.toggleStatus(itemUpdateStatus)
+    }
     const handleInputChange = (event) => {
         var arrayRemove = []
         var arrayCheck = document.querySelectorAll(".checkbox-tick");
@@ -76,7 +80,6 @@ function Table(props) {
                 !props.obj ? <PageLoading /> :
                     <div>
 
-                        <form>
                             <table className="table table-hover table-bordered">
                                 <thead>
                                     <tr>
@@ -137,7 +140,7 @@ function Table(props) {
                                                     {item.url}
                                                 </td>
                                                 <td>
-                                                    {item.status == 1 ? <a className="badge badge-success">Hoạt động</a> : <a className="badge badge-danger">Ngừng hoạt động</a>}
+                                                    {item.status == 1 ? <a className="btn btn-block btn-outline-success btn-sm" onClick={() => toggleStatus(2, item)}>Hoạt động</a> : <a className="btn btn-block btn-outline-danger btn-sm" onClick={() => toggleStatus(1, item)}>Ngừng hoạt động</a>}
                                                 </td>
                                                 <td className="text-center">
                                                     <button type="button" className="btn btn-sm btn-outline-dark" title="Danh sách tin">
@@ -157,7 +160,6 @@ function Table(props) {
                                 </tbody>
 
                             </table>
-                        </form>
 
                         <div className="commonTool">
                             <div className="fl">

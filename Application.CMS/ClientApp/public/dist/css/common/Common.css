@@ -13,12 +13,12 @@
         display: table-cell;
     }
 .badge-success {
-    background: transparent;
+    background: transparent !important;
     border-color: #22af46 !important;
     color: #22af46 !important;
 }
 .badge-danger {
-    background: transparent;
+    background: transparent !important;
     border-color: #de4848 !important;
     color: #de4848 !important;
 }

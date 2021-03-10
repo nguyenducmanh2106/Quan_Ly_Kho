@@ -13,6 +13,7 @@ namespace Application.Services.MenuSerVices
         Task<IQueryable<Menus>> GetOptions(int Status, string Name);
         Task Create(Menus obj);
         Task Update(Menus obj);
+        Task ToggleStatus(Menus obj);
         Task Delete(Menus obj);
         Task MultiDelete(string listItemDelete);
     }

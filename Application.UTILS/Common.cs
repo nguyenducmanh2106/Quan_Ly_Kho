@@ -144,14 +144,15 @@ namespace Application.UTILS
         //}
         public static string setName(int Level, string Name)
         {
+            var alias = "";
             if (Level > 0)
             {
                 for (int i = 0; i < Level; i++)
                 {
-                    Name= "-"+Name;
+                    alias+="--";
                 }
             }
-            return Name;
+            return alias+" "+Name;
         }
         public static string GetNameFile(string LinkFile)
         {

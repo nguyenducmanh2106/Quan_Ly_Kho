@@ -22,10 +22,11 @@ namespace Application.MODELS
 
         }
         public DbSet<Users> Users { get; set; }
-        public DbSet<User_DonVis> User_DonVis { get; set; }
-        public DbSet<DM_ChucVus> User_ChucVus { get; set; }
+        public DbSet<DM_DonVis> DM_DonVis { get; set; }
+        public DbSet<DM_ChucVus> DM_ChucVus { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Menus> Menus { get; set; }
+        public DbSet<Permissions> Permissions { get; set; }
 
     }
 }
