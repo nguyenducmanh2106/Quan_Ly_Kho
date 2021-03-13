@@ -3,7 +3,7 @@ import { SmallBox } from '../../elements/index';
 import Layout from '../Mains';
 const Dashboard = () => {
     return (
-        <Layout>
+       
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-3 col-6">
@@ -220,7 +220,7 @@ const Dashboard = () => {
                     </section>
                 </div>
             </div>
-        </Layout>
+        
     );
 };
 

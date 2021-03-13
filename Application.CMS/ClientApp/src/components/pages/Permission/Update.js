@@ -94,10 +94,10 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                                                                 //isClearable={true}
                                                                 defaultValue={getDefaultOption(data, item)}
                                                                 as={Select}
-                                                                name='ParentId'
+                                                                name='MenuId'
                                                                 options={data}
                                                                 control={control}
-                                                                rules={{ name: "ParentId" }, { required: true }}
+                                                                rules={{ name: "MenuId" }, { required: true }}
                                                             />
                                                             {errors.ParentId && <span class="parsley-required">Giá trị là bắt buộc</span>}
                                                         </div>

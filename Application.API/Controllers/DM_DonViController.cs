@@ -66,7 +66,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("list_data")]
-        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "")
+        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
         {
             try
             {
@@ -80,6 +80,33 @@ namespace Application.API.Controllers
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(nameSort))
+                    {
+                        switch (nameSort)
+                        {
+                            case "Name_asc":
+                                dataExist = dataExist.OrderBy(g => g.Name);
+                                break;
+                            case "Name_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.Name);
+                                break;
+                            case "Code_asc":
+                                dataExist = dataExist.OrderBy(g => g.Code);
+                                break;
+                            case "Code_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.Code);
+                                break;
+                            case "Ordering_asc":
+                                dataExist = dataExist.OrderBy(g => g.Ordering);
+                                break;
+                            case "Ordering_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.Ordering);
+                                break;
+                            default:
+                                dataExist = dataExist.OrderByDescending(g => g.Created_At);
+                                break;
+                        }
+                    }
                     //List<DM_DonVis> list = Common.CreateLevel(dataExist.ToList(), "ParentId");
                     //list=list.Select(g => new DM_DonVis()
                     //{

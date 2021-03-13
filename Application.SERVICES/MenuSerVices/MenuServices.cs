@@ -115,7 +115,7 @@ namespace Application.Services.MenuSerVices
             }
         }
 
-        public async Task<IQueryable<Menus>> getData(int page, int pageSize, int Status, string Name)
+        public async Task<IQueryable<Menus>> getData(int page, int pageSize, int Status, string Name, string nameSort)
         {
             var data = (await _unitOfWork.MenuRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)
              && (String.IsNullOrEmpty(Name) || g.Name.ToLower().Contains(Name.ToLower()))
@@ -164,6 +164,23 @@ namespace Application.Services.MenuSerVices
                 await _unitOfWork.MenuRepository.BulkDelete(listItem.ToList());
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<Menus>> GetChild(int ParentId)
+        {
+            try
+            {
+                var menuRoot = (await _unitOfWork.MenuRepository.FindBy(g=>g.ParentId==ParentId&&g.Status!=2&&g.isMenu==true)).OrderBy(g=>g.Ordering).ToList();
+                foreach(var item in menuRoot)
+                {
+                    item.childNode = await GetChild(item.Id);
+                }
+                return menuRoot;
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }

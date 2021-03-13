@@ -28,6 +28,7 @@ namespace Application.MODELS
         [NotMapped]
         public int Level { get; set; }
         
-
+        [NotMapped]
+        public List<Menus> childNode { get; set; }
     }
 }

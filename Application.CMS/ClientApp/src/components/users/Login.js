@@ -2,7 +2,7 @@
 import { Redirect } from "react-router-dom";
 import 'isomorphic-fetch';
 import { Form, FormGroup, FormControl, ControlLabel, Button, Col, Grid, Row } from 'react-bootstrap';
-import { setAccessToken, isLoggedIn, postAPI, parseJwt } from '../../utils/helpers';
+import { setAccessToken, isLoggedIn, postAPI, parseJwt, setUser } from '../../utils/helpers';
 import { Loading } from '../elements/index'
 import { PageLoading } from '../elements/index'
 
@@ -41,6 +41,7 @@ export class Login extends React.Component {
       
         if (res.status) {
             setAccessToken(res.result.access_token);
+            setAccessToken(res.result.userDetails);
             this.setState({ loggedIn: true });
             this.props.history.push('/');
             console.log("đăng nhập thành công")

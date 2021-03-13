@@ -5,11 +5,9 @@ import Skeleton from 'react-loading-skeleton';
 import { PageLoading } from './../../elements/index'
 import { useForm, Controller } from "react-hook-form";
 import { postAPI } from './../../../utils/helpers';
-import { ToastProvider, useToasts } from 'react-toast-notifications';
 import 'react-toastify/dist/ReactToastify.css';
 const Modal = ({ isShowing, hide, data, onPostCreateItem }) => {
     const { register, handleSubmit, watch, errors, control } = useForm();
-    const { addToast } = useToasts();
     const onSubmit=(data)=> {
         var obj = {
             "ParentId": Number.parseInt(data.ParentId.value),
@@ -79,7 +77,7 @@ const Modal = ({ isShowing, hide, data, onPostCreateItem }) => {
                                                 <div className="form-group">
                                                     <div className="row">
                                                         <label className="control-label col-md-3 text-right">
-                                                            <span>Tên danh mục</span>
+                                                            <span>Tên danh mục<span class="cred">(*)</span></span>
                                                         </label>
                                                         <div className="col-md-9">
                                                             <input className={`form-control ${errors.Name ? "is-invalid" : ""

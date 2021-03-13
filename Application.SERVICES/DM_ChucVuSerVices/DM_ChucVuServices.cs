@@ -70,7 +70,7 @@ namespace Application.Services.DM_ChucVuSerVices
         public async Task<IQueryable<DM_ChucVus>> GetOptions(int Status, string Name)
         {
             var data = (await _unitOfWork.DM_ChucVuRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)
-             && (String.IsNullOrEmpty(Name) || g.Name.ToLower().Contains(Name.ToLower()))
+             && (String.IsNullOrEmpty(Name) || g.Name.ToLower().Contains(Name.ToLower())||g.Code.ToLower().Contains(Name.ToLower()))
            ));
             data = data.OrderBy(g => g.Ordering).ThenByDescending(g => g.Created_At).Select(g => new DM_ChucVus()
             {

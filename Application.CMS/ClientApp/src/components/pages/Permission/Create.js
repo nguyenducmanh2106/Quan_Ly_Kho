@@ -46,7 +46,7 @@ const Modal = ({ isShowing, hide, data, onPostCreateItem }) => {
                                                 <div className="form-group">
                                                     <div className="row">
                                                         <label className="control-label col-md-3 text-right">
-                                                            <span>Tên quyền</span>
+                                                            <span>Tên quyền<span class="cred">(*)</span></span>
                                                         </label>
                                                         <div className="col-md-9">
                                                             <input className={`form-control ${errors.Name ? "is-invalid" : ""

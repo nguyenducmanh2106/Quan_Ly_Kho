@@ -4,26 +4,31 @@ import Layout from './../Mains'
 import FormCreate from './Create';
 import FormUpdate from './Update';
 import useModal from './../../elements/modal/useModal';
+import {  PageLoading } from './../../elements/index'
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
-//import { ToastProvider, useToasts } from 'react-toast-notifications';
+import LoadingOverlay from 'react-loading-overlay'
+import BounceLoader from 'react-spinners/BounceLoader'
 import ListData from './ListData';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 function Menu() {
+    
     //khai báo state
     const [state, setState] = useState();
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [options, setOption] = useState([]);
+    const [nameSort, setNameSort] = useState('');
     const [pageSize, setPageSize] = useState(4);
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
-    //const { addToast } = useToasts();
     const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
     useEffect(() => {
+        console.log("set")
         async function getData(page, pageSize) {
-            var fetchData = await getAPI(`api/menu/list_data/?page=${page}&pageSize=${pageSize}`);
+            var fetchData = await getAPI(`api/menu/list_data/?page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
             if (fetchData.status == true) {
                 setState(fetchData.result)
             }
@@ -50,10 +55,12 @@ function Menu() {
         //gọi hàm
         getData(page, pageSize);
         getOptions();
+        setIsLoading(false)
         return () => {
             setAction(false)
+            setIsLoading(true)
         }
-    }, [isAction, page, pageSize])
+    }, [nameSort,isAction, page, pageSize])
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
@@ -114,36 +121,33 @@ function Menu() {
             cancelButtonText: "Không",
             showLoaderOnConfirm: true,
             preConfirm: (isConfirm) => {
-                if (isConfirm) {
-                    postAPI('api/menu/delete', JSON.stringify(item)).then(data => {
-                        if (data.status) {
-                            setAction(true)
-                            toast.success("🦄" + data.message, {
-                                position: "top-right",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                className: 'toast-success',
-                                progressClassName: 'success-progress-bar',
-                            });
-                        }
-                        else {
-                            toast.error("🦄" + data.message, {
-                                position: "top-right",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                className: 'toast-error',
-                                progressClassName: 'error-progress-bar',
-                            });
-                        }
-                    });
-
-                }
+                return postAPI('api/menu/delete', JSON.stringify(item)).then(data => {
+                    if (data.status) {
+                        setAction(true)
+                        toast.success("🦄" + data.message, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            className: 'toast-success',
+                            progressClassName: 'success-progress-bar',
+                        });
+                    }
+                    else {
+                        toast.error("🦄" + data.message, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            className: 'toast-error',
+                            progressClassName: 'error-progress-bar',
+                        });
+                    }
+                });
             },
             //allowOutsideClick: () => !Swal.isLoading()
         })
@@ -160,38 +164,35 @@ function Menu() {
             confirmButtonText: "Có",
             cancelButtonText: "Không",
             showLoaderOnConfirm: true,
-
             preConfirm: (isConfirm) => {
-                if (isConfirm) {
-                    postAPI('api/menu/toggle-status', JSON.stringify(itemUpdateStatus)).then(data => {
-                        if (data.status) {
-                            setAction(true)
-                            toast.success("🦄"+data.message, {
-                                position: "top-right",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                className: 'toast-success',
-                                progressClassName: 'success-progress-bar',
-                            });
-                           
-                        }
-                        else {
-                            toast.error("🦄" + data.message, {
-                                position: "top-right",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                className: 'toast-error',
-                                progressClassName: 'error-progress-bar',
-                            });
-                        }
-                    });
-                }
+                return postAPI('api/menu/toggle-status', JSON.stringify(itemUpdateStatus)).then(data => {
+                    if (data.status) {
+                        setAction(true)
+                        toast.success("🦄" + data.message, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            className: 'toast-success',
+                            progressClassName: 'success-progress-bar',
+                        });
+
+                    }
+                    else {
+                        toast.error("🦄" + data.message, {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            className: 'toast-error',
+                            progressClassName: 'error-progress-bar',
+                        });
+                    }
+                });
             },
             //allowOutsideClick: () => !Swal.isLoading()
         })
@@ -200,7 +201,11 @@ function Menu() {
     const onUpdateItem = (item) => {
         setItemUpdate(item)
     }
+    const onSetNameSort = (name) => {
+        setNameSort(name)
+    }
     async function onMultiDelete() {
+        
         if (listItemRemove.length == 0) {
             toast.error("🦄 Chưa chọn dữ liệu để xoá", {
                 position: "top-right",
@@ -227,37 +232,34 @@ function Menu() {
                 cancelButtonText: "Không",
                 showLoaderOnConfirm: true,
                 preConfirm: (isConfirm) => {
-                    if (isConfirm) {
-                        postFormData('api/menu/multidelete', formData).then(data => {
-                            if (data.status) {
-                                setAction(true)
-                                toast.success("🦄" + data.message, {
-                                    position: "top-right",
-                                    autoClose: 3000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    className: 'toast-success',
-                                    progressClassName: 'success-progress-bar',
-                                });
+                    return postFormData('api/menu/multidelete', formData).then(data => {
+                        if (data.status) {
+                            setAction(true)
+                            toast.success("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-success',
+                                progressClassName: 'success-progress-bar',
+                            });
 
-                            }
-                            else {
-                                toast.error("🦄" + data.message, {
-                                    position: "top-right",
-                                    autoClose: 3000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    className: 'toast-error',
-                                    progressClassName: 'error-progress-bar',
-                                });
-                            }
-                        });
-
-                    }
+                        }
+                        else {
+                            toast.error("🦄" + data.message, {
+                                position: "top-right",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                className: 'toast-error',
+                                progressClassName: 'error-progress-bar',
+                            });
+                        }
+                    });
                 },
                 allowOutsideClick: () => !Swal.isLoading()
             })
@@ -326,34 +328,39 @@ function Menu() {
         }
     }
     return (
-        <Layout>
-            <div className="container-fluid">
-                <div className='row form-group'>
-                    <div className='col-12' style={{ textAlign: 'right' }}>
-                        <ToastContainer />
-                        <button id="btnCreate" className=" btn btn-success btn-sm" onClick={toggle}>
-                            <i className="fas fa-plus mr-2" aria-hidden="true"></i>Thêm mới
+        <div className="container-fluid">
+            <div className='row form-group'>
+                <div className='col-12' style={{ textAlign: 'right' }}>
+                    <ToastContainer />
+                    <button id="btnCreate" type='button' className="btn btn-success btn-sm" onClick={toggle}>
+                        <i className="fas fa-plus mr-2" aria-hidden="true"></i>Thêm mới
                         </button>
-                        <button id="btnXoaNhieu" className="btn btn-danger btn-sm" onClick={onMultiDelete}>
-                            <i className="fas fa-trash"></i> Xóa nhiều
+                    <button id="btnXoaNhieu" type='button' className="btn btn-danger btn-sm" onClick={onMultiDelete}>
+                        <i className="fas fa-trash"></i> Xóa nhiều
                         </button>
-                        <FormCreate
-                            isShowing={isShowing}
-                            hide={toggle}
-                            data={options}
-                            onPostCreateItem={onPostCreateItem}
-                        />
-                        <FormUpdate
-                            isShowing={isShowingUpdate}
-                            hide={toggleUpdate}
-                            data={options}
-                            item={ItemUpdate}
-                            onPostUpdateItem={onPostUpdateItem}
-                        />
+                    <FormCreate
+                        isShowing={isShowing}
+                        hide={toggle}
+                        data={options}
+                        onPostCreateItem={onPostCreateItem}
+                    />
+                    <FormUpdate
+                        isShowing={isShowingUpdate}
+                        hide={toggleUpdate}
+                        data={options}
+                        item={ItemUpdate}
+                        onPostUpdateItem={onPostUpdateItem}
+                    />
 
-                    </div>
                 </div>
-                <div className="table-responsive" id="gridData">
+            </div>
+            <div className="table-responsive" id="gridData">
+                <LoadingOverlay
+                    active={isLoading}
+                    spinner
+                    //spinner={<BounceLoader />}
+                    //text='Loading your content...'
+                >
                     <ListData obj={state}
                         onChangePage={onChangePage}
                         options={options}
@@ -363,10 +370,11 @@ function Menu() {
                         onMultiDelete={setListItemRemove}
                         onUpdateItemPosition={onUpdateItemPosition}
                         toggleStatus={onToggleStatus}
+                        onSetNameSort={onSetNameSort}
                     />
-                </div>
+                </LoadingOverlay>
             </div>
-        </Layout>
+        </div>
     );
 };
 

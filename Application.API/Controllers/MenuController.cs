@@ -69,20 +69,42 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("list_data")]
-        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "")
+        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
         {
             try
             {
                 var totalPage = 0;
                 var total = 0;
                 var stt = (page - 1) * pageSize;
-                var dataExist = await _manager.getData(page, pageSize, Status, Name);
+                var dataExist = await _manager.getData(page, pageSize, Status, Name,nameSort);
+               
                 if (dataExist == null)
                 {
                     return Ok(new MessageError());
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(nameSort))
+                    {
+                        switch (nameSort)
+                        {
+                            case "Name_asc":
+                                dataExist = dataExist.OrderBy(g => g.Name);
+                                break;
+                            case "Name_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.Name);
+                                break;
+                            case "Ordering_asc":
+                                dataExist = dataExist.OrderBy(g => g.Ordering);
+                                break;
+                            case "Ordering_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.Ordering);
+                                break;
+                            default:
+                                dataExist = dataExist.OrderByDescending(g => g.Created_At);
+                                break;
+                        }
+                    }
                     //List<Menus> list = Common.CreateLevel(dataExist.ToList(), "ParentId");
                     //list=list.Select(g => new Menus()
                     //{
@@ -232,6 +254,24 @@ namespace Application.API.Controllers
                 });
             }
 
+        }
+        [HttpGet("raw_menu")]
+        public async Task<IActionResult> RawMenu()
+        {
+            try
+            {
+                var rawMenu = await _manager.GetChild(0);
+                    MessageSuccess success = new MessageSuccess()
+                    {
+                        result = rawMenu
+                    };
+                    return Ok(success);
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

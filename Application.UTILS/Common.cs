@@ -378,7 +378,6 @@ namespace Application.UTILS
             FindChild(listAllCategory, lstParent, ref lstOrder, ParentId);
             return lstOrder;
         }
-
         public static void FindChild<T>(List<T> listAllCategory, List<T> lstParent, ref List<T> lstOrder, string ParentId = "ParentId")
         {
             using (var enumerator = lstParent.OrderBy(g => (int)GetValueByName(g, "Ordering")).GetEnumerator())

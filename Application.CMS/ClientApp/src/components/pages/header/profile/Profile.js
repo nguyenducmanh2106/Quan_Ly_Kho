@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router'
 import { useTranslation } from 'react-i18next';
-import { setAccessToken, parseJwt, isLoggedIn, postAPI, removeAccessToken } from '../../../../utils/helpers';
+import { setAccessToken, parseJwt, isLoggedIn,getUser,postAPI, removeAccessToken } from '../../../../utils/helpers';
 const MessagesDropdown = () => {
     const history = useHistory()
     const dropdownRef = useRef(null);
@@ -19,7 +19,7 @@ const MessagesDropdown = () => {
         <li className="nav-item dropdown">
             <a className="nav-link" data-toggle="dropdown" href="#">
                 <i className="fa fa-user" />
-                <span id="userHeader">{parseJwt().FullName}</span>
+                <span id="userHeader">{getUser()}</span>
             </a>
             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span className="dropdown-item dropdown-header">15 Notifications</span>

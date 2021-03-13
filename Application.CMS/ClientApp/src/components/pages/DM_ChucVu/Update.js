@@ -4,11 +4,9 @@ import Select from 'react-select';
 import Skeleton from 'react-loading-skeleton';
 import { PageLoading } from './../../elements/index'
 import { useForm, Controller } from "react-hook-form";
-import {  useToasts } from 'react-toast-notifications';
 import 'react-toastify/dist/ReactToastify.css';
 const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
     const { register, handleSubmit, watch, errors, control } = useForm();
-    const { addToast } = useToasts();
     const getDefaultOption = (data, item) => {
         var itemDefault = data ? data[0] : {};
           itemDefault=data.find(value => 
@@ -51,7 +49,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                                                 <div className="form-group">
                                                     <div className="row">
                                                         <label className="control-label col-md-3 text-right">
-                                                            <span>Tên chức vụ</span>
+                                                            <span>Tên chức vụ<span class="cred">(*)</span></span>
                                                         </label>
                                                         <div className="col-md-9">
                                                             <input className={`form-control ${errors.Name ? "is-invalid" : ""
@@ -63,11 +61,11 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                                                 <div className="form-group">
                                                     <div className="row">
                                                         <label className="control-label col-md-3 text-right">
-                                                            <span>Mã chức vụ</span>
+                                                            <span>Mã chức vụ<span class="cred">(*)</span></span>
                                                         </label>
                                                         <div className="col-md-9">
-                                                            <input className="form-control" id="Code" name="Code" type="text" placeholder="Mã chức vụ" ref={register()} defaultValue={item?.code} />
-                                                           
+                                                            <input className="form-control" id="Code" name="Code" type="text" placeholder="Mã chức vụ" ref={register({ required: true })} defaultValue={item?.code} />
+                                                            {errors.Code && <span class="parsley-required">Giá trị là bắt buộc</span>}
                                                         </div>
                                                     </div>
                                                 </div>

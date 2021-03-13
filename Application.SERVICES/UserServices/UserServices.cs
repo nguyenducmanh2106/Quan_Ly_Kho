@@ -32,7 +32,12 @@ namespace Application.Services.UserServices
                 //{
                 //    throw new Exception(MessageConst.DATA_NOT_FOUND);
                 //}
-                return data;
+                var user = new Users()
+                {
+                    UserName=data.UserName,
+                    FullName=data.FullName
+                };
+                return user;
             }
             catch(Exception ex)
             {
