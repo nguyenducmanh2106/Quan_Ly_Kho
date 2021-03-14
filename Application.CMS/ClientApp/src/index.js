@@ -24,7 +24,9 @@ ReactDOM.render(
         <Router>
             {console.log(baseUrl)}
             <Switch>
-                <Route path="/login" component={Login} />
+                <Route path="/login">
+                    <Login/>
+                </Route>
                 <Route path="/">
                    <Layout />
                 </Route>

@@ -41,9 +41,10 @@ export class Login extends React.Component {
       
         if (res.status) {
             setAccessToken(res.result.access_token);
-            setAccessToken(res.result.userDetails);
+            setUser(res.result.userDetails);
             this.setState({ loggedIn: true });
-            this.props.history.push('/admin');
+            //this.props.history.push('/admin');
+            window.location.href="/"
             console.log("đăng nhập thành công")
         } else {
             //let error = new Error(res.statusTest);
@@ -66,9 +67,9 @@ export class Login extends React.Component {
     }
 
     render() {
-        if (this.state.loggedIn) {
-            return <Redirect to="/" />;
-        }
+        //if (this.state.loggedIn) {
+        //    return <Redirect to="/" />;
+        //}
         let template;
         if (this.state.appLoadingState) {
             template = <Loading />

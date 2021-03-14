@@ -13,13 +13,14 @@ const MessagesDropdown = () => {
     });
     const signout = () => {
         removeAccessToken();
-        history.replace('/')
+        //history.replace('/')
+        window.location.href="/login"
     }
     return (
         <li className="nav-item dropdown">
             <a className="nav-link" data-toggle="dropdown" href="#">
                 <i className="fa fa-user" />
-                <span id="userHeader">{getUser()}</span>
+                <span id="userHeader">{JSON.parse(getUser()).fullName}</span>
             </a>
             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span className="dropdown-item dropdown-header">15 Notifications</span>

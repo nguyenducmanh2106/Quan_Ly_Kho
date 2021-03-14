@@ -35,11 +35,11 @@ import { Register } from './components/users/Register';
 // route our components
 const PrivateRoute = () => (
     <Switch>
-            <Route exact path='/admin/dashboard' component={Dashboard} />
-        <Route exact path='/admin/menu' component={Menu} />
-        <Route exact path='/admin/dm_chucvu' component={DM_ChucVu} />
-        <Route exact path='/admin/dm_donvi' component={DM_DonVi} />
-        <Route exact path='/admin/permission' component={Permission} />
-      
+        <Route exact path='/dashboard' component={Dashboard} />
+        <Route exact path='/menu' component={Menu} />
+        <Route exact path='/dm_chucvu' component={DM_ChucVu} />
+        <Route exact path='/dm_donvi' component={DM_DonVi} />
+        <Route exact path='/permission' component={Permission} />
+
     </Switch>);
 export default PrivateRoute
