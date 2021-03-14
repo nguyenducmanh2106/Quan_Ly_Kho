@@ -33,12 +33,13 @@ import { Register } from './components/users/Register';
 
 //export default ScreensRoot;
 // route our components
-const PrivateRoute = ()=>(
+const PrivateRoute = () => (
     <Switch>
-        <Route exact path='/' component={Dashboard} />
-        <Route path='/menu' component={Menu} />
-        <Route path='/dm_chucvu' component={DM_ChucVu} />
-        <Route path='/dm_donvi' component={DM_DonVi} />
-        <Route path='/permission' component={Permission} />
+            <Route exact path='/admin/dashboard' component={Dashboard} />
+        <Route exact path='/admin/menu' component={Menu} />
+        <Route exact path='/admin/dm_chucvu' component={DM_ChucVu} />
+        <Route exact path='/admin/dm_donvi' component={DM_DonVi} />
+        <Route exact path='/admin/permission' component={Permission} />
+      
     </Switch>);
 export default PrivateRoute

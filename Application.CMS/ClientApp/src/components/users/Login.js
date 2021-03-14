@@ -43,7 +43,7 @@ export class Login extends React.Component {
             setAccessToken(res.result.access_token);
             setAccessToken(res.result.userDetails);
             this.setState({ loggedIn: true });
-            this.props.history.push('/');
+            this.props.history.push('/admin');
             console.log("đăng nhập thành công")
         } else {
             //let error = new Error(res.statusTest);

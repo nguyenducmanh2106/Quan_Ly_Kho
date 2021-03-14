@@ -11,7 +11,7 @@ const Main = () => {
     
     return (
         <section className="main">
-            <PrivateRoute pathName />
+            <PrivateRoute />
         </section>
     )
 };

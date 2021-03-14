@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import Layout from './components/pages/Layout';
 import { Login } from './components/users/Login';
 import Skeleton from 'react-loading-skeleton';
@@ -21,9 +21,15 @@ const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 
 ReactDOM.render(
     <AppContainer>
-        <BrowserRouter basename={baseUrl}>
-            <Layout/>
-        </BrowserRouter>
+        <Router>
+            {console.log(baseUrl)}
+            <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/">
+                   <Layout />
+                </Route>
+            </Switch>
+        </Router>
     </AppContainer>,
     document.getElementById('root'));
 
