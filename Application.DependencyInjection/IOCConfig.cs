@@ -14,6 +14,7 @@ using Application.Services.DM_ChucVuSerVices;
 using Application.Services.DM_DonViserVices;
 using Application.Services.DM_DonViSerVices;
 using Application.Services.PermissionSerVices;
+using Application.Services.UserGroupSerVices;
 
 namespace Application.DependencyInjection
 {
@@ -33,6 +34,7 @@ namespace Application.DependencyInjection
             services.AddTransient<IMenuServices, MenuServices>();
             services.AddTransient<IDM_DonViServices, DM_DonViServices>();
             services.AddTransient<IPermissionServices, PermissionServices>();
+            services.AddTransient<IUserGroupServices, UserGroupServices>();
         }
     }
 }

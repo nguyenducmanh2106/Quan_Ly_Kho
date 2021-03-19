@@ -12,3 +12,5 @@ D:\QuanLyKho\Application\Application.REPOSITORY\bin\Debug\netcoreapp3.1\Applicat
 D:\QuanLyKho\Application\Application.REPOSITORY\obj\Debug\netcoreapp3.1\Application.REPOSITORY.csproj.CopyComplete
 D:\QuanLyKho\Application\Application.REPOSITORY\obj\Debug\netcoreapp3.1\Application.REPOSITORY.dll
 D:\QuanLyKho\Application\Application.REPOSITORY\obj\Debug\netcoreapp3.1\Application.REPOSITORY.pdb
+D:\QuanLyKho\Application\Application.REPOSITORY\bin\Debug\netcoreapp3.1\Application.UTILS.dll
+D:\QuanLyKho\Application\Application.REPOSITORY\bin\Debug\netcoreapp3.1\Application.UTILS.pdb

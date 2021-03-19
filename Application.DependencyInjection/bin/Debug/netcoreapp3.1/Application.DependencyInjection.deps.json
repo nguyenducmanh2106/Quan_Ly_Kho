@@ -1048,7 +1048,8 @@
       "Application.REPOSITORY/1.0.0": {
         "dependencies": {
           "Application.DATA": "1.0.0",
-          "Application.MODELS": "1.0.0"
+          "Application.MODELS": "1.0.0",
+          "Application.UTILS": "1.0.0"
         },
         "runtime": {
           "Application.REPOSITORY.dll": {}

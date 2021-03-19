@@ -20,71 +20,8 @@ namespace Application.Services.MenuSerVices
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
-        //public List<object> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0)
-        //{
-        //    var result = new List<object>();
-
-        //    //users - usergroups
-        //    var lstNhomQuyen =  _unitOfWork.MenuRepository.FindBy(g => g.ParentId == parentId).;
-        //    foreach (var itemNhomQuyen in lstNhomQuyen)
-        //    {
-        //        var child = GetChildGroup(itemNhomQuyen.Id, roles, code, langId);
-        //        var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId);
-        //        child.AddRange(permission);
-        //        if (child.Count > 0)
-        //        {
-        //            var obj = new
-        //            {
-        //                id = "",
-        //                text = itemNhomQuyen.Name,
-        //                state = "closed",
-        //                iconCls = "hide",
-        //                children = child
-        //            };
-        //            result.Add(obj);
-        //        }
-        //        else
-        //        {
-        //            var obj = new
-        //            {
-        //                id = "",
-        //                text = itemNhomQuyen.Name,
-        //                iconCls = "hide",
-        //                state = "closed"
-        //            };
-        //            result.Add(obj);
-        //        }
-
-        //    }
-
-
-
-        //    return result;
-        //}
-
-        //public List<object> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0)
-        //{
-        //    var result = new List<object>();
-        //    if (string.IsNullOrEmpty(groupId)) return result;
-        //    var lstPermission = db.Permission.Where(g => g.AdminMenuID != null && g.AdminMenuID.Value.ToString() == groupId && g.LangId == langId).ToList();
-        //    foreach (var itemPermission in lstPermission)
-        //    {
-        //        var check = roles != null && roles.Contains(itemPermission.Code);
-
-        //        var obj = new
-        //        {
-        //            id = itemPermission.Code,
-        //            text = itemPermission.Name,
-        //            iconCls = "hide",
-        //            @checked = check
-        //        };
-
-        //        result.Add(obj);
-        //    }
-
-        //    return result;
-        //}
         
+
         public async Task Create(Menus obj)
         {
             try

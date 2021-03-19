@@ -1231,7 +1231,8 @@
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "Application.DATA": "1.0.0",
-          "Application.MODELS": "1.0.0"
+          "Application.MODELS": "1.0.0",
+          "Application.UTILS": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Application.REPOSITORY.dll": {}

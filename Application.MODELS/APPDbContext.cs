@@ -27,6 +27,7 @@ namespace Application.MODELS
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Menus> Menus { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
+        public DbSet<UserGroups> UserGroups { get; set; }
 
     }
 }

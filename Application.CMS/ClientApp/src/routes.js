@@ -7,6 +7,7 @@ import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
 import { Error } from './components/Error';
 import Menu from './components/pages/Menu/Index';
 import DM_ChucVu from './components/pages/DM_ChucVu/Index';
+import UserGroup from './components/pages/UserGroup/Index';
 import DM_DonVi from './components/pages/DM_DonVi/Index';
 import Permission from './components/pages/Permission/Index';
 import Dashboard from './components/pages/Dashboard/Dashboard';
@@ -40,6 +41,7 @@ const PrivateRoute = () => (
         <Route exact path='/dm_chucvu' component={DM_ChucVu} />
         <Route exact path='/dm_donvi' component={DM_DonVi} />
         <Route exact path='/permission' component={Permission} />
+        <Route exact path='/user_group' component={UserGroup} />
 
     </Switch>);
 export default PrivateRoute

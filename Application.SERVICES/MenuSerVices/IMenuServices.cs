@@ -9,7 +9,9 @@ namespace Application.Services.MenuSerVices
 {
     public interface IMenuServices
     {
+       
         Task<IQueryable<Menus>> getData(int page, int pageSize, int Status, string Name, string nameSort = "");
+        
         Task<IQueryable<Menus>> GetOptions(int Status, string Name);
         Task Create(Menus obj);
         Task Update(Menus obj);

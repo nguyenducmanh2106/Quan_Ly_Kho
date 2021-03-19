@@ -15,5 +15,8 @@ namespace Application.Services.PermissionSerVices
         Task ToggleStatus(Permissions obj);
         Task Delete(Permissions obj);
         Task MultiDelete(string listItemDelete);
+        List<object> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0);
+        List<object> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0);
+        Task<List<object>> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0);
     }
 }
