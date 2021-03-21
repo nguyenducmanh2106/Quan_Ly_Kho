@@ -2,14 +2,14 @@
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Profile from './/profile/Profile';
 import Header from './header/Header';
+import BreadcrumbForm from './Breadcrumb/Index';
 import Footer from './footer/Footer';
-//import RoutesModule, { routes } from './../../routes';
 import Main from './Mains';
 import MenuSidebar from './menu-sidebar/MenuSidebar';
-import { Loading, PageLoading } from '../elements/index';
 import ReactDOM from 'react-dom';
 const Layout = () => {
     const [appLoadingState, updateAppLoading] = useState(true);
+    const [Breadcrumb, setBreadcrumb] = useState("");
     const [menusidebarState, updateMenusidebarState] = useState({
         isMenuSidebarCollapsed: false
     });
@@ -43,25 +43,10 @@ const Layout = () => {
 
     return (
         <div className="wrapper">
-            <Loading appLoadingState />
             <Header />
-            <MenuSidebar/>
+            <MenuSidebar onHandleSetBreadCrumb={setBreadcrumb} />
             <div className="content-wrapper">
-                <div className="content-header">
-                    <div className="container-fluid">
-                        <div className="row mb-2">
-                            <div className="col-sm-6">
-                                <h1 className="m-0 text-dark">Dashboard</h1>
-                            </div>
-                            <div className="col-sm-6">
-                                <ol className="breadcrumb float-sm-right">
-                                    <li className="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li className="breadcrumb-item active">Dashboard v1</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <BreadcrumbForm textBreadcrumb={Breadcrumb}/>
                 <Main/>
             </div>
 

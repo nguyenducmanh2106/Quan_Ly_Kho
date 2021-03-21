@@ -2,11 +2,10 @@
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
 import Skeleton from 'react-loading-skeleton';
-import { PageLoading } from './../../elements/index'
+import {Modal} from "antd"
 import { useForm, Controller } from "react-hook-form";
-import { postAPI } from './../../../utils/helpers';
 import 'react-toastify/dist/ReactToastify.css';
-const Modal = ({ isShowing, hide, data, onPostCreateItem }) => {
+const ModalCreate = ({ isShowing, hide, data, onPostCreateItem }) => {
     const { register, handleSubmit, watch, errors, control } = useForm();
     const onSubmit = (data) => {
         var obj = {
@@ -25,17 +24,9 @@ const Modal = ({ isShowing, hide, data, onPostCreateItem }) => {
                 isShowing ? ReactDOM.createPortal(
 
                     <React.Fragment>
-                        <div className="modal fade show" id="modal-lg" style={{ display: isShowing ? "block" : "none" }} >
-                            <div className="modal-dialog modal-lg">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h4 className="modal-title">Tạo Mới</h4>
-                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={hide}>
-                                            <span aria-hidden="true">X</span>
-                                        </button>
-                                    </div>
-
-                                    <form onSubmit={handleSubmit(onSubmit)} >
+                        <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
+                            onOk={handleSubmit(onSubmit)} style={{ top: 20 }} onCancel={hide}>
+                                    <form>
                                         <div className="modal-body">
                                             <div className="form-horizontal">
                                                 <div className="form-group">
@@ -85,18 +76,12 @@ const Modal = ({ isShowing, hide, data, onPostCreateItem }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="modal-footer">
-                                            <button type="submit" className="btn btn-primary btn-sm"> Lưu</button>
-                                            <button type="button" className="btn btn-danger btn-sm" data-dismiss="modal" onClick={hide}>Đóng</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                            </form>
+                        </Modal>
                     </  React.Fragment>, document.body
                 ) : null
             }
         </>
     )
 }
-export default Modal;
+export default ModalCreate;

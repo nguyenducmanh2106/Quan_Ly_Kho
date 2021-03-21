@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "animate.css": "^4.1.1",
+    "antd": "^4.14.0",
+    "antd-button-color": "^1.0.4",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "event-source-polyfill": "^1.0.22",

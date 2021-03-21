@@ -2,7 +2,8 @@
 import Layout from './../Layout'
 import FormCreate from './Create';
 import FormUpdate from './Update';
-import Select from 'react-select';
+import { Select } from 'antd';
+import { Input } from 'antd';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import ListData from './ListData';
@@ -24,6 +25,11 @@ function Menu() {
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
     const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
+    const { Option } = Select;
+
+    function onSearch(val) {
+        console.log('search:', val);
+    }
     useEffect(() => {
         async function getData(page, pageSize) {
             let name = search.Name;
@@ -106,9 +112,7 @@ function Menu() {
 
     }
     const onChangeSearchSelect = (newValue) => {
-
-        var valueSelect = newValue.value;
-        setSearch({ ...search, Status: valueSelect })
+        setSearch({ ...search, Status: newValue })
     }
     const optionSearch = [
         { label: 'Tất cả', value: -1 },
@@ -119,17 +123,15 @@ function Menu() {
     async function onHandleSearch() {
         let name = search.Name;
         let status = search.Status ? search.Status : -1;
-        var fetchData = await getAPI(`api/dm_donvi/list_data?Name=${name}&Status=${status}`);
+        var fetchData = await getAPI(`api/permission/list_data?Name=${name}&Status=${status}`);
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
     }
     const onChangeSearchInput = (event) => {
         var target = event.target;
-        var name = target.name ? target.name : "";
         var value = target.value;
-        console.log(name + ": " + value)
-        setSearch({ [name]: value })
+        setSearch({ ...search, Name: value })
     }
     const onChangePage = (page, pageSize) => {
         setPage(page);
@@ -361,11 +363,24 @@ function Menu() {
                         <div className="form-group mb-0">
                             <div className="row">
                                 <div className="col-md-2 padR-0">
-                                    <input type="text" className="form-control" onChange={onChangeSearchInput} name="Name" id="Name" placeholder="Tên quyền" />
+                                    <Input placeholder="Tên/Mã quyền" allowClear onChange={onChangeSearchInput} />
                                 </div>
                                 <div className="col-md-2 padR-0">
-                                    <Select options={optionSearch} search={true} name="Status" placeholder="Chọn" onChange={onChangeSearchSelect} />
-
+                                    <Select
+                                        showSearch
+                                        style={{ width: 200 }}
+                                        placeholder="-Chọn trạng thái-"
+                                        optionFilterProp="children"
+                                        onChange={onChangeSearchSelect}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        <Option value="-1">Tất cả</Option>
+                                        <Option value="1">Hoạt động</Option>
+                                        <Option value="2">Ngừng hoạt động</Option>
+                                    </Select>
                                 </div>
 
                             </div>

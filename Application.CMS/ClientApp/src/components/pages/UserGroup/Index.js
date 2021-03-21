@@ -1,8 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
 import FormCreate from './Create';
 import FormCreatePermission from './CreatePermission';
 import FormUpdate from './Update';
+import { Select, Input } from 'antd';
 import { useForm, Controller } from "react-hook-form";
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
@@ -10,12 +10,11 @@ import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
 import Swal from 'sweetalert2';
-import 'sweetalert2/src/sweetalert2.scss';
 import { ToastContainer, toast } from 'react-toastify';
-import SelectSearch from 'react-select-search';
 function Index() {
     //khai báo state
     const [state, setState] = useState();
+    const [permission, setPermission] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
     const { register, handleSubmit, watch, errors, control } = useForm();
@@ -26,7 +25,11 @@ function Index() {
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
-    const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
+    const { isShowing, toggle, isShowingUpdate, toggleUpdate, isOpenPermission, toggleFormPermission } = useModal();
+    const { Option } = Select;
+    function onSearch(val) {
+        console.log('search:', val);
+    }
     useEffect(() => {
         async function getData(page, pageSize) {
             let name = search.Name;
@@ -36,8 +39,19 @@ function Index() {
                 setState(fetchData.result)
             }
         }
+        async function getDataPermission() {
+            var obj = {
+                "usergroupId":1
+            }
+            var abc=1
+            var fetchData = await getAPI(`api/user_group/data-permission?usergroupId=${abc}`);
+            if (fetchData.status == true) {
+                setPermission(fetchData.result)
+            }
+        }
         //gọi hàm
         getData(page, pageSize);
+        getDataPermission()
         setIsLoading(false)
         return () => {
             setAction(false)
@@ -92,9 +106,7 @@ function Index() {
         setPageSize(pageSize);
     }
     const onChangeSearchSelect = (newValue) => {
-
-        var valueSelect = newValue.value;
-        setSearch({ ...search, Status: valueSelect })
+        setSearch({ ...search, Status: newValue })
     }
     async function onHandleSearch() {
         let name = search.Name;
@@ -110,17 +122,9 @@ function Index() {
     }
     const onChangeSearchInput = (event) => {
         var target = event.target;
-        var name = target.name ? target.name : "";
         var value = target.value;
-        console.log(name + ": " + value)
-        setSearch({ [name]: value })
+        setSearch({ ...search, Name: value })
     }
-    const options = [
-        { label: 'Tất cả', value: -1 },
-        { label: 'Hoạt động', value: 1 },
-        { label: 'Ngừng hoạt động', value: 2 },
-
-    ];
     const onToggleStatus = (item) => {
         Swal.fire({
             title: "Bạn có chắc chắn không?",
@@ -343,11 +347,24 @@ function Index() {
                         <div className="form-group mb-0">
                             <div className="row">
                                 <div className="col-md-2 padR-0">
-                                    <input type="text" className="form-control" onChange={onChangeSearchInput} name="Name" id="Name" placeholder="Tên/Mã" />
+                                    <Input placeholder="Tên/Mã" allowClear onChange={onChangeSearchInput} />
                                 </div>
                                 <div className="col-md-2 padR-0">
-                                    <Select options={options} search={true} name="Status" placeholder="Chọn" onChange={onChangeSearchSelect} />
-
+                                    <Select
+                                        showSearch
+                                        style={{ width: 200 }}
+                                        placeholder="-Chọn trạng thái-"
+                                        optionFilterProp="children"
+                                        onChange={onChangeSearchSelect}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        <Option value="-1">Tất cả</Option>
+                                        <Option value="1">Hoạt động</Option>
+                                        <Option value="2">Ngừng hoạt động</Option>
+                                    </Select>
                                 </div>
 
                             </div>
@@ -378,8 +395,9 @@ function Index() {
                             onPostUpdateItem={onPostUpdateItem}
                         />
                         <FormCreatePermission
-                            isShowing={isShowing}
-                            hide={toggle}
+                            isShowing={isOpenPermission}
+                            hide={toggleFormPermission}
+                            data={permission}
                         />
 
                     </div>
@@ -398,11 +416,12 @@ function Index() {
                         onDeleteItem={onDelete}
                         UpdateItem={onUpdateItem}
                         onToggleFormpdate={toggleUpdate}
+                        toggleFormPermission={toggleFormPermission}
                         onMultiDelete={setListItemRemove}
                         onUpdateItemPosition={onUpdateItemPosition}
                         toggleStatus={onToggleStatus}
                         onSetNameSort={onSetNameSort}
-                        onCreatePermission={onCreatePermission}
+                        
                     />
                 </LoadingOverlay>
             </div>

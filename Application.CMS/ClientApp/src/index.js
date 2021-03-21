@@ -8,8 +8,10 @@ import { Login } from './components/users/Login';
 import Skeleton from 'react-loading-skeleton';
 import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'antd-button-color/dist/css/style.css';
+//import 'bootstrap-css-only/css/bootstrap.min.css';
 //import 'mdbreact/dist/css/mdb.css';
+import 'antd/dist/antd.css';
 import 'sweetalert2/src/sweetalert2.scss';
 import 'react-toastify/dist/ReactToastify.css';
 

@@ -44,7 +44,7 @@ namespace Application.REPOSITORY
         {
             var data = (from per in _db.Permissions
                         join menu in _db.Menus on per.MenuId equals menu.Id
-                        where (String.IsNullOrEmpty(Name)||per.Name.ToLower().Contains(Name)||per.Code.ToLower().Contains(Name.ToLower())) && (per.Status == Status || Status == (int)StatusEnum.All)
+                        where (String.IsNullOrEmpty(Name)||per.Name.ToLower().Contains(Name.ToLower())||per.Code.ToLower().Contains(Name.ToLower())) && (per.Status == Status || Status == (int)StatusEnum.All)
                         select new Permissions()
                         {
                             Id = per.Id,

@@ -30,7 +30,7 @@ function Table(props) {
         props.onChangePage(page, obj.value)
     }
     const onCreatePermission = () => {
-        props.onCreatePermission();
+        props.toggleFormPermission();
     }
     const update = (item) => {
         props.onToggleFormpdate();

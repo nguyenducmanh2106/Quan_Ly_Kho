@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
 import Layout from './../Layout'
-import Select from 'react-select';
+import { Select } from 'antd';
+import { Input } from 'antd';
 import FormCreate from './Create';
 import FormUpdate from './Update';
 import { useForm, Controller } from "react-hook-form";
@@ -11,9 +11,7 @@ import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
 import Swal from 'sweetalert2';
-import 'sweetalert2/src/sweetalert2.scss';
 import { ToastContainer, toast } from 'react-toastify';
-import SelectSearch from 'react-select-search';
 function Index() {
     //khai báo state
     const [state, setState] = useState();
@@ -28,6 +26,12 @@ function Index() {
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
     const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
+    const { Option } = Select;
+
+
+    function onSearch(val) {
+        console.log('search:', val);
+    }
     useEffect(() => {
         async function getData(page, pageSize) {
             let name = search.Name;
@@ -93,9 +97,7 @@ function Index() {
         setPageSize(pageSize);
     }
     const onChangeSearchSelect = (newValue) => {
-
-        var valueSelect = newValue.value;
-        setSearch({ ...search, Status: valueSelect })
+        setSearch({ ...search, Status: newValue })
     }
     async function onHandleSearch() {
         let name = search.Name;
@@ -111,17 +113,10 @@ function Index() {
     }
     const onChangeSearchInput = (event) => {
         var target = event.target;
-        var name = target.name ? target.name : "";
         var value = target.value;
-        console.log(name + ": " + value)
-        setSearch({ [name]: value })
+        setSearch({ ...search, Name: value })
     }
-    const options = [
-        { label: 'Tất cả', value: -1 },
-        { label: 'Hoạt động', value: 1 },
-        { label: 'Ngừng hoạt động', value: 2 },
-
-    ];
+    
     const onToggleStatus = (item) => {
         Swal.fire({
             title: "Bạn có chắc chắn không?",
@@ -344,11 +339,25 @@ function Index() {
                         <div className="form-group mb-0">
                             <div className="row">
                                 <div className="col-md-2 padR-0">
-                                    <input type="text" className="form-control" onChange={onChangeSearchInput} name="Name" id="Name" placeholder="Tên/Mã chức vụ" />
+                                    <Input placeholder="Tên/Mã chức vụ" allowClear onChange={onChangeSearchInput} />
                                 </div>
                                 <div className="col-md-2 padR-0">
-                                    <Select options={options} search={true} name="Status" placeholder="Chọn" onChange={onChangeSearchSelect} />
-
+                                    
+                                    <Select
+                                        showSearch
+                                        style={{ width: 200 }}
+                                        placeholder="-Chọn trạng thái-"
+                                        optionFilterProp="children"
+                                        onChange={onChangeSearchSelect}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        <Option value="-1">Tất cả</Option>
+                                        <Option value="1">Hoạt động</Option>
+                                        <Option value="2">Ngừng hoạt động</Option>
+                                    </Select>
                                 </div>
 
                             </div>

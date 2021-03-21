@@ -95,7 +95,7 @@ function Table(props) {
                         {item.name}
                     </td>
                     <td>
-                        <input defaultValue={item.ordering} min={0} className="form-control" onChange={(event) => handleSubmit(updatePosition(event, item))}
+                        <input defaultValue={item.ordering} min={0} className="form-control form-control-sm" onChange={(event) => handleSubmit(updatePosition(event, item))}
                             ref={register({ required: true })} id="Ordering" name="Ordering" type="number" />
                         {errors.Ordering && <span class="parsley-required">Giá trị là bắt buộc</span>}
                     </td>

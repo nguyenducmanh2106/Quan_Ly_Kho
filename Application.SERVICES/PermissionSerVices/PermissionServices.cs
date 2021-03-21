@@ -42,23 +42,27 @@ namespace Application.Services.PermissionSerVices
             return result;
         }
 
-        public List<object> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0)
+        public List<object> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0")
         {
             var result = new List<object>();
 
             //users - usergroups
             var lstNhomQuyen = _unitOfWork.MenuRepository.getMenusByParentId(parentId);
-            foreach (var itemNhomQuyen in lstNhomQuyen)
+            for (int index = 0; index < lstNhomQuyen.Count; index++)
             {
-                var child = GetChildGroup(itemNhomQuyen.Id, roles, code, langId);
-                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId);
+                var indexValue = indexParent +"-"+ index.ToString();
+                var itemNhomQuyen = lstNhomQuyen[index];
+                var child = GetChildGroup(itemNhomQuyen.Id, roles, code, langId, indexValue);
+                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId, indexValue,child.Count);
                 child.AddRange(permission);
                 if (child.Count > 0)
                 {
                     var obj = new
                     {
                         id = "",
-                        text = itemNhomQuyen.Name,
+                        title = itemNhomQuyen.Name,
+                        key = indexValue,
+                        value = indexValue,
                         state = "closed",
                         iconCls = "hide",
                         children = child
@@ -70,34 +74,34 @@ namespace Application.Services.PermissionSerVices
                     var obj = new
                     {
                         id = "",
-                        text = itemNhomQuyen.Name,
+                        title = itemNhomQuyen.Name,
+                        key = indexValue,
+                        value = indexValue,
                         iconCls = "hide",
                         state = "closed"
                     };
                     result.Add(obj);
                 }
-
             }
-
-
-
             return result;
         }
 
-        public List<object> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0)
+        public List<object> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0, string indexParent = "",int startIndex=0)
         {
             var result = new List<object>();
             if (string.IsNullOrEmpty(groupId)) return result;
-            //var lstPermission = db.Permission.Where(g => g.AdminMenuID != null && g.AdminMenuID.Value.ToString() == groupId && g.LangId == langId).ToList();
             var lstPermission = _unitOfWork.PermissionRepository.getPermissionsByMenuId(groupId);
-            foreach (var itemPermission in lstPermission)
+            for (int index = 0; index < lstPermission.Count; index++)
             {
+                var itemPermission = lstPermission[index];
                 var check = roles != null && roles.Contains(itemPermission.Code);
-
+                var indexValue = startIndex + index;
                 var obj = new
                 {
                     id = itemPermission.Code,
-                    text = itemPermission.Name,
+                    title = itemPermission.Name,
+                    value = $"{indexParent}-{indexValue}",
+                    key = $"{indexParent}-{indexValue}",
                     iconCls = "hide",
                     @checked = check
                 };
@@ -142,7 +146,7 @@ namespace Application.Services.PermissionSerVices
             var data = _unitOfWork.PermissionRepository.getPermissionsRepository(page, pageSize, Status, Name);
             return data;
         }
-        
+
         public async Task MultiDelete(string listItemDelete)
         {
             try
@@ -151,7 +155,7 @@ namespace Application.Services.PermissionSerVices
                 var listItem = await _unitOfWork.PermissionRepository.FindBy(g => arrayItemDelete.Contains(g.Id));
                 await _unitOfWork.PermissionRepository.BulkDelete(listItem.ToList());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

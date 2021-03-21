@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
 import Layout from './../Mains'
 import FormCreate from './Create';
 import FormUpdate from './Update';

@@ -4,14 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { parseJwt, getAccessToken, getUser, getAPI } from '../../../utils/helpers';
 import Skeleton from 'react-loading-skeleton';
 import renderHTML from 'react-render-html';
-const MenuSidebar = () => {
+const MenuSidebar = (props) => {
     const { t } = useTranslation();
     let history = useHistory();
     const [avt, setAvt] = useState("dist/img/user2-160x160.jpg")
     const [fullName, setFullName] = useState("")
     const [menu, setMenu] = useState([])
     const onHandleClick = (item) => {
-        console.log(item)
+        //console.log(item)
         var itemClick = document.querySelectorAll("ul.nav-sidebar a.nav-link");
         for (var value of itemClick) {
             let parent = value.parentNode.parentNode.parentNode.childNodes[0];
@@ -21,8 +21,9 @@ const MenuSidebar = () => {
         }
         for (var value of itemClick) {
             if (value.getAttribute('href') === item.url) {
-                console.log("trung")
+                //console.log("trung")
                 history.push(item.url)
+               props.onHandleSetBreadCrumb(item.name)
                 let parent = value.parentNode.parentNode.parentNode.childNodes[0];
                 if (parent.getAttribute("href")) {
                     parent.className = " nav-link active"
@@ -79,7 +80,7 @@ const MenuSidebar = () => {
                                         <ul className="nav nav-treeview">
                                             {item.childNode.map((itemChild, indexChild) => {
                                                 return (
-                                                    <li className="nav-item">
+                                                    <li key={indexChild} className="nav-item">
                                                         <NavLink to={itemChild.url == "#" || itemChild.url ? itemChild.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild)}>
                                                             <span dangerouslySetInnerHTML={{ __html: itemChild.icon }} />
                                                             <p>{itemChild.name}</p>
@@ -90,7 +91,7 @@ const MenuSidebar = () => {
                                                                 {itemChild.childNode.map((itemChild1, indexChild1) => {
                                                                     return (
 
-                                                                        <li className="nav-item">
+                                                                        <li key={indexChild1} className="nav-item">
                                                                             <NavLink to={itemChild1.url || itemChild1.url == "#" ? itemChild1.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild1)}>
                                                                                 <span dangerouslySetInnerHTML={{ __html: itemChild1.icon }} />
                                                                                 <p>{itemChild1.name}</p>
@@ -100,7 +101,7 @@ const MenuSidebar = () => {
                                                                                 <ul className="nav nav-treeview">
                                                                                     {itemChild1.childNode.map((itemChild2, indexChild2) => {
                                                                                         return (
-                                                                                            <li className="nav-item">
+                                                                                            <li key={indexChild2} className="nav-item">
                                                                                                 <NavLink to={itemChild2.url || itemChild2.url == "#" ? itemChild2.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild2)}>
                                                                                                     <span dangerouslySetInnerHTML={{ __html: itemChild2.icon }} />
                                                                                                     <p>{itemChild2.name}</p>
@@ -110,7 +111,7 @@ const MenuSidebar = () => {
                                                                                                     <ul className="nav nav-treeview">
                                                                                                         {itemChild2.childNode.map((itemChild3, indexChild3) => {
                                                                                                             return (
-                                                                                                                <li className="nav-item">
+                                                                                                                <li key={indexChild3} className="nav-item">
                                                                                                                     <NavLink to={itemChild3.url || itemChild3.url == "#" ? itemChild3.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild3)}>
                                                                                                                         <span dangerouslySetInnerHTML={{ __html: itemChild3.icon }} />
                                                                                                                         <p>{itemChild3.name}</p>

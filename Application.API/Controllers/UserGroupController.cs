@@ -182,7 +182,7 @@ namespace Application.API.Controllers
                 });
             }
         }
-        [HttpGet("data_permission")]
+        [HttpGet("data-permission")]
         public async Task<IActionResult> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
         {
             try

@@ -88,7 +88,7 @@ function Table(props) {
                         {item.name}
                     </td>
                     <td>
-                        <input defaultValue={item.ordering} min={0} className="form-control" onChange={(event) => handleSubmit(updatePosition(event, item))}
+                        <input defaultValue={item.ordering} min={0} className="form-control form-control-sm" onChange={(event) => handleSubmit(updatePosition(event, item))}
                             ref={register({ required: true })} id="Ordering" name="Ordering" type="number" />
                         {errors.Ordering && <span class="parsley-required">Giá trị là bắt buộc</span>}
                     </td>
@@ -99,7 +99,7 @@ function Table(props) {
                         {item.url}
                     </td>
                     <td>
-                        {item.status == 1 ? <a className="btn btn-block btn-outline-success btn-sm" onClick={() => toggleStatus(2, item)}>Hoạt động</a> : <a className="btn btn-block btn-outline-danger btn-sm" onClick={() => toggleStatus(1, item)}>Ngừng hoạt động</a>}
+                        {item.status == 1 ? <button className="btn btn-block btn-outline-success btn-sm" onClick={() => toggleStatus(2, item)}>Hoạt động</button> : <button className="btn btn-block btn-outline-danger btn-sm" onClick={() => toggleStatus(1, item)}>Ngừng hoạt động</button>}
                     </td>
                     <td className="text-center">
                         <button type="button" className="btn btn-sm btn-outline-dark" title="Danh sách tin">
