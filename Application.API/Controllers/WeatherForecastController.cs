@@ -35,5 +35,27 @@ namespace Application.API.Controllers
             })
             .ToArray();
         }
+        [HttpGet("Upload-Get")]
+        public async Task<IActionResult> Upload()
+        {
+            return Ok(new
+            {
+                name = "xxx.png",
+                status = "done",
+                url = "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+                thumbUrl = "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+            });
+        }
+        [HttpPost("Upload-Post")]
+        public async Task<IActionResult> UploadPost()
+        {
+            return Ok(new
+            {
+                name = "xxx.png",
+                status = "done",
+                url = "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+                thumbUrl = "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+            });
+        }
     }
 }

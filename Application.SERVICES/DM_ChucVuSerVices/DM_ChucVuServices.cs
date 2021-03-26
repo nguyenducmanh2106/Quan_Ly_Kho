@@ -51,6 +51,19 @@ namespace Application.Services.DM_ChucVuSerVices
             }
         }
 
+        public async Task<List<DM_ChucVus>> GetAllDataActive()
+        {
+            try
+            {
+                var data = (await _unitOfWork.DM_ChucVuRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IQueryable<DM_ChucVus>> getData(int page, int pageSize, int Status, string Name)
         {
             var data = (await _unitOfWork.DM_ChucVuRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)

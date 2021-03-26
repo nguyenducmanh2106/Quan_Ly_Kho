@@ -4,7 +4,6 @@ import Select from 'react-select';
 import Skeleton from 'react-loading-skeleton';
 import { useForm, Controller } from "react-hook-form";
 import { Modal } from 'antd';
-import 'react-toastify/dist/ReactToastify.css';
 const ModalForm = ({ isShowing, hide, data, onPostCreateItem }) => {
     const { register, handleSubmit, watch, errors, control } = useForm();
     const onSubmit = (data) => {

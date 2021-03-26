@@ -16,6 +16,7 @@ const domain = "http://localhost:8082";
 //        }
 //    })
 //}
+export const url_upload = `${domain}/WeatherForecast/Upload-Post`;
 export const parseJwt = () => {
     var token = getAccessToken();
     var base64Url = token.split('.')[1];

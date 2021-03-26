@@ -99,3 +99,8 @@ D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\Application.REP
 D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\Application.SERVICES.pdb
 D:\QuanLyKho\Application\Application.API\obj\Debug\netcoreapp3.1\Application.API.MvcApplicationPartsAssemblyInfo.cs
 D:\QuanLyKho\Application\Application.API\obj\Debug\netcoreapp3.1\Application.API.csproj.CopyComplete
+D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll

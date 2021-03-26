@@ -142,6 +142,23 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("get-all-data-active")]
+        public async Task<IActionResult> GetAllDataActive()
+        {
+            try
+            {
+                var data = await _manager.GetAllDataActive();
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] DM_DonVis obj)
         {

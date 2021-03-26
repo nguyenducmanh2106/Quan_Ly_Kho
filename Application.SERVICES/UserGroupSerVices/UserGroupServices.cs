@@ -51,6 +51,19 @@ namespace Application.Services.UserGroupSerVices
             }
         }
 
+        public async Task<List<UserGroups>> GetAllDataActive()
+        {
+            try
+            {
+                var data = (await _unitOfWork.UserGroupRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IQueryable<UserGroups>> getData(int page, int pageSize, int Status, string Name)
         {
             var data =(await _unitOfWork.UserGroupRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)

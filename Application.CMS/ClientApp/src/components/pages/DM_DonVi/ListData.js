@@ -159,15 +159,15 @@ function Table(props) {
                             <th className="text-center">STT</th>
                             <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
                                 Tên đơn vị
-                                <i class="fa fa-sort"></i>
+                                <i className="fa fa-sort"></i>
         </th>
                             <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
                                 Thứ tự
-                                <i class="fa fa-sort"></i>
+                                <i className="fa fa-sort"></i>
         </th>
                             <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
                                 Mã đơn vị
-                                <i class="fa fa-sort"></i>
+                                <i className="fa fa-sort"></i>
         </th>
                             <th className="text-center">
                                 Trạng thái

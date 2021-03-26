@@ -4,7 +4,6 @@ import Select from 'react-select';
 import Skeleton from 'react-loading-skeleton';
 import { Modal } from "antd"
 import { useForm, Controller } from "react-hook-form";
-import 'react-toastify/dist/ReactToastify.css';
 const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
     const { register, handleSubmit, watch, errors, control } = useForm();
     const getDefaultOption = (data, item) => {

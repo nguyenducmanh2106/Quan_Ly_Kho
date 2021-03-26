@@ -31,6 +31,42 @@ namespace Application.API.Controllers
             _config = config;
             this._manager = _manager;
         }
+        [HttpGet("data-permission")]
+        public async Task<IActionResult> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
+        {
+            try
+            {
+
+                var result = await _manager.DataPermission(permissId, usergroupId, code, langId);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = result
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError());
+            }
+        }
+        [HttpGet("data-permission-trai-phang")]
+        public async Task<IActionResult> DataPermissionTraiPhang(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
+        {
+            try
+            {
+
+                var result = await _manager.TraiPhangPermission(permissId, usergroupId, code, langId);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = result
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError());
+            }
+        }
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
         {

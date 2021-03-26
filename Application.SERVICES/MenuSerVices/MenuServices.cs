@@ -175,5 +175,18 @@ namespace Application.Services.MenuSerVices
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
         }
+
+        public async Task<Menus> GetBreadCumb(string url)
+        {
+            try
+            {
+                var data = await _unitOfWork.MenuRepository.Get(g => g.Url == url);
+                return data;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

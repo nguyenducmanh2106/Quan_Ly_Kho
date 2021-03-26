@@ -26,13 +26,11 @@ namespace Application.API.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IUserGroupServices _manager;
-        private readonly IPermissionServices _managerPermission;
 
-        public UserGroupController(IConfiguration config, IUserGroupServices _manager, IPermissionServices _managerPermission)
+        public UserGroupController(IConfiguration config, IUserGroupServices _manager)
         {
             _config = config;
             this._manager = _manager;
-            this._managerPermission = _managerPermission;
         }
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
@@ -76,18 +74,6 @@ namespace Application.API.Controllers
                                 break;
                         }
                     }
-                    //List<UserGroups> list = Common.CreateLevel(dataExist.ToList(), "ParentId");
-                    //list=list.Select(g => new UserGroups()
-                    //{
-                    //    Id = g.Id,
-                    //    Name = Common.setName(g.Level,g.Name),
-                    //    Ordering = g.Ordering,
-                    //    ParentId = g.ParentId,
-                    //    Status = g.Status,
-                    //    Url = g.Url,
-                    //    Level = g.Level,
-                    //    isMenu = g.isMenu
-                    //}).ToList();
                     total = dataExist.Count();
                     var data = dataExist.Skip((page - 1) * pageSize).Take(pageSize);
                     totalPage = (int)Math.Ceiling(((double)total / pageSize));
@@ -105,6 +91,23 @@ namespace Application.API.Controllers
                     };
                     return Ok(success);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("get-all-data-active")]
+        public async Task<IActionResult> GetAllDataActive()
+        {
+            try
+            {
+                var data = await _manager.GetAllDataActive();
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
             }
             catch (Exception ex)
             {
@@ -182,24 +185,7 @@ namespace Application.API.Controllers
                 });
             }
         }
-        [HttpGet("data-permission")]
-        public async Task<IActionResult> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
-        {
-            try
-            {
-
-                var result=await _managerPermission.DataPermission(permissId,usergroupId,code,langId);
-                MessageSuccess success = new MessageSuccess()
-                {
-                    result=result
-                };
-                return Ok(success);
-            }
-            catch (Exception ex)
-            {
-                return Ok(new MessageError());
-            }
-        }
+       
         [HttpPost("delete")]
         public async Task<IActionResult> Delete([FromBody] UserGroups obj)
         {

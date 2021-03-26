@@ -29,8 +29,9 @@ function Table(props) {
         var obj = document.getElementById('pageSize');
         props.onChangePage(page, obj.value)
     }
-    const onCreatePermission = () => {
+    const onCreatePermission = (item) => {
         props.toggleFormPermission();
+        props.onSetItemCreatePermission(item)
     }
     const update = (item) => {
         props.onToggleFormpdate();
@@ -78,46 +79,49 @@ function Table(props) {
     }
     const renderBody = () => {
         var result=""
-       result= array != [] ? array.map((item, index) => {
-            return (
-                <tr key={item.id}>
-                    <td className="w50px">
-                        <label className="fancy-checkbox">
-                            <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
-                            <span />
-                        </label>
-                    </td>
-                    <td className="text-center w50px">
-                        {(index + 1) + (page - 1) * pageSize}
-                    </td>
-                    <td>
-                        {item.name}
-                    </td>
-                    <td>
-                        <input defaultValue={item.ordering} min={0} className="form-control" onChange={(event) => handleSubmit(updatePosition(event, item))}
-                            ref={register({ required: true })} id="Ordering" name="Ordering" type="number" />
-                        {errors.Ordering && <span class="parsley-required">Giá trị là bắt buộc</span>}
-                    </td>
-                    <td style={{ textAlign: "center" }}>
-                        {item.code}
-                    </td>
-                    <td>
-                        {item.status == 1 ? <button type="button" className="btn btn-block btn-outline-success btn-sm" onClick={() => toggleStatus(2, item)}>Hoạt động</button> : <button type="button" className="btn btn-block btn-outline-danger btn-sm" onClick={() => toggleStatus(1, item)}>Ngừng hoạt động</button>}
-                    </td>
-                    <td className="text-center">
-                        <button type="button" className="btn btn-sm btn-outline-primary" title="Danh sách tin" onClick={onCreatePermission}>
-                            <i className="fa fa-cog"></i>
-                        </button>
-                        <button type="button" className="btn btn-outline-success btn-sm" onClick={() => update(item)}>
-                            <i className="fas fa-edit"></i>
-                        </button>
-                        <button type="button" className="btn btn-sm btn-outline-danger" title="Xóa" onClick={() => onDelete(item)}>
-                            <i className="fa fa-trash" />
-                        </button>
-                    </td>
-                </tr>
-           );
-       }) : <span>Dữ liệu đang cập nhật...</span>
+        if (array.length>0) {
+            result = array.map((item, index) => {
+                return (
+                    <tr key={item.id}>
+                        <td className="w50px">
+                            <label className="fancy-checkbox">
+                                <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
+                                <span />
+                            </label>
+                        </td>
+                        <td className="text-center w50px">
+                            {(index + 1) + (page - 1) * pageSize}
+                        </td>
+                        <td>
+                            {item.name}
+                        </td>
+                        <td>
+                            <input defaultValue={item.ordering} min={0} className="form-control form-control-sm" onChange={(event) => handleSubmit(updatePosition(event, item))}
+                                ref={register({ required: true })} id="Ordering" name="Ordering" type="number" />
+                            {errors.Ordering && <span class="parsley-required">Giá trị là bắt buộc</span>}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                            {item.code}
+                        </td>
+                        <td>
+                            {item.status == 1 ? <button type="button" className="btn btn-block btn-outline-success btn-sm" onClick={() => toggleStatus(2, item)}>Hoạt động</button> : <button type="button" className="btn btn-block btn-outline-danger btn-sm" onClick={() => toggleStatus(1, item)}>Ngừng hoạt động</button>}
+                        </td>
+                        <td className="text-center">
+                            <button type="button" className="btn btn-sm btn-outline-primary" title="Phân quyền" onClick={() => onCreatePermission(item)}>
+                                <i className="fa fa-cog"></i>
+                            </button>
+                            <button type="button" className="btn btn-outline-success btn-sm" onClick={() => update(item)}>
+                                <i className="fas fa-edit"></i>
+                            </button>
+                            <button type="button" className="btn btn-sm btn-outline-danger" title="Xóa" onClick={() => onDelete(item)}>
+                                <i className="fa fa-trash" />
+                            </button>
+                        </td>
+                    </tr>
+                );
+            })
+        }
+        
         return result
     }
     const onSort = (name) => {
@@ -158,15 +162,15 @@ function Table(props) {
                             <th className="text-center">STT</th>
                             <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
                                 Tên
-                                <i class="fa fa-sort"></i>
+                                <i className="fa fa-sort"></i>
         </th>
                             <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
                                 Thứ tự
-                                <i class="fa fa-sort"></i>
+                                <i className="fa fa-sort"></i>
         </th>
                             <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
                                 Mã
-                                <i class="fa fa-sort"></i>
+                                <i className="fa fa-sort"></i>
         </th>
                             <th className="text-center">
                                 Trạng thái

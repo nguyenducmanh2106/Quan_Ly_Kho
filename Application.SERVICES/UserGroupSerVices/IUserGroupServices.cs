@@ -10,6 +10,7 @@ namespace Application.Services.UserGroupSerVices
     public interface IUserGroupServices
     {
         Task<IQueryable<UserGroups>> getData(int page, int pageSize, int Status, string Name);
+        Task<List<UserGroups>> GetAllDataActive();
         Task Create(UserGroups obj);
         Task Update(UserGroups obj);
         Task ToggleStatus(UserGroups obj);

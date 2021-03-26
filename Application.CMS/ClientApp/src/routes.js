@@ -8,13 +8,11 @@ import { Error } from './components/Error';
 import Menu from './components/pages/Menu/Index';
 import DM_ChucVu from './components/pages/DM_ChucVu/Index';
 import UserGroup from './components/pages/UserGroup/Index';
+import User from './components/pages/Users/Index';
 import DM_DonVi from './components/pages/DM_DonVi/Index';
 import Permission from './components/pages/Permission/Index';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 // import our users pages
-import { Users } from './components/users/Users';
-import { Login } from './components/users/Login';
-import { Register } from './components/users/Register';
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 
@@ -42,6 +40,6 @@ const PrivateRoute = () => (
         <Route exact path='/dm_donvi' component={DM_DonVi} />
         <Route exact path='/permission' component={Permission} />
         <Route exact path='/user_group' component={UserGroup} />
-
+        <Route exact path='/user' component={User} />
     </Switch>);
 export default PrivateRoute

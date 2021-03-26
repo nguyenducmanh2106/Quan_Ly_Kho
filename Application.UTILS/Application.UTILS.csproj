@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1-beta1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0-preview.2.21154.6" />
   </ItemGroup>
 
   <ItemGroup>

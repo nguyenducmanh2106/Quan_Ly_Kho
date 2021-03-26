@@ -273,5 +273,30 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("get-breadcumb")]
+        public async Task<IActionResult> GetBreadCumb(string url)
+        {
+            try
+            {
+                var data = await _manager.GetBreadCumb(url);
+                if (data != null)
+                {
+                    MessageSuccess success = new MessageSuccess()
+                    {
+                        result = data
+                    };
+                    return Ok(success);
+                }
+                else
+                {
+                    return Ok(new MessageError());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

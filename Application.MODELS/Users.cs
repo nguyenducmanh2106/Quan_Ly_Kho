@@ -22,10 +22,16 @@ namespace Application.MODELS
         public int Status { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string UserGroupID { get; set; }
         public int? DonViId { get; set; }
         public int? ChucVuId { get; set; }
         public DateTime? LastLogin { get; set; }
         public DateTime? LastChangePass { get; set; }
-        public int? Ordering { get; set; }
+        public int Ordering { get; set; }
+        public string Permission { get; set; }
+        public Nullable<bool> isRoot { get; set; }
+        public Nullable<bool> isThongKe { get; set; }
+        [NotMapped]
+        public string File_Base64 { get; set; }
     }
 }

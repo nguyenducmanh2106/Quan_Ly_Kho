@@ -11,6 +11,7 @@ namespace Application.Services.DM_DonViSerVices
     {
         Task<IQueryable<DM_DonVis>> getData(int page, int pageSize, int Status, string Name);
         Task<IQueryable<DM_DonVis>> GetOptions(int Status, string Name);
+        Task<List<DM_DonVis>> GetAllDataActive();
         Task Create(DM_DonVis obj);
         Task Update(DM_DonVis obj);
         Task Delete(DM_DonVis obj);

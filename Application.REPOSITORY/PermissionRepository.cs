@@ -25,7 +25,7 @@ namespace Application.REPOSITORY
         public List<Permissions> getPermissionsByMenuId(string MenuId)
         {
             var data = (from per in _db.Permissions
-                        where per.MenuId != null && per.MenuId.Value.ToString() == MenuId
+                        where per.MenuId != null && per.MenuId.Value.ToString() == MenuId&&per.Status==(int)StatusEnum.Active
                         select new Permissions()
                         {
                             Id = per.Id,

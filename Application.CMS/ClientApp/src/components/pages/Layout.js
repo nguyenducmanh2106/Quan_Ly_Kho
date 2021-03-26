@@ -1,66 +1,67 @@
-﻿import React, { useState, useEffect } from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+﻿
+import React, { useState, useEffect } from 'react';
+import { Route, Switch, Link, BrowserRouter as Router } from 'react-router-dom';
 import Profile from './/profile/Profile';
-import Header from './header/Header';
+import HeaderElement from './header/Header';
 import BreadcrumbForm from './Breadcrumb/Index';
 import Footer from './footer/Footer';
+import { Layout, Menu, Breadcrumb, Button, Input, Avatar } from 'antd';
 import Main from './Mains';
+import MyIcon from "../elements/Icon-Antd/Icon";
 import MenuSidebar from './menu-sidebar/MenuSidebar';
+
+
+import {
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    UserOutlined,
+    VideoCameraOutlined,
+    UploadOutlined,
+} from '@ant-design/icons';
 import ReactDOM from 'react-dom';
-const Layout = () => {
+const LayoutForm = () => {
+    
+    const { Header, Content, Footer, Sider } = Layout;
     const [appLoadingState, updateAppLoading] = useState(true);
-    const [Breadcrumb, setBreadcrumb] = useState("");
-    const [menusidebarState, updateMenusidebarState] = useState({
-        isMenuSidebarCollapsed: false
-    });
-   const toggleMenuSidebar = () => {
-        updateMenusidebarState({
-            isMenuSidebarCollapsed: !menusidebarState.isMenuSidebarCollapsed
-        });
+    //const [Breadcrumb, setBreadcrumb] = useState("");
+    const [menusidebarState, updateMenusidebarState] = useState(false);
+    const toggleMenuSidebar = () => {
+        updateMenusidebarState(!menusidebarState);
     };
-    //useEffect(() => {
-    //    console.log('cap nhat lại')
-    //    updateAppLoading(false)
-    //    return () => {
-    //        updateAppLoading(true)
-    //    }
-    //}, [])
 
-
-    //document.getElementById('root').classList.remove('register-page');
-    //document.getElementById('root').classList.remove('login-page');
-    //document.getElementById('root').classList.remove('hold-transition');
-
-    //document.getElementById('root').className += ' sidebar-mini';
-
-    //if (menusidebarState.isMenuSidebarCollapsed) {
-    //    document.getElementById('root').classList.add('sidebar-collapse');
-    //    document.getElementById('root').classList.remove('sidebar-open');
-    //} else {
-    //    document.getElementById('root').classList.add('sidebar-open');
-    //    document.getElementById('root').classList.remove('sidebar-collapse');
-    //}
 
     return (
-        <div className="wrapper">
-            <Header />
-            <MenuSidebar onHandleSetBreadCrumb={setBreadcrumb} />
-            <div className="content-wrapper">
-                <BreadcrumbForm textBreadcrumb={Breadcrumb}/>
-                <Main/>
-            </div>
+        <Layout>
+            <Sider trigger={null} collapsible
+                collapsed={menusidebarState} style={{ background: '#fff' }}
+                width='240'
+                className="sidebar-left" onCollapse={toggleMenuSidebar}>
+                
+                <MenuSidebar />
+                {menusidebarState ? <MenuUnfoldOutlined className="trigger" onClick={toggleMenuSidebar} /> : <MenuFoldOutlined className="trigger" onClick={toggleMenuSidebar} />}
+            </Sider>
+            <Layout>
+                <Header className="headerTop">
+                    <HeaderElement/>
+                </Header>
+                
+                <Content
+                    style={{
+                        padding: "24px 0",
+                        minHeight: '100vh',
+                    }}
+                    className={menusidebarState ? "collapsed mainContnet" : "mainContnet"}
+                >
+                    <BreadcrumbForm/>
+                    <Main />
+                </Content>
+            </Layout>
+        </Layout>
 
-            <Footer />
-            <div
-                id="sidebar-overlay"
-                role="presentation"
-                onClick={toggleMenuSidebar}
-                onKeyDown={() => { }}
-            />
-        </div>
 
     )
 };
 
 
-export default Layout;
+export default LayoutForm;
+

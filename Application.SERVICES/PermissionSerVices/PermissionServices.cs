@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Application.UTILS;
+using Application.MODELS.ViewModels;
 
 namespace Application.Services.PermissionSerVices
 {
@@ -20,15 +21,15 @@ namespace Application.Services.PermissionSerVices
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
-        public async Task<List<object>> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
+        public async Task<List<DataPermissionModal>> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
         {
-            var result = new List<object>();
+            var result = new List<DataPermissionModal>();
             if (usergroupId == 0) return result;
             if (code == "users")
             {
-                //var objUser = _unitOfWork.UserRepository.Find(usergroupId);
-                //var lstStringRole = objUser != null && !string.IsNullOrEmpty(objUser.Permission) ? objUser.Permission.Split(',').ToList() : new List<string>();
-                //result = GetChildGroup(permissId, lstStringRole, "", langId);
+                var objUser = await _unitOfWork.UserRepository.Get(g => g.Id == usergroupId);
+                var lstStringRole = objUser != null && !string.IsNullOrEmpty(objUser.Permission) ? objUser.Permission.Split(',').ToList() : new List<string>();
+                result = GetChildGroup(permissId, lstStringRole, "", langId);
             }
             else
             {
@@ -42,9 +43,9 @@ namespace Application.Services.PermissionSerVices
             return result;
         }
 
-        public List<object> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0")
+        public List<DataPermissionModal> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0")
         {
-            var result = new List<object>();
+            var result = new List<DataPermissionModal>();
 
             //users - usergroups
             var lstNhomQuyen = _unitOfWork.MenuRepository.getMenusByParentId(parentId);
@@ -57,7 +58,7 @@ namespace Application.Services.PermissionSerVices
                 child.AddRange(permission);
                 if (child.Count > 0)
                 {
-                    var obj = new
+                    var obj = new DataPermissionModal()
                     {
                         id = "",
                         title = itemNhomQuyen.Name,
@@ -71,7 +72,7 @@ namespace Application.Services.PermissionSerVices
                 }
                 else
                 {
-                    var obj = new
+                    var obj = new DataPermissionModal()
                     {
                         id = "",
                         title = itemNhomQuyen.Name,
@@ -86,9 +87,9 @@ namespace Application.Services.PermissionSerVices
             return result;
         }
 
-        public List<object> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0, string indexParent = "",int startIndex=0)
+        public List<DataPermissionModal> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0, string indexParent = "",int startIndex=0)
         {
-            var result = new List<object>();
+            var result = new List<DataPermissionModal>();
             if (string.IsNullOrEmpty(groupId)) return result;
             var lstPermission = _unitOfWork.PermissionRepository.getPermissionsByMenuId(groupId);
             for (int index = 0; index < lstPermission.Count; index++)
@@ -96,12 +97,12 @@ namespace Application.Services.PermissionSerVices
                 var itemPermission = lstPermission[index];
                 var check = roles != null && roles.Contains(itemPermission.Code);
                 var indexValue = startIndex + index;
-                var obj = new
+                var obj = new DataPermissionModal()
                 {
                     id = itemPermission.Code,
                     title = itemPermission.Name,
                     value = $"{indexParent}-{indexValue}",
-                    key = $"{indexParent}-{indexValue}",
+                    key = $"{indexParent}-{indexValue}" ,
                     iconCls = "hide",
                     @checked = check
                 };
@@ -209,6 +210,78 @@ namespace Application.Services.PermissionSerVices
                 //_unitOfWork.Rollback();
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
+        }
+
+        public List<DataPermissionModal> GetDataPermission(int parentId, List<string> roles = null, string code = "", int langId = 0, string indexParent = "0")
+        {
+            var result = new List<DataPermissionModal>();
+
+            //users - usergroups
+            var lstNhomQuyen = _unitOfWork.MenuRepository.getMenusByParentId(parentId);
+            for (int index = 0; index < lstNhomQuyen.Count; index++)
+            {
+                var indexValue = indexParent + "-" + index.ToString();
+                var itemNhomQuyen = lstNhomQuyen[index];
+                var child = GetDataPermission(itemNhomQuyen.Id, roles, code, langId, indexValue);
+                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId, indexValue, child.Count(g=>string.IsNullOrEmpty(g.id)));
+                if (child.Count > 0|| permission.Count>0)
+                {
+                    var obj = new DataPermissionModal()
+                    {
+                        id = "",
+                        title = itemNhomQuyen.Name,
+                        key = indexValue,
+                        value = indexValue,
+                        state = "closed",
+                        iconCls = "hide",
+                    };
+                    result.Add(obj);
+                    if(child.Count > 0)
+                    {
+                        result.AddRange(child);
+                    }
+                    if(permission.Count > 0)
+                    {
+                        result.AddRange(permission);
+                    }
+                }
+                else
+                {
+                    var obj = new DataPermissionModal()
+                    {
+                        id = "",
+                        title = itemNhomQuyen.Name,
+                        key = indexValue,
+                        value = indexValue,
+                        iconCls = "hide",
+                        state = "closed"
+                    };
+                    result.Add(obj);
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<DataPermissionModal>> TraiPhangPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0)
+        {
+            var result = new List<DataPermissionModal>();
+            if (usergroupId == 0) return result;
+            if (code == "users")
+            {
+                var objUser = await _unitOfWork.UserRepository.Get(g => g.Id == usergroupId);
+                var lstStringRole = objUser != null && !string.IsNullOrEmpty(objUser.Permission) ? objUser.Permission.Split(',').ToList() : new List<string>();
+                result = GetChildGroup(permissId, lstStringRole, "", langId);
+            }
+            else
+            {
+
+                //usergroups
+                var objUserGroup = await _unitOfWork.UserGroupRepository.Get(g => g.Id == usergroupId);
+                var lstStringRole = objUserGroup != null && !string.IsNullOrEmpty(objUserGroup.Permission) ? objUserGroup.Permission.Split(',').ToList() : new List<string>();
+                result = GetDataPermission(permissId, lstStringRole, "", langId);
+            }
+
+            return result;
         }
     }
 }

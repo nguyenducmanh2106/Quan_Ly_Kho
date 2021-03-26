@@ -19,5 +19,6 @@ namespace Application.Services.MenuSerVices
         Task Delete(Menus obj);
         Task MultiDelete(string listItemDelete);
         Task<List<Menus>> GetChild(int ParentId);
+        Task<Menus> GetBreadCumb(string url);
     }
 }

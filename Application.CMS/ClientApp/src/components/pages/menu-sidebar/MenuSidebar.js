@@ -3,40 +3,27 @@ import { NavLink, Link, Switch, useHistory, BrowserRouter as Router } from 'reac
 import { useTranslation } from 'react-i18next';
 import { parseJwt, getAccessToken, getUser, getAPI } from '../../../utils/helpers';
 import Skeleton from 'react-loading-skeleton';
+import { Menu } from 'antd';
+import  MyIcon  from "../../elements/Icon-Antd/Icon";
 import renderHTML from 'react-render-html';
+import * as AntdIcons from '@ant-design/icons';
 const MenuSidebar = (props) => {
+  
+    const { SubMenu } = Menu;
     const { t } = useTranslation();
     let history = useHistory();
     const [avt, setAvt] = useState("dist/img/user2-160x160.jpg")
     const [fullName, setFullName] = useState("")
-    const [menu, setMenu] = useState([])
-    const onHandleClick = (item) => {
-        //console.log(item)
-        var itemClick = document.querySelectorAll("ul.nav-sidebar a.nav-link");
-        for (var value of itemClick) {
-            let parent = value.parentNode.parentNode.parentNode.childNodes[0];
-            if (parent.getAttribute("href") || parent.getAttribute("href") == "") {
-                parent.className = " nav-link"
-            }
-        }
-        for (var value of itemClick) {
-            if (value.getAttribute('href') === item.url) {
-                //console.log("trung")
-                history.push(item.url)
-               props.onHandleSetBreadCrumb(item.name)
-                let parent = value.parentNode.parentNode.parentNode.childNodes[0];
-                if (parent.getAttribute("href")) {
-                    parent.className = " nav-link active"
-                }
-            }
-        }
-
-    }
+    const [isLoading, setIsLoading] = useState(true)
+    const [listmenu, setMenu] = useState([])
+    const [listmenu1, setMenu1] = useState([])
+   
     useEffect(() => {
         async function getData() {
             var fetchData = await getAPI(`api/menu/raw_menu`);
             if (fetchData.status == true) {
                 setMenu(fetchData.result)
+                setIsLoading(!fetchData.status)
             }
         }
 
@@ -46,109 +33,86 @@ const MenuSidebar = (props) => {
             //setAction(false)
         }
     }, [])
+    const renderMenu = () => {
+        return (
+            <Menu
+                defaultSelectedKeys={['1']}
+                defaultOpenKeys={['sub1']}
+                mode="inline"
+                theme="light"
+                //className="classColor"
+               
+            >
+                {!isLoading ? listmenu.map((item) => {
+                    var icon = item.icon
+                    if (item.childNode.length <= 0) {
 
-    return (
-
-        <aside className="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="index3.html" className="brand-link">
-                <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" className="brand-image img-circle elevation-3"
-                    style={{ opacity: .8 }} />
-                <span className="brand-text font-weight-light">AdminLTE 3</span>
-            </a>
-            <div className="sidebar">
-                <div className="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div className="image">
-                        <img src={avt} className="img-circle elevation-2" alt="User Image" />
-                    </div>
-                    <div className="info">
-                        <a href="#" className="d-block">{JSON.parse(getUser()).fullName}</a>
-                    </div>
-                </div>
-                <nav className="mt-2">
-                    <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        {menu.length > 0 ? menu.map((item, index) => {
-                            return (
-                                <li key={index} className={item.childNode.length > 0 ? "nav-item has-treeview" : "nav-item"}>
-                                    <NavLink to={item.url || item.url == "#" ? item.url : ""} exact className="nav-link" onClick={() => onHandleClick(item)}>
-                                        <span dangerouslySetInnerHTML={{ __html: item.icon }} />
-                                        <p>
-                                            {item.name}
-                                            {item.childNode.length > 0 ? renderHTML('<i className="fas fa-angle-left right"></i>') : ''}
-                                        </p>
-                                    </NavLink>
-                                    {item.childNode.length > 0 ?
-                                        <ul className="nav nav-treeview">
-                                            {item.childNode.map((itemChild, indexChild) => {
-                                                return (
-                                                    <li key={indexChild} className="nav-item">
-                                                        <NavLink to={itemChild.url == "#" || itemChild.url ? itemChild.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild)}>
-                                                            <span dangerouslySetInnerHTML={{ __html: itemChild.icon }} />
-                                                            <p>{itemChild.name}</p>
-                                                            {itemChild.childNode.length > 0 ? renderHTML('<i className="fas fa-angle-left right"></i>') : ''}
-                                                        </NavLink>
-                                                        {itemChild.childNode.length > 0 ?
-                                                            <ul className="nav nav-treeview">
-                                                                {itemChild.childNode.map((itemChild1, indexChild1) => {
+                        return (
+                            <Menu.Item key={item.id} icon={<MyIcon type={icon} /> ?? renderHTML(icon)}>
+                                <Link to={item.url}>{item.name}</Link>
+                            </Menu.Item>
+                        )
+                    }
+                    else {
+                        return (
+                            <SubMenu key={item.id} icon={<MyIcon type={icon} /> ?? renderHTML(icon)} title={item.name}>
+                                {item.childNode.map((itemChild1) => {
+                                    var icon = itemChild1.icon
+                                    if (itemChild1.childNode.length <= 0) {
+                                        return (
+                                            <Menu.Item key={itemChild1.id}>
+                                                <Link to={itemChild1.url}>
+                                                    <div>
+                                                        <MyIcon type={icon} />
+                                                        <span>{itemChild1.name}</span>
+                                                    </div>
+                                                    
+                                                </Link>
+                                            </Menu.Item>
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <SubMenu key={itemChild1.id} icon={<MyIcon type={icon} /> || renderHTML(icon)} title={itemChild1.name}>
+                                                {itemChild1.childNodes.map((itemChild2, IndexChild2) => {
+                                                    var icon = itemChild2.icon
+                                                    if (itemChild2.childNode.length <= 0) {
+                                                        return (
+                                                            <Menu.Item key={itemChild2.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
+                                                                <Link to={itemChild2.url}>{itemChild2.name}</Link>
+                                                            </Menu.Item>
+                                                        )
+                                                    }
+                                                    else {
+                                                        return (
+                                                            <SubMenu key={itemChild2.id} icon={<MyIcon type={icon} /> || renderHTML(itemChild2.icon)} title={itemChild2.name}>
+                                                                {itemChild2.childNode.map((itemChild3, IndexChild3) => {
+                                                                    var icon = itemChild3.icon
                                                                     return (
-
-                                                                        <li key={indexChild1} className="nav-item">
-                                                                            <NavLink to={itemChild1.url || itemChild1.url == "#" ? itemChild1.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild1)}>
-                                                                                <span dangerouslySetInnerHTML={{ __html: itemChild1.icon }} />
-                                                                                <p>{itemChild1.name}</p>
-                                                                                {itemChild1.childNode.length > 0 ? renderHTML('<i className="fas fa-angle-left right"></i>') : ''}
-                                                                            </NavLink>
-                                                                            {itemChild1.childNode.length > 0 ?
-                                                                                <ul className="nav nav-treeview">
-                                                                                    {itemChild1.childNode.map((itemChild2, indexChild2) => {
-                                                                                        return (
-                                                                                            <li key={indexChild2} className="nav-item">
-                                                                                                <NavLink to={itemChild2.url || itemChild2.url == "#" ? itemChild2.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild2)}>
-                                                                                                    <span dangerouslySetInnerHTML={{ __html: itemChild2.icon }} />
-                                                                                                    <p>{itemChild2.name}</p>
-                                                                                                    {itemChild2.childNode.length > 0 ? renderHTML('<i className="fas fa-angle-left right"></i>') : ''}
-                                                                                                </NavLink>
-                                                                                                {itemChild2.childNode.length > 0 ?
-                                                                                                    <ul className="nav nav-treeview">
-                                                                                                        {itemChild2.childNode.map((itemChild3, indexChild3) => {
-                                                                                                            return (
-                                                                                                                <li key={indexChild3} className="nav-item">
-                                                                                                                    <NavLink to={itemChild3.url || itemChild3.url == "#" ? itemChild3.url : ""} className="nav-link" onClick={() => onHandleClick(itemChild3)}>
-                                                                                                                        <span dangerouslySetInnerHTML={{ __html: itemChild3.icon }} />
-                                                                                                                        <p>{itemChild3.name}</p>
-                                                                                                                        {itemChild3.childNode.length > 0 ? renderHTML('<i className="fas fa-angle-left right"></i>') : ''}
-                                                                                                                    </NavLink>
-                                                                                                                </li>
-
-                                                                                                            )
-                                                                                                        })}
-                                                                                                    </ul>
-                                                                                                    : ""}
-                                                                                            </li>
-
-                                                                                        )
-                                                                                    })}
-                                                                                </ul>
-                                                                                : ""}
-                                                                        </li>
-
+                                                                        <Menu.Item key={itemChild3.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
+                                                                            <Link to={itemChild3.url}>{itemChild3.name}</Link>
+                                                                        </Menu.Item>
                                                                     )
                                                                 })}
-                                                            </ul>
-                                                            : ""}
-                                                    </li>
-
-                                                )
-                                            })}
-                                        </ul>
-                                        : ""}
-                                </li>
-                            )
-                        }) : <Skeleton height={400} />}
-                    </ul>
-                </nav>
-            </div>
-        </aside>
-
+                                                            </SubMenu>
+                                                        )
+                                                    }
+                                                })}
+                                            </SubMenu>
+                                        )
+                                    }
+                                })}
+                            </SubMenu>
+                        )
+                    }
+                }) : <Skeleton height={400} />
+                }
+            </Menu>
+            )
+    }
+    return (
+        <>{renderMenu()}</>
+      
     );
 };
 

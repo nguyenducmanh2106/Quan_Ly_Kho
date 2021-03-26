@@ -1,4 +1,5 @@
 ﻿using Application.MODELS;
+using Application.MODELS.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,10 @@ namespace Application.Services.PermissionSerVices
         Task ToggleStatus(Permissions obj);
         Task Delete(Permissions obj);
         Task MultiDelete(string listItemDelete);
-        List<object> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0");
-        List<object> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0,string indexParent="",int startIndex=0);
-        Task<List<object>> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0);
+        List<DataPermissionModal> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0");
+        List<DataPermissionModal> GetDataPermission(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0");
+        List<DataPermissionModal> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0,string indexParent="",int startIndex=0);
+        Task<List<DataPermissionModal>> DataPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0);
+        Task<List<DataPermissionModal>> TraiPhangPermission(int permissId = 0, int usergroupId = 0, string code = "", int langId = 0);
     }
 }

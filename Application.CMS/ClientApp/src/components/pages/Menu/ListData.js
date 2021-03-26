@@ -1,9 +1,11 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
 import { Loading, PageLoading } from './../../elements/index'
 import Pagination from "react-js-pagination";
 import Skeleton from 'react-loading-skeleton';
+import MyIcon from "../../elements/Icon-Antd/Icon"
 import { useForm, Controller } from "react-hook-form";
 import renderHTML from 'react-render-html';
 function Table(props) {
@@ -93,7 +95,7 @@ function Table(props) {
                         {errors.Ordering && <span class="parsley-required">Giá trị là bắt buộc</span>}
                     </td>
                     <td style={{ textAlign: "center" }}>
-                        <span dangerouslySetInnerHTML={{ __html: item.icon }} />
+                        <MyIcon type={item.icon}/>
                     </td>
                     <td>
                         {item.url}
@@ -158,11 +160,11 @@ function Table(props) {
                             <th className="text-center">STT</th>
                             <th className="sapxep text-center" id="Name" onClick={()=>onSort("Name")}>
                                 Tên danh mục
-                                        <i class="fa fa-sort"></i>
+                                        <i className="fa fa-sort"></i>
                             </th>
                             <th className="sapxep text-center" id="Ordering" onClick={()=>onSort("Ordering")}>
                                 Thứ tự
-                                        <i class="fa fa-sort"></i>
+                                        <i className="fa fa-sort"></i>
                             </th>
                             <th className="text-center">
                                 Icon
