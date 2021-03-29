@@ -31,6 +31,7 @@ namespace Application.MODELS
         public string Permission { get; set; }
         public Nullable<bool> isRoot { get; set; }
         public Nullable<bool> isThongKe { get; set; }
+        public string pathAvatar { get; set; }
         [NotMapped]
         public string File_Base64 { get; set; }
     }

@@ -1,33 +1,27 @@
 ﻿import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import Select from 'react-select';
-import Pagination from "react-js-pagination";
-import Skeleton from 'react-loading-skeleton';
-import { useForm, Controller } from "react-hook-form";
+import { Form, Input, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown } from 'antd';
+import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 function Table(props) {
     //khai báo state
     const [array, setArray] = useState([]);
-    const [page, setPage] = useState(null);
-    const [pageSize, setPageSize] = useState(null);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [typeSort, setTypeSort] = useState(true);
     useEffect(() => {
         props.obj ? setArray(props.obj.data) : setArray([]);
-        props.obj ? setPage(props.obj.page) : setPage(null);
-        props.obj ? setPageSize(props.obj.pageSize) : setPageSize(null);
+        props.obj ? setPage(props.obj.page) : setPage(page);
+        props.obj ? setPageSize(props.obj.pageSize) : setPageSize(pageSize);
         props.obj ? setTotal(props.obj.total) : setTotal(0);
         props.obj ? setTotalPage(props.obj.totalPage) : setTotal(0);
     }, [props])
-    const { register, handleSubmit, watch, errors, control } = useForm();
-    const onChangePageSize = () => {
-        var obj = document.getElementById('pageSize');
-        props.onChangePage(1, obj.value)
-    }
-    const onNextPage = (page) => {
-        var obj = document.getElementById('pageSize');
-        props.onChangePage(page, obj.value)
+    const onNextPage = (page, size) => {
+        console.log(page)
+        console.log(size)
+        props.onChangePage(page, size)
     }
     const onCreatePermission = (item) => {
         props.toggleFormPermission();
@@ -78,13 +72,13 @@ function Table(props) {
         props.onDeleteItem(item)
     }
     const renderBody = () => {
-        var result=""
-        if (array.length>0) {
+        var result = ""
+        if (array.length > 0) {
             result = array.map((item, index) => {
                 return (
-                    <tr key={item.id}>
+                    <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                         <td className="w50px">
-                            <label className="fancy-checkbox">
+                            <label className="ant-checkbox-wrapper">
                                 <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
                                 <span />
                             </label>
@@ -96,32 +90,34 @@ function Table(props) {
                             {item.name}
                         </td>
                         <td>
-                            <input defaultValue={item.ordering} min={0} className="form-control form-control-sm" onChange={(event) => handleSubmit(updatePosition(event, item))}
-                                ref={register({ required: true })} id="Ordering" name="Ordering" type="number" />
-                            {errors.Ordering && <span class="parsley-required">Giá trị là bắt buộc</span>}
+                            {item.ordering}
                         </td>
-                        <td style={{ textAlign: "center" }}>
+                        <td >
                             {item.code}
                         </td>
                         <td>
-                            {item.status == 1 ? <button type="button" className="btn btn-block btn-outline-success btn-sm" onClick={() => toggleStatus(2, item)}>Hoạt động</button> : <button type="button" className="btn btn-block btn-outline-danger btn-sm" onClick={() => toggleStatus(1, item)}>Ngừng hoạt động</button>}
+                            {item.status == 1 ? <Button type="primary" className="success-outline" ghost onClick={() => toggleStatus(2, item)}>
+                                <Badge status="success" text="Đang hoạt động" />
+                            </Button> : <Button type="primary" className="danger-outline" ghost onClick={() => toggleStatus(1, item)}>
+                                    <Badge status="error" text="Ngừng hoạt động" />
+                                </Button>}
                         </td>
                         <td className="text-center">
-                            <button type="button" className="btn btn-sm btn-outline-primary" title="Phân quyền" onClick={() => onCreatePermission(item)}>
-                                <i className="fa fa-cog"></i>
-                            </button>
-                            <button type="button" className="btn btn-outline-success btn-sm" onClick={() => update(item)}>
-                                <i className="fas fa-edit"></i>
-                            </button>
-                            <button type="button" className="btn btn-sm btn-outline-danger" title="Xóa" onClick={() => onDelete(item)}>
-                                <i className="fa fa-trash" />
-                            </button>
+                            <Tooltip title="Phân quyền">
+                                <Button type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
+                            </Tooltip>
+                            <Tooltip title="Chỉnh sửa">
+                                <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                            </Tooltip>
+                            <Tooltip title="Xoá">
+                                <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                            </Tooltip>
                         </td>
                     </tr>
                 );
             })
         }
-        
+
         return result
     }
     const onSort = (name) => {
@@ -146,80 +142,67 @@ function Table(props) {
         props.onSetNameSort(name)
     }
     return (
-        <div>
+        <>
 
-            <form>
-                <table className="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>
-                                <label className="fancy-checkbox">
-                                    <input type="hidden" id="hdfID" />
-                                    <input className="select-all" id="chkall" type="checkbox" name="checkbox" onChange={handleInputChange} />
-                                    <span />
-                                </label>
-                            </th>
-                            <th className="text-center">STT</th>
-                            <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
-                                Tên
+            <form className="ant-table-wrapper">
+                <div className="ant-table">
+                    <div className="ant-table-container">
+                        <table className="ant-table" style={{ tableLayout: "auto" }}>
+                            <thead className="ant-table-thead">
+                                <tr>
+                                    <th>
+                                        <label className="fancy-checkbox">
+                                            <input type="hidden" id="hdfID" />
+                                            <input className="select-all" id="chkall" type="checkbox" name="checkbox" onChange={handleInputChange} />
+                                            <span />
+                                        </label>
+                                    </th>
+                                    <th className="text-center">STT</th>
+                                    <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
+                                        Tên
                                 <i className="fa fa-sort"></i>
-        </th>
-                            <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
-                                Thứ tự
+                                    </th>
+                                    <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
+                                        Thứ tự
                                 <i className="fa fa-sort"></i>
-        </th>
-                            <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
-                                Mã
+                                    </th>
+                                    <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
+                                        Mã
                                 <i className="fa fa-sort"></i>
+                                    </th>
+                                    <th className="text-center">
+                                        Trạng thái
         </th>
-                            <th className="text-center">
-                                Trạng thái
+                                    <th className="text-center">
+                                        Thao tác
         </th>
-                            <th className="text-center">
-                                Thao tác
-        </th>
-                        </tr>
-                    </thead>
+                                </tr>
+                            </thead>
 
-                    <tbody>
-                        {renderBody()}
-                    </tbody>
+                            <tbody className="ant-table-tbody">
+                                {renderBody()}
+                            </tbody>
 
-                </table>
-            </form>
-
-            <div className="commonTool">
-                <div className="fl">
-                    <label className="lh35 mb0">Tổng số bản ghi: {total}</label>
-                </div>
-                <div className="fr">
-                    <select id="pageSize" name="pageSize" aria-controls="pageSize" className="form-control input-sm input-xsmall input-inline" onChange={onChangePageSize}>
-                        <option value={4}>4</option>
-                        <option value={3}>3</option>
-                        <option value={6}>6</option>
-                        <option value={10}>10</option>
-                    </select>
-                    <div id="paginationholder">
-                        {totalPage > 1 ? <Pagination
-                            activePage={page}
-                            itemsCountPerPage={pageSize}
-                            totalItemsCount={total}
-                            pageRangeDisplayed={6}
-                            onChange={onNextPage}
-                            innerClass={"pagination pagination-sm pull-right"}
-                            itemClass={"page"}
-                            linkClass="page-link"
-                            hideDisabled
-                            nextPageText={renderHTML('<i class="fa fa-step-forward" aria-hidden="true"></i>')}
-                            lastPageText={renderHTML('<i class="fa fa-fast-forward" aria-hidden="true"></i>')}
-                            firstPageText={renderHTML('<i class="fa fa-fast-backward" aria-hidden="true"></i>')}
-                            prevPageText={renderHTML('<i class="fa fa-step-backward" aria-hidden="true"></i>')}
-                        /> : null}
+                        </table>
                     </div>
                 </div>
-                <div className="cb" />
-            </div>
-        </div>
+            </form>
+            <Row>
+                <Col xs={{ span: 23, offset: 1 }} lg={{ span: 22, offset: 2 }}>
+                    <Pagination className="ant-table-pagination ant-table-pagination-right"
+                        total={total}
+                        onChange={onNextPage}
+                        showSizeChanger
+                        showTotal={total => `Tổng số bản ghi: ${total}`}
+                        defaultPageSize={pageSize}
+                        pageSizeOptions={[3, 4, 6, 100]}
+                        responsive
+                        current={page}
+                    />
+                </Col>
+            </Row>
+
+        </>
     )
 };
 export default Table;

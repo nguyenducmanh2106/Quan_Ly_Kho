@@ -2,8 +2,8 @@
 import FormCreate from './Create';
 import FormCreatePermission from './CreatePermission';
 import FormUpdate from './Update';
-import { Select, Input, notification, Skeleton } from 'antd';
-import { useForm, Controller } from "react-hook-form";
+import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button } from 'antd';
+import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import ListData from './ListData';
@@ -17,7 +17,6 @@ function Index() {
     const [permission_TraiPhang, setPermission_TraiPhang] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
-    const { register, handleSubmit, watch, errors, control } = useForm();
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
     const [nameSort, setNameSort] = useState('');
@@ -29,6 +28,7 @@ function Index() {
     const [listItemRemove, setListItemRemove] = useState([]);
     const { isShowing, toggle, isShowingUpdate, toggleUpdate, isOpenPermission, toggleFormPermission } = useModal();
     const { Option } = Select;
+    const { Header, Content, Footer } = Layout;
     function onSearch(val) {
         console.log('search:', val);
     }
@@ -129,7 +129,7 @@ function Index() {
             notification.success({
                 message: result.message,
                 duration: 3
-              
+
             })
 
         }
@@ -243,7 +243,7 @@ function Index() {
             permission_TraiPhang.map(item => {
                 if (item.id !== "" && lstStringPermission.includes(item.id)) {
                     array.push(item.value)
-                   
+
                 }
             })
         }
@@ -338,85 +338,79 @@ function Index() {
         }
     }
     return (
-        <div className="container-fluid">
-            <div className="header">
-                <form id="searchForm" role="form" className="w100 pb10">
-                    <div className="form-horizontal">
-                        <div className="form-group mb-0 area-item">
-                            {
-                                !isLoading ? (<div className="row">
-                                    <div className="col-md-2 padR-0">
-                                        <Input placeholder="Tên/Mã" allowClear onChange={(page, pageSize) => onChangeSearchInput(page, pageSize)} />
-                                    </div>
-                                    <div className="col-md-2 padR-0">
-                                        <Select
-                                            showSearch
-                                            style={{ width: 200 }}
-                                            placeholder="-Chọn trạng thái-"
-                                            optionFilterProp="children"
-                                            onChange={onChangeSearchSelect}
-                                            onSearch={onSearch}
-                                            filterOption={(input, option) =>
-                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                            }
-                                        >
-                                            <Option value="-1">Tất cả</Option>
-                                            <Option value="1">Hoạt động</Option>
-                                            <Option value="2">Ngừng hoạt động</Option>
-                                        </Select>
-                                    </div>
+        <Content className="main-container main-container-component">
+            <Row>
+                <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
+                    <Card>
+                        <Skeleton loading={isLoading} active>
+                            <Row>
+                                <Col xs={{ span: 24 }} lg={{ span: 4 }}>
+                                    <Input placeholder="Tên/Mã" allowClear onChange={onChangeSearchInput} />
+                                </Col>
+                                <Col xs={{ span: 24 }} lg={{ span: 4, offset: 1 }}>
+                                    <Select
+                                        showSearch
+                                        style={{ width: '100%' }}
+                                        placeholder="-Chọn trạng thái-"
+                                        optionFilterProp="children"
+                                        onChange={onChangeSearchSelect}
+                                        onSearch={onSearch}
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                    >
+                                        <Option value="-1">Tất cả</Option>
+                                        <Option value="1">Hoạt động</Option>
+                                        <Option value="2">Ngừng hoạt động</Option>
+                                    </Select>
+                                </Col>
+                            </Row>
+                        </Skeleton>
+                    </Card>
+                </Col>
+                <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
+                    <Card style={{ textAlign: "right" }}>
+                        <Skeleton loading={isLoading} active>
+                            <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
+                                Tìm Kiếm
+    </Button>
+                            <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                Thêm mới
+    </Button>
+                            <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                Xoá nhiều
+    </Button>
+                        </Skeleton>
+                    </Card>
+                </Col>
 
-                                </div>) : <Skeleton />
-                            }
-                        </div>
-                    </div>
-                </form>
-                <div className='form-group area-item'>
-                    {
-                        !isLoading ? (<div className='col-12' style={{ textAlign: 'right' }}>
-                            <button onClick={onHandleSearch} className="btn btn-primary btn-sm">
-                                <i className="fa fa-search" aria-hidden="true" /> Tìm kiếm
-                                            </button>
-                            <button id="btnCreate" className=" btn btn-success btn-sm" onClick={toggle}>
-                                <i className="fas fa-plus mr-2" aria-hidden="true"></i>Thêm mới
-                        </button>
-
-                            <button id="btnXoaNhieu" className="btn btn-danger btn-sm" onClick={onMultiDelete}>
-                                <i className="fas fa-trash"></i> Xóa nhiều
-                        </button>
-                            <FormCreate
-                                isShowing={isShowing}
-                                hide={toggle}
-                                onPostCreateItem={onPostCreateItem}
-                            />
-                            <FormUpdate
-                                isShowing={isShowingUpdate}
-                                hide={toggleUpdate}
-                                item={ItemUpdate}
-                                onPostUpdateItem={onPostUpdateItem}
-                            />
-                            <FormCreatePermission
-                                isShowing={isOpenPermission}
-                                hide={toggleFormPermission}
-                                data={permission}
-                                onCreatePermission={onCreatePermission}
-                                listPermission={listPermission}
-                            />
-
-                        </div>) : <Skeleton />
-                    }
-                    
-                </div>
-                <div className="cb" />
-            </div>
-            <div className="table-responsive" id="gridData">
-                {
-                    !isLoading ? (<LoadingOverlay
+            </Row>
+            <Card>
+                <Skeleton loading={isLoading} active>
+                    <LoadingOverlay
                         active={isLoading}
                         spinner
                     //spinner={<BounceLoader />}
                     //text='Loading your content...'
                     >
+                        <FormCreate
+                            isShowing={isShowing}
+                            hide={toggle}
+                            onPostCreateItem={onPostCreateItem}
+                        />
+                        <FormUpdate
+                            isShowing={isShowingUpdate}
+                            hide={toggleUpdate}
+                            item={ItemUpdate}
+                            onPostUpdateItem={onPostUpdateItem}
+                        />
+                        <FormCreatePermission
+                            isShowing={isOpenPermission}
+                            hide={toggleFormPermission}
+                            data={permission}
+                            onCreatePermission={onCreatePermission}
+                            listPermission={listPermission}
+                        />
                         <ListData obj={state}
                             onChangePage={onChangePage}
                             onDeleteItem={onDelete}
@@ -430,11 +424,11 @@ function Index() {
                             onSetItemCreatePermission={onSetItemCreatePermission}
 
                         />
-                    </LoadingOverlay>) : <Skeleton />
-                }
-                
-            </div>
-        </div>
+                    </LoadingOverlay>
+                </Skeleton>
+            </Card>
+        </Content>
+
     );
 };
 

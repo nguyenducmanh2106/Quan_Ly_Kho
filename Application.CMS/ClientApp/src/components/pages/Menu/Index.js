@@ -1,8 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
-import Layout from './../Mains'
 import FormCreate from './Create';
 import FormUpdate from './Update';
-import { notification, Skeleton } from "antd"
+import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button } from 'antd';
+import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import LoadingOverlay from 'react-loading-overlay'
@@ -10,7 +10,7 @@ import BounceLoader from 'react-spinners/BounceLoader'
 import ListData from './ListData';
 import Swal from 'sweetalert2';
 function Menu() {
-    
+
     //khai báo state
     const [state, setState] = useState([]);
     //Thực hiện thao tác update,create,delete sẽ load lại trang
@@ -23,6 +23,7 @@ function Menu() {
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
     const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
+    const { Header, Content, Footer } = Layout;
     useEffect(() => {
         async function getData(page, pageSize) {
             var fetchData = await getAPI(`api/menu/list_data/?page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
@@ -53,17 +54,17 @@ function Menu() {
         //gọi hàm
         getData(page, pageSize);
         getOptions();
-        
+
         return () => {
             setAction(false)
             setIsLoading(true)
         }
-    }, [nameSort,isAction, page, pageSize])
+    }, [nameSort, isAction, page, pageSize])
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
             notification.error({
-                message:"Giá trị nhập vào chưa chính xác",
+                message: "Giá trị nhập vào chưa chính xác",
                 duration: 3
 
             })
@@ -168,7 +169,7 @@ function Menu() {
         setNameSort(name)
     }
     async function onMultiDelete() {
-        
+
         if (listItemRemove.length == 0) {
             notification.error({
                 message: "Chưa chọn dữ liệu để xoá",
@@ -256,16 +257,30 @@ function Menu() {
         }
     }
     return (
-        <div className="container-fluid">
-            <div className='form-group area-item'>
-                {
-                    !isLoading ? (<div className='col-12' style={{ textAlign: 'right' }}>
-                        <button id="btnCreate" type='button' className="btn btn-success btn-sm" onClick={toggle}>
-                            <i className="fas fa-plus mr-2" aria-hidden="true"></i>Thêm mới
-                        </button>
-                        <button id="btnXoaNhieu" type='button' className="btn btn-danger btn-sm" onClick={onMultiDelete}>
-                            <i className="fas fa-trash"></i> Xóa nhiều
-                        </button>
+        <Content className="main-container main-container-component">
+            <Row>
+                <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
+                    <Card style={{ textAlign: "right" }}>
+                        <Skeleton loading={isLoading} active>
+                            <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                Thêm mới
+    </Button>
+                            <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                Xoá nhiều
+    </Button>
+                        </Skeleton>
+                    </Card>
+                </Col>
+
+            </Row>
+            <Card>
+                <Skeleton loading={isLoading} active>
+                    <LoadingOverlay
+                        active={isLoading}
+                        spinner
+                    //spinner={<BounceLoader />}
+                    //text='Loading your content...'
+                    >
                         <FormCreate
                             isShowing={isShowing}
                             hide={toggle}
@@ -279,19 +294,6 @@ function Menu() {
                             item={ItemUpdate}
                             onPostUpdateItem={onPostUpdateItem}
                         />
-
-                    </div>) : <Skeleton />
-                }
-                
-            </div>
-            <div className="table-responsive" id="gridData">
-                {
-                    !isLoading ? (<LoadingOverlay
-                        active={isLoading}
-                        spinner
-                    //spinner={<BounceLoader />}
-                    //text='Loading your content...'
-                    >
                         <ListData obj={state}
                             onChangePage={onChangePage}
                             options={options}
@@ -303,11 +305,11 @@ function Menu() {
                             toggleStatus={onToggleStatus}
                             onSetNameSort={onSetNameSort}
                         />
-                    </LoadingOverlay>) : <Skeleton />
-                }
-               
-            </div>
-        </div>
+                    </LoadingOverlay>
+                </Skeleton>
+            </Card>
+        </Content>
+
     );
 };
 

@@ -1,23 +1,19 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import Select from 'react-select';
-import Skeleton from 'react-loading-skeleton';
-import { Modal } from "antd"
-import { useForm, Controller } from "react-hook-form";
-import { TreeSelect } from 'antd';
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, TreeSelect, Skeleton } from 'antd';
 const { SHOW_PARENT, SHOW_NONE, SHOW_CHILD } = TreeSelect;
 const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission }) => {
     const dataJson = data;
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 24 },
+    };
     const [state, setState] = useState([]);
-    const { register, handleSubmit, watch, errors, control } = useForm();
     const onChange = (value,label) => {
         //console.log('onChange ', value);
         //console.log('label ', label);
         setState(value);
     };
-    useEffect(() => {
-        setState(listPermission)
-    }, [listPermission])
     const SavePermission = () => {
         var data = state;
         onCreatePermission(data)
@@ -26,7 +22,7 @@ const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission
     const tProps = {
         showSearch: true,
         treeData: dataJson,
-        value: state,
+        //value: state,
         allowClear: true,
         autoClearSearchValue: true,
         onChange: onChange,
@@ -37,7 +33,6 @@ const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission
             width: '100%',
         }
     };
-
     return (
         <>
             {
@@ -45,10 +40,21 @@ const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission
 
                     <React.Fragment>
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
-                            onOk={handleSubmit(SavePermission)} style={{ top: 20 }} onCancel={hide}>
-                            <form>
-                                <TreeSelect {...tProps} />
-                            </form>
+                           /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
+                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                        >
+                            <Form {...layout} name="nest-messages" onFinish={SavePermission} id="myForm"
+                                initialValues={{
+                                    ['Permisson']: listPermission,
+                                   
+                                }}
+                            >
+
+                                <Form.Item name="Permisson">
+                                    <TreeSelect {...tProps} />
+                                </Form.Item>
+
+                            </Form>
                         </Modal>
                     </  React.Fragment>, document.body
                 ) : null

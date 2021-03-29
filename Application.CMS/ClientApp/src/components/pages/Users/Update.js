@@ -1,30 +1,79 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import Select from 'react-select';
-import Skeleton from 'react-loading-skeleton';
-import { Modal } from "antd"
-import { useForm, Controller } from "react-hook-form";
-const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
-    const { register, handleSubmit, watch, errors, control } = useForm();
-    const getDefaultOption = (data, item) => {
-        var itemDefault = data ? data[0] : {};
-        itemDefault = data.find(value =>
-            value.value === item.parentId
-        )
-        return itemDefault
-    }
+import { decode as base64_decode, encode as base64_encode } from 'base-64';
+import ImgCrop from 'antd-img-crop';
+import { url_upload } from "../../../utils/helpers";
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
+const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, nhomNguoiDung }) => {
+    const [fileList, setFileList] = useState([]);
+    const { Option } = Select;
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+    };
+    useEffect(() => {
+        var objImg = [
+            {
+                uid: item?.id.toString(),
+                name: item?.avatar,
+                status: 'done',
+                url: "data:image/png;base64," + item?.pathAvatar,
+            },
+        ]
+        //console.log(objImg)
+        setFileList(objImg)
+    }, [item])
     const onSubmit = (data) => {
+        console.log(fileList)
         var obj = {
-            "Id": item.id,
-            "Name": data.Name,
-            "Code": data.Code,
-            "Ordering": Number.parseInt(data.Ordering),
-            "Status": data.Status == true ? 1 : 0,
+            ...data,
+            Id: item?.id,
+            UserGroupID: data.UserGroupID ? data.UserGroupID.join(",") : "",
+            PassWord: base64_encode(data.PassWord),
+            Avatar: fileList.length > 0 ? fileList[0].name : null,
+            File_Base64: fileList.length > 0 ? fileList[0].url.split(",").splice(1).join("") : null,
+            Status: data.Status ? 1 : 0,
+            isRoot: data.isRoot ? true : false,
+            isThongKe: data.isThongKe ? true : false,
+            PhoneNumber: data.PhoneNumber.toString()
         }
-        onPostUpdateItem(obj);
-
+        //console.log(data)
+        onPostUpdateItem(obj)
     }
+    const validateMessages = {
+        required: '${label} không được để trống',
+        types: {
+            email: '${label} không đúng định dạng email',
+            number: '${label} không đúng định dạng số',
+        },
+        number: {
+            range: '${label} must be between ${min} and ${max}',
+        },
+    };
+    const closeForm = () => {
+        setFileList([]);
+        hide()
+    }
+    const onChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+        console.log(fileList)
+    };
 
+    const onPreview = async file => {
+        let src = file.url;
+        if (!src) {
+            src = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file.originFileObj);
+                reader.onload = () => resolve(reader.result);
+            });
+        }
+        const image = new Image();
+        image.src = src;
+        const imgWindow = window.open(src);
+        imgWindow.document.write(image.outerHTML);
+    };
     return (
         <>
 
@@ -32,69 +81,131 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                 isShowing ? ReactDOM.createPortal(
 
                     <React.Fragment>
-                        <Modal title="Cập nhật" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
-                            onOk={handleSubmit(onSubmit)} style={{ top: 20 }} onCancel={hide}>
-                            <form>
-                                <div className="modal-body">
-                                    <div className="form-horizontal">
-                                        <div className="form-group">
-                                            <div className="row">
-                                                <label className="control-label col-md-3 text-right">
-                                                    <span>Tên<span class="cred">(*)</span></span>
-                                                </label>
-                                                <div className="col-md-9">
-                                                    <input className={`form-control ${errors.Name ? "is-invalid" : ""
-                                                        }`} id="Name" name="Name" type="text" placeholder="Nhập tên" ref={register({ required: true })} defaultValue={item?.name} />
-                                                    {errors.Name && <span class="parsley-required">Giá trị là bắt buộc</span>}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <div className="row">
-                                                <label className="control-label col-md-3 text-right">
-                                                    <span>Mã<span class="cred">(*)</span></span>
-                                                </label>
-                                                <div className="col-md-9">
-                                                    <input className="form-control" id="Code" name="Code" type="text" placeholder="Mã" ref={register({ required: true })} defaultValue={item?.code} />
-                                                    {errors.Code && <span class="parsley-required">Giá trị là bắt buộc</span>}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <div className="row">
-                                                <label className="control-label col-md-3 text-right">
-                                                    <span>Thứ tự</span>
-                                                </label>
-                                                <div className="col-md-3">
-                                                    <input defaultValue={item?.ordering} min={0} className="form-control" data-val="true"
-                                                        ref={register({
-                                                            min: {
-                                                                value: 0,
-                                                                message: "Giá trị tối thiểu"
-                                                            }
-                                                        })} id="Ordering" name="Ordering" type="number" />
-                                                    <p className="parsley-required">{errors.Ordering?.message}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <div className="row">
-                                                <label className="control-label col-md-3 text-right">Trạng thái</label>
-                                                <div className="col-md-3">
-                                                    <div className="fancy-checkbox">
-                                                        <label><input type="checkbox" name="Status" id="Status" ref={register} defaultChecked={item?.status == 1 ? true : false} data-parsley-multiple="Status" /><span>Kích hoạt</span></label>
+                        <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
+                           /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={closeForm}
+                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                        >
+                            <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
+                                validateMessages={validateMessages}
+                                initialValues={{
+                                    ['UserName']: item.userName,
+                                    ["Email"]: item?.email,
+                                    ["FullName"]: item?.fullName,
+                                    ["DonViId"]: item?.donViId,
+                                    ["ChucVuId"]: item?.chucVuId,
+                                    ["PhoneNumber"]: item?.phoneNumber,
+                                    ["UserGroupID"]: item?.UserGroupID,
+                                    ["Status"]: item.status == 1 ? true : false,
+                                    ["isRoot"]: item.isRoot ? true : false,
+                                    ["isThongKe"]: item.isThongKe ? true : false,
+                                }}
+                            >
+                                <Form.Item name="UserName" label="Tên đăng nhập" rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item name="Email" label="Email" rules={[{ type: 'email' }]}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item name="FullName" label="Tên đầy đủ" rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                                <Form.Item name="DonViId" label="Đơn vị">
+                                    <Select
+                                        showSearch
+                                        //style={{ width: 200 }}
+                                        placeholder="-- Chọn đơn vị --"
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        filterSort={(optionA, optionB) =>
+                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                        }
+                                    >
+                                        {donvi.map(item => (
+                                            <Option value={item.id}>{item.name}</Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item name="ChucVuId" label="Chức vụ">
+                                    <Select
+                                        showSearch
+                                        //style={{ width: 200 }}
+                                        placeholder="-- Chọn chức vụ --"
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        filterSort={(optionA, optionB) =>
+                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                        }
+                                    >
+                                        {chucvu.map(item => (
+                                            <Option value={item.id}>{item.name}</Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item name="Avatar" label="Ảnh đại diện">
+                                    <ImgCrop rotate>
+                                        <Upload
+                                            accept="image/*"
+                                            action={url_upload}
+                                            listType="picture-card"
+                                            fileList={fileList}
+                                            onChange={onChange}
+                                            onPreview={onPreview}
+                                        //beforeUpload={beforeUpload}
+                                        >
+                                            {fileList.length < 1 && '+ Upload'}
+                                        </Upload>
+                                    </ImgCrop>
+                                </Form.Item>
+                                <Form.Item name="PhoneNumber" label="Số điện thoại" rules={[{ type: 'number', required: true }]}>
+                                    <InputNumber
+                                        style={{
+                                            width: "100%",
+                                        }}
+                                    />
+                                </Form.Item>
+                                <Form.Item name="UserGroupID" label="Nhóm người dùng"
+                                    //valuePropName="option"
+                                >
+                                    <Select
+                                        mode="multiple"
+                                        style={{ width: '100%' }}
+                                        placeholder="-- Chọn nhóm quyền --"
+                                        //onChange={handleChange}
+                                        //optionLabelProp="label"
+                                    >
+                                        {nhomNguoiDung.map(value => {
+                                            return (
+                                                <Option value={value.id} label={value.name}>
+                                                    <div className="demo-option-label-item">
+                                                        <span role="img" aria-label={value.name}>
+                                                            {value.name}
+                                                        </span>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                                </Option>
+                                            )
+                                        })}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item name="Status" label="Trạng thái" valuePropName="checked">
+                                    <Checkbox />
+                                </Form.Item>
+                                <Form.Item name="isRoot" label="Quản trị tối cao" valuePropName="checked">
+                                    <Checkbox />
+                                </Form.Item>
+                                <Form.Item name="isThongKe" label="Thống kê" valuePropName="checked">
+                                    <Checkbox />
+                                </Form.Item>
+                            </Form>
                         </Modal>
+
                     </  React.Fragment>, document.body
                 ) : null
             }
         </>
     )
 }
-export default ModelUpdate;
+export default ModalUpdate;

@@ -151,5 +151,40 @@ namespace Application.Services.UserServices
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
         }
+
+        public async Task ChangePassUser(Users obj)
+        {
+            try
+            {
+                var exist = await _unitOfWork.UserRepository.Get(g => g.Id == obj.Id);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                exist.PassWord = obj.PassWord;
+                await _unitOfWork.UserRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+
+        public async Task<Users> FindById(int id)
+        {
+            try
+            {
+                return await _unitOfWork.UserRepository.Get(g => g.Id == id);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

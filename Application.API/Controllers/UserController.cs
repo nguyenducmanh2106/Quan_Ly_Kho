@@ -103,7 +103,7 @@ namespace Application.API.Controllers
                         Id = g.Id,
                         FullName = g.FullName,
                         UserName = g.UserName,
-                        Avatar = ReadFileToBase64(g.Avatar),
+                        pathAvatar = ReadFileToBase64(g.pathAvatar),
                         Email = g.Email,
                         PhoneNumber = g.PhoneNumber,
                         UserGroupID = g.UserGroupID,
@@ -112,7 +112,9 @@ namespace Application.API.Controllers
                         Permission = g.Permission,
                         isRoot = g.isRoot,
                         isThongKe = g.isThongKe,
-                        PassWord = g.PassWord
+                        Status=g.Status,
+                        PassWord = g.PassWord,
+                        Avatar=g.Avatar
                     });
                     totalPage = (int)Math.Ceiling(((double)total / pageSize));
                     MessageSuccess success = new MessageSuccess()
@@ -147,7 +149,7 @@ namespace Application.API.Controllers
                 {
                     var urlFile = GetPathAndFilename(filename);
                     ConvertBase64.Base64ToFile(obj.File_Base64, urlFile, filename);
-                    obj.Avatar = urlFile.Replace(host, "");
+                    obj.pathAvatar = urlFile.Replace(host, "");
                 }
                 await _manager.Create(obj);
                 return Ok(new MessageSuccess()
@@ -196,13 +198,20 @@ namespace Application.API.Controllers
         {
             try
             {
+                var existData =await _manager.FindById(obj.Id);
+                if (existData == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+
                 string host = this._hostingEnvironment.WebRootPath;
-                string filename = obj.Avatar;
-                if (!string.IsNullOrEmpty(obj.File_Base64))
+                Guid randomString = System.Guid.NewGuid();
+                string filename = randomString + obj.Avatar;
+                if (!string.IsNullOrEmpty(obj.File_Base64)&& ReadFileToBase64(existData.pathAvatar)==obj.File_Base64)
                 {
                     var urlFile = GetPathAndFilename(filename);
                     ConvertBase64.Base64ToFile(obj.File_Base64, urlFile, filename);
-                    obj.Avatar = urlFile.Replace(host, "");
+                    obj.pathAvatar = urlFile.Replace(host, "");
                 }
                 await _manager.Update(obj);
                 return Ok(new MessageSuccess()
@@ -215,6 +224,25 @@ namespace Application.API.Controllers
                 return Ok(new MessageError()
                 {
                     message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("changepass-user")]
+        public async Task<IActionResult> ChangePassUser([FromBody] Users obj)
+        {
+            try
+            {
+                await _manager.ChangePassUser(obj);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.CHANGEPASSWORD_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CHANGEPASSWORD_FAIL
                 });
             }
         }

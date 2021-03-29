@@ -6,11 +6,9 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Layout from './components/pages/Layout';
 import Login from './components/Account/Login';
 //import Skeleton from 'react-loading-skeleton';
-import { Skeleton, List, Avatar } from 'antd';
+import { List, Avatar } from 'antd';
 import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 //import 'antd-button-color/dist/css/style.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
 //import 'mdbreact/dist/css/mdb.css';
 import 'antd/dist/antd.css';
 import 'sweetalert2/src/sweetalert2.scss';

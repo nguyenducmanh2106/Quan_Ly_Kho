@@ -2,8 +2,7 @@
 import { NavLink, Link, Switch, useHistory, BrowserRouter as Router } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { parseJwt, getAccessToken, getUser, getAPI } from '../../../utils/helpers';
-import Skeleton from 'react-loading-skeleton';
-import { Layout, Menu, Breadcrumb, Button, Input, Avatar } from 'antd';
+import { Layout, Menu, Breadcrumb, Button, Input, Avatar, Skeleton } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 const BreadcrumbElement = (props) => {

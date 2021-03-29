@@ -8,6 +8,8 @@ namespace Application.Utils
     {
         public const string CREATE_SUCCESS = "Thêm mới dữ liệu thành công";
         public const string DELETE_SUCCESS = "Xoá dữ liệu thành công";
+        public const string CHANGEPASSWORD_SUCCESS = "Thay đổi mật khẩu thành công";
+        public const string CHANGEPASSWORD_FAIL = "Thay đổi mật khẩu thất bại";
         public const string UPDATE_SUCCESS = "Cập nhật dữ liệu thành công";
         public const string CREATE_FAIL = "Thêm mới dữ liệu thất bại";
         public const string DELETE_FAIL = "Xoá dữ liệu thất bại";

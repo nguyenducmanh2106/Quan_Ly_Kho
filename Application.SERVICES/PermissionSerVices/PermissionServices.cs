@@ -270,7 +270,7 @@ namespace Application.Services.PermissionSerVices
             {
                 var objUser = await _unitOfWork.UserRepository.Get(g => g.Id == usergroupId);
                 var lstStringRole = objUser != null && !string.IsNullOrEmpty(objUser.Permission) ? objUser.Permission.Split(',').ToList() : new List<string>();
-                result = GetChildGroup(permissId, lstStringRole, "", langId);
+                result = GetDataPermission(permissId, lstStringRole, "", langId);
             }
             else
             {

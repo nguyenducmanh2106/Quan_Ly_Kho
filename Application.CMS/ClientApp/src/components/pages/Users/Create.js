@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
-import Skeleton from 'react-loading-skeleton';
 import ImgCrop from 'antd-img-crop';
 import { url_upload } from "../../../utils/helpers";
-import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, nhomNguoiDung }) => {
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton } from 'antd';
+const ModalCreate = ({ isShowing, hide, onPostCreateItem, donvi, chucvu, nhomNguoiDung }) => {
     const [fileList, setFileList] = useState([]);
     const { Option } = Select;
     const layout = {
@@ -15,22 +14,16 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
     };
 
     const onSubmit = (data) => {
-        //var obj = {
-        //    "Name": data.Name,
-        //    "Ordering": Number.parseInt(data.Ordering),
-        //    "Code": data.Code,
-        //    "Status": data.Status == true ? 1 : 0
-        //}
         var obj = {
-            ...data.user,
-            UserGroupId: data.user.UserGroupId ? data.user.UserGroupId.join(","):"",
+            ...data,
+            UserGroupID: data.UserGroupID ? data.UserGroupID.join(","):"",
             PassWord: base64_encode(data.PassWord),
             Avatar: fileList.length>0?fileList[0].name:null,
             File_Base64: fileList.length > 0 ? fileList[0].thumbUrl.split(",").splice(1).join("") : null,
-            Status:data.user.Status?1: 0,
-            //isRoot:data.user.isRoot?1:0,
-            //isThongKe: data.user.isThongKe ? 1 : 0,
-            PhoneNumber: data.user.PhoneNumber.toString()
+            Status:data.Status?1: 0,
+            isRoot:data.isRoot?true:false,
+            isThongKe: data.isThongKe ? true : false,
+            PhoneNumber: data.PhoneNumber.toString()
         }
         //console.log(obj)
         onPostCreateItem(obj)
@@ -93,16 +86,16 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
                             okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm" validateMessages={validateMessages}>
-                                <Form.Item name={['user', 'UserName']} label="Tên đăng nhập" rules={[{ required: true }]}>
+                                <Form.Item name="UserName" label="Tên đăng nhập" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
-                                <Form.Item name={['user', 'Email']} label="Email" rules={[{ type: 'email' }]}>
+                                <Form.Item name="Email" label="Email" rules={[{ type: 'email' }]}>
                                     <Input />
                                 </Form.Item>
-                                <Form.Item name={['user', 'FullName']} label="Tên đầy đủ" rules={[{ required: true }]}>
+                                <Form.Item name="FullName" label="Tên đầy đủ" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
-                                <Form.Item name={['user', 'DonViId']} label="Đơn vị">
+                                <Form.Item name="DonViId" label="Đơn vị">
                                     <Select
                                         showSearch
                                         //style={{ width: 200 }}
@@ -120,7 +113,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
                                         ))}
                                     </Select>
                                 </Form.Item>
-                                <Form.Item name={['user', 'ChucVuId']} label="Chức vụ">
+                                <Form.Item name="ChucVuId" label="Chức vụ">
                                     <Select
                                         showSearch
                                         //style={{ width: 200 }}
@@ -138,7 +131,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
                                         ))}
                                     </Select>
                                 </Form.Item>
-                                <Form.Item name={['user', 'Avatar']} label="Ảnh đại diện">
+                                <Form.Item name="Avatar" label="Ảnh đại diện">
                                     <ImgCrop rotate>
                                         <Upload
                                             accept="image/*"
@@ -154,7 +147,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
                                     </ImgCrop>
                                 </Form.Item>
 
-                                <Form.Item name={['user', 'PhoneNumber']} label="Số điện thoại" rules={[{ type: 'number', required: true }]}>
+                                <Form.Item name="PhoneNumber" label="Số điện thoại" rules={[{ type: 'number', required: true }]}>
                                     <InputNumber
                                         style={{
                                             width: "100%",
@@ -203,7 +196,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
                                 >
                                     <Input.Password />
                                 </Form.Item>
-                                <Form.Item name={['user', 'UserGroupId']} label="Nhóm người dùng">
+                                <Form.Item name="UserGroupID" label="Nhóm người dùng">
                                     <Select
                                         mode="multiple"
                                         style={{ width: '100%' }}
@@ -223,13 +216,13 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, donvi, chucvu, n
                                         ))}
                                     </Select>
                                 </Form.Item>
-                                <Form.Item name={['user', 'Status']} label="Trạng thái" valuePropName="checked">
+                                <Form.Item name="Status" label="Trạng thái" valuePropName="checked">
                                     <Checkbox />
                                 </Form.Item>
-                                <Form.Item name={['user', 'isRoot']} label="Quản trị tối cao" valuePropName="checked">
+                                <Form.Item name="isRoot" label="Quản trị tối cao" valuePropName="checked">
                                     <Checkbox />
                                 </Form.Item>
-                                <Form.Item name={['user', 'isThongKe']} label="Thống kê" valuePropName="checked">
+                                <Form.Item name="isThongKe" label="Thống kê" valuePropName="checked">
                                     <Checkbox />
                                 </Form.Item>
                             </Form>

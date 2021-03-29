@@ -1,143 +1,14 @@
-﻿.modal label.control-label {
-    margin-bottom: 0;
-    font-family: RobotoR;
-    font-weight: normal;
-    line-height: 18px;
-    padding-right: 0;
-    min-height: 34px;
-    display: table;
-}
-/*.trigger {
-    padding: 0 24px;
-    font-size: 18px;
-    line-height: 64px;
-    cursor: pointer;
-    transition: color 0.3s;
-}*/
-
-    .trigger:hover {
-        color: #1890ff;
-    }
-
-    .modal label.control-label span {
-        vertical-align: middle;
-        display: table-cell;
-    }
-#gridData, .area-item {
-    border-radius: 0.25rem;
-    /*box-shadow: 0 8px 10px rgb(0 0 0 / 8%);*/
-    border: 1px solid #edf2f9;
-    background: #fff;
-    padding: 10px;
-    margin: 10px 0;
-}
+﻿
     .modal-body label{
         font-weight:normal !important
     }
 
-.commonTool{
-    display:flex;
-    flex-wrap:wrap
-}
-.fl {
-    /*float: left;*/
-    flex:1
-}
-.lh35 {
-    line-height: 35px;
-}
 
-.mb0 {
-    margin-bottom: 0;
-}
-
-.lh35 {
-    line-height: 35px;
-}
-
-.fr {
-    /*float: right;*/
-    flex:1;
-    display:flex;
-    justify-content:flex-end
-}
-#pagesize {
-    width: 70px;
-    margin-right: 10px;
-    height: 29px;
-    padding: 0 10px;
-}
-
-.pull-right {
-    float: right;
-}
-.pagination {
-    display: table;
-    margin: auto;
-    padding-left: 0;
-    border-radius: 4px;
-}
-.pagination-sm > li > a, .pagination-sm > li > span {
-    padding: 5px 10px;
-    font-size: 12px;
-}
-.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-    z-index: 2;
-    color: #ffffff;
-    cursor: default;
-    background-color: #428bca;
-    border-color: #428bca;
-}
-    .pagination > li {
-        display: inline;
-    }
-#paginationholder .disabled a, #paginationholdercanbo .disabled a {
-    color: #fff;
-}
-.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
-    background-color: #7ca4dd;
-    border-color: #5c8ed4;
-    color: #fff;
-}
-.pagination > li > a, .pagination > li > span {
-    position: relative;
-    float: left;
-    line-height: 1.428571429;
-    text-decoration: none;
-    border: 1px solid #dddddd;
-}
-a {
-    transition: 0.3s all ease-in-out;
-    -moz-transition: 0.3s all ease-in-out;
-    cursor: pointer;
-    color: #2997ff;
-}
-#pageSize, #paginationholder, #paginationholderCanBo {
-    float: left;
-}
-
-#pageSize {
-    width: 70px;
-    margin-right: 10px;
-    height: 29px;
-    padding: 0 10px;
-}
-.parsley-required {
-    color: #de4848;
-    font-size: 0.9em;
-    margin-top: 3px;
-}
-.modal label.control-label span span {
-    display: inline;
-}
 
 .cred {
     color: red;
 }
 
-button.btn {
-    margin: 0 4px
-}
 .sapxep .fa{
     float:right;
     margin-top:2px
@@ -152,10 +23,6 @@ button.btn {
     align-content:center
 }
 
-
-.site-layout-background {
-    background: #fff;
-}
 .classColor {
     background: #F0F2F5 !important;
     border-right:2px solid rgb(255,255,225,.3) !important
@@ -164,13 +31,54 @@ button.btn {
 .ant-layout {
     background: #F0F2F5 !important;
 }
-svg,.anticon {
-    overflow: hidden;
-    /*vertical-align: text-top !important;*/
-}
 .full-screen-preview {
     font-family: "Segoe UI";
 }
 .login h1 {
     color: #1890ff !important;
+}
+@media only screen and (max-width: 992px) .main-container {
+    padding-right: 48px;
+    padding-left: 48px;
+}
+
+.main-container {
+    min-height: 500px;
+    padding: 0 30px 32px;
+}
+ .ant-btn {
+    margin-right: 8px;
+    /*margin-bottom: 12px;*/
+}
+.danger {
+    background: #FF4D4F !important;
+    border-color: #FF4D4F !important
+}
+.success {
+    background-color: #52c41a !important;
+    border-color: #52c41a !important;
+}
+.success-outline {
+    border-color: #52c41a !important;
+}
+.danger-outline {
+    border-color: #FF4D4F !important
+}
+.warning {
+    background: #FAAD14 !important;
+    border-color: #FAAD14 !important
+}
+
+
+/*css Scrollbar*/
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+    width: 26px;
+    border-radius: 13px;
+    background-clip: padding-box;
+    border: 10px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 10px;
 }
