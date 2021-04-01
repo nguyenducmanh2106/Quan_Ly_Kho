@@ -7,6 +7,7 @@ import { url_upload } from "../../../utils/helpers";
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
 const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, nhomNguoiDung }) => {
     const [fileList, setFileList] = useState([]);
+    const [FileListDefault, setFileListDefault] = useState([]);
     const { Option } = Select;
     const layout = {
         labelCol: { span: 8 },
@@ -22,7 +23,7 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
             },
         ]
         //console.log(objImg)
-        setFileList(objImg)
+        setFileListDefault(objImg)
     }, [item])
     const onSubmit = (data) => {
         console.log(fileList)
@@ -38,8 +39,8 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
             isThongKe: data.isThongKe ? true : false,
             PhoneNumber: data.PhoneNumber.toString()
         }
-        //console.log(data)
-        onPostUpdateItem(obj)
+        console.log(obj)
+        //onPostUpdateItem(obj)
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -57,7 +58,7 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
     }
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
-        console.log(fileList)
+        console.log(newFileList)
     };
 
     const onPreview = async file => {
@@ -93,8 +94,8 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                                     ["FullName"]: item?.fullName,
                                     ["DonViId"]: item?.donViId,
                                     ["ChucVuId"]: item?.chucVuId,
-                                    ["PhoneNumber"]: item?.phoneNumber,
-                                    ["UserGroupID"]: item?.UserGroupID,
+                                    ["PhoneNumber"]: Number.parseInt(item?.phoneNumber),
+                                    ["UserGroupID"]: item?.userGroupID,
                                     ["Status"]: item.status == 1 ? true : false,
                                     ["isRoot"]: item.isRoot ? true : false,
                                     ["isThongKe"]: item.isThongKe ? true : false,
@@ -123,10 +124,11 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                                         }
                                     >
                                         {donvi.map(item => (
-                                            <Option value={item.id}>{item.name}</Option>
+                                            <Option value={item.id} key={item.id}>{item.name}</Option>
                                         ))}
                                     </Select>
                                 </Form.Item>
+                                
                                 <Form.Item name="ChucVuId" label="Chức vụ">
                                     <Select
                                         showSearch
@@ -141,7 +143,7 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                                         }
                                     >
                                         {chucvu.map(item => (
-                                            <Option value={item.id}>{item.name}</Option>
+                                            <Option value={item.id} key={item.id}>{item.name}</Option>
                                         ))}
                                     </Select>
                                 </Form.Item>
@@ -151,10 +153,10 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                                             accept="image/*"
                                             action={url_upload}
                                             listType="picture-card"
-                                            fileList={fileList}
+                                            //fileList={FileListDefault}
+                                            defaultFileList={[...FileListDefault]}
                                             onChange={onChange}
                                             onPreview={onPreview}
-                                        //beforeUpload={beforeUpload}
                                         >
                                             {fileList.length < 1 && '+ Upload'}
                                         </Upload>
@@ -179,7 +181,7 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                                     >
                                         {nhomNguoiDung.map(value => {
                                             return (
-                                                <Option value={value.id} label={value.name}>
+                                                <Option value={value.id} label={value.name} key={value.id}>
                                                     <div className="demo-option-label-item">
                                                         <span role="img" aria-label={value.name}>
                                                             {value.name}

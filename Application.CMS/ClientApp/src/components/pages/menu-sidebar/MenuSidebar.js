@@ -39,7 +39,7 @@ const MenuSidebar = (props) => {
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
                     mode="inline"
-                    theme="light"
+                    theme="dark"
                 //className="classColor"
 
                 >

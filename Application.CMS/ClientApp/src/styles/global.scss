@@ -29,10 +29,10 @@ header{
 
 .sidebar-left {
     &.ant-layout-sider {
-        position: fixed !important;
+        /*position: fixed !important;*/
         height: 100vh;
         left: 0;
-        top: 63px;
+        /*top: 63px;*/
         transition: all .2s ease-in-out;
         z-index: 99;
 
@@ -55,13 +55,13 @@ header{
 }
 .headerTop {
     &.ant-layout-header {
-        position: fixed;
+        position: sticky;
         box-shadow: 0 2px 8px #f0f1f2;
-        left: 0;
-        right: 0;
+        /*left: 0;
+        right: 0;*/
         z-index: 1000;
         top: 0;
-        height: auto;
+        /*height: auto;*/
         min-height: 45px;
         padding: 0;
 
@@ -534,9 +534,32 @@ header{
   .text-center{
     text-align:center;
   }
-  .ant-layout-sider-children{
-    .ant-menu-root{
-    height: calc(100vh - 100px);
-    overflow-x: hidden;
-  }
+.ant-layout-sider-children {
+    .ant-menu-root {
+        height: 100%;
+        /*overflow-x: hidden;*/
+    }
+
+    .menuWrapper {
+        height: calc(100% - 60px);
+        position: relative;
+    }
+
+    .menuPrimaryWrap {
+        position: static;
+        top: 0
+    }
+
+    .menuInner {
+        height: 100%;
+        display: flex;
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex-direction: column;
+        border-top: 1px solid #15202c;
+        border-bottom: 1px solid #263d53;
+    }
+}
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{
+    border:none
 }

@@ -269,13 +269,14 @@ function Index() {
         if (item && item.userGroupID) {
             nhomND = item.userGroupID.split(",");
         }
-        nhomND = nhomND.forEach(item => {
-            Number.parseInt(item)
+        var result = nhomND.map(item => {
+            return Number.parseInt(item)
         })
         var obj = {
             ...item,
-            userGroupID: nhomND
+            userGroupID: result
         }
+        //console.log(obj)
         setItemUpdate(obj)
     }
     const onSetItemCreatePermission = (itemPermiss) => {
@@ -345,8 +346,9 @@ function Index() {
 
     }
     async function onPostUpdateItem(obj) {
-        var result = await postAPI('api/user/update', JSON.stringify(obj))
         toggleUpdate()
+        var result = await postAPI('api/user/update', JSON.stringify(obj))
+
         if (result.status) {
             setAction(true)
             notification.success({
@@ -409,9 +411,9 @@ function Index() {
     }
     return (
         <Content className="main-container main-container-component">
-            <Row>
-                <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
-                    <Card>
+            <Card>
+                <Row>
+                    <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Row>
                                 <Col xs={{ span: 24 }} lg={{ span: 4 }}>
@@ -436,10 +438,8 @@ function Index() {
                                 </Col>
                             </Row>
                         </Skeleton>
-                    </Card>
-                </Col>
-                <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
-                    <Card style={{ textAlign: "right" }}>
+                    </Col>
+                    <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
                                 Tìm Kiếm
@@ -451,64 +451,64 @@ function Index() {
                                 Xoá nhiều
     </Button>
                         </Skeleton>
-                    </Card>
-                </Col>
+                    </Col>
 
-            </Row>
-            <Card>
-                <Skeleton loading={isLoading} active paragraph={false}>
-                    <LoadingOverlay
-                        active={isLoading}
-                        spinner
-                    //spinner={<BounceLoader />}
-                    //text='Loading your content...'
-                    >
-                        <FormCreate
-                            isShowing={isShowing}
-                            hide={toggle}
-                            onPostCreateItem={onPostCreateItem}
-                            donvi={dataDonVi}
-                            chucvu={dataChucVu}
-                            nhomNguoiDung={dataNhomNguoiDung}
-                        />
-                        <FormUpdate
-                            isShowing={isShowingUpdate}
-                            hide={toggleUpdate}
-                            item={ItemUpdate}
-                            onPostUpdateItem={onPostUpdateItem}
-                            donvi={dataDonVi}
-                            chucvu={dataChucVu}
-                            nhomNguoiDung={dataNhomNguoiDung}
-                        />
-                        <FormCreatePermission
-                            isShowing={isOpenPermission}
-                            hide={toggleFormPermission}
-                            data={permission}
-                            onCreatePermission={onCreatePermission}
-                            listPermission={listPermission}
-                        />
-                        <FormChangePass
-                            isShowing={isOpenChangePass}
-                            hide={toggleFormChangePass}
-                            item={ItemUpdate}
-                            onPostChangePassWordItem={onPostChangePassWordItem}
-                        />
-                        <ListData obj={state}
-                            onChangePage={onChangePage}
-                            onDeleteItem={onDelete}
-                            UpdateItem={onUpdateItem}
-                            onToggleFormpdate={toggleUpdate}
-                            toggleFormPermission={toggleFormPermission}
-                            toggleFormChangePass={toggleFormChangePass}
-                            onMultiDelete={setListItemRemove}
-                            onUpdateItemPosition={onUpdateItemPosition}
-                            toggleStatus={onToggleStatus}
-                            onSetNameSort={onSetNameSort}
-                            onSetItemCreatePermission={onSetItemCreatePermission}
+                </Row>
+                <Row>
+                    <Skeleton loading={isLoading} active paragraph={false}>
+                        <LoadingOverlay
+                            active={isLoading}
+                            spinner
+                        //spinner={<BounceLoader />}
+                        //text='Loading your content...'
+                        >
+                            <FormCreate
+                                isShowing={isShowing}
+                                hide={toggle}
+                                onPostCreateItem={onPostCreateItem}
+                                donvi={dataDonVi}
+                                chucvu={dataChucVu}
+                                nhomNguoiDung={dataNhomNguoiDung}
+                            />
+                            <FormUpdate
+                                isShowing={isShowingUpdate}
+                                hide={toggleUpdate}
+                                item={ItemUpdate}
+                                onPostUpdateItem={onPostUpdateItem}
+                                donvi={dataDonVi}
+                                chucvu={dataChucVu}
+                                nhomNguoiDung={dataNhomNguoiDung}
+                            />
+                            <FormCreatePermission
+                                isShowing={isOpenPermission}
+                                hide={toggleFormPermission}
+                                data={permission}
+                                onCreatePermission={onCreatePermission}
+                                listPermission={listPermission}
+                            />
+                            <FormChangePass
+                                isShowing={isOpenChangePass}
+                                hide={toggleFormChangePass}
+                                item={ItemUpdate}
+                                onPostChangePassWordItem={onPostChangePassWordItem}
+                            />
+                            <ListData obj={state}
+                                onChangePage={onChangePage}
+                                onDeleteItem={onDelete}
+                                UpdateItem={onUpdateItem}
+                                onToggleFormpdate={toggleUpdate}
+                                toggleFormPermission={toggleFormPermission}
+                                toggleFormChangePass={toggleFormChangePass}
+                                onMultiDelete={setListItemRemove}
+                                onUpdateItemPosition={onUpdateItemPosition}
+                                toggleStatus={onToggleStatus}
+                                onSetNameSort={onSetNameSort}
+                                onSetItemCreatePermission={onSetItemCreatePermission}
 
-                        />
-                    </LoadingOverlay>
-                </Skeleton>
+                            />
+                        </LoadingOverlay>
+                    </Skeleton>
+                </Row>
             </Card>
         </Content>
     );
