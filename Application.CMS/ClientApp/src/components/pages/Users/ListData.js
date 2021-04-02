@@ -177,8 +177,8 @@ function Table(props) {
     return (
         <>
 
-            <form className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
-                <div className="ant-table">
+            <form className="">
+                <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
                     <div className="ant-table-container">
                         <div className="ant-table-content">
                             <table /*className="ant-table"*/ style={{ tableLayout: "auto" }}>

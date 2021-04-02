@@ -29,7 +29,7 @@ const BreadcrumbElement = (props) => {
         }
     }, [history.location.pathname])
     return (
-        <Breadcrumb style={{ margin: '0 0 16px 16px' }}>
+        <Breadcrumb style={{ marginBottom: '24px' }}>
             <Breadcrumb.Item><AntdIcons.HomeOutlined /></Breadcrumb.Item>
             <Breadcrumb.Item>{text}</Breadcrumb.Item>
         </Breadcrumb>

@@ -258,9 +258,9 @@ function Menu() {
     }
     return (
         <Content className="main-container main-container-component">
-            <Row>
-                <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
-                    <Card style={{ textAlign: "right" }}>
+            <Card>
+                <Row>
+                    <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
                                 Thêm mới
@@ -269,44 +269,44 @@ function Menu() {
                                 Xoá nhiều
     </Button>
                         </Skeleton>
-                    </Card>
-                </Col>
+                    </Col>
 
-            </Row>
-            <Card>
-                <Skeleton loading={isLoading} active>
-                    <LoadingOverlay
-                        active={isLoading}
-                        spinner
-                    //spinner={<BounceLoader />}
-                    //text='Loading your content...'
-                    >
-                        <FormCreate
-                            isShowing={isShowing}
-                            hide={toggle}
-                            data={options}
-                            onPostCreateItem={onPostCreateItem}
-                        />
-                        <FormUpdate
-                            isShowing={isShowingUpdate}
-                            hide={toggleUpdate}
-                            data={options}
-                            item={ItemUpdate}
-                            onPostUpdateItem={onPostUpdateItem}
-                        />
-                        <ListData obj={state}
-                            onChangePage={onChangePage}
-                            options={options}
-                            onDeleteItem={onDelete}
-                            UpdateItem={onUpdateItem}
-                            onToggleFormpdate={toggleUpdate}
-                            onMultiDelete={setListItemRemove}
-                            onUpdateItemPosition={onUpdateItemPosition}
-                            toggleStatus={onToggleStatus}
-                            onSetNameSort={onSetNameSort}
-                        />
-                    </LoadingOverlay>
-                </Skeleton>
+                </Row>
+                <Row>
+                    <Skeleton loading={isLoading} active>
+                        <LoadingOverlay
+                            active={isLoading}
+                            spinner
+                        //spinner={<BounceLoader />}
+                        //text='Loading your content...'
+                        >
+                            <FormCreate
+                                isShowing={isShowing}
+                                hide={toggle}
+                                data={options}
+                                onPostCreateItem={onPostCreateItem}
+                            />
+                            <FormUpdate
+                                isShowing={isShowingUpdate}
+                                hide={toggleUpdate}
+                                data={options}
+                                item={ItemUpdate}
+                                onPostUpdateItem={onPostUpdateItem}
+                            />
+                            <ListData obj={state}
+                                onChangePage={onChangePage}
+                                options={options}
+                                onDeleteItem={onDelete}
+                                UpdateItem={onUpdateItem}
+                                onToggleFormpdate={toggleUpdate}
+                                onMultiDelete={setListItemRemove}
+                                onUpdateItemPosition={onUpdateItemPosition}
+                                toggleStatus={onToggleStatus}
+                                onSetNameSort={onSetNameSort}
+                            />
+                        </LoadingOverlay>
+                    </Skeleton>
+                </Row>
             </Card>
         </Content>
 

@@ -137,45 +137,47 @@ function Table(props) {
         <>
 
             <form className="ant-table-wrapper">
-                <div className="ant-table">
+                <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
                     <div className="ant-table-container">
-                        <table className="ant-table" style={{ tableLayout: "auto" }}>
-                            <thead className="ant-table-thead">
-                                <tr>
-                                    <th>
-                                        <label className="fancy-checkbox">
-                                            <input type="hidden" id="hdfID" />
-                                            <input className="select-all" id="chkall" type="checkbox" name="checkbox" onChange={handleInputChange} />
-                                            <span />
-                                        </label>
-                                    </th>
-                                    <th className="text-center">STT</th>
-                                    <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
-                                        Tên chức vụ
+                        <div className="ant-table-content">
+                            <table style={{ tableLayout: "auto" }}>
+                                <thead className="ant-table-thead">
+                                    <tr>
+                                        <th>
+                                            <label className="fancy-checkbox">
+                                                <input type="hidden" id="hdfID" />
+                                                <input className="select-all" id="chkall" type="checkbox" name="checkbox" onChange={handleInputChange} />
+                                                <span />
+                                            </label>
+                                        </th>
+                                        <th className="text-center">STT</th>
+                                        <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
+                                            Tên chức vụ
                                 <i className="fa fa-sort"></i>
-                                    </th>
-                                    <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
-                                        Thứ tự
+                                        </th>
+                                        <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
+                                            Thứ tự
                                 <i className="fa fa-sort"></i>
-                                    </th>
-                                    <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
-                                        Mã
+                                        </th>
+                                        <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
+                                            Mã
                                 <i className="fa fa-sort"></i>
-                                    </th>
-                                    <th className="text-center">
-                                        Trạng thái
+                                        </th>
+                                        <th className="text-center">
+                                            Trạng thái
         </th>
-                                    <th className="text-center">
-                                        Thao tác
+                                        <th className="text-center">
+                                            Thao tác
         </th>
-                                </tr>
-                            </thead>
+                                    </tr>
+                                </thead>
 
-                            <tbody className="ant-table-tbody">
-                                {renderBody()}
-                            </tbody>
+                                <tbody className="ant-table-tbody">
+                                    {renderBody()}
+                                </tbody>
 
-                        </table>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </form>

@@ -20,7 +20,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, donvi, chucvu, nhomNgu
             PassWord: base64_encode(data.PassWord),
             Avatar: fileList.length>0?fileList[0].name:null,
             File_Base64: fileList.length > 0 ? fileList[0].thumbUrl.split(",").splice(1).join("") : null,
-            Status:data.Status?1: 0,
+            Status:data.Status?1: 2,
             isRoot:data.isRoot?true:false,
             isThongKe: data.isThongKe ? true : false,
             PhoneNumber: data.PhoneNumber.toString()

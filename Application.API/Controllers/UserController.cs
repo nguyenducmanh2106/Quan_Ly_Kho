@@ -207,7 +207,7 @@ namespace Application.API.Controllers
                 string host = this._hostingEnvironment.WebRootPath;
                 Guid randomString = System.Guid.NewGuid();
                 string filename = randomString + obj.Avatar;
-                if (!string.IsNullOrEmpty(obj.File_Base64)&& ReadFileToBase64(existData.pathAvatar)==obj.File_Base64)
+                if (!string.IsNullOrEmpty(obj.File_Base64))
                 {
                     var urlFile = GetPathAndFilename(filename);
                     ConvertBase64.Base64ToFile(obj.File_Base64, urlFile, filename);

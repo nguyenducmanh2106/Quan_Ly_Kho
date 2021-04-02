@@ -48,8 +48,8 @@ const LayoutForm = () => {
                         </a>
                         <MoreOutlined onClick={toggleMenuSidebar} twoToneColor="#eb2f96" style={{ fontSize:"30px" }} />
                     </div>
-                    <div class="menuWrapper">
-                        <div class="menuInner">
+                    <div className="menuWrapper">
+                        <div className="menuInner">
                             <MenuSidebar />
                         </div>
                     </div>
@@ -61,7 +61,7 @@ const LayoutForm = () => {
                 </Header>
                 <Content
                     style={{
-                        padding: "24px 0",
+                        padding: "24px",
                         minHeight: '100vh',
                     }}
                     //className={menusidebarState ? "collapsed mainContnet" : "mainContnet"}

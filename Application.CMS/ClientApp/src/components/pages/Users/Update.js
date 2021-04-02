@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import { url_upload } from "../../../utils/helpers";
-import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload ,Image} from 'antd';
 const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, nhomNguoiDung }) => {
     const [fileList, setFileList] = useState([]);
     const [FileListDefault, setFileListDefault] = useState([]);
@@ -14,16 +14,15 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
         wrapperCol: { span: 16 },
     };
     useEffect(() => {
-        var objImg = [
+        var objImg = 
             {
                 uid: item?.id.toString(),
                 name: item?.avatar,
                 status: 'done',
                 url: "data:image/png;base64," + item?.pathAvatar,
-            },
-        ]
+            }
         //console.log(objImg)
-        setFileListDefault(objImg)
+        setFileList(objImg)
     }, [item])
     const onSubmit = (data) => {
         console.log(fileList)
@@ -33,14 +32,14 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
             UserGroupID: data.UserGroupID ? data.UserGroupID.join(",") : "",
             PassWord: base64_encode(data.PassWord),
             Avatar: fileList.length > 0 ? fileList[0].name : null,
-            File_Base64: fileList.length > 0 ? fileList[0].url.split(",").splice(1).join("") : null,
-            Status: data.Status ? 1 : 0,
+            File_Base64: FileListDefault.length > 0 ? FileListDefault[0].url.split(",").splice(1).join("") : null,
+            Status: data.Status ? 1 : 2,
             isRoot: data.isRoot ? true : false,
             isThongKe: data.isThongKe ? true : false,
             PhoneNumber: data.PhoneNumber.toString()
         }
-        console.log(obj)
-        //onPostUpdateItem(obj)
+        //console.log(obj)
+        onPostUpdateItem(obj)
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -57,8 +56,11 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
         hide()
     }
     const onChange = ({ fileList: newFileList }) => {
+        //mỗi lần thấy đổi sẽ set ảnh và đổ vào frame ảnh trên view
         setFileList(newFileList);
-        console.log(newFileList)
+        //chỉ khi thay đổi ảnh mới có giá trị để set up ảnh
+        setFileListDefault(newFileList)
+        //console.log(newFileList)
     };
 
     const onPreview = async file => {
@@ -153,8 +155,7 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                                             accept="image/*"
                                             action={url_upload}
                                             listType="picture-card"
-                                            //fileList={FileListDefault}
-                                            defaultFileList={[...FileListDefault]}
+                                            fileList={fileList}
                                             onChange={onChange}
                                             onPreview={onPreview}
                                         >
