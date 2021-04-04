@@ -171,6 +171,7 @@ function Index() {
         setItemUpdate(item)
     }
     async function onMultiDelete() {
+       
         if (listItemRemove.length == 0) {
             notification.error({
                 message: "Chưa chọn dữ liệu để xoá",
@@ -192,8 +193,10 @@ function Index() {
                 cancelButtonText: "Không",
                 showLoaderOnConfirm: true,
                 preConfirm: (isConfirm) => {
+                    setIsLoading(true)
                     postFormData('api/dm_chucvu/multidelete', formData).then(result => {
                         if (result.status) {
+                            
                             setAction(true)
                             notification.success({
                                 message: result.message,
@@ -322,6 +325,7 @@ function Index() {
                                 onPostUpdateItem={onPostUpdateItem}
                             />
                             <ListData obj={state}
+                                isAction={isAction}
                                 onChangePage={onChangePage}
                                 onDeleteItem={onDelete}
                                 UpdateItem={onUpdateItem}

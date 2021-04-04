@@ -14,31 +14,29 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
         wrapperCol: { span: 16 },
     };
     useEffect(() => {
-        var objImg = 
+        var objImg = [
             {
                 uid: item?.id.toString(),
                 name: item?.avatar,
                 status: 'done',
                 url: "data:image/png;base64," + item?.pathAvatar,
-            }
-        //console.log(objImg)
+            }]
         setFileList(objImg)
     }, [item])
     const onSubmit = (data) => {
-        console.log(fileList)
         var obj = {
             ...data,
             Id: item?.id,
             UserGroupID: data.UserGroupID ? data.UserGroupID.join(",") : "",
             PassWord: base64_encode(data.PassWord),
             Avatar: fileList.length > 0 ? fileList[0].name : null,
-            File_Base64: FileListDefault.length > 0 ? FileListDefault[0].url.split(",").splice(1).join("") : null,
+            File_Base64: FileListDefault.length > 0 ? FileListDefault[0].thumbUrl.split(",").splice(1).join("") : null,
             Status: data.Status ? 1 : 2,
             isRoot: data.isRoot ? true : false,
             isThongKe: data.isThongKe ? true : false,
             PhoneNumber: data.PhoneNumber.toString()
         }
-        //console.log(obj)
+        console.log(obj)
         onPostUpdateItem(obj)
     }
     const validateMessages = {

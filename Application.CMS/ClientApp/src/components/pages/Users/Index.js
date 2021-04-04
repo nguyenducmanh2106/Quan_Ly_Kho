@@ -101,6 +101,7 @@ function Index() {
         getData(page, pageSize);
         return () => {
             setAction(false)
+            
         }
     }, [isAction, nameSort, page, pageSize])
     async function onUpdateItemPosition(ItemPosition) {
@@ -276,7 +277,7 @@ function Index() {
             ...item,
             userGroupID: result
         }
-        console.log(obj)
+        //console.log(obj)
         setItemUpdate(obj)
     }
     const onSetItemCreatePermission = (itemPermiss) => {

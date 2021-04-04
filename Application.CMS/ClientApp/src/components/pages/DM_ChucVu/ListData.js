@@ -11,16 +11,23 @@ function Table(props) {
     const [total, setTotal] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [typeSort, setTypeSort] = useState(true);
+    const [indeterminate, setIndeterminate] =useState(false);
+    const [checkAll, setCheckAll] =useState(false);
+    const [listCheck, setListCheck] =useState([]);
     useEffect(() => {
         props.obj ? setArray(props.obj.data) : setArray([]);
         props.obj ? setPage(props.obj.page) : setPage(page);
         props.obj ? setPageSize(props.obj.pageSize) : setPageSize(pageSize);
         props.obj ? setTotal(props.obj.total) : setTotal(0);
         props.obj ? setTotalPage(props.obj.totalPage) : setTotal(0);
-    }, [props])
+        return () => {
+            setIndeterminate(false)
+            setCheckAll(false)
+        }
+    }, [props.obj])
     const onNextPage = (page,size) => {
-        console.log(page)
-        console.log(size)
+        //console.log(page)
+        //console.log(size)
         props.onChangePage(page, size)
     }
     const update = (item) => {
@@ -60,6 +67,8 @@ function Table(props) {
                 arrayRemove.push(value.id);
             }
         })
+        setIndeterminate(!!arrayRemove.length && arrayRemove.length < arrayCheck.length);
+        setCheckAll(arrayRemove.length === arrayCheck.length);
         console.log(arrayRemove)
         props.onMultiDelete(arrayRemove)
 
@@ -74,10 +83,7 @@ function Table(props) {
             return (
                 <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                     <td className="ant-table-cell">
-                        <label className="ant-checkbox-wrapper">
-                            <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
-                            <span />
-                        </label>
+                        <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
                     </td>
                     <td className="text-center w50px">
                         {(index + 1) + (page - 1) * pageSize}
@@ -144,11 +150,8 @@ function Table(props) {
                                 <thead className="ant-table-thead">
                                     <tr>
                                         <th>
-                                            <label className="fancy-checkbox">
-                                                <input type="hidden" id="hdfID" />
-                                                <input className="select-all" id="chkall" type="checkbox" name="checkbox" onChange={handleInputChange} />
-                                                <span />
-                                            </label>
+                                            <Checkbox indeterminate={indeterminate} id="chkall" onChange={handleInputChange} checked={checkAll}/>
+                                            
                                         </th>
                                         <th className="text-center">STT</th>
                                         <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
