@@ -42,7 +42,7 @@ namespace Application.API.Controllers
             try
             {
                 var response = Unauthorized();
-                Users user = await _manager.Login(login.UserName, login.PassWord);
+                Users user = await _manager.Login(login);
                 var tokenString = GenerateJWTToken(user);
                 MessageSuccess success = new MessageSuccess()
                 {
@@ -323,14 +323,18 @@ namespace Application.API.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: credentials
-            );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            //var token =new  {
+            //    issuer: _config["Jwt:Issuer"],
+            //    audience: _config["Jwt:Audience"],
+            //    claims: claims,
+            //    expires: DateTime.Now.AddMinutes(30),
+            //    signingCredentials: credentials
+            //};
+
+            var header = new JwtHeader(credentials);
+            var payload = new JwtPayload(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims,null, DateTime.Now.AddMinutes(30));
+            var securityToken = new JwtSecurityToken(header, payload);
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Application.Services.UserServices
             _logger = logger;
         }
 
-        public async Task<Users> Login(string username, string password)
+        public async Task<Users> Login(Users login)
         {
             try
             {
-                var data = (await _unitOfWork.UserRepository.Get(x => x.UserName == username && (x.PassWord == password)&&(x.Status==(int)StatusEnum.Active)));
+                var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName||x.Email==login.Email) && (x.PassWord == login.PassWord)&&(x.Status==(int)StatusEnum.Active)));
                 if (data == null)
                 {
                     throw new Exception("Tài khoản hoặc mật khẩu không chính xác");

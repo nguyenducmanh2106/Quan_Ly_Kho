@@ -1,11 +1,9 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import Layout from './components/pages/Layout';
-import Login from './components/Account/Login';
-//import Skeleton from 'react-loading-skeleton';
+import Login from './components/pages/Account/Login';
 import { List, Avatar } from 'antd';
 import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
 //import 'antd-button-color/dist/css/style.css';
@@ -16,7 +14,6 @@ import '../src/styles/global.scss';
 //let routes = RoutesModule.routes;
 //import App from './App';
 //import registerServiceWorker from './registerServiceWorker';
-//import { ToastProvider, useToasts } from 'react-toast-notifications';
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 
 ReactDOM.render(

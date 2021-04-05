@@ -16,7 +16,7 @@ namespace Application.Services.UserServices
         Task ToggleStatus(Users obj);
         Task Delete(Users obj);
         Task MultiDelete(string listItemDelete);
-        Task<Users> Login(string username,string password);
+        Task<Users> Login(Users login);
         Task<Users> FindById(int id);
     }
 }
