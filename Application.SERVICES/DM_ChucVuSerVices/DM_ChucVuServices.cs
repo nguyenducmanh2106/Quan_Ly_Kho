@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Application.MODELS;
 using Application.REPOSITORY;
-using Application.Utils;
+using Application.UTILS;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Application.UTILS;
 
 namespace Application.Services.DM_ChucVuSerVices
 {

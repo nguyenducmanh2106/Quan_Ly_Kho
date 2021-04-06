@@ -2,6 +2,7 @@
 import Layout from './components/pages/Layout';
 import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
+import PrivateRoute from './utils/PrivateRoute';
 // import our main pages
 //import { Layout } from './components/Layout';
 import { Error } from './components/Error';
@@ -32,14 +33,15 @@ import Dashboard from './components/pages/Dashboard/Dashboard';
 
 //export default ScreensRoot;
 // route our components
-const PrivateRoute = () => (
+const RouteSinglePage = () => (
     <Switch>
-        <Route exact path='/dashboard' component={Dashboard} />
-        <Route exact path='/menu' component={Menu} />
-        <Route exact path='/dm_chucvu' component={DM_ChucVu} />
-        <Route exact path='/dm_donvi' component={DM_DonVi} />
-        <Route exact path='/permission' component={Permission} />
-        <Route exact path='/user_group' component={UserGroup} />
-        <Route exact path='/user' component={User} />
-    </Switch>);
-export default PrivateRoute
+        <PrivateRoute exact path='/dashboard' component={Dashboard} />
+        <PrivateRoute component={Menu} path='/menu' exact />
+        <PrivateRoute exact path='/dm_chucvu' component={DM_ChucVu} />
+        <PrivateRoute exact path='/dm_donvi' component={DM_DonVi} />
+        <PrivateRoute exact path='/permission' component={Permission} />
+        <PrivateRoute exact path='/user_group' component={UserGroup} />
+        <PrivateRoute exact path='/user' component={User} />
+    </Switch>
+);
+export default RouteSinglePage

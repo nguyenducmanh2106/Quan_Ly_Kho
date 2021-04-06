@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Application.MODELS
 {
     [Table("Users")]
-   public class Users
+    public class Users
     {
         [Key]
         public int Id { get; set; }
         public string UserName { get; set; }
-        public string PassWord { get; set; }
+         public string PassWord { get; set; }
         public string Avatar { get; set; }
         public string FullName { get; set; }
         public DateTime Created_At { get; set; }
@@ -29,8 +30,8 @@ namespace Application.MODELS
         public DateTime? LastChangePass { get; set; }
         public int Ordering { get; set; }
         public string Permission { get; set; }
-        public Nullable<bool> isRoot { get; set; }
-        public Nullable<bool> isThongKe { get; set; }
+        public bool isRoot { get; set; }
+        public bool isThongKe { get; set; }
         public string pathAvatar { get; set; }
         [NotMapped]
         public string File_Base64 { get; set; }

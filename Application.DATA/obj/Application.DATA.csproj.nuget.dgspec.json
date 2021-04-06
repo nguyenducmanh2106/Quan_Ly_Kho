@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {}
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {}
   },
   "projects": {
-    "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
         "projectName": "Application.DATA",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.DATA\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",

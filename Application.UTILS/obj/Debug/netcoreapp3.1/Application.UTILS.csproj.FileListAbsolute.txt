@@ -7,8 +7,12 @@ D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.U
 D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.dll
 D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.pdb
 D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csprojAssemblyReference.cache
-D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.DATA.dll
-D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.MODELS.dll
-D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.MODELS.pdb
-D:\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.DATA.pdb
-D:\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csproj.CopyComplete
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.deps.json
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.pdb
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csprojAssemblyReference.cache
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.AssemblyInfoInputs.cache
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.AssemblyInfo.cs
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.pdb

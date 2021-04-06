@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Application.MODELS;
 using Application.REPOSITORY;
-using Application.Utils;
+using Application.UTILS;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,10 +29,35 @@ namespace Application.Services.UserServices
                 {
                     throw new Exception("Tài khoản hoặc mật khẩu không chính xác");
                 }
+                string listStringPermission = "";
+                if (data.UserGroupID != "" && data.UserGroupID != null)
+                {
+                    //Chuyeen ve mang string chuc cac id cua nhom nguoi dung
+                    var strGroup = data.UserGroupID.Split(",");
+                    //lay permission cua nhom nguoi dung
+                    var permissionGroup = (await _unitOfWork.UserGroupRepository.FindBy(x => (strGroup.Contains(x.Id.ToString())) && (x.Status == (int)StatusEnum.Active)));
+                    if (permissionGroup.LongCount() > 0)
+                    {
+                        foreach(var item in permissionGroup)
+                        {
+                            if (item.Permission != ""&& item.Permission!=null)
+                            {
+                                listStringPermission += item.Permission;
+                            }
+                        }
+                    }
+                }
                 var user = new Users()
                 {
-                    UserName=data.UserName,
-                    FullName=data.FullName
+                    UserName = data.UserName,
+                    FullName = data.FullName,
+                    pathAvatar = data.pathAvatar,
+                    Avatar = data.Avatar,
+                    DonViId = data.DonViId,
+                    ChucVuId = data.ChucVuId,
+                    Permission = data.Permission != "" ? data.Permission + "," + listStringPermission : "",
+                    isRoot=data.isRoot,
+                    isThongKe=data.isThongKe
                 };
                 return user;
             }

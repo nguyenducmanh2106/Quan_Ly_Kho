@@ -1,5 +1,6 @@
 using Application.DependencyInjection;
 using Application.MODELS;
+using Application.API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.API
 {
@@ -64,6 +66,7 @@ namespace Application.API
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    RequireExpirationTime = true,
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -80,15 +83,19 @@ namespace Application.API
                 //});
 
             });
+            services.AddControllersWithViews();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(24);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.Name = "THA";
+
+            });
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             IOCConfig.Register(services, Configuration);
-            //services.ConfigureSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v3", new OpenApiInfo
-            //    {
-            //        Title = "GTrackAPI",
-            //        Version = "v3"
-            //    });
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,27 +105,33 @@ namespace Application.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors(DevCorsPolicyName);
+            //app.UseCors(DevCorsPolicyName);
+            app.UseCors(option => option
+            .WithOrigins(new[] { Configuration["domainOrigin"] })
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            );
             app.UseHttpsRedirection();
+            app.UseCookiePolicy();
+            app.UseSession();
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("access_token");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            //    c.RoutePrefix = string.Empty;
-            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
     }
 }

@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Application.UTILS;
 using Application.Services.UserGroupSerVices;
-using Application.Utils;
 using Newtonsoft.Json;
 using Application.Services.PermissionSerVices;
 

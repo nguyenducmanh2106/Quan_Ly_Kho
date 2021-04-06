@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Application.UTILS;
 using Application.Services.MenuSerVices;
-using Application.Utils;
 using Newtonsoft.Json;
 
 namespace Application.API.Controllers

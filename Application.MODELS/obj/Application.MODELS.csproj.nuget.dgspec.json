@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {}
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {}
   },
   "projects": {
-    "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
         "projectName": "Application.DATA",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.DATA\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -88,14 +88,14 @@
         }
       }
     },
-    "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
         "projectName": "Application.MODELS",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -112,8 +112,11 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              },
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -139,6 +142,82 @@
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.11, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
+        "projectName": "Application.UTILS",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Extensions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Session": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1-beta1, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[6.0.0-preview.2.21154.6, )"
             }
           },
           "imports": [

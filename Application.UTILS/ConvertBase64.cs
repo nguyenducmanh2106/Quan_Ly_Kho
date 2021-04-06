@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace DSDLHD.Utils
+namespace Application.UTILS
 {
     public static class ConvertBase64
     {

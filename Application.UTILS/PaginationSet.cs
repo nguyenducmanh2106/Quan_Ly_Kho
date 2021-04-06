@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Application.Utils
+namespace Application.UTILS
 {
     public class PaginationSet<T>
     {

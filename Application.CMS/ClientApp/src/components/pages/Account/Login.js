@@ -1,11 +1,11 @@
 ﻿
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import logo from '../../static/images/logo.png';
+import logo from '../../../static/images/logo.png';
 import 'isomorphic-fetch';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import { NavLink, Link, Switch, useHistory, BrowserRouter as Router } from 'react-router-dom';
-import { setAccessToken, isLoggedIn, postAPI, parseJwt, setUser } from '../../utils/helpers';
+import { setAccessToken, isLoggedIn, postAPI, parseJwt, setUser } from '../../../utils/helpers';
 import { Form, Input, Button, Checkbox, Layout } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 const Login = () => {
@@ -23,9 +23,9 @@ const Login = () => {
             "Password": base64_encode(values.password)
         }
         var data = JSON.stringify(obj);
-        console.log(obj)
+        //console.log(obj)
         // Send POST request with data submited from form
-        //var data = postAPI('api/user/login', data, false).then(checkStatus)
+        var data = postAPI('api/user/login', data, false).then(checkStatus)
     };
 
     const onFinishFailed = (errorInfo) => {

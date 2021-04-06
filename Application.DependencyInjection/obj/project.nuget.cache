@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6ejboLCokeGy3kzmLVwPvslguUiuLv+XZ/8NFHvaRD91MVediFw9B+I/2yI7YGkCVBQSNHHe4Uvqkevm18lKAw==",
+  "dgSpecHash": "u/dZ73U8itSLLTW9bo64ZN66c4pKME6U5fykBGaxdzCZifpsDma1wbaSTBYVZGyI7hYMwwBrTa9Y8RDYGGbHBw==",
   "success": true,
-  "projectFilePath": "D:\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj",
+  "projectFilePath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\fastmember\\1.5.0\\fastmember.1.5.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\linqkit.microsoft.entityframeworkcore\\3.0.22\\linqkit.microsoft.entityframeworkcore.3.0.22.nupkg.sha512",

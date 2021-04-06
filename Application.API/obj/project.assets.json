@@ -1334,6 +1334,7 @@
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "Application.DATA": "1.0.0",
+          "Application.UTILS": "1.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Mvc.Core": "2.2.5",
           "Microsoft.EntityFrameworkCore": "3.1.11"
@@ -1379,7 +1380,6 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
-          "Application.MODELS": "1.0.0",
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
           "Microsoft.AspNetCore.Session": "2.2.0",
@@ -3503,11 +3503,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.API\\Application.API.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\Application.API.csproj",
       "projectName": "Application.API",
-      "projectPath": "D:\\QuanLyKho\\Application\\Application.API\\Application.API.csproj",
+      "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\Application.API.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\QuanLyKho\\Application\\Application.API\\obj\\",
+      "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3524,11 +3524,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
-              "projectPath": "D:\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj"
+            "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
+              "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj"
             },
-            "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-              "projectPath": "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+            "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+              "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
             }
           }
         }

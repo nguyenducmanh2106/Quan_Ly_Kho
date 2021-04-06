@@ -4,7 +4,9 @@
     float:right;
     margin-top:2px
 }
-
+.headerTop {
+    box-shadow: 0px 4px 8px rgb(168 168 168 / 25%) !important;
+}
 .logo {
     height: 64px;
     min-height:45px;
@@ -30,15 +32,8 @@
 .login h1 {
     color: #1890ff !important;
 }
-
-/*
-.main-container {
-    min-height: 500px;
-    padding: 0 30px 32px;
-}*/
  .ant-btn {
     margin-right: 8px;
-    /*margin-bottom: 12px;*/
 }
 .danger {
     background: #FF4D4F !important;

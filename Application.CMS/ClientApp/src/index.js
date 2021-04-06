@@ -5,35 +5,22 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Layout from './components/pages/Layout';
 import Login from './components/pages/Account/Login';
 import { List, Avatar } from 'antd';
-import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
+
 //import 'antd-button-color/dist/css/style.css';
 //import 'mdbreact/dist/css/mdb.css';
 import 'antd/dist/antd.css';
 import 'sweetalert2/src/sweetalert2.scss';
 import '../src/styles/global.scss';
 //let routes = RoutesModule.routes;
-//import App from './App';
+import App from './App';
 //import registerServiceWorker from './registerServiceWorker';
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 
 ReactDOM.render(
-    <AppContainer>
-        <Router>
-            {console.log(baseUrl)}
-            <Switch>
-                <Route path="/login">
-                    <Login/>
-                </Route>
-                <Route path="/">
-                   <Layout />
-                </Route>
-            </Switch>
-        </Router>
-    </AppContainer>,
-    document.getElementById('root'));
+    //<AppContainer>
+       <App/>
+    //</AppContainer>
+    ,document.getElementById('root'));
 
-//<Route path='/' exact render={() => {
-//    return isLoggedIn() ? <Layout /> : <Redirect to="/login" />
-//}} />
-//registerServiceWorker();
+
 

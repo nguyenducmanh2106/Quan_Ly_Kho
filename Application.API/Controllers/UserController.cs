@@ -13,10 +13,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Application.UTILS;
 using Application.Services.UserServices;
-using Application.Utils;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using DSDLHD.Utils;
+using Microsoft.AspNetCore.Http;
+using Application.API.Middleware;
 
 namespace Application.API.Controllers
 {
@@ -27,11 +27,15 @@ namespace Application.API.Controllers
         private readonly IUserServices _manager;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public UserController(IConfiguration config, IUserServices _manager, IHostingEnvironment hostingEnvironment)
+        public UserController(IConfiguration config, IUserServices _manager, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
+            _httpContextAccessor = httpContextAccessor;
+            HttpHelper.SetHttpContextAccessor(_httpContextAccessor);
             _hostingEnvironment = hostingEnvironment;
         }
 
@@ -52,6 +56,11 @@ namespace Application.API.Controllers
                         userDetails = user,
                     }
                 };
+                UTILS.SessionExtensions.Set<Users>(_session, UTILS.SessionExtensions.SessionAccount, user);
+                Response.Cookies.Append("access_token", tokenString, new CookieOptions
+                {
+                    HttpOnly = true
+                });
                 return Ok(success);
 
             }
@@ -73,7 +82,7 @@ namespace Application.API.Controllers
                 var total = 0;
                 var stt = (page - 1) * pageSize;
                 var dataExist = (await _manager.getData(page, pageSize, Status, Name, ChucVuId));
-                
+
                 if (dataExist == null)
                 {
                     return Ok(new MessageError());
@@ -112,16 +121,16 @@ namespace Application.API.Controllers
                         Permission = g.Permission,
                         isRoot = g.isRoot,
                         isThongKe = g.isThongKe,
-                        Status=g.Status,
+                        Status = g.Status,
                         PassWord = g.PassWord,
-                        Avatar=g.Avatar
+                        Avatar = g.Avatar
                     });
                     totalPage = (int)Math.Ceiling(((double)total / pageSize));
                     MessageSuccess success = new MessageSuccess()
                     {
                         result = new
                         {
-                            data= dataFinal,
+                            data = dataFinal,
                             totalPage,
                             total,
                             stt,
@@ -198,7 +207,7 @@ namespace Application.API.Controllers
         {
             try
             {
-                var existData =await _manager.FindById(obj.Id);
+                var existData = await _manager.FindById(obj.Id);
                 if (existData == null)
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
@@ -310,11 +319,41 @@ namespace Application.API.Controllers
             }
 
         }
+        [RoleAuthorize("Home.View")]
+        [HttpGet("get-user")]
+        public async Task<IActionResult> GetUser()
+        {
+            try
+            {
+                var jwt = "Xin chafo";
+                //var jwt = Request.Cookies["access_token"];
+                return Ok(jwt);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                Response.Cookies.Delete("access_token");
+                return Ok(new MessageSuccess()
+                {
 
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         string GenerateJWTToken(Users userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             var claims = new[]
             {
@@ -332,9 +371,10 @@ namespace Application.API.Controllers
             //};
 
             var header = new JwtHeader(credentials);
-            var payload = new JwtPayload(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims,null, DateTime.Now.AddMinutes(30));
+            var payload = new JwtPayload(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims, null, DateTime.Now.AddMinutes(30));
             var securityToken = new JwtSecurityToken(header, payload);
             return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
+
     }
 }

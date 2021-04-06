@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Application.Utils
+namespace Application.UTILS
 {
     public static class Validation
     {

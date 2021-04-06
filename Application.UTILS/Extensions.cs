@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Application.Utils
+namespace Application.UTILS
 {
     public static class Extensions
     {

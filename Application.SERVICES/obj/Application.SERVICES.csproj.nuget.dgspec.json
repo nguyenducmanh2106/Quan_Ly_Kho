@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj": {}
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj": {}
   },
   "projects": {
-    "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
         "projectName": "Application.DATA",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.DATA\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -88,14 +88,14 @@
         }
       }
     },
-    "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
         "projectName": "Application.MODELS",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -112,8 +112,11 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              },
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -160,14 +163,14 @@
         }
       }
     },
-    "D:\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
         "projectName": "Application.REPOSITORY",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.REPOSITORY\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -184,14 +187,14 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
               },
-              "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
               },
-              "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -224,14 +227,14 @@
         }
       }
     },
-    "D:\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj",
         "projectName": "Application.SERVICES",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.SERVICES\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -248,14 +251,14 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
               },
-              "D:\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj"
               },
-              "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -288,14 +291,14 @@
         }
       }
     },
-    "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
         "projectName": "Application.UTILS",
-        "projectPath": "D:\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
+        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "D:\\QuanLyKho\\Application\\Application.UTILS\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -311,11 +314,7 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {
-              "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
-                "projectPath": "D:\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {

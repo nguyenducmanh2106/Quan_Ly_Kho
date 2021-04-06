@@ -56,9 +56,7 @@ const LayoutForm = () => {
                 </Menu>
             </Sider>
             <Layout className="site-layout">
-                <Header className="headerTop">
-                    
-                </Header>
+                <HeaderElement/>
                 <Content
                     style={{
                         padding: "24px",
