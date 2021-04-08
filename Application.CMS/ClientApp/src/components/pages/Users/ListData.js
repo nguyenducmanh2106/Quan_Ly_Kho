@@ -4,7 +4,7 @@ import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Ch
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
-
+import { Can } from "../../elements/Config_Roles/Can"
 function Table(props) {
     //khai báo state
     const [array, setArray] = useState([]);
@@ -120,25 +120,33 @@ function Table(props) {
                         <td>
                             <Dropdown placement="bottomCenter" overlay={() => (
                                 <Menu>
-                                    <Menu.Item style={{ textAlign:"center" }} key="1">{item.isRoot ? "" : <Tooltip title="Phân quyền">
-                                        <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
-                                    </Tooltip>}
-                                    </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="2">
-                                        <Tooltip title="Đổi mật khẩu">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="warning" icon={<AntdIcons.KeyOutlined />} onClick={() => onChangePassWord(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="3">
-                                        <Tooltip title="Chỉnh sửa">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="4">
-                                        <Tooltip title="Xoá">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
+                                    <Can I="role" a="user">
+                                        <Menu.Item style={{ textAlign: "center" }} key="1">{item.isRoot ? "" : <Tooltip title="Phân quyền">
+                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
+                                        </Tooltip>}
+                                        </Menu.Item>
+                                    </Can>
+                                    <Can I="change_pass" a="user">
+                                        <Menu.Item style={{ textAlign: "center" }} key="2">
+                                            <Tooltip title="Đổi mật khẩu">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="warning" icon={<AntdIcons.KeyOutlined />} onClick={() => onChangePassWord(item)} />
+                                            </Tooltip>
+                                        </Menu.Item>
+                                    </Can>
+                                    <Can I="edit" a="user">
+                                        <Menu.Item style={{ textAlign: "center" }} key="3">
+                                            <Tooltip title="Chỉnh sửa">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                            </Tooltip>
+                                        </Menu.Item>
+                                    </Can>
+                                    <Can I="delete" a="user">
+                                        <Menu.Item style={{ textAlign: "center" }} key="4">
+                                            <Tooltip title="Xoá">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                            </Tooltip>
+                                        </Menu.Item>
+                                    </Can>
                                 </Menu>
                             )} trigger={['click']}>
                                 <Button>

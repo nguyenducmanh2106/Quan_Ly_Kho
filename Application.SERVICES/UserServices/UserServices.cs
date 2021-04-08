@@ -26,6 +26,7 @@ namespace Application.Services.UserServices
             {
                 
                 var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName||x.Email==login.Email) && (x.PassWord == login.PassWord)&&(x.Status==(int)StatusEnum.Active)));
+                var lstPermissions= (await _unitOfWork.PermissionRepository.FindBy(x => (x.Status == (int)StatusEnum.Active)));
                 if (data == null)
                 {
                     throw new Exception("Tài khoản hoặc mật khẩu không chính xác");
@@ -75,7 +76,7 @@ namespace Application.Services.UserServices
                 var remover_Permission_Duplicated = string.Join(",", fullPermission_Arr);
                 var user = new Users()
                 {
-                    Id=data.Id,
+                    Id = data.Id,
                     UserName = data.UserName,
                     FullName = data.FullName,
                     pathAvatar = data.pathAvatar,
@@ -83,8 +84,9 @@ namespace Application.Services.UserServices
                     DonViId = data.DonViId,
                     ChucVuId = data.ChucVuId,
                     Permission = remover_Permission_Duplicated,
-                    isRoot=data.isRoot,
-                    isThongKe=data.isThongKe
+                    isRoot = data.isRoot,
+                    isThongKe = data.isThongKe,
+                    lstPermission = lstPermissions.ToList()
                 };
                 return user;
             }

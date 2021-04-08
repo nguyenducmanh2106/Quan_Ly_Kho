@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import { SmallBox } from '../../elements/index';
 import { Skeleton, Switch, Card, Avatar, Layout, Row, Col } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 const { Meta } = Card;

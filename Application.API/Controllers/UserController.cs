@@ -62,7 +62,8 @@ namespace Application.API.Controllers
                     isRoot = user.isRoot,
                     isThongKe = user.isThongKe,
                     Status = user.Status,
-                    Avatar = user.Avatar
+                    Avatar = user.Avatar,
+                    lstPermission=user.lstPermission
                 };
                 var tokenString = GenerateJWTToken(user);
                 MessageSuccess success = new MessageSuccess()

@@ -1,17 +1,17 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import logo from '../../../static/images/logo.png';
-import 'isomorphic-fetch';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import { NavLink, Link, Switch, useHistory, useLocation, BrowserRouter as Router } from 'react-router-dom';
 import { setAccessToken, isLoggedIn, postAPI, setLocalStorage, getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone, setCookie } from '../../../utils/helpers';
 import { USER_LOCALSTORAGE, EXPIRES_AT_LOCALSTORAGE, ACCESS_TOKEN, URL_DASHBOARD } from "../../../utils/constants";
 import { Form, Input, Button, Checkbox, Layout, Spin, Tag } from 'antd';
+import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
 import * as AntdIcons from '@ant-design/icons';
 const Login = (props) => {
     let history = useHistory();
     let location = useLocation();
-    console.log(location)
+    //console.log(location)
     let { from } = location.state || { from: { pathname: URL_DASHBOARD } };
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('Sign in to start your session')
@@ -43,6 +43,7 @@ const Login = (props) => {
             setIsLoading(false)
         }
         else {
+            defineAbilitiesFor(res.result.userDetails);
             var totalMiniseconds = getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone(30)
             setLocalStorage(EXPIRES_AT_LOCALSTORAGE, totalMiniseconds);
             setLocalStorage(USER_LOCALSTORAGE, JSON.stringify(res.result.userDetails));
