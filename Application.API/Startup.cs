@@ -76,6 +76,17 @@ namespace Application.API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"])),
                     ClockSkew = TimeSpan.Zero
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
                 //services.AddAuthorization(config =>
                 //{
                 //    config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
@@ -104,6 +115,10 @@ namespace Application.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
             //app.UseCors(DevCorsPolicyName);
             app.UseCors(option => option

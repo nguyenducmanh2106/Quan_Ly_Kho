@@ -7,6 +7,7 @@
 .headerTop {
     box-shadow: 0px 4px 8px rgb(168 168 168 / 25%) !important;
 }
+
 .logo {
     height: 64px;
     min-height:45px;
@@ -31,9 +32,6 @@
 }
 .login h1 {
     color: #1890ff !important;
-}
- .ant-btn {
-    margin-right: 8px;
 }
 .danger {
     background: #FF4D4F !important;

@@ -210,3 +210,11 @@ C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\obj\De
 C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\obj\Debug\netcoreapp3.1\Application.API.dll
 C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\obj\Debug\netcoreapp3.1\Application.API.pdb
 C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\obj\Debug\netcoreapp3.1\Application.API.genruntimeconfig.cache
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\System.Security.AccessControl.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\System.Security.Permissions.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\System.Security.Principal.Windows.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\System.Windows.Extensions.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Security.AccessControl.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
+C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.API\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll

@@ -24,12 +24,13 @@ namespace Application.Services.UserServices
         {
             try
             {
+                
                 var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName||x.Email==login.Email) && (x.PassWord == login.PassWord)&&(x.Status==(int)StatusEnum.Active)));
                 if (data == null)
                 {
                     throw new Exception("Tài khoản hoặc mật khẩu không chính xác");
                 }
-                string listStringPermission = "";
+                string listStringPermission="";
                 if (data.UserGroupID != "" && data.UserGroupID != null)
                 {
                     //Chuyeen ve mang string chuc cac id cua nhom nguoi dung
@@ -42,20 +43,46 @@ namespace Application.Services.UserServices
                         {
                             if (item.Permission != ""&& item.Permission!=null)
                             {
-                                listStringPermission += item.Permission;
+                                if (listStringPermission == "")
+                                {
+                                    listStringPermission = item.Permission;
+                                }
+                                else
+                                {
+                                    listStringPermission += $",{item.Permission}";
+                                }
                             }
                         }
                     }
                 }
+                string fullPermission_Str = "";
+                if (data.Permission != "" && data.Permission != null)
+                {
+                    if (listStringPermission != "")
+                    {
+                        fullPermission_Str = data.Permission + "," + listStringPermission;
+                    }
+                    else
+                    {
+                        fullPermission_Str = data.Permission;
+                    }
+                }
+                else
+                {
+                    fullPermission_Str = listStringPermission;
+                }
+                var fullPermission_Arr = fullPermission_Str.Split(',').Distinct();
+                var remover_Permission_Duplicated = string.Join(",", fullPermission_Arr);
                 var user = new Users()
                 {
+                    Id=data.Id,
                     UserName = data.UserName,
                     FullName = data.FullName,
                     pathAvatar = data.pathAvatar,
                     Avatar = data.Avatar,
                     DonViId = data.DonViId,
                     ChucVuId = data.ChucVuId,
-                    Permission = data.Permission != "" ? data.Permission + "," + listStringPermission : "",
+                    Permission = remover_Permission_Duplicated,
                     isRoot=data.isRoot,
                     isThongKe=data.isThongKe
                 };
@@ -164,6 +191,27 @@ namespace Application.Services.UserServices
                 exist.isRoot = obj.isRoot;
                 exist.isThongKe = obj.isThongKe;
                 exist.Ordering = obj.Ordering;
+                await _unitOfWork.UserRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+        public async Task ChangePermission(Users obj)
+        {
+            //await _unitOfWork.CreateTransaction();
+            try
+            {
+                var exist = await _unitOfWork.UserRepository.Get(g => g.Id == obj.Id);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
                 exist.Permission = obj.Permission;
                 await _unitOfWork.UserRepository.Update(exist);
                 await _unitOfWork.SaveChange();
@@ -176,7 +224,6 @@ namespace Application.Services.UserServices
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
         }
-
         public async Task ChangePassUser(Users obj)
         {
             try

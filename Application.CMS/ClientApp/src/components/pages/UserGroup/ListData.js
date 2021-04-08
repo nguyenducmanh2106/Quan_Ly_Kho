@@ -103,15 +103,29 @@ function Table(props) {
                                 </Button>}
                         </td>
                         <td className="text-center">
-                            <Tooltip title="Phân quyền">
-                                <Button type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
-                            </Tooltip>
-                            <Tooltip title="Chỉnh sửa">
-                                <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
-                            </Tooltip>
-                            <Tooltip title="Xoá">
-                                <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                            </Tooltip>
+                            <Dropdown placement="bottomCenter" overlay={() => (
+                                <Menu>
+                                    <Menu.Item style={{ textAlign: "center" }} key="2">
+                                        <Tooltip title="Phân quyền">
+                                            <Button type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
+                                        </Tooltip>
+                                    </Menu.Item>
+                                    <Menu.Item style={{ textAlign: "center" }} key="3">
+                                        <Tooltip title="Chỉnh sửa">
+                                            <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                        </Tooltip>
+                                    </Menu.Item>
+                                    <Menu.Item style={{ textAlign: "center" }} key="4">
+                                        <Tooltip title="Xoá">
+                                            <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                        </Tooltip>
+                                    </Menu.Item>
+                                </Menu>
+                            )} trigger={['click']}>
+                                <Button>
+                                    <AntdIcons.UnorderedListOutlined /> <AntdIcons.DownOutlined />
+                                </Button>
+                            </Dropdown>
                         </td>
                     </tr>
                 );

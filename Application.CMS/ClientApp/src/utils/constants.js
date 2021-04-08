@@ -11,4 +11,11 @@ export const ABOUT_TEXT = 'Bulls and Cows is a game when you need to guess a 4-d
     + 'If you have digits from the secret number, but not on the right places, they are Cows.';
 export const ERROR_TEXT = "Something is wrong. But, you see, I'm just a baby, so I can't deal with everything in this cruel world! You wanna help me ?";
 export const REPOSITORY_URL = "https://github.com/mdamyanova/Bulls-and-Cows";
+export const USER_LOCALSTORAGE = "userInfo";
+export const EXPIRES_AT_LOCALSTORAGE = "expires_at";
+export const ACCESS_TOKEN = "access_token";
+export const DOMAIN = "localhost";
+export const URL_ERROR = "/error";
+export const URL_LOGIN = "/login";
+export const URL_DASHBOARD = "/dashboard";
 //# sourceMappingURL=constants.js.map

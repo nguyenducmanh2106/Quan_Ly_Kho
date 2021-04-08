@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import FormCreate from './Create';
 import FormUpdate from './Update';
-import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button } from 'antd';
+import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
@@ -60,11 +60,11 @@ function Index() {
         //gọi hàm
         getData(page, pageSize);
         getOptions();
-        
+
         return () => {
             setAction(false)
         }
-    }, [isAction,nameSort, page, pageSize])
+    }, [isAction, nameSort, page, pageSize])
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
@@ -306,15 +306,17 @@ function Index() {
                     </Col>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
-                            <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
-                                Tìm Kiếm
+                            <Space size={8}>
+                                <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
+                                    Tìm Kiếm
     </Button>
-                            <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
-                                Thêm mới
+                                <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                    Thêm mới
     </Button>
-                            <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                Xoá nhiều
+                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                    Xoá nhiều
     </Button>
+                            </Space>
                         </Skeleton>
                     </Col>
 
@@ -355,7 +357,7 @@ function Index() {
                 </Row>
             </Card>
         </Content>
-        
+
     );
 };
 export default Index;

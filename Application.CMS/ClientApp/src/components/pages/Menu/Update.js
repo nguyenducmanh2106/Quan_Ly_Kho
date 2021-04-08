@@ -28,7 +28,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
             Id:item.id,
             ...data,
             Status: data.Status ? 1 : 2,
-            isMenu: data.ismenu ? true : false,
+            isMenu: data.isMenu ? true : false,
         }
         //console.log(obj)
         onPostUpdateItem(obj)

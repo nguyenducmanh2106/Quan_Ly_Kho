@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, Badge, InputNumber, Menu,Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown  } from 'antd';
+import { Form, Input, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 function Table(props) {
@@ -11,9 +11,9 @@ function Table(props) {
     const [total, setTotal] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [typeSort, setTypeSort] = useState(true);
-    const [indeterminate, setIndeterminate] =useState(false);
-    const [checkAll, setCheckAll] =useState(false);
-    const [listCheck, setListCheck] =useState([]);
+    const [indeterminate, setIndeterminate] = useState(false);
+    const [checkAll, setCheckAll] = useState(false);
+    const [listCheck, setListCheck] = useState([]);
     useEffect(() => {
         props.obj ? setArray(props.obj.data) : setArray([]);
         props.obj ? setPage(props.obj.page) : setPage(page);
@@ -25,7 +25,7 @@ function Table(props) {
             setCheckAll(false)
         }
     }, [props.obj])
-    const onNextPage = (page,size) => {
+    const onNextPage = (page, size) => {
         //console.log(page)
         //console.log(size)
         props.onChangePage(page, size)
@@ -76,7 +76,7 @@ function Table(props) {
     const onDelete = (item) => {
         props.onDeleteItem(item)
     }
-    
+
     const renderBody = () => {
         var result = ""
         result = array != [] ? array.map((item, index) => {
@@ -103,15 +103,27 @@ function Table(props) {
                             <Badge status="success" text="Đang hoạt động" />
                         </Button> : <Button type="primary" className="danger-outline" ghost onClick={() => toggleStatus(1, item)}>
                                 <Badge status="error" text="Ngừng hoạt động" />
-                        </Button> }
+                            </Button>}
                     </td>
                     <td>
-                        <Tooltip title="Chỉnh sửa">
-                            <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)}/>
-                        </Tooltip>
-                        <Tooltip title="Xoá">
-                            <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                        </Tooltip>
+                        <Dropdown placement="bottomCenter" overlay={() => (
+                            <Menu>
+                                <Menu.Item style={{ textAlign: "center" }} key="2">
+                                    <Tooltip title="Chỉnh sửa">
+                                        <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                    </Tooltip>
+                                </Menu.Item>
+                                <Menu.Item style={{ textAlign: "center" }} key="3">
+                                    <Tooltip title="Xoá">
+                                        <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                    </Tooltip>
+                                </Menu.Item>
+                            </Menu>
+                        )} trigger={['click']}>
+                            <Button>
+                                <AntdIcons.UnorderedListOutlined /> <AntdIcons.DownOutlined />
+                            </Button>
+                        </Dropdown>
                     </td>
                 </tr>
             );
@@ -150,8 +162,8 @@ function Table(props) {
                                 <thead className="ant-table-thead">
                                     <tr>
                                         <th>
-                                            <Checkbox indeterminate={indeterminate} id="chkall" onChange={handleInputChange} checked={checkAll}/>
-                                            
+                                            <Checkbox indeterminate={indeterminate} id="chkall" onChange={handleInputChange} checked={checkAll} />
+
                                         </th>
                                         <th className="text-center">STT</th>
                                         <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
@@ -198,7 +210,7 @@ function Table(props) {
                     />
                 </Col>
             </Row>
-           
+
         </>
     )
 };

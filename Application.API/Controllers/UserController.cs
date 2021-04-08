@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Application.API.Middleware;
+using Newtonsoft.Json;
 
 namespace Application.API.Controllers
 {
@@ -38,7 +39,6 @@ namespace Application.API.Controllers
             HttpHelper.SetHttpContextAccessor(_httpContextAccessor);
             _hostingEnvironment = hostingEnvironment;
         }
-
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Authentication([FromBody] Users login)
@@ -47,20 +47,37 @@ namespace Application.API.Controllers
             {
                 var response = Unauthorized();
                 Users user = await _manager.Login(login);
+                var dataFinal = new Users()
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    pathAvatar = ReadFileToBase64(user.pathAvatar),
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    UserGroupID = user.UserGroupID,
+                    DonViId = user.DonViId,
+                    ChucVuId = user.ChucVuId,
+                    Permission = user.Permission,
+                    isRoot = user.isRoot,
+                    isThongKe = user.isThongKe,
+                    Status = user.Status,
+                    Avatar = user.Avatar
+                };
                 var tokenString = GenerateJWTToken(user);
                 MessageSuccess success = new MessageSuccess()
                 {
                     result = new
                     {
                         access_token = tokenString,
-                        userDetails = user,
+                        userDetails = dataFinal
                     }
                 };
-                UTILS.SessionExtensions.Set<Users>(_session, UTILS.SessionExtensions.SessionAccount, user);
-                Response.Cookies.Append("access_token", tokenString, new CookieOptions
-                {
-                    HttpOnly = true
-                });
+                //UTILS.SessionExtensions.Set<Users>(_session, UTILS.SessionExtensions.SessionAccount, user);
+                //Response.Cookies.Append("access_token_1", tokenString, new CookieOptions
+                //{
+                //    //HttpOnly = false
+                //});
                 return Ok(success);
 
             }
@@ -236,6 +253,25 @@ namespace Application.API.Controllers
                 });
             }
         }
+        [HttpPost("change-permission")]
+        public async Task<IActionResult> ChangePermission([FromBody] Users obj)
+        {
+            try
+            {
+                await _manager.ChangePermission(obj);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
         [HttpPost("changepass-user")]
         public async Task<IActionResult> ChangePassUser([FromBody] Users obj)
         {
@@ -319,14 +355,13 @@ namespace Application.API.Controllers
             }
 
         }
-        [RoleAuthorize("Home.View")]
+        [RoleAuthorize("Dm_DonVi.View")]
         [HttpGet("get-user")]
         public async Task<IActionResult> GetUser()
         {
             try
             {
                 var jwt = "Xin chafo";
-                //var jwt = Request.Cookies["access_token"];
                 return Ok(jwt);
             }
             catch (Exception ex)
@@ -357,7 +392,7 @@ namespace Application.API.Controllers
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, JsonConvert.SerializeObject(userInfo)),
                 new Claim("FullName", userInfo.FullName.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };

@@ -163,6 +163,27 @@ namespace Application.API.Controllers
                 });
             }
         }
+        [HttpPost("change-permission")]
+        public async Task<IActionResult> ChangePermission([FromBody] UserGroups obj)
+        {
+            try
+            {
+
+                await _manager.ChangePermission(obj);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
         [HttpPost("toggle-status")]
         public async Task<IActionResult> ToggleStatus([FromBody] UserGroups obj)
         {

@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Application.UTILS;
 using Application.Services.MenuSerVices;
 using Newtonsoft.Json;
+using Application.API.Middleware;
 
 namespace Application.API.Controllers
 {
@@ -67,6 +68,7 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
+        [RoleAuthorizeAttribute("Category.View")]
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
         {

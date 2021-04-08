@@ -2509,7 +2509,7 @@ html {
   color: $primary;
 }
 .ant-menu-horizontal {
-  line-height: 46px;
+  line-height: 51px !important;
   white-space: nowrap;
   border: 0;
   border-bottom: 1px solid #e8e8e8;
@@ -2531,18 +2531,18 @@ html {
 .ant-menu-horizontal > .ant-menu-submenu-open,
 .ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-horizontal > .ant-menu-submenu-selected {
-  color: #fff !important;
-  background: $primary;
+  color: #fff;
+  /*background: $primary;*/
 }
 .ant-menu-horizontal > .ant-menu-item > a {
   display: block;
   color: $color_1;
 }
-.ant-menu-horizontal > .ant-menu-item > a:hover {
+/*.ant-menu-horizontal > .ant-menu-item > a:hover {
   color: #fff !important;
 
   
-}
+}*/
 .ant-menu-submenu-horizontal > .ant-menu-submenu-title:hover{
   .submenu-title-wrapper{
     color:#fff !important;

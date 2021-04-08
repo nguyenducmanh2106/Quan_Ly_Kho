@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { isLoggedIn } from '../utils/helpers';
+import { URL_DASHBOARD } from '../utils/constants';
 
 const PublicRoute = ({ component: Component, restricted, ...rest }) => {
     return (
@@ -8,7 +9,7 @@ const PublicRoute = ({ component: Component, restricted, ...rest }) => {
         // restricted = true meaning restricted route
         <Route {...rest} render={props => (
             isLoggedIn() && restricted ?
-                <Redirect to="/dashboard" />
+                <Redirect to={URL_DASHBOARD} />
                 : <Component {...props} />
         )} />
     );

@@ -121,6 +121,27 @@ namespace Application.Services.UserGroupSerVices
                 exist.Status = obj.Status;
                 exist.Code = obj.Code;
                 exist.Ordering = obj.Ordering;
+                await _unitOfWork.UserGroupRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+        public async Task ChangePermission(UserGroups obj)
+        {
+            //await _unitOfWork.CreateTransaction();
+            try
+            {
+                var exist = await _unitOfWork.UserGroupRepository.Get(g => g.Id == obj.Id);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
                 exist.Permission = obj.Permission;
                 await _unitOfWork.UserGroupRepository.Update(exist);
                 await _unitOfWork.SaveChange();
@@ -133,5 +154,6 @@ namespace Application.Services.UserGroupSerVices
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
         }
+
     }
 }

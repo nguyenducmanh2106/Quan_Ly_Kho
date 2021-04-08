@@ -1,16 +1,19 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button } from 'antd';
+import { useHistory } from 'react-router-dom'
+import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import FormCreate from './Create';
 import FormUpdate from './Update';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
+import { URL_ERROR } from './../../../utils/constants';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
 import Swal from 'sweetalert2';
 function Index() {
     //khai báo state
+    let history = useHistory()
     const [state, setState] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
@@ -37,6 +40,10 @@ function Index() {
                 setState(fetchData.result)
                 setIsLoading(!fetchData.status)
             }
+            else {
+                setIsLoading(fetchData.status)
+            }
+
         }
         //gọi hàm
         getData(page, pageSize);
@@ -71,6 +78,7 @@ function Index() {
 
                 })
             }
+
         }
 
     }
@@ -171,7 +179,7 @@ function Index() {
         setItemUpdate(item)
     }
     async function onMultiDelete() {
-       
+
         if (listItemRemove.length == 0) {
             notification.error({
                 message: "Chưa chọn dữ liệu để xoá",
@@ -196,7 +204,7 @@ function Index() {
                     setIsLoading(true)
                     postFormData('api/dm_chucvu/multidelete', formData).then(result => {
                         if (result.status) {
-                            
+
                             setAction(true)
                             notification.success({
                                 message: result.message,
@@ -292,15 +300,17 @@ function Index() {
                     </Col>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
-                            <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
-                                Tìm Kiếm
+                            <Space size={8}>
+                                <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
+                                    Tìm Kiếm
     </Button>
-                            <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
-                                Thêm mới
+                                <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                    Thêm mới
     </Button>
-                            <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                Xoá nhiều
+                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                    Xoá nhiều
     </Button>
+                            </Space>
                         </Skeleton>
                     </Col>
 

@@ -9,6 +9,9 @@ const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission
         labelCol: { span: 8 },
         wrapperCol: { span: 24 },
     };
+    useEffect(() => {
+        setState(listPermission);
+    }, [listPermission])
     const onChange = (value,label) => {
         //console.log('onChange ', value);
         //console.log('label ', label);

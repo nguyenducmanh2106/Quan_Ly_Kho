@@ -16,5 +16,6 @@ namespace Application.Services.UserGroupSerVices
         Task ToggleStatus(UserGroups obj);
         Task Delete(UserGroups obj);
         Task MultiDelete(string listItemDelete);
+        Task ChangePermission(UserGroups obj);
     }
 }

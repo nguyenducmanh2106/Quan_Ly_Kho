@@ -1,21 +1,9 @@
+﻿import { decode as base64_decode, encode as base64_encode } from 'base-64';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+import { ACCESS_TOKEN, USER_LOCALSTORAGE, EXPIRES_AT_LOCALSTORAGE, URL_ERROR } from './constants';
 const storage = window.localStorage;
-const domain = "http://localhost:8082";
-//const authenticate=() =>{
-//    return new Promise(resolve => setTimeout(resolve, 2000)) // 2 seconds
-//}
-//export const Loading = () => {
-//    authenticate().then(() => {
-//        const ele = document.getElementById('ipl-progress-indicator')
-//        if (ele) {
-//            // fade out
-//            ele.classList.add('available')
-//            setTimeout(() => {
-//                // remove from DOM
-//                ele.outerHTML = ''
-//            }, 2000)
-//        }
-//    })
-//}
+const domain = "http://localhost:8082/";
 export const url_upload = `${domain}/WeatherForecast/Upload-Post`;
 export const parseJwt = () => {
     var token = getAccessToken();
@@ -24,11 +12,80 @@ export const parseJwt = () => {
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     return JSON.parse(window.atob(base64));
 };
-export const getAccessToken = () => storage.getItem("access_token");
-export const getUser = () => storage.getItem("user");
-export const setUser = (user) => storage.setItem("user", JSON.stringify(user));
-export const setAccessToken = (token) => storage.setItem("access_token", token);
-export const removeAccessToken = () => storage.removeItem("access_token");
+const getCurrentDateTime_Belong_TimeZone=()=> {
+    let dateTime_TimeZone = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+    let expires = new Date(dateTime_TimeZone)
+    return expires;
+}
+export const getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone = (times) => {
+    //times:minutes
+    let dateTime_TimeZone = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+    let expires = new Date(dateTime_TimeZone)
+    var totalMiniseconds = expires.getTime() + (times * 60 * 1000)
+    return totalMiniseconds;
+}
+
+export const setCookie = (name, value, options = {}) => {
+
+    options = {
+        path: '/',
+        // add other defaults here if necessary
+        ...options
+    };
+
+    //if (options.expires instanceof Date) {
+    //    options.expires = options.expires.toUTCString();
+    //}
+
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}
+function getCookie(name) {
+    var regexp = new RegExp("(?:^" + name + "|;\s*" + name + ")=(.*?)(?:;|$)", "g");
+    var result = regexp.exec(document.cookie);
+    return (result === null) ? null : result[1];
+}
+function deleteCookie(name, path) {
+    // If the cookie exists
+    if (getCookie(name)) {
+        //setCookie(name, "", { setMaxAge: -1, path: path });
+        document.cookie = `${name}=;{setMaxAge:-1,path:${path}}`
+    }
+        
+}
+export const  returnLogin=()=> {
+    deleteCookie(base64_encode(ACCESS_TOKEN), "/")
+    window.localStorage.removeItem(EXPIRES_AT_LOCALSTORAGE)
+    window.localStorage.removeItem(USER_LOCALSTORAGE)
+}
+//export const getAccessToken = () => storage.getItem("access_token");
+export const getAccessToken = () => {
+    let date = storage.getItem(EXPIRES_AT_LOCALSTORAGE)
+    let expires = getCurrentDateTime_Belong_TimeZone()
+    let totalMiniSecondNow = expires.getTime();
+    if (Number.parseInt(totalMiniSecondNow) > Number.parseInt(date)) {
+        deleteCookie(base64_encode(ACCESS_TOKEN), "/")
+       
+    }
+    return getCookie(base64_encode(ACCESS_TOKEN));
+}
+export const setLocalStorage = (name, value) => {
+    storage.setItem(name, value);
+}
+export function getLocalStorage (name) {
+    window.localStorage.getItem(name);
+}
+//export const setAccessToken = (token) => storage.setItem("access_token", token);
+//export const removeAccessToken = () => storage.removeItem("access_token");
 export const isLoggedIn = () => Boolean(getAccessToken());
 export async function postFormData(url, data, isCheckToken = true) {
     var headers = new Headers();
@@ -43,7 +100,7 @@ export async function postFormData(url, data, isCheckToken = true) {
         headers.append("Content-Type", "application/json; charset=UTF-8");
         //headers.append("Content-Type", "multipart/form-data");
         headers.append("Access-Control-Allow-Origin", "*");
-        headers.append("Authorization", "Bearer" + getAccessToken());
+        headers.append("Authorization", getAccessToken());
     }
 
     var fetchData = await fetch(`${domain}/${url}`, {
@@ -54,54 +111,99 @@ export async function postFormData(url, data, isCheckToken = true) {
     return JsonData
 }
 
-export async function postAPI(url, data, isCheckToken = true){
-    var headers = new Headers();
-    if (!isCheckToken) {
-        headers.append("Accept", "application/json, application/xml, text/plain, text/html, *.*");
-        headers.append("Content-Type", "application/json; charset=UTF-8");
-        //headers.append("Content-Type", "multipart/form-data");
-        headers.append("Access-Control-Allow-Origin", "*");
-    }
-    else {
-        headers.append("Accept", "application/json, application/xml, text/plain, text/html, *.*");
-        headers.append("Content-Type", "application/json; charset=UTF-8");
-        //headers.append("Content-Type", "multipart/form-data");
-        headers.append("Access-Control-Allow-Origin", "*");
-        headers.append("Authorization", "Bearer" + getAccessToken());
-    }
-   
-    var fetchData =await fetch(`${domain}/${url}`, {
-        method: 'POST',
-        headers: headers,
-        body: data,
-    })
-    var JsonData = await fetchData.json()
-    return JsonData
-}
-
-   export async function getAPI (url, data, isCheckToken = true){
-    var headers = new Headers();
-
-    if (isCheckToken == false) {
-        headers.append("Accept", "application/json, application/xml, text/plain, text/html, *.*");
-        headers.append("Content-Type", "application/json; charset=UTF-8");
-        headers.append("Access-Control-Allow-Origin", "*");
-    }
-    else {
-        headers.append("Accept", "application/json, application/xml, text/plain, text/html, *.*");
-        headers.append("Content-Type", "application/json; charset=UTF-8");
-        headers.append("Access-Control-Allow-Origin", "*");
-        headers.append("Authorization", "Bearer" + getAccessToken());
-    }
+export const postAPI = async (url, data, isCheckToken = true) => {
     
-   var fetchData=await fetch(`${domain}/${url}`, {
-        method: 'GET',
-        headers: headers,
-        body: data
-   })
-        var JsonData = await fetchData.json()
+    var headers = {}
+    if (isCheckToken == false) {
+        headers = {
+            'Accept': "application/json, application/xml, text/plain, text/html, *.*",
+            'Content-Type': "application/json; charset=UTF-8",
+            "Access-Control-Allow-Origin": "*"
+        }
+    }
+    else {
+        headers = {
+            'Accept': "application/json, application/xml, text/plain, text/html, *.*",
+            'Content-Type': "application/json; charset=UTF-8",
+            "Access-Control-Allow-Origin": "*",
+            'Authorization': getAccessToken()
+        }
+    }
+    var dataReturn = {}
+    try {
+        var fetchData = await axios({
+            method: 'post',
+            url: domain + url,
+            data: data,
+            headers: headers
+        });
+        var JsonData = await fetchData.data
         
         return JsonData
+    }
+    catch (error) {
+        if (error.response.status === 401 || error.response.status === 403) {
+            window.location.href = URL_ERROR
+        }
+        //dataReturn = {
+        //    status: error.response.status
+        //}
+        //return dataReturn
+        
+    }
+    //axios.interceptors.response.use(response => {
+    //    return response;
+    //}, error => {
+    //    if (error.response.status === 401) {
+    //        //place your reentry code
+    //        console.log("loi 401")
+    //    }
+    //    //return error;
+    //        console.log(error)
+    //});
+}
+
+export async function getAPI(url, data, isCheckToken = true) {
+    var headers = {}
+    var dataReturn = {}
+    if (isCheckToken == false) {
+        headers = {
+            'Accept': "application/json, application/xml, text/plain, text/html, *.*",
+            'Content-Type': "application/json; charset=UTF-8"
+        }
+    }
+    else {
+        headers = {
+            'Accept': "application/json, application/xml, text/plain, text/html, *.*",
+            'Content-Type': "application/json; charset=UTF-8",
+            'Authorization': getAccessToken()
+        }
+    }
+    try {
+        var fetchData = await axios({
+            method: 'get',
+            url: domain + url,
+            data: data,
+            headers: headers
+        });
+        var JsonData = await fetchData.data
+        //dataReturn = {
+        //    status: 200,
+        //    data: fetchData.data
+        //}
+        return JsonData
+    }
+    catch (error) {
+        if (error.response.status === 401 || error.response.status === 403) {
+            window.location.href = URL_ERROR
+        }
+        //dataReturn = {
+        //    status: error.response.status
+        //}
+        //return dataReturn
+        //console.log(error.response.status)
+    }
+    //return JsonData
 }
 
 //# sourceMappingURL=helpers.js.map

@@ -27,7 +27,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem }) => {
         var obj = {
             ...data,
             Status: data.Status ? 1 : 2,
-            isMenu: data.ismenu ? true : false,
+            isMenu: data.isMenu ? true : false,
         }
         //console.log(obj)
         onPostCreateItem(obj)
