@@ -16,3 +16,12 @@ C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\
 C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.dll
 C:\Users\Administrator\source\repos\QuanLyKho\Application\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.pdb
+C:\Project\Quan_Ly_Kho\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.deps.json
+C:\Project\Quan_Ly_Kho\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.dll
+C:\Project\Quan_Ly_Kho\Application.UTILS\bin\Debug\netcoreapp3.1\Application.UTILS.pdb
+C:\Project\Quan_Ly_Kho\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csprojAssemblyReference.cache
+C:\Project\Quan_Ly_Kho\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.AssemblyInfoInputs.cache
+C:\Project\Quan_Ly_Kho\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.AssemblyInfo.cs
+C:\Project\Quan_Ly_Kho\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.csproj.CoreCompileInputs.cache
+C:\Project\Quan_Ly_Kho\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.dll
+C:\Project\Quan_Ly_Kho\Application.UTILS\obj\Debug\netcoreapp3.1\Application.UTILS.pdb

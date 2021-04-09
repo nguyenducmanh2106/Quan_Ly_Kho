@@ -2332,19 +2332,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Administrator\\.nuget\\packages\\": {}
+    "C:\\Users\\THA.DEV.2\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+      "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj",
       "projectName": "Application.DATA",
-      "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
-      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\obj\\",
+      "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj",
+      "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+      "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

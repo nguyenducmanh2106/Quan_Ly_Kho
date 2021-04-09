@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { returnLogin, getLocalStorage } from "../../../utils/helpers";
 import { USER_LOCALSTORAGE } from "../../../utils/constants";
 import { URL_LOGIN } from "../../../utils/constants"
-import { Layout, Menu, Button, Input, Avatar, Row, Col, Tabs, PageHeader, Dropdown, Space, Image } from 'antd';
-import { ExportOutlined, DownOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Menu, Button, Input, Avatar, Row, Col, Tabs, PageHeader, Dropdown, Space, Image, Badge } from 'antd';
+import { ExportOutlined, DownOutlined, UserOutlined, BellTwoTone, SettingTwoTone   } from '@ant-design/icons';
 const HeaderForm = () => {
     const [t] = useTranslation();
     const history = useHistory();
@@ -26,9 +26,17 @@ const HeaderForm = () => {
 
                 </Col>
                 <Col span={8} offset={8}>
-                    <Menu mode="horizontal">
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
+                    <Menu mode="horizontal"
+                        style={{textAlign:"right"}}
+                    >
+                        <Menu.Item key="1">
+                            <SettingTwoTone/>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                            <Badge size="small" count={5} offset={[10, 0]}>
+                                <BellTwoTone/>
+                            </Badge>
+                        </Menu.Item>
                         <Menu.Item key="3">
                             <Dropdown overlay={() => (
                                 <Menu>
@@ -36,10 +44,10 @@ const HeaderForm = () => {
                                         <Link to="/profile">Profile</Link>
                                     </Menu.Item>
                                     <Menu.Item key="logout">
-                                        <Link to>
+                                        <Link to onClick={Logout}>
                                             <Space size={8}>
                                                 <ExportOutlined />
-                                                <span onClick={Logout}>Logout</span>
+                                                <span>Logout</span>
                                             </Space>
                                         </Link>
                                     </Menu.Item>

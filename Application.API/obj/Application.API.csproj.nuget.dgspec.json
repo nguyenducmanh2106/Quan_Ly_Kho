@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\Application.API.csproj": {}
+    "C:\\Project\\Quan_Ly_Kho\\Application.API\\Application.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\Application.API.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.API\\Application.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\Application.API.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
         "projectName": "Application.API",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\Application.API.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.API\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,11 +31,11 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -90,17 +93,20 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj",
         "projectName": "Application.DATA",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -174,17 +180,20 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj",
         "projectName": "Application.DependencyInjection",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\Application.DependencyInjection.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DependencyInjection\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -198,17 +207,17 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.SERVICES\\Application.SERVICES.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.SERVICES\\Application.SERVICES.csproj"
               }
             }
           }
@@ -251,17 +260,20 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj",
         "projectName": "Application.MODELS",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -275,11 +287,11 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -326,17 +338,20 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
         "projectName": "Application.REPOSITORY",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -350,14 +365,14 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.DATA\\Application.DATA.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DATA\\Application.DATA.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -390,17 +405,20 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.SERVICES\\Application.SERVICES.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.SERVICES\\Application.SERVICES.csproj",
         "projectName": "Application.SERVICES",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\Application.SERVICES.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.SERVICES\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.SERVICES\\Application.SERVICES.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.SERVICES\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -414,14 +432,14 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.MODELS\\Application.MODELS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.MODELS\\Application.MODELS.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.REPOSITORY\\Application.REPOSITORY.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.REPOSITORY\\Application.REPOSITORY.csproj"
               },
-              "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
-                "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj"
+              "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
+                "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj"
               }
             }
           }
@@ -454,17 +472,20 @@
         }
       }
     },
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
         "projectName": "Application.UTILS",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

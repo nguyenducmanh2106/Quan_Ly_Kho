@@ -43,11 +43,12 @@ const Login = (props) => {
             setIsLoading(false)
         }
         else {
+            //set Role
             defineAbilitiesFor(res.result.userDetails);
             var totalMiniseconds = getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone(30)
             setLocalStorage(EXPIRES_AT_LOCALSTORAGE, totalMiniseconds);
             setLocalStorage(USER_LOCALSTORAGE, JSON.stringify(res.result.userDetails));
-            setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/', expires: new Date(totalMiniseconds) })
+            setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/',  expires: new Date(totalMiniseconds) })
             //history.replace('/');
             history.replace(from);
         }

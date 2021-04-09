@@ -1,5 +1,5 @@
 ﻿import { AbilityBuilder, Ability } from "@casl/ability";
-
+import ability from "./ability"
 export function defineAbilitiesFor(user) {
     const { rules, can } = new AbilityBuilder()
     console.log(user)
@@ -41,6 +41,7 @@ export function defineAbilitiesFor(user) {
         //can('read', ['Post', 'Comment'])
         can(action, subject)
     }
-    console.log(new Ability(rules))
-    return new Ability(rules)
+    ability.update(rules);
+    //console.log(new Ability(rules))
+    //return new Ability(rules)
 }

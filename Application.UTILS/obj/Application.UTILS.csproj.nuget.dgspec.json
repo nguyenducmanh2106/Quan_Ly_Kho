@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {}
+    "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj": {
+    "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
+        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
         "projectName": "Application.UTILS",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\Application.UTILS.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\QuanLyKho\\Application\\Application.UTILS\\obj\\",
+        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
+        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

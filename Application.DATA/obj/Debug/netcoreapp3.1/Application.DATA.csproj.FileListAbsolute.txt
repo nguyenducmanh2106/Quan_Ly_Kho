@@ -7,3 +7,12 @@ D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DA
 D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.csproj.CoreCompileInputs.cache
 D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.dll
 D:\QuanLyKho\Application\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.pdb
+C:\Project\Quan_Ly_Kho\Application.DATA\bin\Debug\netcoreapp3.1\Application.DATA.deps.json
+C:\Project\Quan_Ly_Kho\Application.DATA\bin\Debug\netcoreapp3.1\Application.DATA.dll
+C:\Project\Quan_Ly_Kho\Application.DATA\bin\Debug\netcoreapp3.1\Application.DATA.pdb
+C:\Project\Quan_Ly_Kho\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.csprojAssemblyReference.cache
+C:\Project\Quan_Ly_Kho\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.AssemblyInfoInputs.cache
+C:\Project\Quan_Ly_Kho\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.AssemblyInfo.cs
+C:\Project\Quan_Ly_Kho\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.csproj.CoreCompileInputs.cache
+C:\Project\Quan_Ly_Kho\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.dll
+C:\Project\Quan_Ly_Kho\Application.DATA\obj\Debug\netcoreapp3.1\Application.DATA.pdb

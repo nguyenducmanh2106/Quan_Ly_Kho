@@ -6,7 +6,7 @@ const Dashboard = () => {
     return (
         <Layout>
             <Row>
-                <Col lg={{ span: 6 }} xs={{ span: 12 }}>
+                <Col lg={{ span: 6 }} xs={{ span: 24 }}>
                     <Card
                         style={{ margin: 16 }}
                         actions={[
@@ -26,7 +26,7 @@ const Dashboard = () => {
                         </Skeleton>
                     </Card>
                 </Col>
-                <Col lg={{ span: 6 }} xs={{ span: 12 }}>
+                <Col lg={{ span: 6 }} xs={{ span: 24 }}>
                     <Card
                         style={{ margin: 16 }}
                         actions={[
@@ -46,7 +46,7 @@ const Dashboard = () => {
                         </Skeleton>
                     </Card>
                 </Col>
-                <Col lg={{ span: 6 }} xs={{ span: 12 }}>
+                <Col lg={{ span: 6 }} xs={{ span: 24 }}>
                     <Card
                         style={{ margin: 16 }}
                         actions={[
@@ -66,7 +66,7 @@ const Dashboard = () => {
                         </Skeleton>
                     </Card>
                 </Col>
-                <Col lg={{ span: 6 }} xs={{ span: 12 }}>
+                <Col lg={{ span: 6 }} xs={{ span: 24 }}>
                     <Card
                         style={{ margin: 16 }}
                         actions={[

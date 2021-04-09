@@ -23,8 +23,6 @@ namespace Application.API.Middleware
     public class RoleAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         private readonly string[] allowedroles;
-
-
         public RoleAuthorizeAttribute(params string[] roles)
         {
             this.allowedroles = roles;
@@ -82,7 +80,7 @@ namespace Application.API.Middleware
                         StatusCode = (int)statusCode,
                     };
                 }
-                
+
             }
             catch (Exception ex)
             {
