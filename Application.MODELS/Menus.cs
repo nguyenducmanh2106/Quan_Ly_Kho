@@ -23,12 +23,12 @@ namespace Application.MODELS
         public int Created_By { get; set; }
         public int Updated_By { get; set; }
         public int Status { get; set; }
-        public string icon { get; set; }
-       
+        public string Icon { get; set; }
         [NotMapped]
         public int Level { get; set; }
-        
+
         [NotMapped]
         public List<Menus> childNode { get; set; }
+       
     }
 }

@@ -63,7 +63,7 @@ namespace Application.Services.MenuSerVices
                 Ordering = g.Ordering,
                 ParentId = g.ParentId,
                 Status = g.Status,
-                icon=g.icon,
+                Icon=g.Icon,
                 Url = g.Url,
                 Level = g.Level,
                 isMenu = g.isMenu
@@ -83,7 +83,7 @@ namespace Application.Services.MenuSerVices
                 Ordering = g.Ordering,
                 ParentId = g.ParentId,
                 Status = g.Status,
-                icon=g.icon,
+                Icon = g.Icon,
                 Url = g.Url,
                 Level = g.Level,
                 isMenu = g.isMenu
@@ -162,7 +162,7 @@ namespace Application.Services.MenuSerVices
                 exist.Url = obj.Url;
                 exist.Ordering = obj.Ordering;
                 exist.Updated_At = DateTime.Now.Date;
-                exist.icon = obj.icon;
+                exist.Icon = obj.Icon;
                 await _unitOfWork.MenuRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();

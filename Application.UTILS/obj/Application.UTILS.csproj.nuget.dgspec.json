@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {}
+    "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {}
   },
   "projects": {
-    "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
+    "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
+        "projectUniqueName": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
         "projectName": "Application.UTILS",
-        "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
-        "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
-        "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\obj\\",
+        "projectPath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj",
+        "packagesPath": "C:\\Users\\HT\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HT\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -70,6 +67,10 @@
             "System.Drawing.Common": {
               "target": "Package",
               "version": "[6.0.0-preview.2.21154.6, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.10.0, )"
             }
           },
           "imports": [

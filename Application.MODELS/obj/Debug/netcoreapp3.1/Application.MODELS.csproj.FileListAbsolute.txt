@@ -40,3 +40,17 @@ C:\Project\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MO
 C:\Project\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csproj.CopyComplete
 C:\Project\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.dll
 C:\Project\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.pdb
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.MODELS.deps.json
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.MODELS.dll
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.MODELS.pdb
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.DATA.dll
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.UTILS.dll
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.DATA.pdb
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\bin\Debug\netcoreapp3.1\Application.UTILS.pdb
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csprojAssemblyReference.cache
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.AssemblyInfoInputs.cache
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.AssemblyInfo.cs
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csproj.CoreCompileInputs.cache
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.csproj.CopyComplete
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.dll
+C:\Users\HT\source\repos\Quan_Ly_Kho\Application.MODELS\obj\Debug\netcoreapp3.1\Application.MODELS.pdb

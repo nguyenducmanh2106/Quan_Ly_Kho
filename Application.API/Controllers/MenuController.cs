@@ -15,6 +15,7 @@ using Application.UTILS;
 using Application.Services.MenuSerVices;
 using Newtonsoft.Json;
 using Application.API.Middleware;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.API.Controllers
 {
@@ -25,11 +26,12 @@ namespace Application.API.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IMenuServices _manager;
-
-        public MenuController(IConfiguration config, IMenuServices _manager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public MenuController(IConfiguration config, IMenuServices _manager, IHttpContextAccessor httpContextAccessor)
         {
             _config = config;
             this._manager = _manager;
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet("get-options")]
         public async Task<IActionResult> GetOptions(int Status = -1, string Name = "")
@@ -53,7 +55,7 @@ namespace Application.API.Controllers
                         Status = g.Status,
                         Url = g.Url,
                         Level = g.Level,
-                        icon=g.icon,
+                        Icon = g.Icon,
                         isMenu = g.isMenu
                     }).ToList();
                     MessageSuccess success = new MessageSuccess()
@@ -68,7 +70,7 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
-        [RoleAuthorizeAttribute("Category.View")]
+        [RoleAuthorizeAttribute("menu.view")]
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
         {
@@ -151,7 +153,7 @@ namespace Application.API.Controllers
                     ParentId = obj.ParentId,
                     Name = obj.Name,
                     Status = obj.Status,
-                    icon=obj.icon,
+                    Icon = obj.Icon,
                     isMenu = obj.isMenu,
                     Url = obj.Url,
                     Ordering = obj.Ordering,
@@ -261,6 +263,9 @@ namespace Application.API.Controllers
         {
             try
             {
+                //var tokenHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
+                //var validToken = Verify(tokenHeader);
+                //Users user = JsonConvert.DeserializeObject<Users>(validToken.Subject);
                 var rawMenu = await _manager.GetChild(0);
                     MessageSuccess success = new MessageSuccess()
                     {
@@ -268,6 +273,38 @@ namespace Application.API.Controllers
                     };
                     return Ok(success);
                 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public JwtSecurityToken Verify(string jwt)
+        {
+            try
+            {
+                var _config = new ConfigurationBuilder()
+              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+              .AddJsonFile("appsettings.json").Build();
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_config["Jwt:SecretKey"]);
+                tokenHandler.ValidateToken(jwt, new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuerSigningKey = true,
+
+                    ValidateIssuer = true,
+                    ValidIssuer = _config["Jwt:Issuer"],
+
+                    ValidateAudience = true,
+                    ValidAudience = _config["Jwt:Audience"],
+
+                    ValidateLifetime = true, //validate the expiration and not before values in the token
+
+                    ClockSkew = TimeSpan.Zero //5 minute tolerance for the expiration date
+                }, out SecurityToken validateToken);
+                return (JwtSecurityToken)validateToken;
             }
             catch (Exception ex)
             {

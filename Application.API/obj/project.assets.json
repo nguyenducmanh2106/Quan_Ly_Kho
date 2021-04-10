@@ -712,10 +712,10 @@
           "lib/netcoreapp2.1/Microsoft.Identity.Client.dll": {}
         }
       },
-      "Microsoft.IdentityModel.JsonWebTokens/6.8.0": {
+      "Microsoft.IdentityModel.JsonWebTokens/6.10.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "6.8.0"
+          "Microsoft.IdentityModel.Tokens": "6.10.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll": {}
@@ -1078,11 +1078,11 @@
           }
         }
       },
-      "System.IdentityModel.Tokens.Jwt/6.8.0": {
+      "System.IdentityModel.Tokens.Jwt/6.10.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.JsonWebTokens": "6.8.0",
-          "Microsoft.IdentityModel.Tokens": "6.8.0"
+          "Microsoft.IdentityModel.JsonWebTokens": "6.10.0",
+          "Microsoft.IdentityModel.Tokens": "6.10.0"
         },
         "compile": {
           "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll": {}
@@ -1387,7 +1387,8 @@
           "Microsoft.Extensions.Configuration": "5.0.0",
           "Microsoft.IdentityModel.Tokens": "6.10.0",
           "Newtonsoft.Json": "13.0.1-beta1",
-          "System.Drawing.Common": "6.0.0-preview.2.21154.6"
+          "System.Drawing.Common": "6.0.0-preview.2.21154.6",
+          "System.IdentityModel.Tokens.Jwt": "6.10.0"
         },
         "compile": {
           "bin/placeholder/Application.UTILS.dll": {}
@@ -2370,10 +2371,10 @@
         "ref/xamarinmac20/Microsoft.Identity.Client.xml"
       ]
     },
-    "Microsoft.IdentityModel.JsonWebTokens/6.8.0": {
-      "sha512": "+7JIww64PkMt7NWFxoe4Y/joeF7TAtA/fQ0b2GFGcagzB59sKkTt/sMZWR6aSZht5YC7SdHi3W6yM1yylRGJCQ==",
+    "Microsoft.IdentityModel.JsonWebTokens/6.10.0": {
+      "sha512": "0qjS31rN1MQTc46tAYbzmMTSRfdV5ndZxSjYxIGqKSidd4wpNJfNII/pdhU5Fx8olarQoKL9lqqYw4yNOIwT0Q==",
       "type": "package",
-      "path": "microsoft.identitymodel.jsonwebtokens/6.8.0",
+      "path": "microsoft.identitymodel.jsonwebtokens/6.10.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2381,9 +2382,11 @@
         "lib/net45/Microsoft.IdentityModel.JsonWebTokens.xml",
         "lib/net461/Microsoft.IdentityModel.JsonWebTokens.dll",
         "lib/net461/Microsoft.IdentityModel.JsonWebTokens.xml",
+        "lib/net472/Microsoft.IdentityModel.JsonWebTokens.dll",
+        "lib/net472/Microsoft.IdentityModel.JsonWebTokens.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "microsoft.identitymodel.jsonwebtokens.6.8.0.nupkg.sha512",
+        "microsoft.identitymodel.jsonwebtokens.6.10.0.nupkg.sha512",
         "microsoft.identitymodel.jsonwebtokens.nuspec"
       ]
     },
@@ -2974,10 +2977,10 @@
         "system.drawing.common.nuspec"
       ]
     },
-    "System.IdentityModel.Tokens.Jwt/6.8.0": {
-      "sha512": "5tBCjAub2Bhd5qmcd0WhR5s354e4oLYa//kOWrkX+6/7ZbDDJjMTfwLSOiZ/MMpWdE4DWPLOfTLOq/juj9CKzA==",
+    "System.IdentityModel.Tokens.Jwt/6.10.0": {
+      "sha512": "C+Q5ORsFycRkRuvy/Xd0Pv5xVpmWSAvQYZAGs7VQogmkqlLhvfZXTgBIlHqC3cxkstSoLJAYx6xZB7foQ2y5eg==",
       "type": "package",
-      "path": "system.identitymodel.tokens.jwt/6.8.0",
+      "path": "system.identitymodel.tokens.jwt/6.10.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2985,9 +2988,11 @@
         "lib/net45/System.IdentityModel.Tokens.Jwt.xml",
         "lib/net461/System.IdentityModel.Tokens.Jwt.dll",
         "lib/net461/System.IdentityModel.Tokens.Jwt.xml",
+        "lib/net472/System.IdentityModel.Tokens.Jwt.dll",
+        "lib/net472/System.IdentityModel.Tokens.Jwt.xml",
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll",
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.xml",
-        "system.identitymodel.tokens.jwt.6.8.0.nupkg.sha512",
+        "system.identitymodel.tokens.jwt.6.10.0.nupkg.sha512",
         "system.identitymodel.tokens.jwt.nuspec"
       ]
     },
@@ -3530,23 +3535,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\THA.DEV.2\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\HT\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Project\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
+      "projectUniqueName": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
       "projectName": "Application.API",
-      "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
-      "packagesPath": "C:\\Users\\THA.DEV.2\\.nuget\\packages\\",
-      "outputPath": "C:\\Project\\Quan_Ly_Kho\\Application.API\\obj\\",
+      "projectPath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
+      "packagesPath": "C:\\Users\\HT\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.API\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\THA.DEV.2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\HT\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3560,11 +3561,11 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
-              "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj"
+            "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj": {
+              "projectPath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.DependencyInjection\\Application.DependencyInjection.csproj"
             },
-            "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
-              "projectPath": "C:\\Project\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj"
+            "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj": {
+              "projectPath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.UTILS\\Application.UTILS.csproj"
             }
           }
         }

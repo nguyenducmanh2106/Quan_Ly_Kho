@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -19,19 +20,15 @@ namespace Application.UTILS
 
         //    return services;
         //}
-        public static string GetIssuerSigningKey(this IConfiguration configuration)
-        {
-            string result = configuration["Jwt:SecretKey"];
-            return result;
-        }
-
-        public static SymmetricSecurityKey GetSymmetricSecurityKey(this IConfiguration configuration)
-        {
-            var issuerSigningKey = configuration.GetIssuerSigningKey();
-            var data = Encoding.UTF8.GetBytes(issuerSigningKey);
-            var result = new SymmetricSecurityKey(data);
-            return result;
-        }
+       
+       
+        //public static SymmetricSecurityKey GetSymmetricSecurityKey(this IConfiguration configuration)
+        //{
+        //    var issuerSigningKey = configuration.GetIssuerSigningKey();
+        //    var data = Encoding.UTF8.GetBytes(issuerSigningKey);
+        //    var result = new SymmetricSecurityKey(data);
+        //    return result;
+        //}
 
         //public static string[] GetCorsOrigins(this IConfiguration configuration)
         //{

@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "LhIKqGghr3lEtSfuLCF3OchTfdaEGtqEOvqPH4Iy2zErzm/JkFi1tejMYJifyPM29pguDmTINsR09K/chGBwAg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.CMS\\Application.CMS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.aspnetcore.nodeservices\\3.1.10\\microsoft.aspnetcore.nodeservices.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.aspnetcore.spaservices\\3.1.10\\microsoft.aspnetcore.spaservices.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.aspnetcore.spaservices.extensions\\3.1.10\\microsoft.aspnetcore.spaservices.extensions.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.configuration\\3.1.10\\microsoft.extensions.configuration.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.10\\microsoft.extensions.configuration.abstractions.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.configuration.binder\\3.1.10\\microsoft.extensions.configuration.binder.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\3.1.10\\microsoft.extensions.dependencyinjection.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.10\\microsoft.extensions.dependencyinjection.abstractions.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\3.1.10\\microsoft.extensions.fileproviders.abstractions.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\3.1.10\\microsoft.extensions.fileproviders.physical.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\3.1.10\\microsoft.extensions.filesystemglobbing.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.logging\\3.1.10\\microsoft.extensions.logging.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\3.1.10\\microsoft.extensions.logging.abstractions.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.logging.configuration\\3.1.10\\microsoft.extensions.logging.configuration.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.logging.console\\3.1.10\\microsoft.extensions.logging.console.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.options\\3.1.10\\microsoft.extensions.options.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\3.1.10\\microsoft.extensions.options.configurationextensions.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.10\\microsoft.extensions.primitives.3.1.10.nupkg.sha512",
+    "C:\\Users\\HT\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

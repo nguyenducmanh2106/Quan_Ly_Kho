@@ -24,10 +24,12 @@ namespace Application.REPOSITORY
         public List<Menus> getMenusByParentId(int ParentId)
         {
             var data = (from menu in _db.Menus
-                        where menu.ParentId == ParentId && menu.Status==(int)StatusEnum.Active
+                        where menu.ParentId == ParentId && menu.Status == (int)StatusEnum.Active
                         select menu
                       ).ToList();
             return data;
         }
+
+       
     }
 }
