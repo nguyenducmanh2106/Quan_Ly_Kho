@@ -18,6 +18,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Application.API.Middleware;
 using Newtonsoft.Json;
+using Application.Services.PermissionSerVices;
 
 namespace Application.API.Controllers
 {
@@ -26,15 +27,17 @@ namespace Application.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserServices _manager;
+        private readonly IPermissionServices _Permanager;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public UserController(IConfiguration config, IUserServices _manager, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment)
+        public UserController(IConfiguration config, IUserServices _manager, IPermissionServices _Permanager, IHttpContextAccessor httpContextAccessor, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
+            this._Permanager = _Permanager;
             _httpContextAccessor = httpContextAccessor;
             HttpHelper.SetHttpContextAccessor(_httpContextAccessor);
             _hostingEnvironment = hostingEnvironment;
@@ -47,6 +50,7 @@ namespace Application.API.Controllers
             {
                 var response = Unauthorized();
                 Users user = await _manager.Login(login);
+                List<Permissions> per = await _Permanager.getAll();
                 var dataFinal = new Users()
                 {
                     Id = user.Id,
@@ -62,8 +66,7 @@ namespace Application.API.Controllers
                     isRoot = user.isRoot,
                     isThongKe = user.isThongKe,
                     Status = user.Status,
-                    Avatar = user.Avatar,
-                    lstPermission=user.lstPermission
+                    Avatar = user.Avatar
                 };
                 var tokenString = GenerateJWTToken(user);
                 MessageSuccess success = new MessageSuccess()
@@ -71,7 +74,13 @@ namespace Application.API.Controllers
                     result = new
                     {
                         access_token = tokenString,
-                        userDetails = dataFinal
+                        userDetails = dataFinal,
+                        permiss = new
+                        {
+                            isRoot= dataFinal.isRoot,
+                            permissionUser = user.Permission,
+                            lstPermission =per
+                        }
                     }
                 };
                 //UTILS.SessionExtensions.Set<Users>(_session, UTILS.SessionExtensions.SessionAccount, user);

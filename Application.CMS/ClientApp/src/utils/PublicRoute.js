@@ -9,7 +9,7 @@ const PublicRoute = ({ component: Component, restricted, ...rest }) => {
         // restricted = true meaning restricted route
         <Route {...rest} render={props => (
             isLoggedIn() && restricted ?
-                <Redirect to={URL_DASHBOARD} />
+                <Redirect to="/" />
                 : <Component {...props} />
         )} />
     );

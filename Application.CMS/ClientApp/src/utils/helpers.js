@@ -46,7 +46,6 @@ export const setCookie = (name, value, options = {}) => {
             updatedCookie += "=" + optionValue;
         }
     }
-    console.log(updatedCookie)
     document.cookie = updatedCookie;
 }
 function getCookie(name) {

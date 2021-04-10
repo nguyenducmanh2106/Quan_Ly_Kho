@@ -27,7 +27,7 @@ export function defineAbilitiesFor(user) {
         let subjectUser = []
         let action = [];
         let subject = [];
-        user.permission.split(',').map(item => {
+        user.permissionUser.split(',').map(item => {
             let obj = item.split('.');
             actionUser.push(obj[1])
             subjectUser.push(obj[0])

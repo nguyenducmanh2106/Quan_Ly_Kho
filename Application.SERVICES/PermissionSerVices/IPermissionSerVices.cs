@@ -11,6 +11,7 @@ namespace Application.Services.PermissionSerVices
     public interface IPermissionServices
     {
         Task<IQueryable<Permissions>> getData(int page, int pageSize, int Status, string Name);
+        Task<List<Permissions>> getAll();
         Task Create(Permissions obj);
         Task Update(Permissions obj);
         Task ToggleStatus(Permissions obj);

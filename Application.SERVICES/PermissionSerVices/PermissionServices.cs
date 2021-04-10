@@ -282,5 +282,10 @@ namespace Application.Services.PermissionSerVices
 
             return result;
         }
+
+        public async Task<List<Permissions>> getAll()
+        {
+            return (await _unitOfWork.PermissionRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).ToList();
+        }
     }
 }

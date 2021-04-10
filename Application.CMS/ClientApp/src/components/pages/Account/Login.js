@@ -12,7 +12,7 @@ const Login = (props) => {
     let history = useHistory();
     let location = useLocation();
     //console.log(location)
-    let { from } = location.state || { from: { pathname: URL_DASHBOARD } };
+    let { from } = location.state || { from: { pathname: "/" } };
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('Sign in to start your session')
     const [isError, setIsError] = useState(false)
@@ -43,12 +43,13 @@ const Login = (props) => {
             setIsLoading(false)
         }
         else {
-            //set Role
-            defineAbilitiesFor(res.result.userDetails);
+
             var totalMiniseconds = getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone(30)
+            setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/', expires: new Date(totalMiniseconds) })
             setLocalStorage(EXPIRES_AT_LOCALSTORAGE, totalMiniseconds);
             setLocalStorage(USER_LOCALSTORAGE, JSON.stringify(res.result.userDetails));
-            setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/',  expires: new Date(totalMiniseconds) })
+            //set Role
+            defineAbilitiesFor(res.result.permiss);
             //history.replace('/');
             history.replace(from);
         }
