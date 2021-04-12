@@ -77,6 +77,25 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem }) => {
                                 min="0"
                             />
                         </Form.Item>
+                        <Form.Item name="ParentId" label="Tỉnh/Thành phố"
+                        >
+                            <Select
+                                showSearch
+                                //style={{ width: 200 }}
+                                placeholder="-- Tỉnh/Thành phố --"
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA, optionB) =>
+                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                }
+                            >
+                                {data.map(item => (
+                                    <Option value={item.value}>{item.label}</Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
                         <Form.Item name="Status" label="Trạng thái" valuePropName="checked">
                             <Checkbox />
                         </Form.Item>

@@ -76,7 +76,13 @@ namespace Application.Services.DM_DonViserVices
                 Ordering = g.Ordering,
                 ParentId = g.ParentId,
                 Status = g.Status,
-                Code=g.Code
+                Code=g.Code,
+                TinhId=g.TinhId,
+                HuyenId=g.HuyenId,
+                XaId=g.XaId,
+                Address=g.Address,
+                Longitude=g.Longitude,
+                Latitude=g.Latitude
             });
             return data;
         }
@@ -130,6 +136,12 @@ namespace Application.Services.DM_DonViserVices
                 exist.Ordering = obj.Ordering;
                 exist.Updated_At = DateTime.Now.Date;
                 exist.Code = obj.Code;
+                exist.TinhId = obj.TinhId;
+                exist.HuyenId = obj.HuyenId;
+                exist.XaId = obj.XaId;
+                exist.Address = obj.Address;
+                exist.Longitude = obj.Longitude;
+                exist.Latitude = obj.Latitude;
                 await _unitOfWork.DM_DonViRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();

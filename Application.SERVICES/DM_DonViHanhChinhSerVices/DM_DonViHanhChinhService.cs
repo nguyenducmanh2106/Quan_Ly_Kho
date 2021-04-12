@@ -54,7 +54,7 @@ namespace Application.Services.DM_DonViHanhChinhSerVices
         public async Task<IQueryable<DM_DonViHanhChinhs>> getData(int page, int pageSize, int Status, string Name, string nameSort)
         {
             var data = (await _unitOfWork.DM_DonViHanhChinhRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)
-             && (String.IsNullOrEmpty(Name) || g.Name.ToLower().Contains(Name.ToLower()))
+             && (String.IsNullOrEmpty(Name) || g.Name.ToLower().Contains(Name.ToLower())||g.Code.ToLower().Contains(Name.ToLower()))
            ));
             data = data.OrderBy(g => g.Ordering).ThenByDescending(g => g.Created_At).Select(g => new DM_DonViHanhChinhs()
             {

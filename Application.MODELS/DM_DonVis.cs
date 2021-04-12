@@ -20,7 +20,14 @@ namespace Application.MODELS
         public int Updated_By { get; set; }
         public int Status { get; set; }
         public int Ordering { get; set; }
+        public int? TinhId { get; set; }
+        public int? HuyenId { get; set; }
+        public int? XaId { get; set; }
+        public string Address { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
         [NotMapped]
         public int Level { get; set; }
+        
     }
 }

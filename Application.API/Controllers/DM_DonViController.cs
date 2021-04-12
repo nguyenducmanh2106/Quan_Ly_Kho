@@ -170,7 +170,13 @@ namespace Application.API.Controllers
                     Status = obj.Status,
                     Code=obj.Code,
                     Ordering = obj.Ordering,
-                    Created_At = DateTime.Now.Date
+                    Created_At = DateTime.Now.Date,
+                    TinhId=obj.TinhId,
+                    HuyenId=obj.HuyenId,
+                    XaId=obj.XaId,
+                    Address=obj.Address,
+                    Longitude=obj.Longitude,
+                    Latitude=obj.Latitude
                 };
                 await _manager.Create(objAdd);
                 MessageSuccess success = new MessageSuccess()

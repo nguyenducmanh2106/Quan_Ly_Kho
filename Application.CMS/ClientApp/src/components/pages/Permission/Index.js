@@ -101,7 +101,7 @@ function Menu() {
     async function onHandleSearch() {
         let name = search.Name;
         let status = search.Status ? search.Status : -1;
-        var fetchData = await getAPI(`api/permission/list_data?Name=${name}&Status=${status}&Status=${status}&page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
+        var fetchData = await getAPI(`api/permission/list_data?Name=${name}&Status=${status}&page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
