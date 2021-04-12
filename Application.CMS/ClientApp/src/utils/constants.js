@@ -18,4 +18,5 @@ export const DOMAIN = "localhost";
 export const URL_ERROR = "/error";
 export const URL_LOGIN = "/login";
 export const URL_DASHBOARD = "/dashboard";
+export const PERMISS_USER_CURRENT = "permis_user_current";
 //# sourceMappingURL=constants.js.map

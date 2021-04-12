@@ -4,11 +4,13 @@ import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Ch
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
-import { AbilityBuilder, Ability } from '@casl/ability';
 import { Can } from "../../elements/Config_Roles/Can"
+import { getLocalStorage } from "../../../utils/helpers"
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
 function Table(props) {
     //khai báo state
-    console.log(Can)
+    //console.log(Can)
     const [array, setArray] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -21,6 +23,7 @@ function Table(props) {
         props.obj ? setPageSize(props.obj.pageSize) : setPageSize(pageSize);
         props.obj ? setTotal(props.obj.total) : setTotal(0);
         props.obj ? setTotalPage(props.obj.totalPage) : setTotal(0);
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
     }, [props])
     const onNextPage = (page, size) => {
         console.log(page)
@@ -174,20 +177,24 @@ function Table(props) {
     }
     const onSort = (name) => {
         var itemClick = document.querySelectorAll("table th.sapxep");
-        setTypeSort(!typeSort);
         for (var item of itemClick) {
+            var current_ClassName = item.className;
+            console.log(current_ClassName)
             if (item.getAttribute("id") == name) {
-                if (typeSort) {
+                if (current_ClassName == "sapxep" || current_ClassName == "sapxep _desc") {
+                    item.className = "sapxep _asc"
                     item.childNodes[1].className = "fa fa-sort fa-sort-up";
                     name += "_asc";
                 }
                 else {
+                    item.className = "sapxep _desc"
                     item.childNodes[1].className = "fa fa-sort fa-sort-down";
                     name += "_desc";
                 }
 
             }
             else {
+                item.className = "sapxep"
                 item.childNodes[1].className = "fa fa-sort";
             }
         }

@@ -5,6 +5,7 @@ import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
 import PrivateRoute from './utils/PrivateRoute';
 // import our main pages
 import Menu from './components/pages/Menu/Index';
+import DM_DonViHanhChinh from './components/pages/DM_DonViHanhChinh/Index';
 import DM_ChucVu from './components/pages/DM_ChucVu/Index';
 import UserGroup from './components/pages/UserGroup/Index';
 import User from './components/pages/Users/Index';
@@ -25,6 +26,7 @@ const RouteSinglePage = () => (
         <PrivateRoute exact path='/permission' component={Permission} />
         <PrivateRoute exact path='/user_group' component={UserGroup} />
         <PrivateRoute exact path='/user' component={User} />
+        <PrivateRoute exact path='/dm_donvihanhchinh' component={DM_DonViHanhChinh} />
     </Switch>
 );
 export default RouteSinglePage

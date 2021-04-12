@@ -80,8 +80,8 @@ export const getAccessToken = () => {
 export const setLocalStorage = (name, value) => {
     storage.setItem(name, value);
 }
-export function getLocalStorage (name) {
-    window.localStorage.getItem(name);
+export function getLocalStorage(name) {
+    return JSON.parse(localStorage.getItem(name));
 }
 //export const setAccessToken = (token) => storage.setItem("access_token", token);
 //export const removeAccessToken = () => storage.removeItem("access_token");

@@ -17,6 +17,7 @@ namespace Application.REPOSITORY
         IMenuRepository MenuRepository { get; }
         IPermissionRepository PermissionRepository { get; }
         IUserGroupRepository UserGroupRepository { get; }
+        IDM_DonViHanhChinhRepository DM_DonViHanhChinhRepository { get; }
         Task CreateTransaction();
         Task Commit();
         Task Rollback();
@@ -37,6 +38,7 @@ namespace Application.REPOSITORY
             MenuRepository = new MenuRepository(_dbContext);
             PermissionRepository = new PermissionRepository(_dbContext);
             UserGroupRepository = new UserGroupRepository(_dbContext);
+            DM_DonViHanhChinhRepository = new DM_DonViHanhChinhRepository(_dbContext);
         }
         public IUserRepository UserRepository { get; }
 
@@ -52,6 +54,8 @@ namespace Application.REPOSITORY
         public IPermissionRepository PermissionRepository { get; }
 
         public IUserGroupRepository UserGroupRepository { get; }
+
+        public IDM_DonViHanhChinhRepository DM_DonViHanhChinhRepository { get; }
         #region Transaction
         public async Task CreateTransaction()
         {

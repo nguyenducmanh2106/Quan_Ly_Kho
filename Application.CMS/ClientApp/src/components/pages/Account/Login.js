@@ -4,7 +4,7 @@ import logo from '../../../static/images/logo.png';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import { NavLink, Link, Switch, useHistory, useLocation, BrowserRouter as Router } from 'react-router-dom';
 import { setAccessToken, isLoggedIn, postAPI, setLocalStorage, getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone, setCookie } from '../../../utils/helpers';
-import { USER_LOCALSTORAGE, EXPIRES_AT_LOCALSTORAGE, ACCESS_TOKEN, URL_DASHBOARD } from "../../../utils/constants";
+import { USER_LOCALSTORAGE, PERMISS_USER_CURRENT, EXPIRES_AT_LOCALSTORAGE, ACCESS_TOKEN, URL_DASHBOARD } from "../../../utils/constants";
 import { Form, Input, Button, Checkbox, Layout, Spin, Tag } from 'antd';
 import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
 import * as AntdIcons from '@ant-design/icons';
@@ -48,6 +48,7 @@ const Login = (props) => {
             setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/', expires: new Date(totalMiniseconds) })
             setLocalStorage(EXPIRES_AT_LOCALSTORAGE, totalMiniseconds);
             setLocalStorage(USER_LOCALSTORAGE, JSON.stringify(res.result.userDetails));
+            setLocalStorage(PERMISS_USER_CURRENT, JSON.stringify(res.result.permiss));
             //set Role
             defineAbilitiesFor(res.result.permiss);
             //history.replace('/');

@@ -2,10 +2,14 @@
 import { NavLink, Link, Switch, useHistory, BrowserRouter as Router } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { parseJwt, getAccessToken, getUser, getAPI } from '../../../utils/helpers';
-import { Menu, Skeleton } from 'antd';
+import { Menu, Skeleton, Space } from 'antd';
 import MyIcon from "../../elements/Icon-Antd/Icon";
 import renderHTML from 'react-render-html';
-import { Can } from "./../../elements/Config_Roles/Can"
+import { Can } from "../../elements/Config_Roles/Can"
+import ability from "../../elements/Config_Roles/ability"
+import { getLocalStorage } from "../../../utils/helpers"
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
 import * as AntdIcons from '@ant-design/icons';
 const MenuSidebar = (props) => {
 
@@ -17,11 +21,16 @@ const MenuSidebar = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [listmenu, setMenu] = useState([])
     const [listmenu1, setMenu1] = useState([])
+    const [permiss, setPermiss] = useState([])
 
     useEffect(() => {
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
         async function getData() {
             var fetchData = await getAPI(`api/menu/raw_menu`);
             if (fetchData.status == true) {
+                //console.log(fetchData.result)
+                //console.log(ability.rules[0].subject)
+                setPermiss(ability.rules[0].subject)
                 setMenu(fetchData.result)
                 setIsLoading(!fetchData.status)
             }
@@ -37,8 +46,7 @@ const MenuSidebar = (props) => {
         return (
             <Skeleton loading={isLoading} active={true}>
                 <Menu
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
+
                     mode="inline"
                     theme="dark"
                 //className="classColor"
@@ -46,77 +54,91 @@ const MenuSidebar = (props) => {
                 >
                     {listmenu.map((item) => {
                         var icon = item.icon
-                        if (item.childNode.length <= 0) {
-                            return (
-                                <Can I="view" a={item.url.substr(1)}>
-                                    <Menu.Item key={item.id} icon={<MyIcon type={icon} /> ?? renderHTML(icon)}>
-                                        <Link to={item.url}>{item.name}</Link>
+                        if (!item.childNode.length) {
+                            if (permiss.includes(item.url.substr(1))) {
+                                return (
+                                    //<Can I="view" a={item.url.substr(1)}>
+
+                                    <Menu.Item className="ant-menu-item ant-menu-item-only-child" key={item.id}  >
+                                        <Link to={item.url}>
+                                            <MyIcon type={icon} />
+                                            {item.name}
+                                        </Link>
                                     </Menu.Item>
-                                </Can>
-                            )
+
+                                    // </Can>
+                                )
+                            }
                         }
                         else {
-                            return (
-                                <Can I="view" a={item.url.substr(1)}>
-                                    <SubMenu key={item.id} icon={<MyIcon type={icon} /> ?? renderHTML(icon)} title={item.name}>
+                            if (permiss.includes(item.url.substr(1))) {
+                                return (
+                                    // <Can I="view" a={item.url.substr(1)}>
+                                    <SubMenu key={item.id} icon={<MyIcon type={icon} />} title={item.name}>
                                         {item.childNode.map((itemChild1) => {
                                             var icon = itemChild1.icon
-                                            if (itemChild1.childNode.length <= 0) {
-                                                return (
-                                                    <Menu.Item key={itemChild1.id}>
-                                                        <Can I="view" a={itemChild1.url.substr(1)}>
+                                            if (!itemChild1.childNode.length) {
+                                                if (permiss.includes(itemChild1.url.substr(1))) {
+                                                    return (
+                                                        <Menu.Item key={itemChild1.id}>
                                                             <Link to={itemChild1.url}>
-                                                                <div>
-                                                                    <MyIcon type={icon} />
-                                                                    <span>{itemChild1.name}</span>
-                                                                </div>
+                                                                <MyIcon type={icon} />
+                                                                <span>{itemChild1.name}</span>
                                                             </Link>
-                                                        </Can>
-                                                    </Menu.Item>
-                                                )
+                                                        </Menu.Item>
+                                                    )
+
+                                                }
+
                                             }
                                             else {
-                                                return (
-                                                    <Can I="view" a={itemChild1.url.substr(1)}>
-                                                        <SubMenu key={itemChild1.id} icon={<MyIcon type={icon} /> || renderHTML(icon)} title={itemChild1.name}>
+                                                if (permiss.includes(itemChild1.url.substr(1))) {
+                                                    return (
+                                                        <SubMenu key={itemChild1.id} icon={<MyIcon type={icon} />} title={itemChild1.name}>
                                                             {itemChild1.childNodes.map((itemChild2, IndexChild2) => {
                                                                 var icon = itemChild2.icon
-                                                                if (itemChild2.childNode.length <= 0) {
-                                                                    return (
-                                                                        <Menu.Item key={itemChild2.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
-                                                                            <Can I="view" a={itemChild2.url.substr(1)}>
+                                                                if (!itemChild2.childNode.length) {
+                                                                    if (permiss.includes(itemChild2.url.substr(1))) {
+                                                                        return (
+                                                                            <Menu.Item key={itemChild2.id} icon={<MyIcon type={icon} />}>
+                                                                                {/*<Can I="view" a={itemChild2.url.substr(1)}>*/}
                                                                                 <Link to={itemChild2.url}>{itemChild2.name}</Link>
-                                                                            </Can>
-                                                                        </Menu.Item>
-                                                                    )
+                                                                                {/*</Can>*/}
+                                                                            </Menu.Item>
+                                                                        )
+                                                                    }
                                                                 }
                                                                 else {
-                                                                    return (
-                                                                        <Can I="view" a={itemChild2.url.substr(1)}>
-                                                                            <SubMenu key={itemChild2.id} icon={<MyIcon type={icon} /> || renderHTML(itemChild2.icon)} title={itemChild2.name}>
+                                                                    if (permiss.includes(itemChild2.url.substr(1))) {
+                                                                        return (
+                                                                            //<Can I="view" a={itemChild2.url.substr(1)}>
+                                                                            <SubMenu key={itemChild2.id} icon={<MyIcon type={icon} />} title={itemChild2.name}>
                                                                                 {itemChild2.childNode.map((itemChild3, IndexChild3) => {
                                                                                     var icon = itemChild3.icon
                                                                                     return (
                                                                                         <Menu.Item key={itemChild3.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
-                                                                                            <Can I="view" a={itemChild3.url.substr(1)}>
-                                                                                                <Link to={itemChild3.url}>{itemChild3.name}</Link>
-                                                                                            </Can>
+                                                                                            {/*<Can I="view" a={itemChild3.url.substr(1)}>*/}
+                                                                                            <Link to={itemChild3.url}>{itemChild3.name}</Link>
+                                                                                            {/*</Can>*/}
                                                                                         </Menu.Item>
                                                                                     )
                                                                                 })}
                                                                             </SubMenu>
-                                                                        </Can>
-                                                                    )
+                                                                            //</Can>
+                                                                        )
+                                                                    }
                                                                 }
                                                             })}
                                                         </SubMenu>
-                                                    </Can>
-                                                )
+                                                        //</Can>
+                                                    )
+                                                }
                                             }
                                         })}
                                     </SubMenu>
-                                </Can>
-                            )
+                                    // </Can>
+                                )
+                            }
                         }
                     })
                     }

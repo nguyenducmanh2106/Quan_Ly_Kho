@@ -128,20 +128,24 @@ function Table(props) {
     }
     const onSort = (name) => {
         var itemClick = document.querySelectorAll("table th.sapxep");
-        setTypeSort(!typeSort);
         for (var item of itemClick) {
+            var current_ClassName = item.className;
+            console.log(current_ClassName)
             if (item.getAttribute("id") == name) {
-                if (typeSort) {
+                if (current_ClassName == "sapxep" || current_ClassName == "sapxep _desc") {
+                    item.className = "sapxep _asc"
                     item.childNodes[1].className = "fa fa-sort fa-sort-up";
                     name += "_asc";
                 }
                 else {
+                    item.className = "sapxep _desc"
                     item.childNodes[1].className = "fa fa-sort fa-sort-down";
                     name += "_desc";
                 }
 
             }
             else {
+                item.className = "sapxep"
                 item.childNodes[1].className = "fa fa-sort";
             }
         }
