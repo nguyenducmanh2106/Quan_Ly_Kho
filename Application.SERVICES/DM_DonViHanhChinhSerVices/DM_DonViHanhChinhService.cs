@@ -68,6 +68,19 @@ namespace Application.Services.DM_DonViHanhChinhSerVices
             return data;
         }
 
+        public async Task<IQueryable<DM_DonViHanhChinhs>> GetDonViHanhChinh(int ParentId)
+        {
+            try
+            {
+                var data = await _unitOfWork.DM_DonViHanhChinhRepository.FindBy(g => g.ParentId == ParentId && g.Status == (int)StatusEnum.Active);
+                return data;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IQueryable<DM_DonViHanhChinhs>> GetOptions(int Status, string Name)
         {
             var data = (await _unitOfWork.DM_DonViHanhChinhRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)

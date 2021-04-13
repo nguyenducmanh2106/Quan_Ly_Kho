@@ -12,6 +12,7 @@ import BounceLoader from 'react-spinners/BounceLoader'
 function Index() {
     //khai báo state
     const [state, setState] = useState([]);
+    const [stateTinh, setStateTinh] = useState([]);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
@@ -38,6 +39,7 @@ function Index() {
                 setIsLoading(!fetchData.status)
             }
         }
+       
         async function getOptions() {
             var fetchData = await getAPI('api/dm_donvi/get-options');
             //console.log(fetchData)
@@ -65,6 +67,16 @@ function Index() {
             setAction(false)
         }
     }, [isAction, nameSort, page, pageSize])
+    useEffect(() => {
+        async function getDonViHanhChinh() {
+            var fetchData = await getAPI(`api/dm_donvihanhchinh/get-don-vi-hanh-chinh/?ParentId=0`);
+            if (fetchData.status == true) {
+                setStateTinh(fetchData.result)
+            }
+        }
+        //gọi hàm
+        getDonViHanhChinh()
+    },[])
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
@@ -334,6 +346,7 @@ function Index() {
                                 hide={toggle}
                                 onPostCreateItem={onPostCreateItem}
                                 data={options}
+                                Tinh={stateTinh}
                             />
                             <FormUpdate
                                 isShowing={isShowingUpdate}

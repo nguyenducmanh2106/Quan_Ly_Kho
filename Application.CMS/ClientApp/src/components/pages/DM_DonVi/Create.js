@@ -1,7 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModalCreate = ({ isShowing, hide, data, onPostCreateItem }) => {
+const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
     const { Option } = Select;
     const validateMessages = {
         required: '${label} không được để trống',
@@ -69,20 +69,33 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem }) => {
                         <Form.Item name="Code" label="Mã đơn vị" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number' }]}>
-                            <InputNumber
-                                style={{
-                                    width: "100%",
-                                }}
-                                min="0"
-                            />
-                        </Form.Item>
-                        <Form.Item name="ParentId" label="Tỉnh/Thành phố"
+                        
+                        <Form.Item name="TinhId" label="Tỉnh/Thành phố"
                         >
                             <Select
                                 showSearch
                                 //style={{ width: 200 }}
                                 placeholder="-- Tỉnh/Thành phố --"
+                                optionFilterProp="tp"
+                                filterOption={(input, option) =>
+                                    option.tp.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA, optionB) =>
+                                    optionA.tp.toLowerCase().localeCompare(optionB.tp.toLowerCase())
+                                }
+                            >
+                                <Option value="-1">--Chọn--</Option>
+                                {Tinh.map(item => (
+                                    <Option value={item.id}>{item.name}</Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="HuyenId" label="Quận/Huyện"
+                        >
+                            <Select
+                                showSearch
+                                //style={{ width: 200 }}
+                                placeholder="-- Quận/Huyện --"
                                 optionFilterProp="children"
                                 filterOption={(input, option) =>
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -95,6 +108,42 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem }) => {
                                     <Option value={item.value}>{item.label}</Option>
                                 ))}
                             </Select>
+                        </Form.Item>
+                        <Form.Item name="XaId" label="Phường/Xã"
+                        >
+                            <Select
+                                showSearch
+                                //style={{ width: 200 }}
+                                placeholder="-- Phường/Xã --"
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA, optionB) =>
+                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                }
+                            >
+                                {data.map(item => (
+                                    <Option value={item.value}>{item.label}</Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item name="Address" label="Địa chỉ">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="Longitude" label="Kinh độ" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="Latitude" label="Vĩ độ" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number' }]}>
+                            <InputNumber
+                                style={{
+                                    width: "100%",
+                                }}
+                                min="0"
+                            />
                         </Form.Item>
                         <Form.Item name="Status" label="Trạng thái" valuePropName="checked">
                             <Checkbox />

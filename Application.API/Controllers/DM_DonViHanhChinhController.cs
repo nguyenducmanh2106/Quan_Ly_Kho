@@ -53,7 +53,7 @@ namespace Application.API.Controllers
                         Ordering = g.Ordering,
                         ParentId = g.ParentId,
                         Status = g.Status,
-                        Code=g.Code
+                        Code = g.Code
                     }).ToList();
                     MessageSuccess success = new MessageSuccess()
                     {
@@ -69,15 +69,15 @@ namespace Application.API.Controllers
         }
         //[RoleAuthorizeAttribute("menu.view")]
         [HttpGet("list_data")]
-        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "",string nameSort="")
+        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "", string nameSort = "")
         {
             try
             {
                 var totalPage = 0;
                 var total = 0;
                 var stt = (page - 1) * pageSize;
-                var dataExist = await _manager.getData(page, pageSize, Status, Name,nameSort);
-               
+                var dataExist = await _manager.getData(page, pageSize, Status, Name, nameSort);
+
                 if (dataExist == null)
                 {
                     return Ok(new MessageError());
@@ -105,7 +105,7 @@ namespace Application.API.Controllers
                                 break;
                         }
                     }
-                    
+
                     total = dataExist.Count();
                     var data = dataExist.Skip((page - 1) * pageSize).Take(pageSize);
                     totalPage = (int)Math.Ceiling(((double)total / pageSize));
@@ -233,7 +233,7 @@ namespace Application.API.Controllers
                 };
                 return Ok(success);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Ok(new MessageError()
                 {
@@ -242,6 +242,23 @@ namespace Application.API.Controllers
             }
 
         }
-      
+        [HttpGet("get-don-vi-hanh-chinh")]
+        public async Task<IActionResult> GetDonViHanhChinh(int ParentId = 0)
+        {
+            try
+            {
+                var dataExist = await _manager.GetDonViHanhChinh(ParentId);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = dataExist
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
