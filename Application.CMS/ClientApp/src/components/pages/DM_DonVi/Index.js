@@ -121,6 +121,12 @@ function Index() {
             setState(fetchData.result)
         }
     }
+    const onChangeSelectTinh = async (TinhId) => {
+        var fetchData = await getAPI(`api/dm_donvihanhchinh/get-don-vi-hanh-chinh/?ParentId=${TinhId}`);
+        if (fetchData.status == true) {
+            setStateTinh(fetchData.result)
+        }
+    } 
     const onSetNameSort = (name) => {
         setNameSort(name)
     }
