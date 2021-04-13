@@ -13,6 +13,8 @@ function Index() {
     //khai báo state
     const [state, setState] = useState([]);
     const [stateTinh, setStateTinh] = useState([]);
+    const [stateXa, setStateXa] = useState([]);
+    const [stateHuyen, setStateHuyen] = useState([]);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
@@ -122,9 +124,17 @@ function Index() {
         }
     }
     const onChangeSelectTinh = async (TinhId) => {
+        console.log(TinhId)
         var fetchData = await getAPI(`api/dm_donvihanhchinh/get-don-vi-hanh-chinh/?ParentId=${TinhId}`);
         if (fetchData.status == true) {
-            setStateTinh(fetchData.result)
+            setStateHuyen(fetchData.result)
+        }
+    } 
+    const onChangeSelectHuyen = async (HuyenId) => {
+        console.log(HuyenId)
+        var fetchData = await getAPI(`api/dm_donvihanhchinh/get-don-vi-hanh-chinh/?ParentId=${HuyenId}`);
+        if (fetchData.status == true) {
+            setStateXa(fetchData.result)
         }
     } 
     const onSetNameSort = (name) => {
@@ -353,6 +363,10 @@ function Index() {
                                 onPostCreateItem={onPostCreateItem}
                                 data={options}
                                 Tinh={stateTinh}
+                                Huyen={stateHuyen}
+                                Xa={stateXa}
+                                onChangeSelectTinh={onChangeSelectTinh}
+                                onChangeSelectHuyen={onChangeSelectHuyen}
                             />
                             <FormUpdate
                                 isShowing={isShowingUpdate}

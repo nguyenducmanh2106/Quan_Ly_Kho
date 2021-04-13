@@ -1,7 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
+const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
     const { Option } = Select;
     const validateMessages = {
         required: '${label} không được để trống',
@@ -28,10 +28,17 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
             ...data,
             Status: data.Status ? 1 : 2
         }
-        //console.log(obj)
-        onPostCreateItem(obj)
+        console.log(obj)
+        //onPostCreateItem(obj)
     }
-
+    const onHandleChangeTinh = (value) => {
+        //console.log(value)
+        onChangeSelectTinh(value)
+    }
+    const onHandleChangeHuyen = (value) => {
+        //console.log(value)
+        onChangeSelectHuyen(value)
+    }
     return (
         ReactDOM.createPortal(
             <React.Fragment>
@@ -42,7 +49,10 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
                     <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
                         validateMessages={validateMessages}
                         initialValues={{
-                            ["Ordering"]: 0
+                            ["Ordering"]: 0,
+                            ["TinhId"]: "-1",
+                            ["HuyenId"]: "-1",
+                            ["XaId"]: "-1",
                         }}
                     >
                         <Form.Item name="ParentId" label="Đơn vị cha">
@@ -59,7 +69,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
                                 }
                             >
                                 {data.map(item => (
-                                    <Option value={item.value}>{item.label}</Option>
+                                    <Option key={item.value} value={item.value}>{item.label}</Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -83,10 +93,12 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
                                 filterSort={(optionA, optionB) =>
                                     optionA.tp.toLowerCase().localeCompare(optionB.tp.toLowerCase())
                                 }
+                                onChange={onHandleChangeTinh}
+                                
                             >
                                 <Option value="-1">--Chọn--</Option>
                                 {Tinh.map(item => (
-                                    <Option value={item.id}>{item.name}</Option>
+                                    <Option key={item.id} value={item.id}>{item.name}</Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -103,9 +115,11 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
                                 filterSort={(optionA, optionB) =>
                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                 }
+                                onChange={onHandleChangeHuyen}
                             >
-                                {data.map(item => (
-                                    <Option value={item.value}>{item.label}</Option>
+                                <Option value="-1">--Chọn--</Option>
+                                {Huyen.map(item => (
+                                    <Option key={item.id} value={item.id}>{item.name}</Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -123,8 +137,9 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem,Tinh }) => {
                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                 }
                             >
-                                {data.map(item => (
-                                    <Option value={item.value}>{item.label}</Option>
+                                <Option value="-1">--Chọn--</Option>
+                                {Xa.map(item => (
+                                    <Option key={item.id} value={item.id}>{item.name}</Option>
                                 ))}
                             </Select>
                         </Form.Item>

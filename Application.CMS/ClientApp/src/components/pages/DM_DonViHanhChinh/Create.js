@@ -59,7 +59,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem }) => {
                                 }
                             >
                                 {data.map(item => (
-                                    <Select.Option value={item.value}>{item.label}</Select.Option>
+                                    <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
                                 ))}
                             </Select>
                         </Form.Item>
