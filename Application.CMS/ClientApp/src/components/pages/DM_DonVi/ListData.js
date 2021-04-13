@@ -206,7 +206,7 @@ function Table(props) {
                         showSizeChanger
                         showTotal={total => `Tổng số bản ghi: ${total}`}
                         defaultPageSize={pageSize}
-                        pageSizeOptions={[3, 4, 6, 100]}
+                        pageSizeOptions={[10, 20, 50, 100]}
                         responsive
                         current={page}
                     />

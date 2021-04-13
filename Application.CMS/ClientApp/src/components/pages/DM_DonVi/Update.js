@@ -1,8 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
-    const { Option } = Select;
+const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -13,6 +12,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
             range: '${label} must be between ${min} and ${max}',
         },
     };
+    console.log(item)
     const layout = {
         labelCol: {
             sm: { span: 24 },
@@ -39,7 +39,12 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
         )
         return itemDefault
     }
-
+    const onHandleChangeTinh = (value) => {
+        onChangeSelectTinh(value)
+    }
+    const onHandleChangeHuyen = (value) => {
+        onChangeSelectHuyen(value)
+    }
     return (
         <>
             {isShowing ? ReactDOM.createPortal(
@@ -57,6 +62,12 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                                 ["Name"]: item.name,
                                 ["Code"]: item.code,
                                 ["Status"]: item.status == 1 ? true : false,
+                                ["TinhId"]: item.tinhId?item.tinhId:-1,
+                                ["HuyenId"]: item.huyenId? item.huyenId:-1,
+                                ["XaId"]: item.xaId?item.xaId:-1,
+                                ["Address"]: item.address,
+                                ["Longitude"]: item.longitude,
+                                ["Latitude"]: item.latitude,
                             }}
                         >
                             <Form.Item name="ParentId" label="Đơn vị cha">
@@ -72,8 +83,9 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                                         optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                     }
                                 >
+                                    <Select.Option value={0}>--Chọn--</Select.Option>
                                     {data.map(item => (
-                                        <Option value={item.value}>{item.label}</Option>
+                                        <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
                                     ))}
                                 </Select>
                             </Form.Item>
@@ -81,6 +93,78 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                                 <Input />
                             </Form.Item>
                             <Form.Item name="Code" label="Mã đơn vị" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item name="TinhId" label="Tỉnh/Thành phố"
+                            >
+                                <Select
+                                    showSearch
+                                    //style={{ width: 200 }}
+                                    placeholder="-- Tỉnh/Thành phố --"
+                                    optionFilterProp="tp"
+                                    filterOption={(input, option) =>
+                                        option.tp.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    filterSort={(optionA, optionB) =>
+                                        optionA.tp.toLowerCase().localeCompare(optionB.tp.toLowerCase())
+                                    }
+                                    onChange={onHandleChangeTinh}
+
+                                >
+                                    <Select.Option value={-1}>--Chọn--</Select.Option>
+                                    {Tinh.map(item => (
+                                        <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="HuyenId" label="Quận/Huyện"
+                            >
+                                <Select
+                                    showSearch
+                                    //style={{ width: 200 }}
+                                    placeholder="-- Quận/Huyện --"
+                                    optionFilterProp="huyen"
+                                    filterOption={(input, option) =>
+                                        option.huyen.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    filterSort={(optionA, optionB) =>
+                                        optionA.huyen.toLowerCase().localeCompare(optionB.huyen.toLowerCase())
+                                    }
+                                    onChange={onHandleChangeHuyen}
+                                >
+                                    <Select.Option value={-1}>--Chọn--</Select.Option>
+                                    {Huyen.map(item => (
+                                        <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="XaId" label="Phường/Xã"
+                            >
+                                <Select
+                                    showSearch
+                                    //style={{ width: 200 }}
+                                    placeholder="-- Phường/Xã --"
+                                    optionFilterProp="xa"
+                                    filterOption={(input, option) =>
+                                        option.xa.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    filterSort={(optionA, optionB) =>
+                                        optionA.xa.toLowerCase().localeCompare(optionB.xa.toLowerCase())
+                                    }
+                                >
+                                    <Select.Option value={-1}>--Chọn--</Select.Option>
+                                    {Xa.map(item => (
+                                        <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item name="Address" label="Địa chỉ">
+                                <Input />
+                            </Form.Item>
+                            <Form.Item name="Longitude" label="Kinh độ" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item name="Latitude" label="Vĩ độ" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                             <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number' }]}>
@@ -97,7 +181,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem }) => {
                         </Form>
                     </Modal>
                 </  React.Fragment>, document.body
-            ):null}
+            ) : null}
         </>
     )
 }

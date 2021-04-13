@@ -19,7 +19,7 @@ function Menu() {
     const [isLoading, setIsLoading] = useState(true);
     const [options, setOption] = useState([]);
     const [nameSort, setNameSort] = useState('');
-    const [pageSize, setPageSize] = useState(4);
+    const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);

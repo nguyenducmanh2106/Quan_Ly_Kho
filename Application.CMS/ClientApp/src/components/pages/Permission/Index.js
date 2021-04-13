@@ -17,7 +17,7 @@ function Menu() {
     const [isLoading, setIsLoading] = useState(true);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
     const [options, setOption] = useState([]);
-    const [pageSize, setPageSize] = useState(4);
+    const [pageSize, setPageSize] = useState(10);
     const [nameSort, setNameSort] = useState('');
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();

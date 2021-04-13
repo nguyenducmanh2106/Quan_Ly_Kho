@@ -1,8 +1,8 @@
-﻿import React, { useEffect } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
 const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
-    const { Option } = Select;
+  
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -28,15 +28,13 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
             ...data,
             Status: data.Status ? 1 : 2
         }
-        console.log(obj)
-        //onPostCreateItem(obj)
+        //console.log(obj)
+        onPostCreateItem(obj)
     }
     const onHandleChangeTinh = (value) => {
-        //console.log(value)
         onChangeSelectTinh(value)
     }
     const onHandleChangeHuyen = (value) => {
-        //console.log(value)
         onChangeSelectHuyen(value)
     }
     return (
@@ -50,9 +48,9 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
                         validateMessages={validateMessages}
                         initialValues={{
                             ["Ordering"]: 0,
-                            ["TinhId"]: "-1",
-                            ["HuyenId"]: "-1",
-                            ["XaId"]: "-1",
+                            ["TinhId"]: -1,
+                            ["HuyenId"]: -1,
+                            ["XaId"]: -1,
                         }}
                     >
                         <Form.Item name="ParentId" label="Đơn vị cha">
@@ -68,8 +66,9 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                 }
                             >
+                                <Select.Option value={0}>--Chọn--</Select.Option>
                                 {data.map(item => (
-                                    <Option key={item.value} value={item.value}>{item.label}</Option>
+                                    <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -79,7 +78,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
                         <Form.Item name="Code" label="Mã đơn vị" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
-                        
+
                         <Form.Item name="TinhId" label="Tỉnh/Thành phố"
                         >
                             <Select
@@ -94,11 +93,11 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
                                     optionA.tp.toLowerCase().localeCompare(optionB.tp.toLowerCase())
                                 }
                                 onChange={onHandleChangeTinh}
-                                
+
                             >
-                                <Option value="-1">--Chọn--</Option>
+                                <Select.Option value={-1}>--Chọn--</Select.Option>
                                 {Tinh.map(item => (
-                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                    <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -117,9 +116,9 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
                                 }
                                 onChange={onHandleChangeHuyen}
                             >
-                                <Option value="-1">--Chọn--</Option>
+                                <Select.Option value={-1}>--Chọn--</Select.Option>
                                 {Huyen.map(item => (
-                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                    <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
                                 ))}
                             </Select>
                         </Form.Item>
@@ -137,9 +136,9 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                 }
                             >
-                                <Option value="-1">--Chọn--</Option>
+                                <Select.Option value={-1}>--Chọn--</Select.Option>
                                 {Xa.map(item => (
-                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                    <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
                                 ))}
                             </Select>
                         </Form.Item>

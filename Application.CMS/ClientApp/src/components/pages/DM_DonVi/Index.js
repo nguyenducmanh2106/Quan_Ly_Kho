@@ -21,7 +21,7 @@ function Index() {
     const [isLoading, setIsLoading] = useState(true);
     const [options, setOption] = useState([]);
     const [nameSort, setNameSort] = useState('');
-    const [pageSize, setPageSize] = useState(4);
+    const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
@@ -41,24 +41,13 @@ function Index() {
                 setIsLoading(!fetchData.status)
             }
         }
-       
+
         async function getOptions() {
             var fetchData = await getAPI('api/dm_donvi/get-options');
             //console.log(fetchData)
             let arrOption = []
             if (fetchData.status == true) {
-                fetchData.result.map((item, index) => {
-                    let option = {
-                        value: item.id,
-                        label: item.name
-                    }
-                    arrOption.push(option)
-                });
-                arrOption.unshift({
-                    value: 0,
-                    label: '----'
-                })
-                setOption(arrOption)
+                setOption(fetchData.result)
             }
         }
         //gọi hàm
@@ -78,7 +67,7 @@ function Index() {
         }
         //gọi hàm
         getDonViHanhChinh()
-    },[])
+    }, [])
     async function onUpdateItemPosition(ItemPosition) {
         console.log(ItemPosition)
         if (ItemPosition.ordering < 0 || Number.isNaN(ItemPosition.ordering)) {
@@ -129,14 +118,14 @@ function Index() {
         if (fetchData.status == true) {
             setStateHuyen(fetchData.result)
         }
-    } 
+    }
     const onChangeSelectHuyen = async (HuyenId) => {
         console.log(HuyenId)
         var fetchData = await getAPI(`api/dm_donvihanhchinh/get-don-vi-hanh-chinh/?ParentId=${HuyenId}`);
         if (fetchData.status == true) {
             setStateXa(fetchData.result)
         }
-    } 
+    }
     const onSetNameSort = (name) => {
         setNameSort(name)
     }
@@ -213,7 +202,9 @@ function Index() {
         })
 
     }
-    const onUpdateItem = (item) => {
+    const onUpdateItem = async (item) => {
+        onChangeSelectTinh(item.tinhId)
+        onChangeSelectHuyen(item.huyenId)
         setItemUpdate(item)
     }
     async function onMultiDelete() {
@@ -283,10 +274,13 @@ function Index() {
 
     }
     async function onPostCreateItem(obj) {
+        //console.log(obj)
+        setIsLoading(true)
         var result = await postAPI('api/dm_donvi/create', JSON.stringify(obj))
         toggle();
         if (result.status) {
             setAction(true)
+            setIsLoading(!result.status)
             notification.success({
                 message: result.message,
                 duration: 3
@@ -295,6 +289,7 @@ function Index() {
 
         }
         else {
+            setIsLoading(result.status)
             notification.error({
                 message: result.message,
                 duration: 3
@@ -374,6 +369,11 @@ function Index() {
                                 item={ItemUpdate}
                                 onPostUpdateItem={onPostUpdateItem}
                                 data={options}
+                                Tinh={stateTinh}
+                                Huyen={stateHuyen}
+                                Xa={stateXa}
+                                onChangeSelectTinh={onChangeSelectTinh}
+                                onChangeSelectHuyen={onChangeSelectHuyen}
                             />
                             <ListData obj={state}
                                 onChangePage={onChangePage}
@@ -384,6 +384,7 @@ function Index() {
                                 onUpdateItemPosition={onUpdateItemPosition}
                                 toggleStatus={onToggleStatus}
                                 onSetNameSort={onSetNameSort}
+                               
                             />
                         </LoadingOverlay>
                     </Skeleton>

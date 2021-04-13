@@ -31,7 +31,7 @@ namespace Application.API.Controllers
             this._manager = _manager;
         }
         [HttpGet("list_data")]
-        public async Task<IActionResult> ListData(int page = 1, int pageSize = 4, int Status = -1, string Name = "", string nameSort = "")
+        public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "", string nameSort = "")
         {
             try
             {

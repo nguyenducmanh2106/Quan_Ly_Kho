@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import { List, Avatar } from 'antd';
 
 //import 'antd-button-color/dist/css/style.css';
-//import 'mdbreact/dist/css/mdb.css';
 import 'antd/dist/antd.css';
 import 'sweetalert2/src/sweetalert2.scss';
 import '../src/styles/global.scss';

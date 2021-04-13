@@ -62,7 +62,7 @@ header {
         position: sticky;
         z-index: 1000;
         top: 0;
-        /*height: 52px !important;*/
+        height:auto !important;
         min-height: 45px;
         padding: 0;
 
@@ -71,7 +71,7 @@ header {
         }
 
         .anticon {
-            margin-right: 0;
+            margin-right: 0 !important;
         }
     }
 }

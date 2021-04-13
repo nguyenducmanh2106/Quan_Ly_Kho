@@ -20,7 +20,7 @@ function Index() {
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
     const [nameSort, setNameSort] = useState('');
-    const [pageSize, setPageSize] = useState(4);
+    const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
     const [listPermission, setListPermission] = useState([]);
     const [ItemCreatePermission, setItemCreatePermission] = useState();

@@ -2361,7 +2361,7 @@ html {
 .ant-menu-item .anticon,
 .ant-menu-submenu-title .anticon {
   min-width: 14px;
-  margin-right: 10px;
+  margin-right: 10px !important;
   font-size: 14px;
   -webkit-transition: font-size 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition: font-size 0.15s cubic-bezier(0.215, 0.61, 0.355, 1), margin 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -2512,7 +2512,7 @@ html {
   /*line-height: 51px !important;*/
   white-space: nowrap;
   border: 0;
-  border-bottom: 1px solid #e8e8e8;
+  /*border-bottom: 1px solid #e8e8e8;*/
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -2667,7 +2667,7 @@ html {
 .ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-item .anticon,
 .ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-submenu > .ant-menu-submenu-title .anticon,
 .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title .anticon {
-  margin: 0;
+  /*margin: 0;*/
   font-size: 16px;
   line-height: 40px;
 }
