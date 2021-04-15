@@ -27,7 +27,6 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
         var obj = {
             ...data,
             Status: data.Status ? 1 : 2,
-            isMenu: data.isMenu ? true : false,
         }
         //console.log(obj)
         onPostCreateItem(obj)
@@ -44,10 +43,11 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                     <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
                         validateMessages={validateMessages}
                         initialValues={{
-                            ["Ordering"]: 0
+                            ["Ordering"]: 0,
+                            ["ParentId"]: 0,
                         }}
                     >
-                        <Form.Item name="ParentId" label="Danh mục cha">
+                        <Form.Item name="ParentId" label="Danh mục cha" rules={[{ required: true }]}>
                             <Select
                                 showSearch
                                 //style={{ width: 200 }}
@@ -60,7 +60,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                 }
                             >
-                                <Select.Option  value={0}>----</Select.Option>
+                                <Select.Option value={0}>----</Select.Option>
                                 {data.map(item => (
                                     <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
                                 ))}
@@ -69,7 +69,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                         <Form.Item name="Name" label="Tên danh mục" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item name="icon" label="Icon">
+                        <Form.Item name="Code" label="Mã thương hiệu" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                         <Form.Item name="Url" label="Đường dẫn">
@@ -83,8 +83,11 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                                 min="0"
                             />
                         </Form.Item>
-                        <Form.Item name="isMenu" label="Hiển thị menu" valuePropName="checked">
-                            <Checkbox />
+                        <Form.Item name="Description" label="Mô tả">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="Content" label="Nội dung">
+                            <Input.TextArea />
                         </Form.Item>
                         <Form.Item name="Status" label="Trạng thái" valuePropName="checked">
                             <Checkbox />

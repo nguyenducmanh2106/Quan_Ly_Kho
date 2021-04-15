@@ -1,7 +1,9 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
+import MyIcon from "../../elements/Icon-Antd/Icon"
 import renderHTML from 'react-render-html';
 function Table(props) {
     //khai báo state
@@ -9,39 +11,31 @@ function Table(props) {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
-    const [totalPage, setTotalPage] = useState(0);
     const [typeSort, setTypeSort] = useState(true);
-    const [indeterminate, setIndeterminate] = useState(false);
-    const [checkAll, setCheckAll] = useState(false);
-    const [listCheck, setListCheck] = useState([]);
     useEffect(() => {
         props.obj ? setArray(props.obj.data) : setArray([]);
         props.obj ? setPage(props.obj.page) : setPage(page);
         props.obj ? setPageSize(props.obj.pageSize) : setPageSize(pageSize);
         props.obj ? setTotal(props.obj.total) : setTotal(0);
-        props.obj ? setTotalPage(props.obj.totalPage) : setTotal(0);
-        return () => {
-            setIndeterminate(false)
-            setCheckAll(false)
-        }
-    }, [props.obj])
+    }, [props])
     const onNextPage = (page, size) => {
-        //console.log(page)
-        //console.log(size)
+        console.log(page)
+        console.log(size)
         props.onChangePage(page, size)
     }
     const update = (item) => {
         props.onToggleFormpdate();
         props.UpdateItem(item)
     }
-    const updatePosition = (value) => {
-        //item.ordering = Number.parseInt(value)
-        console.log(value)
-        //props.onUpdateItemPosition(item)
+    const updatePosition = (event, item) => {
+
+        var target = event.target
+        item.ordering = Number.parseInt(target.value)
+        props.onUpdateItemPosition(item)
     }
-    const toggleStatus = (status, item) => {
-        item.status = status;
-        props.toggleStatus(item)
+    const toggleStatus = (status, itemUpdateStatus) => {
+        itemUpdateStatus.status = status
+        props.toggleStatus(itemUpdateStatus)
     }
     const handleInputChange = (event) => {
         var arrayRemove = []
@@ -67,23 +61,20 @@ function Table(props) {
                 arrayRemove.push(value.id);
             }
         })
-        setIndeterminate(!!arrayRemove.length && arrayRemove.length < arrayCheck.length);
-        setCheckAll(arrayRemove.length === arrayCheck.length);
-        console.log(arrayRemove)
+        //console.log(arrayRemove)
         props.onMultiDelete(arrayRemove)
 
     }
-    const onDelete = (item) => {
-        props.onDeleteItem(item)
-    }
-
     const renderBody = () => {
         var result = ""
         result = array != [] ? array.map((item, index) => {
             return (
                 <tr key={item.id} className="ant-table-row ant-table-row-level-0">
-                    <td className="ant-table-cell">
-                        <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
+                    <td className="w50px" className="ant-table-cell">
+                        <label className="ant-checkbox-wrapper">
+                            <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
+                            <span />
+                        </label>
                     </td>
                     <td className="text-center w50px">
                         {(index + 1) + (page - 1) * pageSize}
@@ -92,28 +83,27 @@ function Table(props) {
                         {item.name}
                     </td>
                     <td>
-                        {item.phone}
+                        {item.ordering}
                     </td>
                     <td>
                         {item.code}
                     </td>
                     <td>
-
                         {item.status == 1 ? <Button type="primary" className="success-outline" ghost onClick={() => toggleStatus(2, item)}>
-                            <Badge status="success" text="Đang giao dịch" />
-                        </Button> : <Button type="primary" className="danger-outline" ghost onClick={() => toggleStatus(1, item)}>
-                                <Badge status="error" text="Ngừng giao dịch" />
+                            <Badge status="success" text="Đang hoạt động" />
+                        </Button> : <Button type="primary" ghost className="danger-outline" onClick={() => toggleStatus(1, item)}>
+                                <Badge status="error" text="Ngừng hoạt động" />
                             </Button>}
                     </td>
                     <td>
                         <Dropdown placement="bottomCenter" overlay={() => (
                             <Menu>
-                                <Menu.Item style={{ textAlign: "center" }} key="2">
+                                <Menu.Item style={{ textAlign: "center" }} key="3">
                                     <Tooltip title="Chỉnh sửa">
                                         <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
                                     </Tooltip>
                                 </Menu.Item>
-                                <Menu.Item style={{ textAlign: "center" }} key="3">
+                                <Menu.Item style={{ textAlign: "center" }} key="4">
                                     <Tooltip title="Xoá">
                                         <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
                                     </Tooltip>
@@ -127,8 +117,11 @@ function Table(props) {
                     </td>
                 </tr>
             );
-        }) : <span>Dữ liệu đang cập nhật...</span>
-        return result
+        }) : ""
+        return result;
+    }
+    const onDelete = (item) => {
+        props.onDeleteItem(item)
     }
     const onSort = (name) => {
         var itemClick = document.querySelectorAll("table th.sapxep");
@@ -158,7 +151,7 @@ function Table(props) {
     return (
         <>
 
-            <form className="ant-table-wrapper">
+            <form className="">
                 <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
                     <div className="ant-table-container">
                         <div className="ant-table-content">
@@ -166,21 +159,24 @@ function Table(props) {
                                 <thead className="ant-table-thead">
                                     <tr>
                                         <th>
-                                            <Checkbox indeterminate={indeterminate} id="chkall" onChange={handleInputChange} checked={checkAll} />
-
+                                            <label className="fancy-checkbox">
+                                                <input type="hidden" id="hdfID" />
+                                                <input className="select-all" id="chkall" type="checkbox" name="checkbox" onChange={handleInputChange} />
+                                                <span />
+                                            </label>
                                         </th>
                                         <th className="text-center">STT</th>
-                                        <th className="sapxep" id="Name" onClick={() => onSort("Name")}>
-                                            Tên chức vụ
-                                <i className="fa fa-sort"></i>
+                                        <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
+                                            Tên danh mục
+                                        <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="" id="Ordering" >
-                                            Điện thoại
+                                        <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
+                                            Thứ tự
+                                        <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="sapxep" id="Code" onClick={() => onSort("Code")}>
-                                            Mã
-                                <i className="fa fa-sort"></i>
-                                        </th>
+                                        <th className="text-center">
+                                            Mã thương hiệu
+        </th>
                                         <th className="text-center">
                                             Trạng thái
         </th>
@@ -189,9 +185,11 @@ function Table(props) {
         </th>
                                     </tr>
                                 </thead>
+
                                 <tbody className="ant-table-tbody">
                                     {renderBody()}
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -211,7 +209,6 @@ function Table(props) {
                     />
                 </Col>
             </Row>
-
         </>
     )
 };

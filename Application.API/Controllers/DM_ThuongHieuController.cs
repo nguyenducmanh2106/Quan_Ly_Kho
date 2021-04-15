@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Application.UTILS;
-using Application.Services.MenuSerVices;
+using Application.Services.DM_ThuongHieuSerVices;
 using Newtonsoft.Json;
 using Application.API.Middleware;
 using Microsoft.AspNetCore.Http;
@@ -21,13 +21,13 @@ namespace Application.API.Controllers
 {
     [ApiController]
     //[Authorize]
-    [Route("api/menu")]
-    public class MenuController : ControllerBase
+    [Route("api/dm_thuonghieu")]
+    public class DM_ThuongHieuController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly IMenuServices _manager;
+        private readonly IDM_ThuongHieuServices _manager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public MenuController(IConfiguration config, IMenuServices _manager, IHttpContextAccessor httpContextAccessor)
+        public DM_ThuongHieuController(IConfiguration config, IDM_ThuongHieuServices _manager, IHttpContextAccessor httpContextAccessor)
         {
             _config = config;
             this._manager = _manager;
@@ -45,18 +45,17 @@ namespace Application.API.Controllers
                 }
                 else
                 {
-                    List<Menus> data = Common.CreateLevel(dataExist.OrderBy(g => g.Ordering).ToList(), "ParentId");
-                    data = data.Select(g => new Menus()
+                    List<DM_ThuongHieus> data = Common.CreateLevel(dataExist.OrderBy(g => g.Ordering).ToList(), "ParentId");
+                    data = data.Select(g => new DM_ThuongHieus()
                     {
                         Id = g.Id,
                         Name = Common.setName(g.Level, g.Name),
+                        Code = g.Code,
                         Ordering = g.Ordering,
                         ParentId = g.ParentId,
                         Status = g.Status,
-                        Url = g.Url,
-                        Level = g.Level,
-                        Icon = g.Icon,
-                        isMenu = g.isMenu
+                        Description = g.Description,
+                        Content = g.Content,
                     }).ToList();
                     MessageSuccess success = new MessageSuccess()
                     {
@@ -108,8 +107,8 @@ namespace Application.API.Controllers
                                 break;
                         }
                     }
-                    //List<Menus> list = Common.CreateLevel(dataExist.ToList(), "ParentId");
-                    //list=list.Select(g => new Menus()
+                    //List<DM_ThuongHieus> list = Common.CreateLevel(dataExist.ToList(), "ParentId");
+                    //list=list.Select(g => new DM_ThuongHieus()
                     //{
                     //    Id = g.Id,
                     //    Name = Common.setName(g.Level,g.Name),
@@ -144,19 +143,19 @@ namespace Application.API.Controllers
             }
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] Menus obj)
+        public async Task<IActionResult> Create([FromBody] DM_ThuongHieus obj)
         {
             try
             {
-                var objAdd = new Menus()
+                var objAdd = new DM_ThuongHieus()
                 {
-                    ParentId = obj.ParentId,
                     Name = obj.Name,
-                    Status = obj.Status,
-                    Icon = obj.Icon,
-                    isMenu = obj.isMenu,
-                    Url = obj.Url,
+                    Code = obj.Code,
                     Ordering = obj.Ordering,
+                    ParentId = obj.ParentId,
+                    Status = obj.Status,
+                    Description = obj.Description,
+                    Content = obj.Content,
                     Created_At = DateTime.Now.Date
                 };
                 await _manager.Create(objAdd);
@@ -175,7 +174,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody] Menus obj)
+        public async Task<IActionResult> Update([FromBody] DM_ThuongHieus obj)
         {
             try
             {
@@ -196,7 +195,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpPost("toggle-status")]
-        public async Task<IActionResult> ToggleStatus([FromBody] Menus obj)
+        public async Task<IActionResult> ToggleStatus([FromBody] DM_ThuongHieus obj)
         {
             try
             {
@@ -217,7 +216,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody] Menus obj)
+        public async Task<IActionResult> Delete([FromBody] DM_ThuongHieus obj)
         {
             try
             {
@@ -263,41 +262,12 @@ namespace Application.API.Controllers
         {
             try
             {
-                //var tokenHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
-                //var validToken = Verify(tokenHeader);
-                //Users user = JsonConvert.DeserializeObject<Users>(validToken.Subject);
                 var rawMenu = await _manager.GetChild(0);
                 MessageSuccess success = new MessageSuccess()
                 {
                     result = rawMenu
                 };
                 return Ok(success);
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        [HttpGet("get-breadcumb")]
-        public async Task<IActionResult> GetBreadCumb(string url)
-        {
-            try
-            {
-                var data = await _manager.GetBreadCumb(url);
-                if (data != null)
-                {
-                    MessageSuccess success = new MessageSuccess()
-                    {
-                        result = data
-                    };
-                    return Ok(success);
-                }
-                else
-                {
-                    return Ok(new MessageError());
-                }
 
             }
             catch (Exception ex)

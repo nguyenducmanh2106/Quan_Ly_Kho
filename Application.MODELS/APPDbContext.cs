@@ -31,6 +31,9 @@ namespace Application.MODELS
         public DbSet<UserGroups> UserGroups { get; set; }
         public DbSet<DM_DonViHanhChinhs> DM_DonViHanhChinhs { get; set; }
         public DbSet<DM_NhaCungCaps> DM_NhaCungCaps { get; set; }
+        public DbSet<DM_ThuongHieus> DM_ThuongHieus { get; set; }
+        public DbSet<DM_LoaiSanPhams> DM_LoaiSanPhams { get; set; }
+        public DbSet<DM_XuatXus> DM_XuatXus { get; set; }
 
     }
 }

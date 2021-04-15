@@ -92,7 +92,7 @@ function Table(props) {
                         {item.name}
                     </td>
                     <td>
-                        {item.phone}
+                        {item.ordering}
                     </td>
                     <td>
                         {item.code}
@@ -100,9 +100,9 @@ function Table(props) {
                     <td>
 
                         {item.status == 1 ? <Button type="primary" className="success-outline" ghost onClick={() => toggleStatus(2, item)}>
-                            <Badge status="success" text="Đang giao dịch" />
+                            <Badge status="success" text="Đang hoạt động" />
                         </Button> : <Button type="primary" className="danger-outline" ghost onClick={() => toggleStatus(1, item)}>
-                                <Badge status="error" text="Ngừng giao dịch" />
+                                <Badge status="error" text="Ngừng hoạt động" />
                             </Button>}
                     </td>
                     <td>
@@ -170,14 +170,15 @@ function Table(props) {
 
                                         </th>
                                         <th className="text-center">STT</th>
-                                        <th className="sapxep" id="Name" onClick={() => onSort("Name")}>
+                                        <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
                                             Tên chức vụ
                                 <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="" id="Ordering" >
-                                            Điện thoại
+                                        <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
+                                            Thứ tự
+                                <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="sapxep" id="Code" onClick={() => onSort("Code")}>
+                                        <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>
                                             Mã
                                 <i className="fa fa-sort"></i>
                                         </th>

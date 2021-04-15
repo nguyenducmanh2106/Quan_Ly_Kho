@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoading }) => {
+const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoading}) => {
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -25,10 +25,9 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
 
     const onSubmit = (data) => {
         var obj = {
-            Id: item.id,
+            Id:item.id,
             ...data,
-            Status: data.Status ? 1 : 2,
-            isMenu: data.isMenu ? true : false,
+            Status: data.Status ? 1 : 2
         }
         //console.log(obj)
         onPostUpdateItem(obj)
@@ -45,17 +44,16 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                         <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
                             validateMessages={validateMessages}
                             initialValues={{
-                                ["Ordering"]: item.ordering,
-                                ["ParentId"]: item.parentId,
-                                ["Name"]: item.name,
-                                ["Code"]: item.code,
+                                ["Ordering"]: item.ordering??0,
+                                ["ParentId"]: item.parentId??0,
+                                ["Name"]: item.name??"",
+                                ["Code"]: item.code??"",
                                 ["Status"]: item.status == 1 ? true : false,
-                                ["isMenu"]: item.isMenu ? true : false,
-                                ["Url"]: item.url,
-                                ["icon"]: item.icon
+                                ["Description"]: item.description??"",
+                                ["Content"]: item.content??"",
                             }}
                         >
-                            <Form.Item name="ParentId" label="Danh mục cha">
+                            <Form.Item name="ParentId" label="Danh mục cha" rules={[{ required: true }]}>
                                 <Select
                                     showSearch
                                     //style={{ width: 200 }}
@@ -77,7 +75,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                             <Form.Item name="Name" label="Tên danh mục" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
-                            <Form.Item name="icon" label="Icon">
+                            <Form.Item name="Code" label="Mã thương hiệu" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                             <Form.Item name="Url" label="Đường dẫn">
@@ -91,8 +89,11 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                                     min="0"
                                 />
                             </Form.Item>
-                            <Form.Item name="isMenu" label="Hiển thị menu" valuePropName="checked">
-                                <Checkbox />
+                            <Form.Item name="Description" label="Mô tả">
+                                <Input />
+                            </Form.Item>
+                            <Form.Item name="Content" label="Nội dung">
+                                <Input.TextArea />
                             </Form.Item>
                             <Form.Item name="Status" label="Trạng thái" valuePropName="checked">
                                 <Checkbox />
@@ -100,9 +101,9 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                         </Form>
                     </Modal>
                 </  React.Fragment>, document.body
-            ) : null}
+            ):null}
         </>
-
+         
     )
 }
 export default ModelUpdate;

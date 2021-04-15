@@ -27,14 +27,14 @@ function Menu() {
     const { Header, Content, Footer } = Layout;
     useEffect(() => {
         async function getData(page, pageSize) {
-            var fetchData = await getAPI(`api/menu/list_data/?page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
+            var fetchData = await getAPI(`api/dm_thuonghieu/list_data/?page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
             if (fetchData.status == true) {
                 setState(fetchData.result)
                 setIsLoading(!fetchData.status)
             }
         }
         async function getOptions() {
-            var fetchData = await getAPI('api/menu/get-options');
+            var fetchData = await getAPI('api/dm_thuonghieu/get-options');
             //console.log(fetchData)
             let arrOption = []
             if (fetchData.status == true) {
@@ -60,7 +60,7 @@ function Menu() {
             })
         }
         else {
-            var result = await postAPI('api/menu/update', JSON.stringify(ItemPosition))
+            var result = await postAPI('api/dm_thuonghieu/update', JSON.stringify(ItemPosition))
             if (result.status) {
                 setAction(true)
                 notification.success({
@@ -92,7 +92,7 @@ function Menu() {
             cancelText: 'Quay lại',
             //okButtonProps: { loading: confirmLoading },
             onOk: () => {
-                return postAPI('api/menu/delete', JSON.stringify(item)).then(result => {
+                return postAPI('api/dm_thuonghieu/delete', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
                         notification.success({
@@ -121,7 +121,7 @@ function Menu() {
             cancelText: 'Quay lại',
             //okButtonProps: { loading: confirmLoading },
             onOk: () => {
-                return postAPI('api/menu/toggle-status', JSON.stringify(itemUpdateStatus)).then(result => {
+                return postAPI('api/dm_thuonghieu/toggle-status', JSON.stringify(itemUpdateStatus)).then(result => {
                     if (result.status) {
                         setAction(true)
                         notification.success({
@@ -166,7 +166,7 @@ function Menu() {
                 cancelText: 'Quay lại',
                 //okButtonProps: { loading: confirmLoading },
                 onOk: () => {
-                    return postFormData('api/menu/multidelete', formData).then(result => {
+                    return postFormData('api/dm_thuonghieu/multidelete', formData).then(result => {
                         if (result.status) {
                             setAction(true)
                             notification.success({
@@ -191,7 +191,7 @@ function Menu() {
     }
     async function onPostUpdateItem(obj) {
         setConfirmLoading(true)
-        var result = await postAPI('api/menu/update', JSON.stringify(obj))
+        var result = await postAPI('api/dm_thuonghieu/update', JSON.stringify(obj))
 
         if (result.status) {
             setAction(true)
@@ -214,7 +214,7 @@ function Menu() {
     }
     async function onPostCreateItem(obj) {
         setConfirmLoading(true)
-        var result = await postAPI('api/menu/create', JSON.stringify(obj))
+        var result = await postAPI('api/dm_thuonghieu/create', JSON.stringify(obj))
 
         if (result.status) {
             setAction(true)

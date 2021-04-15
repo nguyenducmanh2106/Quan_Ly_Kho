@@ -9,7 +9,6 @@ import { List, Avatar } from 'antd';
 
 //import 'antd-button-color/dist/css/style.css';
 import 'antd/dist/antd.css';
-import 'sweetalert2/src/sweetalert2.scss';
 import '../src/styles/global.scss';
 //let routes = RoutesModule.routes;
 import App from './App';

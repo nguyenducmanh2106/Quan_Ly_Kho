@@ -164,9 +164,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }
                                                 </Col>
                                                 <Col>
                                                     <Form.Item name="Status" label="" valuePropName="checked">
-                                                        <Space>
-                                                            <Checkbox>Đang giao dịch</Checkbox>
-                                                        </Space>
+                                                        <Checkbox>Đang giao dịch</Checkbox>
                                                     </Form.Item>
                                                 </Col>
                                             </Row>

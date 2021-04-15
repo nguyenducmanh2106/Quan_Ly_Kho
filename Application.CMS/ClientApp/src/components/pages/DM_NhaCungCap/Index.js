@@ -149,17 +149,14 @@ function Index() {
         });
     }
     const onDelete = (item) => {
-        Swal.fire({
-            title: "Bạn có chắc chắn không?",
-            text: "",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Có",
-            cancelButtonText: "Không",
-            showLoaderOnConfirm: true,
-            preConfirm: (isConfirm) => {
+        Modal.confirm({
+            title: 'Bạn có chắc chắn không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            onOk: () => {
                 return postAPI('api/dm_nhacungcap/delete', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
@@ -177,10 +174,8 @@ function Index() {
                         })
                     }
                 });
-            },
-            //allowOutsideClick: () => !Swal.isLoading()
-        })
-
+            }
+        });
     }
     const onUpdateItem = (item) => {
         setItemUpdate(item)
@@ -339,6 +334,19 @@ function Index() {
 
                 </Row>
                 <Row>
+                    <FormCreate
+                        isShowing={isShowing}
+                        hide={toggle}
+                        onPostCreateItem={onPostCreateItem}
+                        confirmLoading={confirmLoading}
+                    />
+                    <FormUpdate
+                        isShowing={isShowingUpdate}
+                        hide={toggleUpdate}
+                        item={ItemUpdate}
+                        onPostUpdateItem={onPostUpdateItem}
+                        confirmLoading={confirmLoading}
+                    />
                     <Skeleton loading={isLoading} active>
                         <LoadingOverlay
                             active={isLoading}
@@ -346,19 +354,6 @@ function Index() {
                         //spinner={<BounceLoader />}
                         //text='Loading your content...'
                         >
-                            <FormCreate
-                                isShowing={isShowing}
-                                hide={toggle}
-                                onPostCreateItem={onPostCreateItem}
-                                confirmLoading={confirmLoading}
-                            />
-                            <FormUpdate
-                                isShowing={isShowingUpdate}
-                                hide={toggleUpdate}
-                                item={ItemUpdate}
-                                onPostUpdateItem={onPostUpdateItem}
-                                confirmLoading={confirmLoading}
-                            />
                             <ListData obj={state}
                                 isAction={isAction}
                                 onChangePage={onChangePage}

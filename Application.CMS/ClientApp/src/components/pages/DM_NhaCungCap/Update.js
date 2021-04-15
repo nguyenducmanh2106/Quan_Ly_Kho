@@ -30,7 +30,6 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }
             ID: item.id,
             Status: data.Status ? 1 : 2
         }
-        console.log(obj)
         onPostUpdateItem(obj)
     }
 
@@ -44,10 +43,10 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }
                         <Modal title="Cập nhật" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={1000}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
                             confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                            okButtonProps={{ form: 'myFormUpdate', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form
-                                name="nest-messages" onFinish={onSubmit} id="myForm"
+                                name="nest-messages" onFinish={onSubmit} id="myFormUpdate"
                                 validateMessages={validateMessages}
                                 initialValues={{
                                     ["Name"]: item.name ?? "",
@@ -64,6 +63,7 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }
                                     ["STKNganHang"]: item.stkNganHang ?? "",
                                     ["TenChuTKNganHang"]: item.tenChuTKNganHang ?? "",
                                     ["GhiChu"]: item.ghiChu ?? "",
+                                    ["Status"]: item?.status == 1 ? true : false
                                 }}
                             >
                                 <Row gutter={24} style={{ maxHeight: "70vh", overflow: "auto" }}>
@@ -187,10 +187,8 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }
                                                     </Form.Item>
                                                 </Col>
                                                 <Col>
-                                                    <Form.Item name="Status" label="">
-                                                        <Checkbox
-                                                            defaultChecked={item?.status == 1 ? true : false}
-                                                        >Đang giao dịch</Checkbox>
+                                                    <Form.Item name="Status" label="" valuePropName="checked">
+                                                        <Checkbox>Đang giao dịch</Checkbox>
                                                     </Form.Item>
                                                 </Col>
                                             </Row>

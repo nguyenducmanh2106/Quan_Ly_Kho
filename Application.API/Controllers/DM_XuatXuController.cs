@@ -12,65 +12,24 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Application.UTILS;
-using Application.Services.MenuSerVices;
 using Newtonsoft.Json;
-using Application.API.Middleware;
-using Microsoft.AspNetCore.Http;
+using Application.Services.DM_XuatXuSerVices;
 
 namespace Application.API.Controllers
 {
     [ApiController]
     //[Authorize]
-    [Route("api/menu")]
-    public class MenuController : ControllerBase
+    [Route("api/dm_xuatxu")]
+    public class DM_XuatXuController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly IMenuServices _manager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public MenuController(IConfiguration config, IMenuServices _manager, IHttpContextAccessor httpContextAccessor)
+        private readonly IDM_XuatXuServices _manager;
+
+        public DM_XuatXuController(IConfiguration config, IDM_XuatXuServices _manager)
         {
             _config = config;
             this._manager = _manager;
-            _httpContextAccessor = httpContextAccessor;
         }
-        [HttpGet("get-options")]
-        public async Task<IActionResult> GetOptions(int Status = -1, string Name = "")
-        {
-            try
-            {
-                var dataExist = await _manager.GetOptions(Status, Name);
-                if (dataExist == null)
-                {
-                    return Ok(new MessageError());
-                }
-                else
-                {
-                    List<Menus> data = Common.CreateLevel(dataExist.OrderBy(g => g.Ordering).ToList(), "ParentId");
-                    data = data.Select(g => new Menus()
-                    {
-                        Id = g.Id,
-                        Name = Common.setName(g.Level, g.Name),
-                        Ordering = g.Ordering,
-                        ParentId = g.ParentId,
-                        Status = g.Status,
-                        Url = g.Url,
-                        Level = g.Level,
-                        Icon = g.Icon,
-                        isMenu = g.isMenu
-                    }).ToList();
-                    MessageSuccess success = new MessageSuccess()
-                    {
-                        result = data
-                    };
-                    return Ok(success);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        [RoleAuthorizeAttribute("menu.view")]
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "", string nameSort = "")
         {
@@ -79,8 +38,7 @@ namespace Application.API.Controllers
                 var totalPage = 0;
                 var total = 0;
                 var stt = (page - 1) * pageSize;
-                var dataExist = await _manager.getData(page, pageSize, Status, Name, nameSort);
-
+                var dataExist = await _manager.getData(page, pageSize, Status, Name);
                 if (dataExist == null)
                 {
                     return Ok(new MessageError());
@@ -97,6 +55,12 @@ namespace Application.API.Controllers
                             case "Name_desc":
                                 dataExist = dataExist.OrderByDescending(g => g.Name);
                                 break;
+                            case "Code_asc":
+                                dataExist = dataExist.OrderBy(g => g.Code);
+                                break;
+                            case "Code_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.Code);
+                                break;
                             case "Ordering_asc":
                                 dataExist = dataExist.OrderBy(g => g.Ordering);
                                 break;
@@ -108,18 +72,6 @@ namespace Application.API.Controllers
                                 break;
                         }
                     }
-                    //List<Menus> list = Common.CreateLevel(dataExist.ToList(), "ParentId");
-                    //list=list.Select(g => new Menus()
-                    //{
-                    //    Id = g.Id,
-                    //    Name = Common.setName(g.Level,g.Name),
-                    //    Ordering = g.Ordering,
-                    //    ParentId = g.ParentId,
-                    //    Status = g.Status,
-                    //    Url = g.Url,
-                    //    Level = g.Level,
-                    //    isMenu = g.isMenu
-                    //}).ToList();
                     total = dataExist.Count();
                     var data = dataExist.Skip((page - 1) * pageSize).Take(pageSize);
                     totalPage = (int)Math.Ceiling(((double)total / pageSize));
@@ -143,19 +95,33 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
-        [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] Menus obj)
+        [HttpGet("get-all-data-active")]
+        public async Task<IActionResult> GetAllDataActive()
         {
             try
             {
-                var objAdd = new Menus()
+                var data = await _manager.GetAllDataActive();
+                    MessageSuccess success = new MessageSuccess()
+                    {
+                        result = data
+                    };
+                    return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] DM_XuatXus obj)
+        {
+            try
+            {
+                var objAdd = new DM_XuatXus()
                 {
-                    ParentId = obj.ParentId,
                     Name = obj.Name,
                     Status = obj.Status,
-                    Icon = obj.Icon,
-                    isMenu = obj.isMenu,
-                    Url = obj.Url,
+                    Code = obj.Code,
                     Ordering = obj.Ordering,
                     Created_At = DateTime.Now.Date
                 };
@@ -175,7 +141,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody] Menus obj)
+        public async Task<IActionResult> Update([FromBody] DM_XuatXus obj)
         {
             try
             {
@@ -195,29 +161,8 @@ namespace Application.API.Controllers
                 });
             }
         }
-        [HttpPost("toggle-status")]
-        public async Task<IActionResult> ToggleStatus([FromBody] Menus obj)
-        {
-            try
-            {
-
-                await _manager.ToggleStatus(obj);
-                MessageSuccess success = new MessageSuccess()
-                {
-                    message = MessageConst.UPDATE_SUCCESS
-                };
-                return Ok(success);
-            }
-            catch (Exception ex)
-            {
-                return Ok(new MessageError()
-                {
-                    message = MessageConst.UPDATE_FAIL
-                });
-            }
-        }
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody] Menus obj)
+        public async Task<IActionResult> Delete([FromBody] DM_XuatXus obj)
         {
             try
             {
@@ -257,53 +202,6 @@ namespace Application.API.Controllers
                 });
             }
 
-        }
-        [HttpGet("raw_menu")]
-        public async Task<IActionResult> RawMenu()
-        {
-            try
-            {
-                //var tokenHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
-                //var validToken = Verify(tokenHeader);
-                //Users user = JsonConvert.DeserializeObject<Users>(validToken.Subject);
-                var rawMenu = await _manager.GetChild(0);
-                MessageSuccess success = new MessageSuccess()
-                {
-                    result = rawMenu
-                };
-                return Ok(success);
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        [HttpGet("get-breadcumb")]
-        public async Task<IActionResult> GetBreadCumb(string url)
-        {
-            try
-            {
-                var data = await _manager.GetBreadCumb(url);
-                if (data != null)
-                {
-                    MessageSuccess success = new MessageSuccess()
-                    {
-                        result = data
-                    };
-                    return Ok(success);
-                }
-                else
-                {
-                    return Ok(new MessageError());
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using Application.MODELS;
+﻿using Application.MODELS;
 using Application.REPOSITORY;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +16,9 @@ using Application.Services.PermissionSerVices;
 using Application.Services.UserGroupSerVices;
 using Application.Services.DM_DonViHanhChinhSerVices;
 using Application.Services.DM_NhaCungCapSerVices;
+using Application.Services.DM_ThuongHieuSerVices;
+using Application.Services.DM_LoaiSanPhamSerVices;
+using Application.Services.DM_XuatXuSerVices;
 
 namespace Application.DependencyInjection
 {
@@ -39,6 +41,9 @@ namespace Application.DependencyInjection
             services.AddTransient<IUserGroupServices, UserGroupServices>();
             services.AddTransient<IDM_DonViHanhChinhService, DM_DonViHanhChinhService>();
             services.AddTransient<IDM_NhaCungCapServices, DM_NhaCungCapServices>();
+            services.AddTransient<IDM_ThuongHieuServices, DM_ThuongHieuServices>();
+            services.AddTransient<IDM_LoaiSanPhamServices, DM_LoaiSanPhamServices>();
+            services.AddTransient<IDM_XuatXuServices, DM_XuatXuServices>();
         }
     }
 }
