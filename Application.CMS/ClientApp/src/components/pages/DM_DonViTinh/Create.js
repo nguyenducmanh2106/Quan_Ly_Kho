@@ -44,32 +44,12 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                         validateMessages={validateMessages}
                         initialValues={{
                             ["Ordering"]: 0,
-                            ["ParentId"]: 0,
                         }}
                     >
-                        <Form.Item name="ParentId" label="Danh mục cha" rules={[{ required: true }]}>
-                            <Select
-                                showSearch
-                                //style={{ width: 200 }}
-                                placeholder="-- Chọn danh mục --"
-                                optionFilterProp="children"
-                                filterOption={(input, option) =>
-                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                filterSort={(optionA, optionB) =>
-                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                }
-                            >
-                                <Select.Option value={0}>----</Select.Option>
-                                {data.map(item => (
-                                    <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
                         <Form.Item name="Name" label="Tên danh mục" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item name="Code" label="Mã thương hiệu" rules={[{ required: true }]}>
+                        <Form.Item name="Code" label="Mã" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                         <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number' }]}>
