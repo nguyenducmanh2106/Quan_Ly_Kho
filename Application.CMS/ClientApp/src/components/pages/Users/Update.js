@@ -5,7 +5,7 @@ import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import { url_upload } from "../../../utils/helpers";
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload ,Image} from 'antd';
-const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, nhomNguoiDung }) => {
+const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [fileList, setFileList] = useState([]);
     const [FileListDefault, setFileListDefault] = useState([]);
     const { Option } = Select;
@@ -84,6 +84,7 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, donvi, chucvu, n
                     <React.Fragment>
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={closeForm}
+                            confirmLoading={confirmLoading}
                             okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"

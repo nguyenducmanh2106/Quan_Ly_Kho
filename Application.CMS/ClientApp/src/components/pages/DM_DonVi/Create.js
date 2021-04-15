@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
+const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
   
     const validateMessages = {
         required: '${label} không được để trống',
@@ -42,6 +42,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, Tinh, Huyen, Xa,
             <React.Fragment>
                 <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
+                    confirmLoading={confirmLoading}
                     okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                 >
                     <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"

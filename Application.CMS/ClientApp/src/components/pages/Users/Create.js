@@ -5,7 +5,7 @@ import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import { url_upload } from "../../../utils/helpers";
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton } from 'antd';
-const ModalCreate = ({ isShowing, hide, onPostCreateItem, donvi, chucvu, nhomNguoiDung }) => {
+const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [fileList, setFileList] = useState([]);
     const { Option } = Select;
     const layout = {
@@ -83,6 +83,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, donvi, chucvu, nhomNgu
 
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={closeForm}
+                            confirmLoading={confirmLoading}
                             okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm" validateMessages={validateMessages}>

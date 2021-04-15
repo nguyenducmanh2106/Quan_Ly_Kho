@@ -16,6 +16,7 @@ using Application.Services.DM_DonViSerVices;
 using Application.Services.PermissionSerVices;
 using Application.Services.UserGroupSerVices;
 using Application.Services.DM_DonViHanhChinhSerVices;
+using Application.Services.DM_NhaCungCapSerVices;
 
 namespace Application.DependencyInjection
 {
@@ -37,6 +38,7 @@ namespace Application.DependencyInjection
             services.AddTransient<IPermissionServices, PermissionServices>();
             services.AddTransient<IUserGroupServices, UserGroupServices>();
             services.AddTransient<IDM_DonViHanhChinhService, DM_DonViHanhChinhService>();
+            services.AddTransient<IDM_NhaCungCapServices, DM_NhaCungCapServices>();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Application.MODELS
         public DbSet<Permissions> Permissions { get; set; }
         public DbSet<UserGroups> UserGroups { get; set; }
         public DbSet<DM_DonViHanhChinhs> DM_DonViHanhChinhs { get; set; }
+        public DbSet<DM_NhaCungCaps> DM_NhaCungCaps { get; set; }
 
     }
 }

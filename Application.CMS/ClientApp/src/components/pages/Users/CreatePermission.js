@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, TreeSelect, Skeleton } from 'antd';
 const { SHOW_PARENT, SHOW_NONE, SHOW_CHILD } = TreeSelect;
-const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission }) => {
+const ModalCreate = ({ isShowing, hide, data, onCreatePermission, confirmLoading,listPermission }) => {
     const dataJson = data;
     const [state, setState] = useState([]);
     const layout = {
@@ -45,6 +45,7 @@ const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission
                     <React.Fragment>
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
+                            confirmLoading={confirmLoading}
                             okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form {...layout} name="nest-messages" onFinish={SavePermission} id="myForm"

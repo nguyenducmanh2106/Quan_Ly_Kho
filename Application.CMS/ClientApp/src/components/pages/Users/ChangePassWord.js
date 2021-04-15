@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ChangePass = ({ isShowing, hide, item, onPostChangePassWordItem }) => {
+const ChangePass = ({ isShowing, hide, item, onPostChangePassWordItem, confirmLoading }) => {
     //console.log(item)
     const validateMessages = {
         required: '${label} không được để trống',
@@ -45,6 +45,7 @@ const ChangePass = ({ isShowing, hide, item, onPostChangePassWordItem }) => {
                     <React.Fragment>
                         <Modal title="Thay đổi mật khẩu" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
+                            confirmLoading={confirmLoading}
                             okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"

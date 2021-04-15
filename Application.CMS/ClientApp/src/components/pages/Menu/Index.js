@@ -1,14 +1,13 @@
 ﻿import React, { useEffect, useState } from 'react';
 import FormCreate from './Create';
 import FormUpdate from './Update';
-import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space } from 'antd';
+import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space, Modal } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
 import ListData from './ListData';
-import Swal from 'sweetalert2';
 function Menu() {
 
     //khai báo state
@@ -16,13 +15,15 @@ function Menu() {
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [options, setOption] = useState([]);
     const [nameSort, setNameSort] = useState('');
     const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
-    const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
+    const [isShowing, toggle] = useModal();
+    const [isShowingUpdate, toggleUpdate] = useModal();
     const { Header, Content, Footer } = Layout;
     useEffect(() => {
         async function getData(page, pageSize) {
@@ -57,6 +58,7 @@ function Menu() {
 
         return () => {
             setAction(false)
+            setConfirmLoading(false)
         }
     }, [nameSort, isAction, page, pageSize])
     async function onUpdateItemPosition(ItemPosition) {
@@ -93,17 +95,14 @@ function Menu() {
         setPageSize(pageSize);
     }
     const onDelete = (item) => {
-        Swal.fire({
-            title: "Bạn có chắc chắn không?",
-            text: "",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Có",
-            cancelButtonText: "Không",
-            showLoaderOnConfirm: true,
-            preConfirm: (isConfirm) => {
+        Modal.confirm({
+            title: 'Bạn có chắc chắn không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            onOk: () => {
                 return postAPI('api/menu/delete', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
@@ -121,23 +120,18 @@ function Menu() {
                         })
                     }
                 });
-            },
-            //allowOutsideClick: () => !Swal.isLoading()
-        })
-
+            }
+        });
     }
     const onToggleStatus = (itemUpdateStatus) => {
-        Swal.fire({
-            title: "Bạn có chắc chắn không?",
-            text: "",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Có",
-            cancelButtonText: "Không",
-            showLoaderOnConfirm: true,
-            preConfirm: (isConfirm) => {
+        Modal.confirm({
+            title: 'Bạn có chắc chắn không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            onOk: () => {
                 return postAPI('api/menu/toggle-status', JSON.stringify(itemUpdateStatus)).then(result => {
                     if (result.status) {
                         setAction(true)
@@ -156,10 +150,8 @@ function Menu() {
                         })
                     }
                 });
-            },
-            //allowOutsideClick: () => !Swal.isLoading()
-        })
-
+            }
+        });
     }
     const onUpdateItem = (item) => {
         setItemUpdate(item)
@@ -168,28 +160,23 @@ function Menu() {
         setNameSort(name)
     }
     async function onMultiDelete() {
-
         if (listItemRemove.length == 0) {
             notification.error({
                 message: "Chưa chọn dữ liệu để xoá",
                 duration: 3
-
             })
         }
         else {
             var formData = new FormData()
             formData.append("lstid", listItemRemove.join(','))
-            Swal.fire({
-                title: "Bạn có chắc chắn không?",
-                text: "",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Có",
-                cancelButtonText: "Không",
-                showLoaderOnConfirm: true,
-                preConfirm: (isConfirm) => {
+            Modal.confirm({
+                title: 'Bạn có chắc chắn không?',
+                icon: <AntdIcons.ExclamationCircleOutlined />,
+                content: 'Bla bla ...',
+                okText: 'Đồng ý',
+                cancelText: 'Quay lại',
+                //okButtonProps: { loading: confirmLoading },
+                onOk: () => {
                     return postFormData('api/menu/multidelete', formData).then(result => {
                         if (result.status) {
                             setAction(true)
@@ -208,17 +195,18 @@ function Menu() {
                             })
                         }
                     });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            })
+                }
+            });
         }
 
     }
     async function onPostUpdateItem(obj) {
+        setConfirmLoading(true)
         var result = await postAPI('api/menu/update', JSON.stringify(obj))
-        toggleUpdate()
+
         if (result.status) {
             setAction(true)
+            toggleUpdate()
             notification.success({
                 message: result.message,
                 duration: 3
@@ -236,10 +224,12 @@ function Menu() {
 
     }
     async function onPostCreateItem(obj) {
+        setConfirmLoading(true)
         var result = await postAPI('api/menu/create', JSON.stringify(obj))
-        toggle();
+
         if (result.status) {
             setAction(true)
+            toggle();
             notification.success({
                 message: result.message,
                 duration: 3
@@ -286,6 +276,7 @@ function Menu() {
                                 hide={toggle}
                                 data={options}
                                 onPostCreateItem={onPostCreateItem}
+                                confirmLoading={confirmLoading}
                             />
                             <FormUpdate
                                 isShowing={isShowingUpdate}
@@ -293,6 +284,7 @@ function Menu() {
                                 data={options}
                                 item={ItemUpdate}
                                 onPostUpdateItem={onPostUpdateItem}
+                                confirmLoading={confirmLoading}
                             />
                             <ListData obj={state}
                                 onChangePage={onChangePage}

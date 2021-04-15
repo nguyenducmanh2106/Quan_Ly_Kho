@@ -11,6 +11,7 @@ import UserGroup from './components/pages/UserGroup/Index';
 import User from './components/pages/Users/Index';
 import DM_DonVi from './components/pages/DM_DonVi/Index';
 import Permission from './components/pages/Permission/Index';
+import DM_NhaCungCap from './components/pages/DM_NhaCungCap/Index';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 // import our users pages
 
@@ -27,6 +28,7 @@ const RouteSinglePage = () => (
         <PrivateRoute exact path='/user_group' component={UserGroup} />
         <PrivateRoute exact path='/user' component={User} />
         <PrivateRoute exact path='/dm_donvihanhchinh' component={DM_DonViHanhChinh} />
+        <PrivateRoute exact path='/dm_nhacungcap' component={DM_NhaCungCap} />
     </Switch>
 );
 export default RouteSinglePage

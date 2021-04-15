@@ -1,20 +1,20 @@
 ﻿import React, { useEffect, useState } from 'react'
 import FormCreate from './Create';
 import FormUpdate from './Update';
-import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space } from 'antd';
+import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space, Form, Modal } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
-import Swal from 'sweetalert2';
 function Menu() {
     //khai báo state
     const [state, setState] = useState([]);
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [confirmLoading, setConfirmLoading] = useState(false);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
     const [options, setOption] = useState([]);
     const [pageSize, setPageSize] = useState(10);
@@ -22,12 +22,22 @@ function Menu() {
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
-    const { isShowing, toggle, isShowingUpdate, toggleUpdate } = useModal();
-    const { Option } = Select;
+    const [isShowing, toggle] = useModal();
+    const [isShowingUpdate, toggleUpdate] = useModal();
     const { Header, Content, Footer } = Layout;
     function onSearch(val) {
         console.log('search:', val);
     }
+    const validateMessages = {
+        required: '${label} không được để trống',
+        types: {
+            email: '${label} không đúng định dạng email',
+            number: '${label} không đúng định dạng số',
+        },
+        number: {
+            range: '${label} must be between ${min} and ${max}',
+        },
+    };
     useEffect(() => {
         async function getData(page, pageSize) {
             let name = search.Name;
@@ -64,6 +74,7 @@ function Menu() {
 
         return () => {
             setAction(false)
+            setConfirmLoading(false)
         }
     }, [isAction, nameSort, page, pageSize])
     async function onUpdateItemPosition(ItemPosition) {
@@ -95,38 +106,33 @@ function Menu() {
         }
 
     }
-    const onChangeSearchSelect = (newValue) => {
-        setSearch({ ...search, Status: newValue })
-    }
-    async function onHandleSearch() {
-        let name = search.Name;
-        let status = search.Status ? search.Status : -1;
+    async function onHandleSearch(data) {
+        let name = data.Name ? data.Name : "";
+        let status = data.Status ? data.Status : -1;
+        console.log(data)
+        setSearch({
+            ...search,
+            Name: name,
+            Status: status
+        })
         var fetchData = await getAPI(`api/permission/list_data?Name=${name}&Status=${status}&page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
-    }
-    const onChangeSearchInput = (event) => {
-        var target = event.target;
-        var value = target.value;
-        setSearch({ ...search, Name: value })
     }
     const onChangePage = (page, pageSize) => {
         setPage(page);
         setPageSize(pageSize);
     }
     const onDelete = (item) => {
-        Swal.fire({
-            title: "Bạn có chắc chắn không?",
-            text: "",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Có",
-            cancelButtonText: "Không",
-            showLoaderOnConfirm: true,
-            preConfirm: (isConfirm) => {
+        Modal.confirm({
+            title: 'Bạn có chắc chắn không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            onOk: () => {
                 return postAPI('api/permission/delete', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
@@ -144,23 +150,18 @@ function Menu() {
                         })
                     }
                 });
-            },
-            //allowOutsideClick: () => !Swal.isLoading()
-        })
-
+            }
+        });
     }
     const onToggleStatus = (itemUpdateStatus) => {
-        Swal.fire({
-            title: "Bạn có chắc chắn không?",
-            text: "",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Có",
-            cancelButtonText: "Không",
-            showLoaderOnConfirm: true,
-            preConfirm: (isConfirm) => {
+        Modal.confirm({
+            title: 'Bạn có chắc chắn không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            onOk: () => {
                 return postAPI('api/permission/toggle-status', JSON.stringify(itemUpdateStatus)).then(result => {
                     if (result.status) {
                         setAction(true)
@@ -179,10 +180,8 @@ function Menu() {
                         })
                     }
                 });
-            },
-            //allowOutsideClick: () => !Swal.isLoading()
-        })
-
+            }
+        });
     }
     const onUpdateItem = (item) => {
         setItemUpdate(item)
@@ -201,18 +200,15 @@ function Menu() {
         else {
             var formData = new FormData()
             formData.append("lstid", listItemRemove.join(','))
-            Swal.fire({
-                title: "Bạn có chắc chắn không?",
-                text: "",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Có",
-                cancelButtonText: "Không",
-                showLoaderOnConfirm: true,
-                preConfirm: (isConfirm) => {
-                    postFormData('api/permission/multidelete', formData).then(result => {
+            Modal.confirm({
+                title: 'Bạn có chắc chắn không?',
+                icon: <AntdIcons.ExclamationCircleOutlined />,
+                content: 'Bla bla ...',
+                okText: 'Đồng ý',
+                cancelText: 'Quay lại',
+                //okButtonProps: { loading: confirmLoading },
+                onOk: () => {
+                    return postFormData('api/permission/multidelete', formData).then(result => {
                         if (result.status) {
                             setAction(true)
                             notification.success({
@@ -230,17 +226,18 @@ function Menu() {
                             })
                         }
                     });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            })
+                }
+            });
         }
 
     }
     async function onPostUpdateItem(obj) {
+        setConfirmLoading(true)
         var result = await postAPI('api/permission/update', JSON.stringify(obj))
-        toggleUpdate()
+
         if (result.status) {
             setAction(true)
+            toggleUpdate()
             notification.success({
                 message: result.message,
                 duration: 3
@@ -258,10 +255,12 @@ function Menu() {
 
     }
     async function onPostCreateItem(obj) {
+        setConfirmLoading(true)
         var result = await postAPI('api/permission/create', JSON.stringify(obj))
-        toggle();
+
         if (result.status) {
             setAction(true)
+            toggle();
             notification.success({
                 message: result.message,
                 duration: 3
@@ -283,28 +282,44 @@ function Menu() {
                 <Row>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
-                            <Row>
-                                <Col xs={{ span: 24 }} lg={{ span: 4 }}>
-                                    <Input placeholder="Tên/Mã quyền" allowClear onChange={onChangeSearchInput} />
-                                </Col>
-                                <Col xs={{ span: 23 }} lg={{ span: 4, offset: 1 }}>
-                                    <Select
-                                        showSearch
-                                        style={{ width: '100%' }}
-                                        placeholder="-Chọn trạng thái-"
-                                        optionFilterProp="children"
-                                        onChange={onChangeSearchSelect}
-                                        onSearch={onSearch}
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                    >
-                                        <Option value="-1">Tất cả</Option>
-                                        <Option value="1">Hoạt động</Option>
-                                        <Option value="2">Ngừng hoạt động</Option>
-                                    </Select>
-                                </Col>
-                            </Row>
+                            <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
+                                validateMessages={validateMessages}
+                                initialValues={{
+                                    //["Ordering"]: 0
+                                }}
+                            >
+                                <Row gutter={8}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                        <Form.Item name="Name" label="" style={{ width: '100%' }}>
+                                            <Input placeholder="Tên/Mã quyền" allowClear />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                        <Form.Item name="Status" label="" style={{ width: '100%' }}>
+                                            <Select
+                                                showSearch
+                                                placeholder="-Chọn trạng thái-"
+                                                optionFilterProp="children"
+                                                onSearch={onSearch}
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                <Select.Option value="-1">Tất cả</Select.Option>
+                                                <Select.Option value="1">Hoạt động</Select.Option>
+                                                <Select.Option value="2">Ngừng hoạt động</Select.Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                        <Form.Item label="" colon={false} style={{ width: '100%' }}>
+                                            <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
+                                                Tìm Kiếm
+    </Button>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Form>
                         </Skeleton>
                     </Col>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
@@ -337,6 +352,7 @@ function Menu() {
                                 hide={toggle}
                                 onPostCreateItem={onPostCreateItem}
                                 data={options}
+                                confirmLoading={confirmLoading}
                             />
                             <FormUpdate
                                 isShowing={isShowingUpdate}
@@ -344,6 +360,7 @@ function Menu() {
                                 item={ItemUpdate}
                                 onPostUpdateItem={onPostUpdateItem}
                                 data={options}
+                                confirmLoading={confirmLoading}
                             />
                             <ListData obj={state}
                                 onChangePage={onChangePage}
