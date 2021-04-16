@@ -6,10 +6,9 @@ import { Menu, Skeleton, Space } from 'antd';
 import MyIcon from "../../elements/Icon-Antd/Icon";
 import renderHTML from 'react-render-html';
 import { Can } from "../../elements/Config_Roles/Can"
-import ability from "../../elements/Config_Roles/ability"
 import { getLocalStorage } from "../../../utils/helpers"
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
-import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 import * as AntdIcons from '@ant-design/icons';
 const MenuSidebar = (props) => {
 
@@ -20,8 +19,6 @@ const MenuSidebar = (props) => {
     const [fullName, setFullName] = useState("")
     const [isLoading, setIsLoading] = useState(true)
     const [listmenu, setMenu] = useState([])
-    const [listmenu1, setMenu1] = useState([])
-    const [permiss, setPermiss] = useState([])
 
     useEffect(() => {
         defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
@@ -30,7 +27,6 @@ const MenuSidebar = (props) => {
             if (fetchData.status == true) {
                 //console.log(fetchData.result)
                 //console.log(ability.rules[0].subject)
-                setPermiss(ability.rules[0].subject)
                 setMenu(fetchData.result)
                 setIsLoading(!fetchData.status)
             }
@@ -55,7 +51,7 @@ const MenuSidebar = (props) => {
                     {listmenu.map((item) => {
                         var icon = item.icon
                         if (!item.childNode.length) {
-                            if (permiss.includes(item.url.substr(1))) {
+                            if (_isPermission("view", item.url.substr(1))) {
                                 return (
                                     //<Can I="view" a={item.url.substr(1)}>
 
@@ -70,14 +66,14 @@ const MenuSidebar = (props) => {
                             }
                         }
                         else {
-                            if (permiss.includes(item.url.substr(1))) {
+                            if (_isPermission("view",item.url.substr(1))) {
                                 return (
                                     // <Can I="view" a={item.url.substr(1)}>
                                     <SubMenu key={item.id} icon={<MyIcon type={icon} />} title={item.name}>
                                         {item.childNode.map((itemChild1) => {
-                                            var icon = itemChild1.icon
+                                            var icon = itemChild1.icon;
                                             if (!itemChild1.childNode.length) {
-                                                if (permiss.includes(itemChild1.url.substr(1))) {
+                                                if (_isPermission("view", itemChild1.url.substr(1))) {
                                                     return (
                                                         <Menu.Item key={itemChild1.id}>
                                                             <Link to={itemChild1.url}>
@@ -91,13 +87,13 @@ const MenuSidebar = (props) => {
 
                                             }
                                             else {
-                                                if (permiss.includes(itemChild1.url.substr(1))) {
+                                                if (_isPermission("view",itemChild1.url.substr(1))) {
                                                     return (
                                                         <SubMenu key={itemChild1.id} icon={<MyIcon type={icon} />} title={itemChild1.name}>
                                                             {itemChild1.childNodes.map((itemChild2, IndexChild2) => {
                                                                 var icon = itemChild2.icon
                                                                 if (!itemChild2.childNode.length) {
-                                                                    if (permiss.includes(itemChild2.url.substr(1))) {
+                                                                    if (_isPermission("", itemChild2.url.substr(1))) {
                                                                         return (
                                                                             <Menu.Item key={itemChild2.id} icon={<MyIcon type={icon} />}>
                                                                                 {/*<Can I="view" a={itemChild2.url.substr(1)}>*/}
@@ -108,19 +104,22 @@ const MenuSidebar = (props) => {
                                                                     }
                                                                 }
                                                                 else {
-                                                                    if (permiss.includes(itemChild2.url.substr(1))) {
+                                                                    if (_isPermission("view", itemChild2.url.substr(1))) {
                                                                         return (
                                                                             //<Can I="view" a={itemChild2.url.substr(1)}>
                                                                             <SubMenu key={itemChild2.id} icon={<MyIcon type={icon} />} title={itemChild2.name}>
                                                                                 {itemChild2.childNode.map((itemChild3, IndexChild3) => {
                                                                                     var icon = itemChild3.icon
-                                                                                    return (
-                                                                                        <Menu.Item key={itemChild3.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
-                                                                                            {/*<Can I="view" a={itemChild3.url.substr(1)}>*/}
-                                                                                            <Link to={itemChild3.url}>{itemChild3.name}</Link>
-                                                                                            {/*</Can>*/}
-                                                                                        </Menu.Item>
-                                                                                    )
+                                                                                    if (_isPermission("view", itemChild3.url.substr(1))) {
+                                                                                        return (
+                                                                                            <Menu.Item key={itemChild3.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
+                                                                                                {/*<Can I="view" a={itemChild3.url.substr(1)}>*/}
+                                                                                                <Link to={itemChild3.url}>{itemChild3.name}</Link>
+                                                                                                {/*</Can>*/}
+                                                                                            </Menu.Item>
+                                                                                        )
+                                                                                    }
+
                                                                                 })}
                                                                             </SubMenu>
                                                                             //</Can>

@@ -45,3 +45,6 @@ export function defineAbilitiesFor(user) {
     //console.log(new Ability(rules))
     //return new Ability(rules)
 }
+export function _isPermission(action, subject) {
+    return ability.can(action, subject)
+}
