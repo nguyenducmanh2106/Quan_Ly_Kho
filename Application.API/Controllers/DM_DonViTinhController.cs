@@ -33,7 +33,7 @@ namespace Application.API.Controllers
             this._manager = _manager;
             _httpContextAccessor = httpContextAccessor;
         }
-        [RoleAuthorizeAttribute("dm_donvitinh.view")]
+        //[RoleAuthorizeAttribute("dm_donvitinh.view")]
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "", string nameSort = "")
         {

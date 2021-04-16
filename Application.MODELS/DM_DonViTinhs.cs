@@ -13,9 +13,6 @@ namespace Application.MODELS
         [Required]
         [Column("Id")]
         public int Id { get; set; }
-        [Column("Ordering")]
-        [Required]
-        public int Ordering { get; set; }
         [Column("Description")]
         public string Description { get; set; }
         [Column("_Content")]
@@ -23,6 +20,9 @@ namespace Application.MODELS
         [Column("Name")]
         [Required]
         public string Name { get; set; }
+        [Column("Ordering")]
+        [Required]
+        public int Ordering { get; set; }
         [Column("Code")]
         [Required]
         public string Code { get; set; }

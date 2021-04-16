@@ -10,7 +10,6 @@ using System.Text;
 using Application.Services.UserServices;
 using Application.Services.MenuSerVices;
 using Application.Services.DM_ChucVuSerVices;
-using Application.Services.DM_DonViserVices;
 using Application.Services.DM_DonViSerVices;
 using Application.Services.PermissionSerVices;
 using Application.Services.UserGroupSerVices;
@@ -19,6 +18,7 @@ using Application.Services.DM_NhaCungCapSerVices;
 using Application.Services.DM_ThuongHieuSerVices;
 using Application.Services.DM_LoaiSanPhamSerVices;
 using Application.Services.DM_XuatXuSerVices;
+using Application.Services.DM_DonViTinhSerVices;
 
 namespace Application.DependencyInjection
 {
@@ -44,6 +44,7 @@ namespace Application.DependencyInjection
             services.AddTransient<IDM_ThuongHieuServices, DM_ThuongHieuServices>();
             services.AddTransient<IDM_LoaiSanPhamServices, DM_LoaiSanPhamServices>();
             services.AddTransient<IDM_XuatXuServices, DM_XuatXuServices>();
+            services.AddTransient<IDM_DonViTinhServices, DM_DonViTinhServices>();
         }
     }
 }

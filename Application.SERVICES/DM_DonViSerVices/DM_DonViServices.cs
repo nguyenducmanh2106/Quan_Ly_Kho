@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Application.UTILS;
 using Application.Services.DM_DonViSerVices;
 
-namespace Application.Services.DM_DonViserVices
+namespace Application.Services.DM_DonViSerVices
 {
     public class DM_DonViServices : IDM_DonViServices
     {
