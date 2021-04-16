@@ -54,10 +54,10 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading})
                                     ["Status"]: item.status==1?true:false,
                                 }}
                             >
-                                <Form.Item name="Name" label="Tên chức vụ" rules={[{ required: true }]}>
+                                <Form.Item name="Name" label="Tên" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
-                                <Form.Item name="Code" label="Mã chức vụ" rules={[{ required: true }]}>
+                                <Form.Item name="Code" label="Mã" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
                                 <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number' }]}>

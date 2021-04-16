@@ -49,10 +49,10 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem ,confirmLoading})
                                     ["Ordering"]: 0
                                 }}
                             >
-                                <Form.Item name="Name" label="Tên chức vụ" rules={[{ required: true }]}>
+                                <Form.Item name="Name" label="Tên loại sản phẩm" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
-                                <Form.Item name="Code" label="Mã chức vụ" rules={[{ required: true }]}>
+                                <Form.Item name="Code" label="Mã loại sản phẩm" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
                                 <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number'}]}>

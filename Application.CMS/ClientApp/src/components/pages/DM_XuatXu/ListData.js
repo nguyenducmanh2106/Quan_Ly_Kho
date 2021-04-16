@@ -171,7 +171,7 @@ function Table(props) {
                                         </th>
                                         <th className="text-center">STT</th>
                                         <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
-                                            Tên chức vụ
+                                            Tên
                                 <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>

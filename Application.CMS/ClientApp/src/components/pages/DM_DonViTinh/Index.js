@@ -16,7 +16,6 @@ function Menu() {
     const [isAction, setAction] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [options, setOption] = useState([]);
     const [nameSort, setNameSort] = useState('');
     const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
@@ -33,17 +32,9 @@ function Menu() {
                 setIsLoading(!fetchData.status)
             }
         }
-        async function getOptions() {
-            var fetchData = await getAPI('api/dm_donvitinh/get-options');
-            //console.log(fetchData)
-            let arrOption = []
-            if (fetchData.status == true) {
-                setOption(fetchData.result)
-            }
-        }
+
         //gọi hàm
         getData(page, pageSize);
-        getOptions();
 
         return () => {
             setAction(false)
@@ -263,21 +254,18 @@ function Menu() {
                             <FormCreate
                                 isShowing={isShowing}
                                 hide={toggle}
-                                data={options}
                                 onPostCreateItem={onPostCreateItem}
                                 confirmLoading={confirmLoading}
                             />
                             <FormUpdate
                                 isShowing={isShowingUpdate}
                                 hide={toggleUpdate}
-                                data={options}
                                 item={ItemUpdate}
                                 onPostUpdateItem={onPostUpdateItem}
                                 confirmLoading={confirmLoading}
                             />
                             <ListData obj={state}
                                 onChangePage={onChangePage}
-                                options={options}
                                 onDeleteItem={onDelete}
                                 UpdateItem={onUpdateItem}
                                 onToggleFormpdate={toggleUpdate}

@@ -69,7 +69,7 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
-        [RoleAuthorizeAttribute("menu.view")]
+        [RoleAuthorizeAttribute("dm_thuonghieu.view")]
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "", string nameSort = "")
         {

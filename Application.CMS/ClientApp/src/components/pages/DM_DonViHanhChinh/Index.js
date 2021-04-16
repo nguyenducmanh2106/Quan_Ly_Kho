@@ -325,9 +325,6 @@ function Menu() {
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Space size={8}>
-                                <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
-                                    Tìm Kiếm
-    </Button>
                                 <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
                                     Thêm mới
     </Button>
