@@ -2,6 +2,10 @@
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
 const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) => {
+    const [form] = Form.useForm();
+    const onReset = () => {
+        form.resetFields();
+    };
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -29,7 +33,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
             Status: data.Status ? 1 : 2,
         }
         //console.log(obj)
-        onPostCreateItem(obj)
+        onPostCreateItem(obj).then(onReset())
     }
 
     return (
@@ -40,7 +44,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                     confirmLoading={confirmLoading}
                     okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                 >
-                    <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
+                    <Form {...layout} name="nest-messages" form={form} onFinish={onSubmit} id="myForm"
                         validateMessages={validateMessages}
                         initialValues={{
                             ["Ordering"]: 0,
@@ -66,7 +70,7 @@ const ModalForm = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) 
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name="Name" label="Tên danh mục" rules={[{ required: true }]}>
+                        <Form.Item name="Name" label="Tên thương hiệu" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                         <Form.Item name="Code" label="Mã thương hiệu" rules={[{ required: true }]}>

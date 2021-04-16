@@ -2,7 +2,10 @@
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
 const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
-  
+    const [form] = Form.useForm();
+    const onReset = () => {
+        form.resetFields();
+    };
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -29,7 +32,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,T
             Status: data.Status ? 1 : 2
         }
         //console.log(obj)
-        onPostCreateItem(obj)
+        onPostCreateItem(obj).then(onReset())
     }
     const onHandleChangeTinh = (value) => {
         onChangeSelectTinh(value)
@@ -45,7 +48,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,T
                     confirmLoading={confirmLoading}
                     okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                 >
-                    <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
+                    <Form {...layout} name="nest-messages" form={form} onFinish={onSubmit} id="myForm"
                         validateMessages={validateMessages}
                         initialValues={{
                             ["Ordering"]: 0,

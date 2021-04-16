@@ -72,7 +72,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                                     ))}
                                 </Select>
                             </Form.Item>
-                            <Form.Item name="Name" label="Tên danh mục" rules={[{ required: true }]}>
+                            <Form.Item name="Name" label="Tên thương hiệu" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                             <Form.Item name="Code" label="Mã thương hiệu" rules={[{ required: true }]}>

@@ -52,10 +52,10 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                                 ["Content"]: item.content ?? "",
                             }}
                         >
-                            <Form.Item name="Name" label="Tên danh mục" rules={[{ required: true }]}>
+                            <Form.Item name="Name" label="Tên đơn vị tính" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
-                            <Form.Item name="Code" label="Mã thương hiệu" rules={[{ required: true }]}>
+                            <Form.Item name="Code" label="Mã đơn vị tính" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                             <Form.Item name="Ordering" label="Thứ tự" rules={[{ type: 'number' }]}>

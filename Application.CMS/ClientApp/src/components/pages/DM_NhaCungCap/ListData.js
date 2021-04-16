@@ -171,14 +171,14 @@ function Table(props) {
                                         </th>
                                         <th className="text-center">STT</th>
                                         <th className="sapxep" id="Name" onClick={() => onSort("Name")}>
-                                            Tên chức vụ
+                                            Tên nhà cung cấp
                                 <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="" id="Ordering" >
                                             Điện thoại
                                         </th>
                                         <th className="sapxep" id="Code" onClick={() => onSort("Code")}>
-                                            Mã
+                                            Mã nhà cung cấp
                                 <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="text-center">

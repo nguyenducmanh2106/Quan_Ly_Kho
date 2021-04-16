@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Space, Checkbox, Upload, Row, Col, Card, Tooltip } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) => {
+    const [form] = Form.useForm();
+    const onReset = () => {
+        form.resetFields();
+    };
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -20,7 +24,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }
             Status: data.Status ? 1 : 2
         }
         //console.log(obj)
-        onPostCreateItem(obj)
+        onPostCreateItem(obj).then(onReset())
     }
     return (
         <>
@@ -35,6 +39,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }
                             okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
                         >
                             <Form
+                                form={form}
                                 name="nest-messages" onFinish={onSubmit} id="myForm"
                                 validateMessages={validateMessages}
                                 initialValues={{
@@ -44,6 +49,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }
                                 <Row gutter={24} style={{ maxHeight: "70vh", overflow: "auto" }}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Card
+                                            hoverable
                                             style={{ marginTop: 16 }}
                                             title={
                                                 <Space size={8}>
@@ -173,6 +179,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Card
+                                            hoverable
                                             style={{ marginTop: 16 }}
                                             title={
                                                 <Space size={8}>

@@ -167,7 +167,7 @@ function Table(props) {
                                         </th>
                                         <th className="text-center">STT</th>
                                         <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
-                                            Tên danh mục
+                                            Tên đơn vị tính
                                         <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
@@ -175,7 +175,7 @@ function Table(props) {
                                         <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="text-center">
-                                            Mã thương hiệu
+                                            Mã đơn vị tính
         </th>
                                         <th className="text-center">
                                             Trạng thái

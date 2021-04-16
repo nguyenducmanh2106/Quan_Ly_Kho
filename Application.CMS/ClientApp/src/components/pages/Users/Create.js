@@ -6,6 +6,10 @@ import ImgCrop from 'antd-img-crop';
 import { url_upload } from "../../../utils/helpers";
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton } from 'antd';
 const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
+    const [form] = Form.useForm();
+    const onReset = () => {
+        form.resetFields();
+    };
     const [fileList, setFileList] = useState([]);
     const { Option } = Select;
     const layout = {
@@ -26,7 +30,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
             PhoneNumber: data.PhoneNumber.toString()
         }
         //console.log(obj)
-        onPostCreateItem(obj)
+        onPostCreateItem(obj).then(onReset())
     }
     //const handleChange = (value) => {
     //    console.log(value)
@@ -84,9 +88,9 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={closeForm}
                             confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                            okButtonProps={{ form: 'myFormCreate', key: 'submit', htmlType: 'submit' }}
                         >
-                            <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm" validateMessages={validateMessages}>
+                            <Form {...layout} name="nest-messages" form={form} onFinish={onSubmit} id="myFormCreate" validateMessages={validateMessages}>
                                 <Form.Item name="UserName" label="Tên đăng nhập" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
