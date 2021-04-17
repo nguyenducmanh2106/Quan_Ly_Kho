@@ -12,10 +12,10 @@ namespace Application.MODELS
         public APPDbContext(DbContextOptions options) : base(options)
         {
         }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
+
             //optionsBuilder.UseOracle(@"User Id=disanhd;Password=oracle;Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521)))(CONNECT_DATA = (SERVICE_NAME = DISANHAIDUONG)));");w
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +35,8 @@ namespace Application.MODELS
         public DbSet<DM_LoaiSanPhams> DM_LoaiSanPhams { get; set; }
         public DbSet<DM_XuatXus> DM_XuatXus { get; set; }
         public DbSet<DM_DonViTinhs> DM_DonViTinhs { get; set; }
+        public DbSet<DM_NhomThuocTinhs> DM_NhomThuocTinhs { get; set; }
+        public DbSet<DM_ThuocTinhs> DM_ThuocTinhs { get; set; }
 
     }
 }

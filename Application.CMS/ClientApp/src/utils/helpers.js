@@ -1,7 +1,7 @@
 ﻿import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import { ACCESS_TOKEN, USER_LOCALSTORAGE, EXPIRES_AT_LOCALSTORAGE, URL_ERROR } from './constants';
+import { ACCESS_TOKEN, USER_LOCALSTORAGE, EXPIRES_AT_LOCALSTORAGE, URL_ERROR, PERMISS_USER_CURRENT } from './constants';
 const storage = window.localStorage;
 const domain = "http://localhost:8082/";
 export const url_upload = `${domain}/WeatherForecast/Upload-Post`;
@@ -65,6 +65,7 @@ export const  returnLogin=()=> {
     deleteCookie(base64_encode(ACCESS_TOKEN), "/")
     window.localStorage.removeItem(EXPIRES_AT_LOCALSTORAGE)
     window.localStorage.removeItem(USER_LOCALSTORAGE)
+    window.localStorage.removeItem(PERMISS_USER_CURRENT)
 }
 //export const getAccessToken = () => storage.getItem("access_token");
 export const getAccessToken = () => {
@@ -73,7 +74,9 @@ export const getAccessToken = () => {
     let totalMiniSecondNow = expires.getTime();
     if (Number.parseInt(totalMiniSecondNow) > Number.parseInt(date)) {
         deleteCookie(base64_encode(ACCESS_TOKEN), "/")
-       
+        window.localStorage.removeItem(EXPIRES_AT_LOCALSTORAGE)
+        window.localStorage.removeItem(USER_LOCALSTORAGE)
+        window.localStorage.removeItem(PERMISS_USER_CURRENT)
     }
     return getCookie(base64_encode(ACCESS_TOKEN));
 }

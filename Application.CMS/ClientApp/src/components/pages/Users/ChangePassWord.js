@@ -46,9 +46,9 @@ const ChangePass = ({ isShowing, hide, item, onPostChangePassWordItem, confirmLo
                         <Modal title="Thay đổi mật khẩu" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
                             confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                            okButtonProps={{ form: 'myFormChangePass', key: 'submit', htmlType: 'submit' }}
                         >
-                            <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
+                            <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myFormChangePass"
                                 validateMessages={validateMessages}
                                 initialValues={{
                                 }}

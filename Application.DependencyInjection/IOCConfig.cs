@@ -19,6 +19,8 @@ using Application.Services.DM_ThuongHieuSerVices;
 using Application.Services.DM_LoaiSanPhamSerVices;
 using Application.Services.DM_XuatXuSerVices;
 using Application.Services.DM_DonViTinhSerVices;
+using Application.Services.DM_NhomThuocTinhSerVices;
+using Application.Services.DM_ThuocTinhSerVices;
 
 namespace Application.DependencyInjection
 {
@@ -45,6 +47,8 @@ namespace Application.DependencyInjection
             services.AddTransient<IDM_LoaiSanPhamServices, DM_LoaiSanPhamServices>();
             services.AddTransient<IDM_XuatXuServices, DM_XuatXuServices>();
             services.AddTransient<IDM_DonViTinhServices, DM_DonViTinhServices>();
+            services.AddTransient<IDM_NhomThuocTinhServices, DM_NhomThuocTinhServices>();
+            services.AddTransient<IDM_ThuocTinhServices, DM_ThuocTinhServices>();
         }
     }
 }

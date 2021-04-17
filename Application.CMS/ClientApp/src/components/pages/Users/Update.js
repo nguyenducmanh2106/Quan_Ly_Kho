@@ -85,9 +85,9 @@ const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading, 
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={closeForm}
                             confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                            okButtonProps={{ form: 'myFormUpdate', key: 'submit', htmlType: 'submit' }}
                         >
-                            <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
+                            <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myFormUpdate"
                                 validateMessages={validateMessages}
                                 initialValues={{
                                     ['UserName']: item.userName,

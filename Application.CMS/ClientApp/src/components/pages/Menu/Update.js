@@ -40,9 +40,9 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                     <Modal title="Cập nhật" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
                         confirmLoading={confirmLoading}
-                        okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                        okButtonProps={{ form: 'myFormUpdate', key: 'submit', htmlType: 'submit' }}
                     >
-                        <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myForm"
+                        <Form {...layout} name="nest-messages" onFinish={onSubmit} id="myFormUpdate"
                             validateMessages={validateMessages}
                             initialValues={{
                                 ["Ordering"]: item.ordering,

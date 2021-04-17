@@ -320,7 +320,7 @@ function Index() {
                 cancelText: 'Quay lại',
                 //okButtonProps: { loading: confirmLoading },
                 onOk: () => {
-                    return postFormData('api/user/multidelete', formData).then(result => {
+                    return postAPI('api/user/multidelete', formData).then(result => {
                         if (result.status) {
                             setAction(true)
                             notification.success({

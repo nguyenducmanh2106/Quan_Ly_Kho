@@ -17,6 +17,7 @@ import DM_XuatXu from './components/pages/DM_XuatXu/Index';
 import DM_DonViTinh from './components/pages/DM_DonViTinh/Index';
 import DM_LoaiSanPham from './components/pages/DM_LoaiSanPham/Index';
 import DM_ThuongHieu from './components/pages/DM_ThuongHieu/Index';
+import DM_NhomThuocTinh from './components/pages/DM_NhomThuocTinh/Index';
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -37,6 +38,7 @@ const RouteSinglePage = () => (
         <PrivateRoute exact path='/dm_donvitinh' component={DM_DonViTinh} />
         <PrivateRoute exact path='/dm_loaisanpham' component={DM_LoaiSanPham} />
         <PrivateRoute exact path='/dm_thuonghieu' component={DM_ThuongHieu} />
+        <PrivateRoute exact path='/dm_nhomthuoctinh' component={DM_NhomThuocTinh} />
     </Switch>
 );
 export default RouteSinglePage

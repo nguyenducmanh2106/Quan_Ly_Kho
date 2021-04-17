@@ -198,7 +198,7 @@ function Index() {
                 cancelText: 'Quay lại',
                 //okButtonProps: { loading: confirmLoading },
                 onOk: () => {
-                    return postFormData('api/dm_xuatxu/multidelete', formData).then(result => {
+                    return postAPI('api/dm_xuatxu/multidelete', formData).then(result => {
                         if (result.status) {
 
                             setAction(true)

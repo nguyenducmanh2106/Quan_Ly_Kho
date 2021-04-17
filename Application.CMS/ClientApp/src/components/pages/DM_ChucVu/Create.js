@@ -45,9 +45,9 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading }) => {
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
                             confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                            okButtonProps={{ form: 'myFormCreate', key: 'submit', htmlType: 'submit' }}
                         >
-                            <Form {...layout} name="nest-messages" form={form} onFinish={onSubmit} id="myForm"
+                            <Form {...layout} name="nest-messages" form={form} onFinish={onSubmit} id="myFormCreate"
                                 validateMessages={validateMessages}
                                 initialValues={{
                                     ["Ordering"]: 0

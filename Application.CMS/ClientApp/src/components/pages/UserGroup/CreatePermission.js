@@ -45,9 +45,9 @@ const ModalCreate = ({ isShowing, hide, data, onCreatePermission, listPermission
                         <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={800}
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
                             confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myForm', key: 'submit', htmlType: 'submit' }}
+                            okButtonProps={{ form: 'myFormCreatePermission', key: 'submit', htmlType: 'submit' }}
                         >
-                            <Form {...layout} name="nest-messages" onFinish={SavePermission} id="myForm"
+                            <Form {...layout} name="nest-messages" onFinish={SavePermission} id="myFormCreatePermission"
                                 initialValues={{
                                     ['Permisson']: listPermission,
                                    
