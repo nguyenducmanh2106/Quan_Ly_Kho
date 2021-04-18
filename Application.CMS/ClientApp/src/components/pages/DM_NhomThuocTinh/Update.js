@@ -1,12 +1,14 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Row, Col, Card, Tooltip, Space } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import TagCustom from "../../elements/Tag_Antd/Tag";
-const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }) => {
+const ModelUpdate = ({ isShowing, hide, item, kieuNhap, onPostUpdateItem, confirmLoading }) => {
     const [thuoctinhs, setThuocTinhs] = useState([])
-    console.log(item?.kieuNhap)
-    const [isTag, setIsTag] = useState(item?.kieuNhap != 1 ? true : false)
+    const [isTag, setIsTag] = useState(false)
+    useMemo(() => {
+        setIsTag(kieuNhap == 1 ? false : true)
+    }, [kieuNhap])
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -17,6 +19,8 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }
             range: '${label} must be between ${min} and ${max}',
         },
     };
+    console.log(kieuNhap != 1 ? true : false)
+    console.log(isTag)
     const closeForm = () => {
         //setIsTag(false)
         hide()
@@ -44,10 +48,12 @@ const ModelUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading }
     };
 
     const onSubmit = (data) => {
+        var lstThuocTinh = thuoctinhs
         var obj = {
             ...data,
             ID: item.id,
-            Status: data.Status ? 1 : 2
+            Status: data.Status ? 1 : 2,
+            lstStringThuocTinhs: lstThuocTinh
         }
         //console.log(obj)
         onPostUpdateItem(obj)

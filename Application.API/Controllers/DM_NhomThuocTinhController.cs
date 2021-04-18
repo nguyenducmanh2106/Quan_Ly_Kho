@@ -134,6 +134,7 @@ namespace Application.API.Controllers
                 var data = await _manager.Create(objAdd);
                 if (obj.lstStringThuocTinhs.Count > 0)
                 {
+                    var arrayThuocTinh = new List<DM_ThuocTinhs>();
                     foreach (var item in obj.lstStringThuocTinhs)
                     {
                         var objThuocTinh = new DM_ThuocTinhs()
@@ -143,8 +144,9 @@ namespace Application.API.Controllers
                             NhomThuocTinh_Id = data.Id,
                             Status = 1
                         };
-                        await _managerThuocTinh.CreateOrUpdate(objThuocTinh);
+                        arrayThuocTinh.Add(objThuocTinh);
                     }
+                    await _managerThuocTinh.BulkCreate(arrayThuocTinh);
                 }
 
                 MessageSuccess success = new MessageSuccess()
@@ -169,6 +171,7 @@ namespace Application.API.Controllers
                 await _manager.Update(obj);
                 if (obj.lstStringThuocTinhs.Count > 0)
                 {
+                    var arrayThuocTinh = new List<DM_ThuocTinhs>();
                     foreach (var item in obj.lstStringThuocTinhs)
                     {
                         var objThuocTinh = new DM_ThuocTinhs()
@@ -178,8 +181,9 @@ namespace Application.API.Controllers
                             NhomThuocTinh_Id = obj.Id,
                             Status = 1
                         };
-                        await _managerThuocTinh.CreateOrUpdate(objThuocTinh);
+                        arrayThuocTinh.Add(objThuocTinh);
                     }
+                    await _managerThuocTinh.BulkCreate(arrayThuocTinh);
                 }
                 MessageSuccess success = new MessageSuccess()
                 {

@@ -1,52 +1,63 @@
 ﻿
 
-.sapxep .fa{
-    float:right;
-    margin-top:2px
+.sapxep .fa {
+    float: right;
+    margin-top: 2px
 }
-/*.headerTop {
+
+.headerTop {
     box-shadow: 0px 4px 8px rgb(168 168 168 / 25%) !important;
-}*/
+}
 
 .logo {
     height: 64px;
-    min-height:45px;
+    min-height: 45px;
     /*box-shadow:inset 0 0 4px red;*/
-    display:flex;
-    justify-content:space-around;
-    align-items:center
+    display: flex;
+    justify-content: space-around;
+    align-items: center
 }
+
 .toggleLogo {
     justify-content: center;
     display: flex;
 }
-.toggleLogo .logo--full {
-    display: none !important;
-}
+
+    .toggleLogo .logo--full {
+        display: none !important;
+    }
+
 .classColor {
     background: #F0F2F5 !important;
     border-right: 2px solid rgb(255,255,225,.3) !important
 }
+
 .full-screen-preview {
     font-family: "Segoe UI";
 }
+
 .login h1 {
     color: #1890ff !important;
 }
+
 .danger {
     background: #FF4D4F !important;
     border-color: #FF4D4F !important
 }
+
 .success {
     background-color: #46A24A !important;
     border-color: #46A24A !important;
 }
+
 .success-outline {
     border-color: #46A24A !important;
 }
+
 .danger-outline {
     border-color: #FF4D4F !important
 }
+
 .warning {
     background: #FAAD14 !important;
     border-color: #FAAD14 !important
@@ -54,8 +65,9 @@
 
 
 /*css Scrollbar*/
-*::-webkit-scrollbar
-/*,*::-webkit-scrollbar-thumb*/
+/*thay đổi scroll trên thằng cha*/
+.full-screen-preview *::-webkit-scrollbar
+/*, *::-webkit-scrollbar-thumb*/ 
 {
     width: 7px;
     border-radius: 13px;
@@ -63,19 +75,7 @@
     border: 10px solid transparent;
 }
 
-*::-webkit-scrollbar-thumb {
+.full-screen-preview *::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 0 10px;
     border-radius: 10px
 }
-
-/*.ant-layout-sider-children *::-webkit-scrollbar*/
-/*,*::-webkit-scrollbar-thumb*/ /*{
-    width: 6px;
-    border-radius: 13px;
-    background-clip: padding-box;
-    border: 10px solid transparent;
-}
-
-.ant-layout-sider-children *::-webkit-scrollbar-thumb {
-    box-shadow: inset 0 0 0 10px;
-}*/

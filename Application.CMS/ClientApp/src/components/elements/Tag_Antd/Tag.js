@@ -100,12 +100,12 @@ class EditableTagGroup extends React.Component {
                         <Tag
                             className="edit-tag"
                             key={tag}
-                            closable={index !== 0}
+                            closable={index !== -1}  //từ vị trí tag nào trở đi mới cho phép đóng
                             onClose={() => this.handleClose(tag)}
                         >
                             <span
                                 onDoubleClick={e => {
-                                    if (index !== 0) {
+                                    if (index !== -1) {// từ vị trí tag nào trở đi mới cho phép sửa
                                         this.setState({ editInputIndex: index, editInputValue: tag }, () => {
                                             this.editInput.focus();
                                         });

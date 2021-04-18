@@ -13,7 +13,7 @@ namespace Application.Services.DM_ThuocTinhSerVices
         Task<IQueryable<DM_ThuocTinhs>> GetOptions(int Status, string Name);
         Task<List<DM_ThuocTinhs>> GetAllDataActive();
         Task Create(DM_ThuocTinhs obj);
-        Task CreateOrUpdate(DM_ThuocTinhs obj);
+        Task BulkCreate(List<DM_ThuocTinhs> obj);
         Task Update(DM_ThuocTinhs obj);
         Task Delete(DM_ThuocTinhs obj);
         Task MultiDelete(string listItemDelete);

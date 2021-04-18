@@ -223,6 +223,7 @@ function Index() {
 
     }
     async function onPostUpdateItem(obj) {
+        //console.log(obj)
         setConfirmLoading(true)
         var result = await postAPI('api/dm_nhomthuoctinh/update', JSON.stringify(obj))
         if (result.status) {
@@ -343,6 +344,7 @@ function Index() {
                                 isShowing={isShowingUpdate}
                                 hide={toggleUpdate}
                                 item={ItemUpdate}
+                                kieuNhap={ItemUpdate?.kieuNhap}
                                 onPostUpdateItem={onPostUpdateItem}
                                 confirmLoading={confirmLoading}
                             />

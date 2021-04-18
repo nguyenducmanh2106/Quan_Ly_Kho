@@ -20,22 +20,14 @@ namespace Application.Services.DM_ThuocTinhSerVices
             _logger = logger;
         }
 
-        public async Task CreateOrUpdate(DM_ThuocTinhs obj)
+        public async Task BulkCreate(List<DM_ThuocTinhs> obj)
         {
             try
             {
-                if (obj.Id == 0)
-                {
-
-                    var listThuocTinh = await _unitOfWork.DM_ThuocTinhRepository.FindBy(g => g.NhomThuocTinh_Id == obj.NhomThuocTinh_Id);
-                    await _unitOfWork.DM_ThuocTinhRepository.BulkDelete(listThuocTinh);
-                    await _unitOfWork.SaveChange();
-                    await Create(obj);
-                }
-                else
-                {
-                    await Update(obj);
-                }
+                var listThuocTinh = await _unitOfWork.DM_ThuocTinhRepository.FindBy(g => g.NhomThuocTinh_Id == obj[0].NhomThuocTinh_Id);
+                await _unitOfWork.DM_ThuocTinhRepository.BulkDelete(listThuocTinh);
+                await _unitOfWork.SaveChange();
+                await _unitOfWork.DM_ThuocTinhRepository.BulkInsert(obj);
 
             }
             catch (Exception ex)
