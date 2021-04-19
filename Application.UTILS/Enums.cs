@@ -5,6 +5,15 @@ using System.Text;
 
 namespace Application.UTILS
 {
+    public enum TypeFilter
+    {
+        [Description("Tất cả trạng thái")]
+        All = -1,
+        [Description("Lớn hơn bằng")]
+        Bigger_Or_Equal = 1,
+        [Description("Nhỏ hơn bằng")]
+        Smaller_Or_Equal = 2
+    }
     public enum StatusEnum
     {
         [Description("Tất cả trạng thái")]
@@ -42,27 +51,27 @@ public enum ContentTypeEnum
     [Description("Bài viết video")]
     Video = 3,
 }
-    //Enum Status cho Contents
-    public enum ContentStatusEnum
-    {
-        [Description("Tất cả")]
-        All = -1,
-        [Description("Chờ phê duyệt")]
-        Approving = 1,
-        [Description("Đã phê duyệt")] // == Đăng tải
-        Approved = 2,
-        [Description("Đã xóa")]
-        Delete = 3
-        //[Description("Đăng tải")]
-        //Published = 3,
-        //[Description("Thu hồi")]
-        //Revoked = 4,
-        //[Description("Hủy")]
-        //Rejected = 5,
-        //[Description("Bị gỡ")]
-        //Removed = 6,
-    }
-    //Enum Status cho ContentType
+//Enum Status cho Contents
+public enum ContentStatusEnum
+{
+    [Description("Tất cả")]
+    All = -1,
+    [Description("Chờ phê duyệt")]
+    Approving = 1,
+    [Description("Đã phê duyệt")] // == Đăng tải
+    Approved = 2,
+    [Description("Đã xóa")]
+    Delete = 3
+    //[Description("Đăng tải")]
+    //Published = 3,
+    //[Description("Thu hồi")]
+    //Revoked = 4,
+    //[Description("Hủy")]
+    //Rejected = 5,
+    //[Description("Bị gỡ")]
+    //Removed = 6,
+}
+//Enum Status cho ContentType
 
 public enum ConfigTypeEnum
 {

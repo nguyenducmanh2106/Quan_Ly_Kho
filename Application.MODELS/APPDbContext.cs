@@ -37,6 +37,7 @@ namespace Application.MODELS
         public DbSet<DM_DonViTinhs> DM_DonViTinhs { get; set; }
         public DbSet<DM_NhomThuocTinhs> DM_NhomThuocTinhs { get; set; }
         public DbSet<DM_ThuocTinhs> DM_ThuocTinhs { get; set; }
+        public DbSet<DM_SanPhams> DM_SanPhams { get; set; }
 
     }
 }
