@@ -1,4 +1,5 @@
 ﻿using Application.MODELS;
+using Application.MODELS.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Application.Services.DM_SanPhamSerVices
 {
     public interface IDM_SanPhamServices
     {
-        Task<IQueryable<DM_SanPhams>> getData(int page, int pageSize, int Status, string Name, int ChucVuId);
+        Task<IQueryable<DM_SanPhams>> getData(SanPhamFilterModel inputModel);
         Task Create(DM_SanPhams obj);
         Task Update(DM_SanPhams obj);
         Task ToggleStatus(DM_SanPhams obj);

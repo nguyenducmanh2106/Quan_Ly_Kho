@@ -43,5 +43,17 @@ namespace Application.MODELS
         public int Created_By { get; set; }
         [Column("Updated_By")]
         public int? Updated_By { get; set; }
+        [Column("GiaNhap")]
+        public decimal? GiaNhap { get; set; }
+        [Column("GiaBanBuon")]
+        public decimal? GiaBanBuon { get; set; }
+        [Column("GiaBanLe")]
+        public decimal? GiaBanLe { get; set; }
+        [Column("GiaCu")]
+        public decimal? GiaCu { get; set; }
+        [Column("pathAvatar")]
+        public string pathAvatar { get; set; }
+        [NotMapped]
+        public string File_Base64 { get; set; }
     }
 }

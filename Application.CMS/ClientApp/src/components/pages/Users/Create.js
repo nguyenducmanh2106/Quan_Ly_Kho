@@ -89,6 +89,8 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                            /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={closeForm}
                             confirmLoading={confirmLoading}
                             okButtonProps={{ form: 'myFormCreate', key: 'submit', htmlType: 'submit' }}
+                            initialValues={{
+                            }}
                         >
                             <Form {...layout} name="nest-messages" form={form} onFinish={onSubmit} id="myFormCreate" validateMessages={validateMessages}>
                                 <Form.Item name="UserName" label="Tên đăng nhập" rules={[{ required: true }]}>

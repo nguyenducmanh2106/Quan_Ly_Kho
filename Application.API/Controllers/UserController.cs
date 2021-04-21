@@ -77,9 +77,9 @@ namespace Application.API.Controllers
                         userDetails = dataFinal,
                         permiss = new
                         {
-                            isRoot= dataFinal.isRoot,
+                            isRoot = dataFinal.isRoot,
                             permissionUser = user.Permission,
-                            lstPermission =per
+                            lstPermission = per
                         }
                     }
                 };
@@ -234,12 +234,6 @@ namespace Application.API.Controllers
         {
             try
             {
-                var existData = await _manager.FindById(obj.Id);
-                if (existData == null)
-                {
-                    throw new Exception(MessageConst.DATA_NOT_FOUND);
-                }
-
                 string host = this._hostingEnvironment.WebRootPath;
                 Guid randomString = System.Guid.NewGuid();
                 string filename = randomString + obj.Avatar;

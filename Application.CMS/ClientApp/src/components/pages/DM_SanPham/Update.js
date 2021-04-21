@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import { url_upload } from "../../../utils/helpers";
-import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload} from 'antd';
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload ,Image} from 'antd';
 const ModalUpdate = ({ isShowing, hide, item, onPostUpdateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [fileList, setFileList] = useState([]);
     const [FileListDefault, setFileListDefault] = useState([]);

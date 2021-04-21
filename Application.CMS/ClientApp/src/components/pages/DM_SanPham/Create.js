@@ -1,12 +1,41 @@
-﻿import React, { useEffect } from 'react';
+﻿
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Input, InputNumber, Button, Modal, Select, Space, Checkbox, Upload, Row, Col, Card, Tooltip } from 'antd';
+import { decode as base64_decode, encode as base64_encode } from 'base-64';
+import ImgCrop from 'antd-img-crop';
 import * as AntdIcons from '@ant-design/icons';
-const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }) => {
+import { url_upload } from "../../../utils/helpers";
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip,Space } from 'antd';
+const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
     };
+    const [fileList, setFileList] = useState([]);
+    const { Option } = Select;
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+    };
+
+    const onSubmit = (data) => {
+        var obj = {
+            ...data,
+            UserGroupID: data.UserGroupID ? data.UserGroupID.join(","):"",
+            PassWord: base64_encode(data.PassWord),
+            Avatar: fileList.length>0?fileList[0].name:null,
+            File_Base64: fileList.length > 0 ? fileList[0].thumbUrl.split(",").splice(1).join("") : null,
+            Status:data.Status?1: 2,
+            isRoot:data.isRoot?true:false,
+            isThongKe: data.isThongKe ? true : false,
+            PhoneNumber: data.PhoneNumber.toString()
+        }
+        //console.log(obj)
+        onPostCreateItem(obj).then(onReset())
+    }
+    //const handleChange = (value) => {
+    //    console.log(value)
+    //}
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -17,15 +46,38 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading }
             range: '${label} must be between ${min} and ${max}',
         },
     };
-
-    const onSubmit = (data) => {
-        var obj = {
-            ...data,
-            Status: data.Status ? 1 : 2
-        }
-        //console.log(obj)
-        onPostCreateItem(obj).then(onReset())
+    const closeForm = () => {
+        setFileList([]);
+        hide()
     }
+    //const beforeUpload = (file) => {
+    //    const isLt2M = file.size / 1024 / 1024 < 2;
+    //    if (!isLt2M) {
+    //        file.flag = true;
+    //        return false;
+    //    }
+    //    return true;
+    //}
+    
+    const onChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+        //console.log(fileList)
+    };
+
+    const onPreview = async file => {
+        let src = file.url;
+        if (!src) {
+            src = await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file.originFileObj);
+                reader.onload = () => resolve(reader.result);
+            });
+        }
+        const image = new Image();
+        image.src = src;
+        const imgWindow = window.open(src);
+        imgWindow.document.write(image.outerHTML);
+    };
     return (
         <>
 

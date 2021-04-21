@@ -15,5 +15,6 @@ namespace Application.MODELS.ViewModels
         public int XuatXu_Id { get; set; } = -1;
         public int LoaiSP { get; set; } = -1;
         public int Status { get; set; } = 0;
+        public string nameSort { get; set; } = "";
     }
 }

@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { ACCESS_TOKEN, USER_LOCALSTORAGE, EXPIRES_AT_LOCALSTORAGE, URL_ERROR, PERMISS_USER_CURRENT } from './constants';
 const storage = window.localStorage;
 const domain = "http://localhost:8082/";
-export const url_upload = `${domain}/WeatherForecast/Upload-Post`;
+export const url_upload = `${domain}WeatherForecast/Upload-Post`;
 export const parseJwt = () => {
     var token = getAccessToken();
     var base64Url = token.split('.')[1];

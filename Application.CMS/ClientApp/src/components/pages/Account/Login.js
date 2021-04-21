@@ -24,8 +24,8 @@ const Login = (props) => {
         //event.preventDefault();
         setIsLoading(true)
         var obj = {
-            "UserName": values.username,
-            "Password": base64_encode(values.password)
+            "UserName": values.nameAccount,
+            "Password": base64_encode(values.passwordAccount)
         }
         var data = JSON.stringify(obj);
         // Send POST request with data submited from form
@@ -82,7 +82,7 @@ const Login = (props) => {
                         onFinishFailed={onFinishFailed}
                     >
                         <Form.Item
-                            name="username"
+                            name="nameAccount"
                             rules={[
                                 {
                                     required: true,
@@ -99,7 +99,7 @@ const Login = (props) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="password"
+                            name="passwordAccount"
                             rules={[
                                 {
                                     required: true,

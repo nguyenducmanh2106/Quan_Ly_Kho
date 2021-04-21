@@ -24,13 +24,13 @@ namespace Application.Services.UserServices
         {
             try
             {
-                
-                var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName||x.Email==login.Email) && (x.PassWord == login.PassWord)&&(x.Status==(int)StatusEnum.Active)));
+
+                var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName || x.Email == login.Email) && (x.PassWord == login.PassWord) && (x.Status == (int)StatusEnum.Active)));
                 if (data == null)
                 {
                     throw new Exception("Tài khoản hoặc mật khẩu không chính xác");
                 }
-                string listStringPermission="";
+                string listStringPermission = "";
                 if (data.UserGroupID != "" && data.UserGroupID != null)
                 {
                     //Chuyeen ve mang string chuc cac id cua nhom nguoi dung
@@ -39,9 +39,9 @@ namespace Application.Services.UserServices
                     var permissionGroup = (await _unitOfWork.UserGroupRepository.FindBy(x => (strGroup.Contains(x.Id.ToString())) && (x.Status == (int)StatusEnum.Active)));
                     if (permissionGroup.LongCount() > 0)
                     {
-                        foreach(var item in permissionGroup)
+                        foreach (var item in permissionGroup)
                         {
-                            if (item.Permission != ""&& item.Permission!=null)
+                            if (item.Permission != "" && item.Permission != null)
                             {
                                 if (listStringPermission == "")
                                 {
@@ -88,7 +88,7 @@ namespace Application.Services.UserServices
                 };
                 return user;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -124,11 +124,11 @@ namespace Application.Services.UserServices
             }
         }
 
-        public async Task<IQueryable<Users>> getData(int page, int pageSize, int Status, string Name,int ChucVuId)
+        public async Task<IQueryable<Users>> getData(int page, int pageSize, int Status, string Name, int ChucVuId)
         {
             var data = (await _unitOfWork.UserRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)
-             && (string.IsNullOrEmpty(Name) || g.Email.ToLower().Contains(Name.ToLower()) || g.UserName.ToLower().Contains(Name.ToLower())|| g.FullName.ToLower().Contains(Name.ToLower()))
-             &&(ChucVuId==-1||g.ChucVuId==ChucVuId)
+             && (string.IsNullOrEmpty(Name) || g.Email.ToLower().Contains(Name.ToLower()) || g.UserName.ToLower().Contains(Name.ToLower()) || g.FullName.ToLower().Contains(Name.ToLower()))
+             && (ChucVuId == -1 || g.ChucVuId == ChucVuId)
             )).OrderBy(g => g.Ordering).ThenByDescending(g => g.Created_At);
             return data;
         }
@@ -178,6 +178,10 @@ namespace Application.Services.UserServices
                 if (exist == null)
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                if (!string.IsNullOrEmpty(obj.pathAvatar))
+                {
+                    exist.pathAvatar = obj.pathAvatar;
                 }
                 exist.UserName = obj.UserName;
                 exist.Status = obj.Status;
@@ -253,7 +257,7 @@ namespace Application.Services.UserServices
             {
                 return await _unitOfWork.UserRepository.Get(g => g.Id == id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

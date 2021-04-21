@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Application.MODELS.ViewModels;
+using Newtonsoft.Json;
 
 namespace Application.Services.DM_SanPhamSerVices
 {
@@ -54,7 +55,7 @@ namespace Application.Services.DM_SanPhamSerVices
             }
         }
 
-        public async Task<IQueryable<DM_SanPhams>> getData([FromBody] SanPhamFilterModel inputModel)
+        public async Task<IQueryable<DM_SanPhams>> getData(SanPhamFilterModel inputModel)
         {
             var data = (await _unitOfWork.DM_SanPhamRepository.FindBy(g => (inputModel.Status == (int)StatusEnum.All || g.Status == inputModel.Status)
              && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()) || g.Name.ToLower().Contains(inputModel.Name.ToLower()) || g.Barcode.ToLower().Contains(inputModel.Name.ToLower()))
@@ -77,17 +78,25 @@ namespace Application.Services.DM_SanPhamSerVices
                 Created_At = g.Created_At,
                 Updated_At = g.Updated_At,
                 Created_By = g.Created_By,
-                Updated_By = g.Updated_By
+                Updated_By = g.Updated_By,
+                GiaNhap = g.GiaNhap,
+                GiaBanBuon = g.GiaBanBuon,
+                GiaBanLe = g.GiaBanLe,
+                GiaCu = g.GiaCu,
+                pathAvatar = g.pathAvatar
             });
-            if (inputModel.TypeFilterNgayTao != (int)TypeFilter.Bigger_Or_Equal)
+            if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
-                var date = Convert.ToDateTime(inputModel.NgayTao);
-                data = data.Where(g => g.Created_At >= date);
-            }
-            if (inputModel.TypeFilterNgayTao != (int)TypeFilter.Smaller_Or_Equal)
-            {
-                var date = Convert.ToDateTime(inputModel.NgayTao);
-                data = data.Where(g => g.Created_At <= date);
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At <= date);
+                }
             }
             return data;
         }
@@ -138,18 +147,24 @@ namespace Application.Services.DM_SanPhamSerVices
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
-                exist.UserName = obj.UserName;
-                exist.Status = obj.Status;
-                exist.Email = obj.Email;
-                exist.FullName = obj.FullName;
-                exist.DonViId = obj.DonViId;
-                exist.ChucVuId = obj.ChucVuId;
+                exist.Name = obj.Name;
+                exist.Code = obj.Code;
+                exist.Barcode = obj.Barcode;
+                exist.LoaiSP = obj.LoaiSP;
+                exist.ThuongHieu_Id = obj.ThuongHieu_Id;
+                exist.XuatXu_Id = obj.XuatXu_Id;
+                exist.KhoiLuong = obj.KhoiLuong;
+                exist.DonViTinh_Id = obj.DonViTinh_Id;
+                exist.KichThuoc = obj.KichThuoc;
                 exist.Avatar = obj.Avatar;
-                exist.PhoneNumber = obj.PhoneNumber;
-                exist.UserGroupID = obj.UserGroupID;
-                exist.isRoot = obj.isRoot;
-                exist.isThongKe = obj.isThongKe;
-                exist.Ordering = obj.Ordering;
+                exist.Status = obj.Status;
+                exist.Updated_At = DateTime.Now.Date;
+                exist.Updated_By = obj.Updated_By;
+                exist.GiaNhap = obj.GiaNhap;
+                exist.GiaBanBuon = obj.GiaBanBuon;
+                exist.GiaBanLe = obj.GiaBanLe;
+                exist.GiaCu = obj.GiaCu;
+                exist.pathAvatar = obj.pathAvatar;
                 await _unitOfWork.DM_SanPhamRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();
@@ -161,50 +176,7 @@ namespace Application.Services.DM_SanPhamSerVices
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
         }
-        public async Task ChangePermission(DM_SanPhams obj)
-        {
-            //await _unitOfWork.CreateTransaction();
-            try
-            {
-                var exist = await _unitOfWork.DM_SanPhamRepository.Get(g => g.Id == obj.Id);
-                if (exist == null)
-                {
-                    throw new Exception(MessageConst.DATA_NOT_FOUND);
-                }
-                exist.Permission = obj.Permission;
-                await _unitOfWork.DM_SanPhamRepository.Update(exist);
-                await _unitOfWork.SaveChange();
-                //_unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
-                //_unitOfWork.Rollback();
-                throw new Exception(MessageConst.UPDATE_FAIL);
-            }
-        }
-        public async Task ChangePassUser(DM_SanPhams obj)
-        {
-            try
-            {
-                var exist = await _unitOfWork.DM_SanPhamRepository.Get(g => g.Id == obj.Id);
-                if (exist == null)
-                {
-                    throw new Exception(MessageConst.DATA_NOT_FOUND);
-                }
-                exist.PassWord = obj.PassWord;
-                await _unitOfWork.DM_SanPhamRepository.Update(exist);
-                await _unitOfWork.SaveChange();
 
-                //_unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
-                //_unitOfWork.Rollback();
-                throw new Exception(MessageConst.UPDATE_FAIL);
-            }
-        }
 
         public async Task<DM_SanPhams> FindById(int id)
         {
@@ -217,5 +189,6 @@ namespace Application.Services.DM_SanPhamSerVices
                 throw ex;
             }
         }
+
     }
 }
