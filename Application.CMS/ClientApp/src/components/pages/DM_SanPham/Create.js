@@ -5,7 +5,7 @@ import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import * as AntdIcons from '@ant-design/icons';
 import { url_upload } from "../../../utils/helpers";
-import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space } from 'antd';
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse } from 'antd';
 const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [form] = Form.useForm();
     const onReset = () => {
@@ -249,6 +249,42 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                             </Col>
                         </Row>
                     </Card>
+                    <Collapse expandIconPosition="right" style={{ marginTop: 16 }}>
+                        <Collapse.Panel header="Thuộc tính" key="1">
+                            <Form.List name="ThuocTinhs">
+                                {(fields, { add, remove }) => (
+                                    <>
+                                        {fields.map(({ key, name, fieldKey, ...restField }) => (
+                                            <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, 'first']}
+                                                    fieldKey={[fieldKey, 'first']}
+                                                    rules={[{ required: true, message: 'Missing first name' }]}
+                                                >
+                                                    <Input placeholder="First Name" />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, 'last']}
+                                                    fieldKey={[fieldKey, 'last']}
+                                                    rules={[{ required: true, message: 'Missing last name' }]}
+                                                >
+                                                    <Input placeholder="Last Name" />
+                                                </Form.Item>
+                                                <AntdIcons.MinusCircleOutlined onClick={() => remove(name)} />
+                                            </Space>
+                                        ))}
+                                        <Form.Item>
+                                            <Button type="dashed" onClick={() => add()} block icon={<AntdIcons.PlusOutlined />}>
+                                                Thêm thuộc tính
+              </Button>
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+                        </Collapse.Panel>
+                    </Collapse>
                 </Col>
                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 8 }}>
                     <Card

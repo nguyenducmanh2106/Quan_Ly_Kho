@@ -105,71 +105,7 @@ header {
     }
 }
 
-/*.rtl {
-    .ant-layout-sider-collapsed {
-        .ant-menu-submenu-title, .ant-menu-item {
-            .anticon {
-                right: 32px !important;
-            }
-        }
-    }
 
-    .sidebar-left {
-        &.ant-layout-sider {
-            right: 0;
-            left: auto;
-        }
-
-        .ant-menu-submenu-title, .ant-menu-item {
-            position: relative;
-
-            .anticon {
-                position: absolute;*/
-/*top: 15px;*/
-/*right: 0;
-            }
-
-            span {
-                span {
-                    position: absolute;
-                    right: 30px;
-                    top: 2px
-                }
-            }
-        }
-
-        .ant-menu-submenu-arrow {
-            left: 16px;
-            right: auto !important;
-
-            &::before {
-                transform: rotate(45deg) translateY(2px) !important;
-            }
-
-            &::after {
-                transform: rotate(-45deg) translateY(-2px) !important;
-            }
-        }
-
-        .ant-menu-item {
-            span {
-                position: absolute;
-                right: 30px;*/
-/*top: 2px;*/
-/*}
-        }
-    }
-
-    .mainContnet.ant-layout-content {
-        margin-right: 200px !important;
-        margin-left: 0 !important;
-
-        &.collapsed {
-            margin-right: 100px !important;
-            margin-left: 0 !important;
-        }
-    }
-}*/
 @media only screen and (max-width: 786px) {
     body {
         .ant-page-header-back {
