@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import FormCreate from './Create';
 import FormUpdate from './Update';
 import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space, Form, Modal } from 'antd';
@@ -9,6 +10,7 @@ import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
 function Index() {
+    let history = useHistory()
     //khai báo state
     const [state, setState] = useState([]);
     const [dataDonVi, setDataDonVi] = useState([]);
@@ -288,6 +290,9 @@ function Index() {
             })
         }
     }
+    function openCreate() {
+        history.push('/dm_sanpham/create')
+    }
     return (
         <Content className="main-container main-container-component">
             <Card>
@@ -340,7 +345,7 @@ function Index() {
                                 <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
                                     Tìm Kiếm
     </Button>
-                                <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>
                                     Thêm mới
     </Button>
                                 <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
@@ -359,15 +364,15 @@ function Index() {
                         //spinner={<BounceLoader />}
                         //text='Loading your content...'
                         >
-                            <FormCreate
-                                isShowing={isShowing}
-                                hide={toggle}
-                                onPostCreateItem={onPostCreateItem}
-                                donvi={dataDonVi}
-                                chucvu={dataChucVu}
-                                nhomNguoiDung={dataNhomNguoiDung}
-                                confirmLoading={confirmLoading}
-                            />
+                            {/*<FormCreate*/}
+                            {/*    isShowing={isShowing}*/}
+                            {/*    hide={toggle}*/}
+                            {/*    onPostCreateItem={onPostCreateItem}*/}
+                            {/*    donvi={dataDonVi}*/}
+                            {/*    chucvu={dataChucVu}*/}
+                            {/*    nhomNguoiDung={dataNhomNguoiDung}*/}
+                            {/*    confirmLoading={confirmLoading}*/}
+                            {/*/>*/}
                             <FormUpdate
                                 isShowing={isShowingUpdate}
                                 hide={toggleUpdate}

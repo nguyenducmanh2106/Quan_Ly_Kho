@@ -5,7 +5,7 @@ import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import * as AntdIcons from '@ant-design/icons';
 import { url_upload } from "../../../utils/helpers";
-import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip,Space } from 'antd';
+import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space } from 'antd';
 const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [form] = Form.useForm();
     const onReset = () => {
@@ -21,12 +21,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
     const onSubmit = (data) => {
         var obj = {
             ...data,
-            UserGroupID: data.UserGroupID ? data.UserGroupID.join(","):"",
+            UserGroupID: data.UserGroupID ? data.UserGroupID.join(",") : "",
             PassWord: base64_encode(data.PassWord),
-            Avatar: fileList.length>0?fileList[0].name:null,
+            Avatar: fileList.length > 0 ? fileList[0].name : null,
             File_Base64: fileList.length > 0 ? fileList[0].thumbUrl.split(",").splice(1).join("") : null,
-            Status:data.Status?1: 2,
-            isRoot:data.isRoot?true:false,
+            Status: data.Status ? 1 : 2,
+            isRoot: data.isRoot ? true : false,
             isThongKe: data.isThongKe ? true : false,
             PhoneNumber: data.PhoneNumber.toString()
         }
@@ -58,7 +58,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
     //    }
     //    return true;
     //}
-    
+
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
         //console.log(fileList)
@@ -79,241 +79,276 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         imgWindow.document.write(image.outerHTML);
     };
     return (
-        <>
-
-            {
-                isShowing ? ReactDOM.createPortal(
-
-                    <React.Fragment>
-                        <Modal title="Tạo mới" visible={isShowing} okText="Lưu" cancelText="Quay lại" width={1000}
-                           /* onOk={onSubmit}*/ style={{ top: 20 }} onCancel={hide}
-                            confirmLoading={confirmLoading}
-                            okButtonProps={{ form: 'myFormCreate', key: 'submit', htmlType: 'submit' }}
-                        >
-                            <Form
-                                form={form}
-                                name="nest-messages" onFinish={onSubmit} id="myFormCreate"
-                                validateMessages={validateMessages}
-                                initialValues={{
-                                    ["Ordering"]: 0
-                                }}
-                            >
-                                <Row gutter={24} style={{ maxHeight: "70vh", overflow: "auto",paddingBottom:"10px" }}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Card
-                                            hoverable
-                                            style={{ marginTop: 16 }}
-                                            title={
-                                                <Space size={8}>
-                                                    <AntdIcons.InfoCircleOutlined />
+        <Form
+            form={form}
+            name="nest-messages" onFinish={onSubmit} id="myFormCreate"
+            validateMessages={validateMessages}
+            initialValues={{
+                ["Ordering"]: 0
+            }}
+        >
+            <Row gutter={24}>
+                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 16 }}>
+                    <Card
+                        style={{ marginTop: 16 }}
+                        title={
+                            <Space size={8}>
+                                <AntdIcons.InfoCircleOutlined />
                                                     Thông tin
                                                 </Space>
-                                            }>
-                                            <Row>
-                                                <Col>
-                                                    <Form.Item name="Name" label="" rules={[{ required: true }]}>
+                        }>
+                        <Row>
+                            <Col>
+                                <Form.Item name="Name" label="Tên sản phẩm" rules={[{ required: true }]}>
+                                    <Input
+                                        prefix={
+                                            <Tooltip title="Tên sản phẩm">
+                                                <AntdIcons.ShopOutlined />
+                                            </Tooltip>
+                                        }
 
-                                                        <Input placeholder="Tên nhà cung cấp *"
-                                                            prefix={
-                                                                <Tooltip title="Tên nhà cung cấp">
-                                                                    <AntdIcons.ShopOutlined />
-                                                                </Tooltip>
-                                                            }
+                                    />
 
-                                                        />
+                                </Form.Item>
+                            </Col>
+                            <Col>
+                                <Row gutter={24}>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="Code" label="Mã sản phẩm" rules={[{ required: true }]}>
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Mã">
+                                                        <AntdIcons.KeyOutlined />
+                                                    </Tooltip>
+                                                }
 
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="Code" label="" rules={[{ required: true }]}>
-                                                        <Input placeholder="Mã *"
-                                                            prefix={
-                                                                <Tooltip title="Mã">
-                                                                    <AntdIcons.KeyOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="Email" label="" rules={[{ type: 'email' }]}>
-                                                        <Input placeholder="Email"
-                                                            prefix={
-                                                                <Tooltip title="Email">
-                                                                    <AntdIcons.RedEnvelopeOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="Phone" label="" rules={[{ required: true }]}>
-                                                        <Input placeholder="Điện thoại *"
-                                                            prefix={
-                                                                <Tooltip title="Điện thoại">
-                                                                    <AntdIcons.PhoneOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="Address" label="">
-                                                        <Input placeholder="Địa chỉ"
-                                                            prefix={
-                                                                <Tooltip title="Địa chỉ">
-                                                                    <AntdIcons.EnvironmentOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="MaSoThue" label="">
-                                                        <Input placeholder="Mã số thuế"
-                                                            prefix={
-                                                                <Tooltip title="Mã số thuế">
-                                                                    <AntdIcons.KeyOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="TenNguoiDaiDien" label="">
-                                                        <Input placeholder="Tên người đại diện"
-                                                            prefix={
-                                                                <Tooltip title="Tên người đại diện">
-                                                                    <AntdIcons.UserOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="SDTNguoiDaiDien" label="">
-                                                        <Input placeholder="Điện thoại người đại diện"
-                                                            prefix={
-                                                                <Tooltip title="Điện thoại người đại diện">
-                                                                    <AntdIcons.ShakeOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="DiaChiNguoiDaiDien" label="">
-                                                        <Input placeholder="Địa chỉ người đại diện"
-                                                            prefix={
-                                                                <Tooltip title="Địa chỉ người đại diện">
-                                                                    <AntdIcons.EnvironmentOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="Status" label="" valuePropName="checked">
-                                                        <Checkbox>Đang giao dịch</Checkbox>
-                                                    </Form.Item>
-                                                </Col>
-                                            </Row>
-                                        </Card>
-
+                                            />
+                                        </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Card
-                                            hoverable
-                                            style={{ marginTop: 16 }}
-                                            title={
-                                                <Space size={8}>
-                                                    <AntdIcons.DollarOutlined />
-                                                    Thanh toán
-                                                </Space>
-                                            }>
-                                            <Row>
-                                                <Col>
-                                                    <Form.Item name="TenNganHang" label="">
+                                        <Form.Item name="Barcode" label="Mã vạch">
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Email">
+                                                        <AntdIcons.RedEnvelopeOutlined />
+                                                    </Tooltip>
+                                                }
 
-                                                        <Input placeholder="Ngân hàng"
-                                                            prefix={
-                                                                <Tooltip title="Ngân hàng">
-                                                                    <AntdIcons.BankOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="ChiNhanhNH" label="" >
-                                                        <Input placeholder="Chi nhánh"
-                                                            prefix={
-                                                                <Tooltip title="Chi nhánh">
-                                                                    <AntdIcons.ClusterOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="STKNganHang" label="">
-                                                        <Input placeholder="Số tài khoản"
-                                                            prefix={
-                                                                <Tooltip title="Số tài khoản">
-                                                                    <AntdIcons.CreditCardOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="TenChuTKNganHang" label="">
-                                                        <Input placeholder="Chủ tài khoản"
-                                                            prefix={
-                                                                <Tooltip title="Chủ tài khoản">
-                                                                    <AntdIcons.IdcardOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col>
-                                                    <Form.Item name="GhiChu" label="">
-                                                        <Input.TextArea placeholder="Ghi chú"
-                                                            prefix={
-                                                                <Tooltip title="Ghi chú">
-                                                                    <AntdIcons.MessageOutlined />
-                                                                </Tooltip>
-                                                            }
-
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-
-                                            </Row>
-                                        </Card>
-
+                                            />
+                                        </Form.Item>
                                     </Col>
                                 </Row>
-                            </Form>
-                        </Modal>
-                    </  React.Fragment>, document.body
-                ) : null
-            }
-        </>
+                            </Col>
+                            <Col>
+                                <Row gutter={24}>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="KhoiLuong" label="Khối lượng" >
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Điện thoại">
+                                                        <AntdIcons.PhoneOutlined />
+                                                    </Tooltip>
+                                                }
+
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="DonViTinhId" label="Đơn vị tính">
+                                            <Select
+                                                showSearch
+                                                //style={{ width: 200 }}
+                                                placeholder="-- Chọn --"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                                filterSort={(optionA, optionB) =>
+                                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                                }
+                                            >
+                                                <Option value={0}>Chọn</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col>
+                                <Form.Item name="Status" label="" valuePropName="checked">
+                                    <Checkbox>Đang giao dịch</Checkbox>
+                                </Form.Item>
+                            </Col>
+
+                        </Row>
+                    </Card>
+                    <Card
+                        style={{ marginTop: 16 }}
+                        title={
+                            <Space size={8}>
+                                <AntdIcons.DollarOutlined />
+                                                    Giá sản phẩm
+                                                </Space>
+                        }
+                    >
+                        <Row>
+                            <Col>
+                                <Row gutter={24}>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="GiaBanLe" label="Giá bán lẻ">
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Giá bán lẻ">
+                                                        <AntdIcons.KeyOutlined />
+                                                    </Tooltip>
+                                                }
+
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="GiaBanBuon" label="Giá bán buôn">
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Giá bán buôn">
+                                                        <AntdIcons.UserOutlined />
+                                                    </Tooltip>
+                                                }
+
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col>
+                                <Row gutter={24}>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="GiaNhap" label="Giá nhập">
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Giá nhập">
+                                                        <AntdIcons.ShakeOutlined />
+                                                    </Tooltip>
+                                                }
+
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                        <Form.Item name="GiaCu" label="Giá cũ">
+                                            <Input
+                                                prefix={
+                                                    <Tooltip title="Giá cũ">
+                                                        <AntdIcons.EnvironmentOutlined />
+                                                    </Tooltip>
+                                                }
+
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Card>
+                </Col>
+                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 8 }}>
+                    <Card
+                        style={{ marginTop: 16 }}
+                        title={
+                            <Space size={8}>
+                                <AntdIcons.DollarOutlined />
+                                                    Phân loại
+                                                </Space>
+                        }>
+                        <Row>
+                            <Col>
+                                <Form.Item name="LoaiSP" label="Loại sản phẩm">
+                                    <Select
+                                        showSearch
+                                        //style={{ width: 200 }}
+                                        placeholder="-- Chọn --"
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        filterSort={(optionA, optionB) =>
+                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                        }
+                                    >
+                                        <Option value={0}>Chọn</Option>
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                            <Col>
+                                <Form.Item name="ThuongHieuId" label="Thương Hiệu">
+                                    <Select
+                                        showSearch
+                                        //style={{ width: 200 }}
+                                        placeholder="-- Chọn --"
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        filterSort={(optionA, optionB) =>
+                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                        }
+                                    >
+                                        <Option value={0}>Chọn</Option>
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                            <Col>
+                                <Form.Item name="XuatXuId" label="Xuất xứ">
+                                    <Select
+                                        showSearch
+                                        //style={{ width: 200 }}
+                                        placeholder="-- Chọn --"
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        filterSort={(optionA, optionB) =>
+                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                        }
+                                    >
+                                        <Option value={0}>Chọn</Option>
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+
+                        </Row>
+                    </Card>
+                    <Card
+                        style={{ marginTop: 16 }}
+                        title={
+                            <Space size={8}>
+                                <AntdIcons.DollarOutlined />
+                                                    Ảnh sản phẩm
+                                                </Space>
+                        }
+                    >
+                        <Row>
+                            <Col>
+                                <Form.Item name="Avatar" label="">
+                                    <ImgCrop rotate>
+                                        <Upload
+                                            accept="image/*"
+                                            action={url_upload}
+                                            listType="picture-card"
+                                            fileList={fileList}
+                                            onChange={onChange}
+                                            onPreview={onPreview}
+                                        //beforeUpload={beforeUpload}
+                                        >
+                                            {fileList.length < 1 && '+ Upload'}
+                                        </Upload>
+                                    </ImgCrop>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
+                </Col>
+            </Row>
+        </Form>
     )
 }
 export default ModalCreate;

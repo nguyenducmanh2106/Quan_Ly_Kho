@@ -12,7 +12,7 @@ export const parseJwt = () => {
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     return JSON.parse(window.atob(base64));
 };
-const getCurrentDateTime_Belong_TimeZone=()=> {
+const getCurrentDateTime_Belong_TimeZone = () => {
     let dateTime_TimeZone = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
     let expires = new Date(dateTime_TimeZone)
     return expires;
@@ -59,10 +59,11 @@ function deleteCookie(name, path) {
         //setCookie(name, "", { setMaxAge: -1, path: path });
         document.cookie = `${name}=;{setMaxAge:-1,path:${path}}`
     }
-        
+
 }
-export const  returnLogin=()=> {
-    deleteCookie(base64_encode(ACCESS_TOKEN), "/")
+export const returnLogin = () => {
+    //deleteCookie(base64_encode(ACCESS_TOKEN), "/")
+    window.localStorage.removeItem(base64_encode(ACCESS_TOKEN))
     window.localStorage.removeItem(EXPIRES_AT_LOCALSTORAGE)
     window.localStorage.removeItem(USER_LOCALSTORAGE)
     window.localStorage.removeItem(PERMISS_USER_CURRENT)
@@ -73,12 +74,14 @@ export const getAccessToken = () => {
     let expires = getCurrentDateTime_Belong_TimeZone()
     let totalMiniSecondNow = expires.getTime();
     if (Number.parseInt(totalMiniSecondNow) > Number.parseInt(date)) {
-        deleteCookie(base64_encode(ACCESS_TOKEN), "/")
+        //deleteCookie(base64_encode(ACCESS_TOKEN), "/")
+        window.localStorage.removeItem(base64_encode(ACCESS_TOKEN))
         window.localStorage.removeItem(EXPIRES_AT_LOCALSTORAGE)
         window.localStorage.removeItem(USER_LOCALSTORAGE)
         window.localStorage.removeItem(PERMISS_USER_CURRENT)
     }
-    return getCookie(base64_encode(ACCESS_TOKEN));
+    //return getCookie(base64_encode(ACCESS_TOKEN));
+    return window.localStorage.getItem(base64_encode(ACCESS_TOKEN))
 }
 export const setLocalStorage = (name, value) => {
     storage.setItem(name, value);
@@ -114,7 +117,7 @@ export async function postFormData(url, data, isCheckToken = true) {
 }
 
 export const postAPI = async (url, data, isCheckToken = true) => {
-    
+
     var headers = {}
     if (isCheckToken == false) {
         headers = {
@@ -140,7 +143,7 @@ export const postAPI = async (url, data, isCheckToken = true) => {
             headers: headers
         });
         var JsonData = await fetchData.data
-        
+
         return JsonData
     }
     catch (error) {
@@ -151,7 +154,7 @@ export const postAPI = async (url, data, isCheckToken = true) => {
         //    status: error.response.status
         //}
         //return dataReturn
-        
+
     }
     //axios.interceptors.response.use(response => {
     //    return response;

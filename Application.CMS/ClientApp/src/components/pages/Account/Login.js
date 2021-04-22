@@ -45,7 +45,8 @@ const Login = (props) => {
         else {
 
             var totalMiniseconds = getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone(30)
-            setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/', expires: new Date(totalMiniseconds) })
+            //setCookie(base64_encode(ACCESS_TOKEN), res.result.access_token, { path: '/', expires: new Date(totalMiniseconds) })
+            setLocalStorage(base64_encode(ACCESS_TOKEN), res.result.access_token);
             setLocalStorage(EXPIRES_AT_LOCALSTORAGE, totalMiniseconds);
             setLocalStorage(USER_LOCALSTORAGE, JSON.stringify(res.result.userDetails));
             setLocalStorage(PERMISS_USER_CURRENT, JSON.stringify(res.result.permiss));
