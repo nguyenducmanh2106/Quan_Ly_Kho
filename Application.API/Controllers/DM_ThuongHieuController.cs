@@ -33,6 +33,23 @@ namespace Application.API.Controllers
             this._manager = _manager;
             _httpContextAccessor = httpContextAccessor;
         }
+        [HttpGet("get-all-data-active")]
+        public async Task<IActionResult> GetAllDataActive()
+        {
+            try
+            {
+                var data = await _manager.GetAllDataActive();
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet("get-options")]
         public async Task<IActionResult> GetOptions(int Status = -1, string Name = "")
         {

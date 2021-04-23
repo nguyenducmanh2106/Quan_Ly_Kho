@@ -124,7 +124,18 @@ namespace Application.Services.DM_DonViTinhSerVices
                 throw new Exception(MessageConst.UPDATE_FAIL);
             }
         }
-
+        public async Task<List<DM_DonViTinhs>> GetAllDataActive()
+        {
+            try
+            {
+                var data = (await _unitOfWork.DM_DonViTinhRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public async Task Update(DM_DonViTinhs obj)
         {
             //await _unitOfWork.CreateTransaction();

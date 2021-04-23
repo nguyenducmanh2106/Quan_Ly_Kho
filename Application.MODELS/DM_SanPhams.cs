@@ -55,5 +55,7 @@ namespace Application.MODELS
         public string pathAvatar { get; set; }
         [NotMapped]
         public string File_Base64 { get; set; }
+        [NotMapped]
+        public List<DM_ThuocTinhSPs> ThuocTinhs { get; set; }
     }
 }

@@ -55,7 +55,7 @@ const MenuSidebar = (props) => {
                                 return (
                                     //<Can I="view" a={item.url.substr(1)}>
 
-                                    <Menu.Item className="ant-menu-item ant-menu-item-only-child" key={item.id} icon={<MyIcon type={icon} />} >
+                                    <Menu.Item  key={item.id} icon={<MyIcon type={icon} />} >
                                         <Link to={item.url}>
                                             {item.name}
                                         </Link>

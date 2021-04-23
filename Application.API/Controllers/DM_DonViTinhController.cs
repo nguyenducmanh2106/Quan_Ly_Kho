@@ -33,6 +33,23 @@ namespace Application.API.Controllers
             this._manager = _manager;
             _httpContextAccessor = httpContextAccessor;
         }
+        [HttpGet("get-all-data-active")]
+        public async Task<IActionResult> GetAllDataActive()
+        {
+            try
+            {
+                var data = await _manager.GetAllDataActive();
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         //[RoleAuthorizeAttribute("dm_donvitinh.view")]
         [HttpGet("list_data")]
         public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "", string nameSort = "")

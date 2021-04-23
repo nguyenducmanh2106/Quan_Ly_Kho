@@ -10,12 +10,13 @@ namespace Application.Services.DM_SanPhamSerVices
 {
     public interface IDM_SanPhamServices
     {
-        Task<IQueryable<DM_SanPhams>> getData(SanPhamFilterModel inputModel);
-        Task Create(DM_SanPhams obj);
+        Task<List<DM_SanPhams>> getData(SanPhamFilterModel inputModel);
+        Task<DM_SanPhams> Create(DM_SanPhams obj);
         Task Update(DM_SanPhams obj);
         Task ToggleStatus(DM_SanPhams obj);
         Task Delete(DM_SanPhams obj);
         Task MultiDelete(string listItemDelete);
         Task<DM_SanPhams> FindById(int id);
+        Task<long> ToTalCount(SanPhamFilterModel inputModel);
     }
 }

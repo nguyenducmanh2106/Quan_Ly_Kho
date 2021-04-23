@@ -1,5 +1,5 @@
-﻿import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+﻿import React, { useEffect, useState, useMemo } from 'react';
+import { useHistory, Route, Redirect } from 'react-router-dom';
 import FormCreate from './Create';
 import FormUpdate from './Update';
 import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space, Form, Modal } from 'antd';
@@ -8,14 +8,15 @@ import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
+import Update from "./Update";
+import PrivateRoute from "../../../utils/PrivateRoute"
 import BounceLoader from 'react-spinners/BounceLoader'
-function Index() {
+import { UserProvider } from './Context'
+function Index({ onSetSanPhamUpdate }) {
     let history = useHistory()
     //khai báo state
     const [state, setState] = useState([]);
-    const [dataDonVi, setDataDonVi] = useState([]);
-    const [dataChucVu, setDataChucVu] = useState([]);
-    const [dataNhomNguoiDung, setDataNhomNguoiDung] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [search, setSearch] = useState({ Name: "", Status: -1 })
@@ -43,36 +44,6 @@ function Index() {
             range: '${label} must be between ${min} and ${max}',
         },
     };
-    //useEffect(() => {
-
-    //    async function getDonVi() {
-    //        var fetchData = await getAPI(`api/dm_donvi/get-all-data-active`);
-    //        if (fetchData.status == true) {
-    //            setDataDonVi(fetchData.result)
-    //        }
-    //    }
-    //    async function getChucVu() {
-    //        var fetchData = await getAPI(`api/dm_chucvu/get-all-data-active`);
-    //        if (fetchData.status == true) {
-    //            setDataChucVu(fetchData.result)
-    //        }
-    //    }
-    //    async function getNhomNguoiDung() {
-    //        var fetchData = await getAPI(`api/user_group/get-all-data-active`);
-    //        if (fetchData.status == true) {
-    //            setDataNhomNguoiDung(fetchData.result)
-    //        }
-    //    }
-    //    //gọi hàm
-    //    getDataPermission()
-    //    getDataPermission_TraiPhang()
-    //    getDonVi()
-    //    getChucVu()
-    //    getNhomNguoiDung()
-    //    return () => {
-    //        setAction(false)
-    //    }
-    //}, [])
     useEffect(() => {
         async function getData(page, pageSize) {
             let name = search.Name;
@@ -202,8 +173,7 @@ function Index() {
         });
     }
     const onUpdateItem = (item) => {
-        //console.log(obj)
-        setItemUpdate(item)
+        history.push(`/dm_sanpham/update/${item.id}`)
     }
     async function onMultiDelete() {
         if (listItemRemove.length == 0) {
@@ -266,33 +236,11 @@ function Index() {
         }
 
     }
-    async function onPostCreateItem(obj) {
-        console.log(obj)
-        setConfirmLoading(true)
-        var result = await postAPI('api/dm_sanpham/create', JSON.stringify(obj))
 
-        if (result.status) {
-            setAction(true)
-            toggle();
-            notification.success({
-                message: result.message,
-                duration: 3
-
-            })
-
-        }
-        else {
-            toggle();
-            notification.error({
-                message: result.message,
-                duration: 3
-
-            })
-        }
-    }
     function openCreate() {
         history.push('/dm_sanpham/create')
     }
+
     return (
         <Content className="main-container main-container-component">
             <Card>
@@ -373,16 +321,25 @@ function Index() {
                             {/*    nhomNguoiDung={dataNhomNguoiDung}*/}
                             {/*    confirmLoading={confirmLoading}*/}
                             {/*/>*/}
-                            <FormUpdate
-                                isShowing={isShowingUpdate}
-                                hide={toggleUpdate}
-                                item={ItemUpdate}
-                                onPostUpdateItem={onPostUpdateItem}
-                                donvi={dataDonVi}
-                                chucvu={dataChucVu}
-                                nhomNguoiDung={dataNhomNguoiDung}
-                                confirmLoading={confirmLoading}
-                            />
+                            {/*<FormUpdate*/}
+                            {/*    isShowing={isShowingUpdate}*/}
+                            {/*    hide={toggleUpdate}*/}
+                            {/*    item={ItemUpdate}*/}
+                            {/*    onPostUpdateItem={onPostUpdateItem}*/}
+                            {/*    donvi={dataDonVi}*/}
+                            {/*    chucvu={dataChucVu}*/}
+                            {/*    nhomNguoiDung={dataNhomNguoiDung}*/}
+                            {/*    confirmLoading={confirmLoading}*/}
+                            {/*/>*/}
+                            {/*<PrivateRoute exact path='/dm_sanpham/update' component={() => <Update ItemUpdate={ItemUpdate} />} />*/}
+                            {/*<PrivateRoute path='/dm_sanpham/update' component={Update} />*/}
+                            <UserProvider value={ItemUpdate}>
+                                <Route exact
+                                    path="/dm_sanpham/update"
+                                >
+                                    <Update />
+                                </Route>
+                            </UserProvider>
                             <ListData obj={state}
                                 onChangePage={onChangePage}
                                 onDeleteItem={onDelete}

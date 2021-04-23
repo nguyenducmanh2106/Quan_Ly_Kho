@@ -19,5 +19,6 @@ namespace Application.Services.DM_DonViTinhSerVices
         Task ToggleStatus(DM_DonViTinhs obj);
         Task Delete(DM_DonViTinhs obj);
         Task MultiDelete(string listItemDelete);
+        Task<List<DM_DonViTinhs>> GetAllDataActive();
     }
 }

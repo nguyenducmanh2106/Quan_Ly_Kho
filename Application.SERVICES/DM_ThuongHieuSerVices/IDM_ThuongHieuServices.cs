@@ -20,5 +20,6 @@ namespace Application.Services.DM_ThuongHieuSerVices
         Task Delete(DM_ThuongHieus obj);
         Task MultiDelete(string listItemDelete);
         Task<List<DM_ThuongHieus>> GetChild(int ParentId);
+        Task<List<DM_ThuongHieus>> GetAllDataActive();
     }
 }

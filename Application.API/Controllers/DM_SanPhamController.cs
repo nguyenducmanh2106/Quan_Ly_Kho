@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Application.API.Middleware;
 using Newtonsoft.Json;
 using Application.MODELS.ViewModels;
+using Application.Services.DM_ThuocTinhSPSerVices;
 
 namespace Application.API.Controllers
 {
@@ -23,13 +24,15 @@ namespace Application.API.Controllers
     public class DM_SanPhamController : ControllerBase
     {
         private readonly IDM_SanPhamServices _manager;
+        private readonly IDM_ThuocTinhSPServices _managerThuocTinhSP;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_SanPhamController(IConfiguration config, IDM_SanPhamServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_SanPhamController(IConfiguration config, IDM_ThuocTinhSPServices _managerThuocTinhSP, IDM_SanPhamServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
+            this._managerThuocTinhSP = _managerThuocTinhSP;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost("list_data")]
@@ -38,7 +41,7 @@ namespace Application.API.Controllers
             try
             {
                 var totalPage = 0;
-                var total = 0;
+                long total = 0;
                 var stt = (inputModel.page - 1) * inputModel.pageSize;
                 var dataExist = (await _manager.getData(inputModel));
 
@@ -48,36 +51,9 @@ namespace Application.API.Controllers
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(inputModel.nameSort))
-                    {
-                        switch (inputModel.nameSort)
-                        {
-                            case "Name_asc":
-                                dataExist = dataExist.OrderBy(g => g.Name);
-                                break;
-                            case "Name_desc":
-                                dataExist = dataExist.OrderByDescending(g => g.Name);
-                                break;
-                            case "GiaBan_asc":
-                                dataExist = dataExist.OrderBy(g => g.GiaBanLe);
-                                break;
-                            case "GiaBan_desc":
-                                dataExist = dataExist.OrderByDescending(g => g.GiaBanLe);
-                                break;
-                            case "Code_asc":
-                                dataExist = dataExist.OrderBy(g => g.Code);
-                                break;
-                            case "Code_desc":
-                                dataExist = dataExist.OrderByDescending(g => g.Code);
-                                break;
-                            default:
-                                dataExist = dataExist.OrderByDescending(g => g.Created_At);
-                                break;
-                        }
-                    }
-                    total = dataExist.Count();
-                    var data = dataExist.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();
-                    var dataFinal = data.Select(g => new DM_SanPhams()
+
+                    total = (await _manager.ToTalCount(inputModel));
+                    var dataFinal = dataExist.Select(g => new DM_SanPhams()
                     {
                         Id = g.Id,
                         Name = g.Name,
@@ -100,6 +76,7 @@ namespace Application.API.Controllers
                         GiaBanLe = g.GiaBanLe,
                         GiaCu = g.GiaCu,
                         pathAvatar = ReadFileToBase64(g.pathAvatar),
+                        ThuocTinhs = g.ThuocTinhs
                     });
                     totalPage = (int)Math.Ceiling(((double)total / inputModel.pageSize));
                     MessageSuccess success = new MessageSuccess()
@@ -122,6 +99,26 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("find-by-id")]
+        public async Task<IActionResult> FindById(int Id = -1)
+        {
+            try
+            {
+                var data = await _manager.FindById(Id);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CREATE_FAIL
+                });
+            }
+        }
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] DM_SanPhams obj)
         {
@@ -136,7 +133,16 @@ namespace Application.API.Controllers
                     ConvertBase64.Base64ToFile(obj.File_Base64, urlFile, filename);
                     obj.pathAvatar = urlFile.Replace(host, "");
                 }
-                await _manager.Create(obj);
+                var data = await _manager.Create(obj);
+                if (obj.ThuocTinhs != null)
+                {
+                    foreach (var item in obj.ThuocTinhs)
+                    {
+                        item.SanPhamId = data.Id;
+                        await _managerThuocTinhSP.CreateOrUpdate(item);
+                    }
+                }
+
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS
@@ -193,6 +199,17 @@ namespace Application.API.Controllers
                     obj.pathAvatar = urlFile.Replace(host, "");
                 }
                 await _manager.Update(obj);
+                if (obj.ThuocTinhs != null)
+                {
+                    foreach (var item in obj.ThuocTinhs)
+                    {
+                        if (item.Id == 0)
+                        {
+                            item.SanPhamId = obj.Id;
+                            await _managerThuocTinhSP.CreateOrUpdate(item);
+                        }
+                    }
+                }
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS

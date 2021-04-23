@@ -1,12 +1,19 @@
-﻿
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState, useMemo } from 'react';
 import ReactDOM from 'react-dom';
+import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import * as AntdIcons from '@ant-design/icons';
 import { url_upload } from "../../../utils/helpers";
-import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse } from 'antd';
+import {
+    Form, Input, InputNumber, Button, Modal, Select,
+    Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse, Divider, notification
+} from 'antd';
 const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
+    const [dataLoaiSP, setDataLoaiSP] = useState([]);
+    const [dataThuongHieu, setDataThuongHieu] = useState([]);
+    const [dataXuatXu, setDataXuatXu] = useState([]);
+    const [dataDonViTinh, setDataDonViTinh] = useState([]);
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
@@ -17,25 +24,48 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
     };
+    useState(() => {
 
+        async function getLoaiSanpham() {
+            var fetchData = await getAPI(`api/dm_loaisanpham/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataLoaiSP(fetchData.result)
+            }
+        }
+        async function getThuongHieu() {
+            var fetchData = await getAPI(`api/dm_thuonghieu/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataThuongHieu(fetchData.result)
+            }
+        }
+        async function getXuatXu() {
+            var fetchData = await getAPI(`api/dm_xuatxu/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataXuatXu(fetchData.result)
+            }
+        }
+        async function getDonViTinh() {
+            var fetchData = await getAPI(`api/dm_donvitinh/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataDonViTinh(fetchData.result)
+            }
+        }
+        //gọi hàm
+        getLoaiSanpham()
+        getThuongHieu()
+        getXuatXu()
+        getDonViTinh()
+    }, [dataLoaiSP, dataThuongHieu, dataXuatXu, dataDonViTinh])
     const onSubmit = (data) => {
         var obj = {
             ...data,
-            UserGroupID: data.UserGroupID ? data.UserGroupID.join(",") : "",
-            PassWord: base64_encode(data.PassWord),
             Avatar: fileList.length > 0 ? fileList[0].name : null,
             File_Base64: fileList.length > 0 ? fileList[0].thumbUrl.split(",").splice(1).join("") : null,
             Status: data.Status ? 1 : 2,
-            isRoot: data.isRoot ? true : false,
-            isThongKe: data.isThongKe ? true : false,
-            PhoneNumber: data.PhoneNumber.toString()
         }
         //console.log(obj)
-        onPostCreateItem(obj).then(onReset())
+        onPostCreateItem(obj).then()
     }
-    //const handleChange = (value) => {
-    //    console.log(value)
-    //}
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -50,18 +80,8 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         setFileList([]);
         hide()
     }
-    //const beforeUpload = (file) => {
-    //    const isLt2M = file.size / 1024 / 1024 < 2;
-    //    if (!isLt2M) {
-    //        file.flag = true;
-    //        return false;
-    //    }
-    //    return true;
-    //}
-
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
-        //console.log(fileList)
     };
 
     const onPreview = async file => {
@@ -78,13 +98,37 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         const imgWindow = window.open(src);
         imgWindow.document.write(image.outerHTML);
     };
+    async function onPostCreateItem(obj) {
+        console.log(obj)
+        //setConfirmLoading(true)
+        var result = await postAPI('api/dm_sanpham/create', JSON.stringify(obj))
+        if (result.status) {
+            //setAction(true)
+            notification.success({
+                message: result.message,
+                duration: 3
+
+            })
+
+        }
+        else {
+            notification.error({
+                message: result.message,
+                duration: 3
+
+            })
+        }
+    }
     return (
         <Form
             form={form}
             name="nest-messages" onFinish={onSubmit} id="myFormCreate"
             validateMessages={validateMessages}
             initialValues={{
-                ["Ordering"]: 0
+                ["ThuongHieuId"]: 0,
+                ["XuatXuId"]: 0,
+                ["LoaiSP"]: 0,
+                ["DonViTinhId"]: 0
             }}
         >
             <Row gutter={24}>
@@ -100,41 +144,19 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                         <Row>
                             <Col>
                                 <Form.Item name="Name" label="Tên sản phẩm" rules={[{ required: true }]}>
-                                    <Input
-                                        prefix={
-                                            <Tooltip title="Tên sản phẩm">
-                                                <AntdIcons.ShopOutlined />
-                                            </Tooltip>
-                                        }
-
-                                    />
-
+                                    <Input />
                                 </Form.Item>
                             </Col>
                             <Col>
                                 <Row gutter={24}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="Code" label="Mã sản phẩm" rules={[{ required: true }]}>
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Mã">
-                                                        <AntdIcons.KeyOutlined />
-                                                    </Tooltip>
-                                                }
-
-                                            />
+                                        <Form.Item name="Code" label="Mã sản phẩm" >
+                                            <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="Barcode" label="Mã vạch">
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Email">
-                                                        <AntdIcons.RedEnvelopeOutlined />
-                                                    </Tooltip>
-                                                }
-
-                                            />
+                                            <Input />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -143,14 +165,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 <Row gutter={24}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="KhoiLuong" label="Khối lượng" >
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Điện thoại">
-                                                        <AntdIcons.PhoneOutlined />
-                                                    </Tooltip>
-                                                }
-
-                                            />
+                                            <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
@@ -167,7 +182,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                                     optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                                 }
                                             >
-                                                <Option value={0}>Chọn</Option>
+                                                <Option value={0}>-- Chọn --</Option>
+                                                {dataDonViTinh.map(item => {
+                                                    return (
+                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                    )
+                                                })}
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -195,25 +215,19 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 <Row gutter={24}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="GiaBanLe" label="Giá bán lẻ">
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Giá bán lẻ">
-                                                        <AntdIcons.KeyOutlined />
-                                                    </Tooltip>
-                                                }
-
+                                            <InputNumber
+                                                style={{ width: "100%" }}
+                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="GiaBanBuon" label="Giá bán buôn">
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Giá bán buôn">
-                                                        <AntdIcons.UserOutlined />
-                                                    </Tooltip>
-                                                }
-
+                                            <InputNumber
+                                                style={{ width: "100%" }}
+                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -223,25 +237,19 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 <Row gutter={24}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="GiaNhap" label="Giá nhập">
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Giá nhập">
-                                                        <AntdIcons.ShakeOutlined />
-                                                    </Tooltip>
-                                                }
-
+                                            <InputNumber
+                                                style={{ width: "100%" }}
+                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="GiaCu" label="Giá cũ">
-                                            <Input
-                                                prefix={
-                                                    <Tooltip title="Giá cũ">
-                                                        <AntdIcons.EnvironmentOutlined />
-                                                    </Tooltip>
-                                                }
-
+                                            <InputNumber
+                                                style={{ width: "100%" }}
+                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -258,25 +266,23 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, 'first']}
+                                                    name={[name, 'Name']}
                                                     fieldKey={[fieldKey, 'first']}
-                                                    rules={[{ required: true, message: 'Missing first name' }]}
                                                 >
-                                                    <Input placeholder="First Name" />
+                                                    <Input placeholder="Tên thuộc tính" />
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, 'last']}
+                                                    name={[name, 'Value']}
                                                     fieldKey={[fieldKey, 'last']}
-                                                    rules={[{ required: true, message: 'Missing last name' }]}
                                                 >
-                                                    <Input placeholder="Last Name" />
+                                                    <Input placeholder="Giá trị" />
                                                 </Form.Item>
                                                 <AntdIcons.MinusCircleOutlined onClick={() => remove(name)} />
                                             </Space>
                                         ))}
                                         <Form.Item>
-                                            <Button type="dashed" onClick={() => add()} block icon={<AntdIcons.PlusOutlined />}>
+                                            <Button type="dashed" onClick={() => add()} icon={<AntdIcons.PlusOutlined />}>
                                                 Thêm thuộc tính
               </Button>
                                         </Form.Item>
@@ -291,7 +297,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                         style={{ marginTop: 16 }}
                         title={
                             <Space size={8}>
-                                <AntdIcons.DollarOutlined />
+                                <AntdIcons.BarsOutlined />
                                                     Phân loại
                                                 </Space>
                         }>
@@ -310,7 +316,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                         }
                                     >
-                                        <Option value={0}>Chọn</Option>
+                                        <Option value={0}>-- Chọn --</Option>
+                                        {dataLoaiSP.map(item => {
+                                            return (
+                                                <Option key={item.id} value={item.id}>{item.name}</Option>
+                                            )
+                                        })}
                                     </Select>
                                 </Form.Item>
                             </Col>
@@ -328,7 +339,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                         }
                                     >
-                                        <Option value={0}>Chọn</Option>
+                                        <Option value={0}>-- Chọn --</Option>
+                                        {dataThuongHieu.map(item => {
+                                            return (
+                                                <Option key={item.id} value={item.id}>{item.name}</Option>
+                                            )
+                                        })}
                                     </Select>
                                 </Form.Item>
                             </Col>
@@ -346,7 +362,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
                                         }
                                     >
-                                        <Option value={0}>Chọn</Option>
+                                        <Option value={0}>-- Chọn --</Option>
+                                        {dataXuatXu.map(item => {
+                                            return (
+                                                <Option key={item.id} value={item.id}>{item.name}</Option>
+                                            )
+                                        })}
                                     </Select>
                                 </Form.Item>
                             </Col>
@@ -357,7 +378,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                         style={{ marginTop: 16 }}
                         title={
                             <Space size={8}>
-                                <AntdIcons.DollarOutlined />
+                                <AntdIcons.FileImageOutlined />
                                                     Ảnh sản phẩm
                                                 </Space>
                         }
@@ -381,10 +402,20 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <Divider />
+                        <Row>
+                            <Col>
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
+                                        Lưu
+                                    </Button>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Card>
                 </Col>
             </Row>
-        </Form>
+        </Form >
     )
 }
 export default ModalCreate;

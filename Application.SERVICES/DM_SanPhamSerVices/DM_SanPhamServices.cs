@@ -24,12 +24,13 @@ namespace Application.Services.DM_SanPhamSerVices
         }
 
 
-        public async Task Create(DM_SanPhams obj)
+        public async Task<DM_SanPhams> Create(DM_SanPhams obj)
         {
             try
             {
                 obj.Created_At = DateTime.Now.Date;
-                await _unitOfWork.DM_SanPhamRepository.Add(obj);
+                var data = await _unitOfWork.DM_SanPhamRepository.Add(obj);
+                return data;
             }
             catch (Exception ex)
             {
@@ -55,49 +56,10 @@ namespace Application.Services.DM_SanPhamSerVices
             }
         }
 
-        public async Task<IQueryable<DM_SanPhams>> getData(SanPhamFilterModel inputModel)
+        public async Task<List<DM_SanPhams>> getData(SanPhamFilterModel inputModel)
         {
-            var data = (await _unitOfWork.DM_SanPhamRepository.FindBy(g => (inputModel.Status == (int)StatusEnum.All || g.Status == inputModel.Status)
-             && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()) || g.Name.ToLower().Contains(inputModel.Name.ToLower()) || g.Barcode.ToLower().Contains(inputModel.Name.ToLower()))
-             && (inputModel.LoaiSP == -1 || g.LoaiSP == inputModel.LoaiSP) && (inputModel.ThuongHieu_Id == -1 || g.ThuongHieu_Id == inputModel.ThuongHieu_Id)
-             && (inputModel.XuatXu_Id == -1 || g.XuatXu_Id == inputModel.XuatXu_Id)
-            )).Select(g => new DM_SanPhams()
-            {
-                Id = g.Id,
-                Name = g.Name,
-                Code = g.Code,
-                Barcode = g.Barcode,
-                LoaiSP = g.LoaiSP,
-                ThuongHieu_Id = g.ThuongHieu_Id,
-                XuatXu_Id = g.XuatXu_Id,
-                KhoiLuong = g.KhoiLuong,
-                DonViTinh_Id = g.DonViTinh_Id,
-                KichThuoc = g.KichThuoc,
-                Avatar = g.Avatar,
-                Status = g.Status,
-                Created_At = g.Created_At,
-                Updated_At = g.Updated_At,
-                Created_By = g.Created_By,
-                Updated_By = g.Updated_By,
-                GiaNhap = g.GiaNhap,
-                GiaBanBuon = g.GiaBanBuon,
-                GiaBanLe = g.GiaBanLe,
-                GiaCu = g.GiaCu,
-                pathAvatar = g.pathAvatar
-            });
-            if (!string.IsNullOrEmpty(inputModel.NgayTao))
-            {
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At >= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At <= date);
-                }
-            }
+
+            var data = _unitOfWork.DM_SanPhamRepository.getDataRepository(inputModel);
             return data;
         }
 
@@ -182,7 +144,8 @@ namespace Application.Services.DM_SanPhamSerVices
         {
             try
             {
-                return await _unitOfWork.DM_SanPhamRepository.Get(g => g.Id == id);
+                //return await _unitOfWork.DM_SanPhamRepository.Get(g => g.Id == id);
+                return _unitOfWork.DM_SanPhamRepository.FindByID_Repository(id);
             }
             catch (Exception ex)
             {
@@ -190,5 +153,37 @@ namespace Application.Services.DM_SanPhamSerVices
             }
         }
 
+        public async Task<long> ToTalCount(SanPhamFilterModel inputModel)
+        {
+            var data = (await _unitOfWork.DM_SanPhamRepository.FindBy(g => ((inputModel.Status == (int)StatusEnum.All && inputModel.Status != (int)StatusEnum.Removed) || g.Status == inputModel.Status)
+             && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()) || g.Name.ToLower().Contains(inputModel.Name.ToLower()) || g.Barcode.ToLower().Contains(inputModel.Name.ToLower()))
+             && (inputModel.LoaiSP == -1 || g.LoaiSP == inputModel.LoaiSP) && (inputModel.ThuongHieu_Id == -1 || g.ThuongHieu_Id == inputModel.ThuongHieu_Id)
+             && (inputModel.XuatXu_Id == -1 || g.XuatXu_Id == inputModel.XuatXu_Id)
+            )).Select(g => new DM_SanPhams()
+            {
+                Id = g.Id,
+                Name = g.Name,
+                Code = g.Code,
+                Barcode = g.Barcode,
+                LoaiSP = g.LoaiSP,
+                ThuongHieu_Id = g.ThuongHieu_Id,
+                XuatXu_Id = g.XuatXu_Id,
+                KhoiLuong = g.KhoiLuong,
+                DonViTinh_Id = g.DonViTinh_Id,
+                KichThuoc = g.KichThuoc,
+                Avatar = g.Avatar,
+                Status = g.Status,
+                Created_At = g.Created_At,
+                Updated_At = g.Updated_At,
+                Created_By = g.Created_By,
+                Updated_By = g.Updated_By,
+                GiaNhap = g.GiaNhap,
+                GiaBanBuon = g.GiaBanBuon,
+                GiaBanLe = g.GiaBanLe,
+                GiaCu = g.GiaCu,
+                pathAvatar = g.pathAvatar
+            });
+            return data.LongCount();
+        }
     }
 }

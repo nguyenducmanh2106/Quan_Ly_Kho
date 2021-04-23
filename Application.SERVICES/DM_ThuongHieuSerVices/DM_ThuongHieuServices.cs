@@ -32,7 +32,18 @@ namespace Application.Services.DM_ThuongHieuSerVices
                 throw ex;
             }
         }
-
+        public async Task<List<DM_ThuongHieus>> GetAllDataActive()
+        {
+            try
+            {
+                var data = (await _unitOfWork.DM_ThuongHieuRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public async Task Delete(DM_ThuongHieus obj)
         {
             try

@@ -21,9 +21,9 @@ namespace Application.UTILS
         [Description("Sử dụng")]
         Active = 1,
         [Description("Không sử dụng")]
-        Unactive = 0,
+        Unactive = 2,
         [Description("Đã xóa")]
-        Removed = 2
+        Removed = 0
     }
     public enum RolesEnum
     {

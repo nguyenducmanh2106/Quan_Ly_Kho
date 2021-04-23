@@ -116,15 +116,6 @@ function Table(props) {
                             {item.barcode}
                         </td>
                         <td>
-                            {item.giaNhap}
-                        </td>
-                        <td>
-                            {item.giaBanLe}
-                        </td>
-                        <td>
-                            {item.giaBanBuon}
-                        </td>
-                        <td>
                             {item.status == 1 ? <Button type="primary" className="success-outline" ghost onClick={() => toggleStatus(2, item)}>
                                 <Badge status="success" text="Đang hoạt động" />
                             </Button> : <Button type="primary" ghost className="danger-outline" onClick={() => toggleStatus(1, item)}>
@@ -134,6 +125,11 @@ function Table(props) {
                         <td>
                             <Dropdown placement="bottomCenter" overlay={() => (
                                 <Menu>
+                                    <Menu.Item style={{ textAlign: "center" }} key="2">
+                                        <Tooltip title="Thông tin">
+                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => update(item)} />
+                                        </Tooltip>
+                                    </Menu.Item>
                                     <Menu.Item style={{ textAlign: "center" }} key="3">
                                         <Tooltip title="Chỉnh sửa">
                                             <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
@@ -201,43 +197,33 @@ function Table(props) {
                                                 <span />
                                             </label>
                                         </th>
-                                        <th className="text-center">STT</th>
-                                        <th className="text-center" id="Avatar">
+                                        <th className="">STT</th>
+                                        <th className="" id="Avatar">
                                             Ảnh
-                            </th>
-                                        <th className="sapxep text-center" id="Name" onClick={() => onSort("Name")}>
+                                        </th>
+                                        <th className="sapxep" id="Name" onClick={() => onSort("Name")}>
                                             Tên
-                                <i className="fa fa-sort"></i>
+                                        <i className="fa fa-sort"></i>
                                         </th>
 
-                                        <th className="" id="UserName">
+                                        <th className="sapxep" id="Code" onClick={() => onSort("Code")}>
                                             Mã
-        </th>
-                                        <th className="" id="Email">
+                                            <i className="fa fa-sort"></i>
+                                        </th>
+                                        <th className="" id="Barcode">
                                             Mã vạch
-        </th>
-                                        <th className="" id="Email">
-                                            Giá nhập
-        </th>
-                                        <th className="" id="Email">
-                                            Giá bán
-        </th>
-                                        <th className="" id="Email">
-                                            Giá bán buôn
-        </th>
-                                        <th className="text-center">
+                                        </th>
+                                        <th className="">
                                             Trạng thái
-        </th>
-                                        <th className="text-center">
+                                        </th>
+                                        <th className="">
                                             Thao tác
-        </th>
+                                        </th>
                                     </tr>
                                 </thead>
-
                                 <tbody className="ant-table-tbody">
                                     {renderBody()}
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
