@@ -11,7 +11,6 @@ import LoadingOverlay from 'react-loading-overlay'
 import Update from "./Update";
 import PrivateRoute from "../../../utils/PrivateRoute"
 import BounceLoader from 'react-spinners/BounceLoader'
-import { UserProvider } from './Context'
 function Index({ onSetSanPhamUpdate }) {
     let history = useHistory()
     //khai báo state
@@ -172,9 +171,7 @@ function Index({ onSetSanPhamUpdate }) {
             }
         });
     }
-    const onUpdateItem = (item) => {
-        history.push(`/dm_sanpham/update/${item.id}`)
-    }
+
     async function onMultiDelete() {
         if (listItemRemove.length == 0) {
             notification.error({
@@ -238,28 +235,37 @@ function Index({ onSetSanPhamUpdate }) {
     }
 
     function openCreate() {
-        history.push('/dm_sanpham/create')
+        history.push({
+            pathname: '/dm_sanpham/create',
+            state: { controller: "Danh mục sản phẩm", action: "Tạo mới" }
+        });
     }
-
+    const onUpdateItem = (item) => {
+        history.push({
+            pathname: `/dm_sanpham/update/${item.id}`,
+            state: { controller: "Danh mục sản phẩm", action: "Cập nhật" }
+        });
+    }
     return (
         <Content className="main-container main-container-component">
             <Card>
                 <Row>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
-                            <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
-                                validateMessages={validateMessages}
-                                initialValues={{
-                                    //["Ordering"]: 0
-                                }}
-                            >
-                                <Row gutter={8}>
-                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                            <Row gutter={8}>
+                                <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
+                                    validateMessages={validateMessages}
+                                    initialValues={{
+                                        //["Ordering"]: 0
+                                    }}
+                                >
+
+                                    <Col xs={{ span: 24 }} lg={{ span: 14 }} md={{ span: 12 }}>
                                         <Form.Item name="Name" label="" style={{ width: '100%' }}>
-                                            <Input placeholder="Tên" allowClear />
+                                            <Input placeholder="Tên sản phẩm,mã sản phẩm,barcode" allowClear prefix={<AntdIcons.SearchOutlined />} />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 12 }}>
                                         <Form.Item name="Status" label="" style={{ width: '100%' }}>
                                             <Select
                                                 showSearch
@@ -276,23 +282,20 @@ function Index({ onSetSanPhamUpdate }) {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 12 }}>
                                         <Form.Item label="" colon={false} style={{ width: '100%' }}>
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
-    </Button>
+                                            </Button>
                                         </Form.Item>
                                     </Col>
-                                </Row>
-                            </Form>
+                                </Form>
+                            </Row>
                         </Skeleton>
                     </Col>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Space size={8}>
-                                <Button type="primary" onClick={onHandleSearch} icon={<AntdIcons.SearchOutlined />}>
-                                    Tìm Kiếm
-    </Button>
                                 <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>
                                     Thêm mới
     </Button>
@@ -331,15 +334,6 @@ function Index({ onSetSanPhamUpdate }) {
                             {/*    nhomNguoiDung={dataNhomNguoiDung}*/}
                             {/*    confirmLoading={confirmLoading}*/}
                             {/*/>*/}
-                            {/*<PrivateRoute exact path='/dm_sanpham/update' component={() => <Update ItemUpdate={ItemUpdate} />} />*/}
-                            {/*<PrivateRoute path='/dm_sanpham/update' component={Update} />*/}
-                            <UserProvider value={ItemUpdate}>
-                                <Route exact
-                                    path="/dm_sanpham/update"
-                                >
-                                    <Update />
-                                </Route>
-                            </UserProvider>
                             <ListData obj={state}
                                 onChangePage={onChangePage}
                                 onDeleteItem={onDelete}

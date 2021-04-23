@@ -24,15 +24,15 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
         {
             try
             {
-                if (obj.Id == 0)
+                if (obj.id == 0)
                 {
                     await _unitOfWork.DM_ThuocTinhSPRepository.Add(obj);
                 }
                 else
                 {
-                    var data = await _unitOfWork.DM_ThuocTinhSPRepository.Get(g => g.Id == obj.Id);
-                    data.Name = obj.Name;
-                    data.Value = obj.Value;
+                    var data = await _unitOfWork.DM_ThuocTinhSPRepository.Get(g => g.id == obj.id);
+                    data.name = obj.name;
+                    data.value = obj.value;
                     await _unitOfWork.DM_ThuocTinhSPRepository.Update(data);
                     await _unitOfWork.SaveChange();
                 }
@@ -47,7 +47,7 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
         {
             try
             {
-                var data = (await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.SanPhamId == SanPhamId)).ToList();
+                var data = (await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.sanPhamId == SanPhamId)).ToList();
                 return data;
             }
             catch (Exception ex)

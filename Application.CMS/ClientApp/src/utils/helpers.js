@@ -17,6 +17,9 @@ const getCurrentDateTime_Belong_TimeZone = () => {
     let expires = new Date(dateTime_TimeZone)
     return expires;
 }
+export const getCurrentLogin = () => {
+    return JSON.parse(localStorage.getItem(USER_LOCALSTORAGE));
+}
 export const getToTalMiniSeconds_CurrentDateTime_Belong_TimeZone = (times) => {
     //times:minutes
     let dateTime_TimeZone = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
@@ -92,30 +95,6 @@ export function getLocalStorage(name) {
 //export const setAccessToken = (token) => storage.setItem("access_token", token);
 //export const removeAccessToken = () => storage.removeItem("access_token");
 export const isLoggedIn = () => Boolean(getAccessToken());
-export async function postFormData(url, data, isCheckToken = true) {
-    var headers = new Headers();
-    if (!isCheckToken) {
-        headers.append("Accept", "application/json, application/xml, text/plain, text/html, *.*");
-        headers.append("Content-Type", "application/json; charset=UTF-8");
-        //headers.append("Content-Type", "multipart/form-data");
-        headers.append("Access-Control-Allow-Origin", "*");
-    }
-    else {
-        headers.append("Accept", "application/json, application/xml, text/plain, text/html, *.*");
-        headers.append("Content-Type", "application/json; charset=UTF-8");
-        //headers.append("Content-Type", "multipart/form-data");
-        headers.append("Access-Control-Allow-Origin", "*");
-        headers.append("Authorization", getAccessToken());
-    }
-
-    var fetchData = await fetch(`${domain}/${url}`, {
-        method: 'POST',
-        body: data,
-    })
-    var JsonData = await fetchData.json()
-    return JsonData
-}
-
 export const postAPI = async (url, data, isCheckToken = true) => {
 
     var headers = {}

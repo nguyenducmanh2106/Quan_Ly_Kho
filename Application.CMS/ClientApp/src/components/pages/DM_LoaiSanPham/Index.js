@@ -271,19 +271,19 @@ function Index() {
                 <Row>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
-                            <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
-                                validateMessages={validateMessages}
-                                initialValues={{
-                                    //["Ordering"]: 0
-                                }}
-                            >
-                                <Row gutter={8}>
-                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                            <Row gutter={8}>
+                                <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
+                                    validateMessages={validateMessages}
+                                    initialValues={{
+                                        //["Ordering"]: 0
+                                    }}
+                                >
+                                    <Col xs={{ span: 24 }} lg={{ span: 14 }} md={{ span: 12 }}>
                                         <Form.Item name="Name" label="" style={{ width: '100%' }}>
-                                            <Input placeholder="Tên/Mã chức vụ" allowClear />
+                                            <Input placeholder="Tên/Mã loại sản phẩm" allowClear prefix={<AntdIcons.SearchOutlined />} />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 12 }}>
                                         <Form.Item name="Status" label="" style={{ width: '100%' }}>
                                             <Select
                                                 showSearch
@@ -300,15 +300,15 @@ function Index() {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 8 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 12 }}>
                                         <Form.Item label="" colon={false} style={{ width: '100%' }}>
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
     </Button>
                                         </Form.Item>
                                     </Col>
-                                </Row>
-                            </Form>
+                                </Form>
+                            </Row>
                         </Skeleton>
                     </Col>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>

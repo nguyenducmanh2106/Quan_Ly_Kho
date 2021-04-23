@@ -53,7 +53,7 @@ namespace Application.REPOSITORY
                                 GiaBanLe = sp.GiaBanLe,
                                 GiaCu = sp.GiaCu,
                                 pathAvatar = sp.pathAvatar,
-                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.SanPhamId == sp.Id).ToList()
+                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
                             }
                          ).SingleOrDefault();
                 return data;
@@ -96,7 +96,7 @@ namespace Application.REPOSITORY
                                 GiaBanLe = sp.GiaBanLe,
                                 GiaCu = sp.GiaCu,
                                 pathAvatar = sp.pathAvatar,
-                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.SanPhamId == sp.Id).ToList()
+                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
                             }
                           );
                 if (!string.IsNullOrEmpty(inputModel.nameSort))

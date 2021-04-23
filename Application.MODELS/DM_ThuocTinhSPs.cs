@@ -11,9 +11,13 @@ namespace Application.MODELS
     {
         [Key]
         [Required]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public int SanPhamId { get; set; }
+        [Column("Id")]
+        public int id { get; set; }
+        [Column("Name")]
+        public string name { get; set; }
+        [Column("Value")]
+        public string value { get; set; }
+        [Column("SanPhamId")]
+        public int sanPhamId { get; set; }
     }
 }

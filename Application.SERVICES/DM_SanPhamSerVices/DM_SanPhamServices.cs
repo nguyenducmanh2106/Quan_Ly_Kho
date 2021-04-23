@@ -126,7 +126,10 @@ namespace Application.Services.DM_SanPhamSerVices
                 exist.GiaBanBuon = obj.GiaBanBuon;
                 exist.GiaBanLe = obj.GiaBanLe;
                 exist.GiaCu = obj.GiaCu;
-                exist.pathAvatar = obj.pathAvatar;
+                if (!string.IsNullOrEmpty(obj.pathAvatar))
+                {
+                    exist.pathAvatar = obj.pathAvatar;
+                }
                 await _unitOfWork.DM_SanPhamRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();

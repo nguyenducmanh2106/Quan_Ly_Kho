@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { isLoggedIn } from '../utils/helpers';
-import { URL_LOGIN } from '../utils/constants';
+import { URL_LOGIN, URL_DASHBOARD } from '../utils/constants';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return (

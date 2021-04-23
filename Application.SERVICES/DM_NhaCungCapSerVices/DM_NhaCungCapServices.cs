@@ -67,6 +67,7 @@ namespace Application.Services.DM_NhaCungCapSerVices
         {
             var data = (await _unitOfWork.DM_NhaCungCapRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)
              && (String.IsNullOrEmpty(Name) || g.Code.ToLower().Contains(Name.ToLower()) || g.Name.ToLower().Contains(Name.ToLower()))
+             && (string.IsNullOrEmpty(Phone) || g.Phone.ToLower().Contains(Phone.ToLower()))
            ));
             data = data.OrderBy(g => g.Created_At).Select(g => new DM_NhaCungCaps()
             {

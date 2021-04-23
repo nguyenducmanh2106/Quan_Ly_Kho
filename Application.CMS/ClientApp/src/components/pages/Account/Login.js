@@ -53,7 +53,13 @@ const Login = (props) => {
             //set Role
             defineAbilitiesFor(res.result.permiss);
             //history.replace('/');
-            history.replace(from);
+            history.replace({
+                pathname: URL_DASHBOARD,
+                state: {
+                    controller: "Dashboard",
+                    action: ''
+                }
+            });
         }
 
     }

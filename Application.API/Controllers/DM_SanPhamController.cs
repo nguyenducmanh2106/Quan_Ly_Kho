@@ -104,7 +104,32 @@ namespace Application.API.Controllers
         {
             try
             {
-                var data = await _manager.FindById(Id);
+                var g = await _manager.FindById(Id);
+                var data = new DM_SanPhams()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    Code = g.Code,
+                    Barcode = g.Barcode,
+                    LoaiSP = g.LoaiSP,
+                    ThuongHieu_Id = g.ThuongHieu_Id,
+                    XuatXu_Id = g.XuatXu_Id,
+                    KhoiLuong = g.KhoiLuong,
+                    DonViTinh_Id = g.DonViTinh_Id,
+                    KichThuoc = g.KichThuoc,
+                    Avatar = g.Avatar,
+                    Status = g.Status,
+                    Created_At = g.Created_At,
+                    Updated_At = g.Updated_At,
+                    Created_By = g.Created_By,
+                    Updated_By = g.Updated_By,
+                    GiaNhap = g.GiaNhap,
+                    GiaBanBuon = g.GiaBanBuon,
+                    GiaBanLe = g.GiaBanLe,
+                    GiaCu = g.GiaCu,
+                    pathAvatar = ReadFileToBase64(g.pathAvatar),
+                    ThuocTinhs = g.ThuocTinhs
+                };
                 MessageSuccess success = new MessageSuccess()
                 {
                     result = data
@@ -138,7 +163,7 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ThuocTinhs)
                     {
-                        item.SanPhamId = data.Id;
+                        item.sanPhamId = data.Id;
                         await _managerThuocTinhSP.CreateOrUpdate(item);
                     }
                 }
@@ -203,11 +228,12 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ThuocTinhs)
                     {
-                        if (item.Id == 0)
+                        if (item.id == 0)
                         {
-                            item.SanPhamId = obj.Id;
+                            item.sanPhamId = obj.Id;
                             await _managerThuocTinhSP.CreateOrUpdate(item);
                         }
+                        else await _managerThuocTinhSP.CreateOrUpdate(item);
                     }
                 }
                 return Ok(new MessageSuccess()

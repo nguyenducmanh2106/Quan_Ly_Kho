@@ -1,10 +1,8 @@
-﻿/// <reference path="components/pages/dm_sanpham/context.js" />
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import Layout from './components/pages/Layout';
 import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 import { setAccessToken, setUser, isLoggedIn, postAPI } from './utils/helpers';
 import PrivateRoute from './utils/PrivateRoute';
-import { UserProvider } from './components/pages/DM_SanPham/Context'
 // import our main pages
 import Menu from './components/pages/Menu/Index';
 import DM_DonViHanhChinh from './components/pages/DM_DonViHanhChinh/Index';
@@ -36,7 +34,7 @@ const RouteSinglePage = () => {
     return (
         <Switch>
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
-            <PrivateRoute component={Menu} path='/menu' exact />
+            <PrivateRoute exact path='/menu' component={Menu} />
             <PrivateRoute exact path='/dm_chucvu' component={DM_ChucVu} />
             <PrivateRoute exact path='/dm_donvi' component={DM_DonVi} />
             <PrivateRoute exact path='/permission' component={Permission} />
@@ -50,8 +48,8 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_thuonghieu' component={DM_ThuongHieu} />
             <PrivateRoute exact path='/dm_nhomthuoctinh' component={DM_NhomThuocTinh} />
             <PrivateRoute exact path='/dm_sanpham' component={DM_SanPham} />
-            <PrivateRoute path='/dm_sanpham/create' component={DM_SanPham_Create} />
-            <PrivateRoute path='/dm_sanpham/update/:id' component={DM_SanPham_Update} />
+            <PrivateRoute exact path='/dm_sanpham/create' component={DM_SanPham_Create} />
+            <PrivateRoute exact path='/dm_sanpham/update/:id' component={DM_SanPham_Update} />
         </Switch>
     );
 }

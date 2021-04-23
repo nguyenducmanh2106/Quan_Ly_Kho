@@ -55,8 +55,8 @@ const MenuSidebar = (props) => {
                                 return (
                                     //<Can I="view" a={item.url.substr(1)}>
 
-                                    <Menu.Item  key={item.id} icon={<MyIcon type={icon} />} >
-                                        <Link to={item.url}>
+                                    <Menu.Item key={item.id} icon={<MyIcon type={icon} />} >
+                                        <Link to={{ pathname: item.url, state: { controller: item.name, action: "" } }}>
                                             {item.name}
                                         </Link>
                                     </Menu.Item>
@@ -66,7 +66,7 @@ const MenuSidebar = (props) => {
                             }
                         }
                         else {
-                            if (_isPermission("view",item.url.substr(1))) {
+                            if (_isPermission("view", item.url.substr(1))) {
                                 return (
                                     // <Can I="view" a={item.url.substr(1)}>
                                     <SubMenu key={item.id} icon={<MyIcon type={icon} />} title={item.name}>
@@ -75,10 +75,9 @@ const MenuSidebar = (props) => {
                                             if (!itemChild1.childNode.length) {
                                                 if (_isPermission("view", itemChild1.url.substr(1))) {
                                                     return (
-                                                        <Menu.Item key={itemChild1.id}>
-                                                            <Link to={itemChild1.url}>
-                                                                <MyIcon type={icon} />
-                                                                <span>{itemChild1.name}</span>
+                                                        <Menu.Item key={itemChild1.id} icon={<MyIcon type={icon} />}>
+                                                            <Link to={{ pathname: itemChild1.url, state: { controller: itemChild1.name, action: "" } }}>
+                                                                {itemChild1.name}
                                                             </Link>
                                                         </Menu.Item>
                                                     )
@@ -87,7 +86,7 @@ const MenuSidebar = (props) => {
 
                                             }
                                             else {
-                                                if (_isPermission("view",itemChild1.url.substr(1))) {
+                                                if (_isPermission("view", itemChild1.url.substr(1))) {
                                                     return (
                                                         <SubMenu key={itemChild1.id} icon={<MyIcon type={icon} />} title={itemChild1.name}>
                                                             {itemChild1.childNodes.map((itemChild2, IndexChild2) => {
@@ -97,7 +96,9 @@ const MenuSidebar = (props) => {
                                                                         return (
                                                                             <Menu.Item key={itemChild2.id} icon={<MyIcon type={icon} />}>
                                                                                 {/*<Can I="view" a={itemChild2.url.substr(1)}>*/}
-                                                                                <Link to={itemChild2.url}>{itemChild2.name}</Link>
+                                                                                <Link to={{ pathname: itemChild2.url, state: { controller: itemChild2.name, action: "" } }}>
+                                                                                    {itemChild2.name}
+                                                                                </Link>
                                                                                 {/*</Can>*/}
                                                                             </Menu.Item>
                                                                         )
@@ -112,9 +113,11 @@ const MenuSidebar = (props) => {
                                                                                     var icon = itemChild3.icon
                                                                                     if (_isPermission("view", itemChild3.url.substr(1))) {
                                                                                         return (
-                                                                                            <Menu.Item key={itemChild3.id} icon={<MyIcon type={icon} /> || renderHTML(icon)}>
+                                                                                            <Menu.Item key={itemChild3.id} icon={<MyIcon type={icon} />}>
                                                                                                 {/*<Can I="view" a={itemChild3.url.substr(1)}>*/}
-                                                                                                <Link to={itemChild3.url}>{itemChild3.name}</Link>
+                                                                                                <Link to={{ pathname: itemChild3.url, state: { controller: itemChild3.name, action: "" } }}>
+                                                                                                    {itemChild3.name}
+                                                                                                </Link>
                                                                                                 {/*</Can>*/}
                                                                                             </Menu.Item>
                                                                                         )

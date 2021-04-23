@@ -100,9 +100,8 @@ function Index() {
         },
     };
     async function onHandleSearch(data) {
-        console.log(data)
-        let name = data.Name;
-        let phone = data.Phone;
+        let name = data.Name ?? "";
+        let phone = data.Phone ?? "";
         let status = data.Status ? data.Status : -1;
         setSearch({
             ...search,
@@ -110,10 +109,10 @@ function Index() {
             Status: status,
             Phone: phone
         })
-        //var fetchData = await getAPI(`api/dm_nhacungcap/list_data?Name=${name}&Status=${status}&Phone=${phone}&page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
-        //if (fetchData.status == true) {
-        //    setState(fetchData.result)
-        //}
+        var fetchData = await getAPI(`api/dm_nhacungcap/list_data?Name=${name}&Status=${status}&Phone=${phone}&page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
+        if (fetchData.status == true) {
+            setState(fetchData.result)
+        }
     }
     const onSetNameSort = (name) => {
         console.log(name)
@@ -273,24 +272,24 @@ function Index() {
                 <Row>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
-                            <Form name="nest-messages" layout="inline" onFinish={onHandleSearch}
-                                validateMessages={validateMessages}
-                                initialValues={{
-                                    //["Ordering"]: 0
-                                }}
-                            >
-                                <Row gutter={8}>
-                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>
+                            <Row gutter={8}>
+                                <Form name="nest-messages" layout="inline" onFinish={onHandleSearch}
+                                    validateMessages={validateMessages}
+                                    initialValues={{
+                                        //["Ordering"]: 0
+                                    }}
+                                >
+                                    <Col xs={{ span: 24 }} lg={{ span: 12 }} md={{ span: 12 }}>
                                         <Form.Item name="Name" label="" style={{ width: '100%' }}>
-                                            <Input placeholder="Tên/Mã" allowClear />
+                                            <Input placeholder="Tên/Mã nhà cung cấp" allowClear prefix={<AntdIcons.SearchOutlined />} />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 4 }} md={{ span: 12 }}>
                                         <Form.Item name="Phone" label="" style={{ width: '100%' }} >
                                             <Input placeholder="Điện thoại" allowClear />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 4 }} md={{ span: 12 }}>
                                         <Form.Item name="Status" label="" style={{ width: '100%' }}>
                                             <Select
                                                 showSearch
@@ -307,15 +306,15 @@ function Index() {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 4 }} md={{ span: 12 }}>
                                         <Form.Item label="" colon={false} style={{ width: '100%' }}>
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
     </Button>
                                         </Form.Item>
                                     </Col>
-                                </Row>
-                            </Form>
+                                </Form>
+                            </Row>
                         </Skeleton>
                     </Col>
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>

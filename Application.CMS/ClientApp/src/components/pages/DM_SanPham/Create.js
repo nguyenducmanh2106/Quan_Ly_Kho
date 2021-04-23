@@ -4,7 +4,7 @@ import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import ImgCrop from 'antd-img-crop';
 import * as AntdIcons from '@ant-design/icons';
-import { url_upload } from "../../../utils/helpers";
+import { url_upload, getCurrentLogin } from "../../../utils/helpers";
 import {
     Form, Input, InputNumber, Button, Modal, Select,
     Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse, Divider, notification
@@ -62,6 +62,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
             Avatar: fileList.length > 0 ? fileList[0].name : null,
             File_Base64: fileList.length > 0 ? fileList[0].thumbUrl.split(",").splice(1).join("") : null,
             Status: data.Status ? 1 : 2,
+            Created_By: getCurrentLogin().id
         }
         //console.log(obj)
         onPostCreateItem(obj).then()
@@ -125,10 +126,10 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
             name="nest-messages" onFinish={onSubmit} id="myFormCreate"
             validateMessages={validateMessages}
             initialValues={{
-                ["ThuongHieuId"]: 0,
-                ["XuatXuId"]: 0,
+                ["ThuongHieu_Id"]: 0,
+                ["XuatXu_Id"]: 0,
                 ["LoaiSP"]: 0,
-                ["DonViTinhId"]: 0
+                ["DonViTinh_Id"]: 0
             }}
         >
             <Row gutter={24}>
@@ -169,7 +170,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="DonViTinhId" label="Đơn vị tính">
+                                        <Form.Item name="DonViTinh_Id" label="Đơn vị tính">
                                             <Select
                                                 showSearch
                                                 //style={{ width: 200 }}
@@ -266,14 +267,14 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, 'Name']}
+                                                    name={[name, 'name']}
                                                     fieldKey={[fieldKey, 'first']}
                                                 >
                                                     <Input placeholder="Tên thuộc tính" />
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, 'Value']}
+                                                    name={[name, 'value']}
                                                     fieldKey={[fieldKey, 'last']}
                                                 >
                                                     <Input placeholder="Giá trị" />
@@ -326,7 +327,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 </Form.Item>
                             </Col>
                             <Col>
-                                <Form.Item name="ThuongHieuId" label="Thương Hiệu">
+                                <Form.Item name="ThuongHieu_Id" label="Thương Hiệu">
                                     <Select
                                         showSearch
                                         //style={{ width: 200 }}
@@ -349,7 +350,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 </Form.Item>
                             </Col>
                             <Col>
-                                <Form.Item name="XuatXuId" label="Xuất xứ">
+                                <Form.Item name="XuatXu_Id" label="Xuất xứ">
                                     <Select
                                         showSearch
                                         //style={{ width: 200 }}
