@@ -30,16 +30,13 @@ function Table(props) {
         console.log(size)
         props.onChangePage(page, size)
     }
-    const onCreatePermission = (item) => {
-        props.toggleFormPermission();
-        props.onSetItemCreatePermission(item)
-    }
-    const onChangePassWord = (item) => {
-        props.toggleFormChangePass();
-        props.UpdateItem(item)
+    const onShow = (item) => {
+        props.onToggleView();
+        props.onShowItem(item)
+        
     }
     const update = (item) => {
-        props.onToggleFormpdate();
+        //props.onToggleFormpdate();
         props.UpdateItem(item)
     }
     const updatePosition = (event, item) => {
@@ -127,7 +124,7 @@ function Table(props) {
                                 <Menu>
                                     <Menu.Item style={{ textAlign: "center" }} key="2">
                                         <Tooltip title="Thông tin">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => update(item)} />
+                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
                                         </Tooltip>
                                     </Menu.Item>
                                     <Menu.Item style={{ textAlign: "center" }} key="3">

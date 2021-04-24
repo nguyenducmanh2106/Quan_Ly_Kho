@@ -14,7 +14,7 @@ namespace Application.Services.DM_SanPhamSerVices
         Task<DM_SanPhams> Create(DM_SanPhams obj);
         Task Update(DM_SanPhams obj);
         Task ToggleStatus(DM_SanPhams obj);
-        Task Delete(DM_SanPhams obj);
+        Task<DM_SanPhams> Delete(DM_SanPhams obj);
         Task MultiDelete(string listItemDelete);
         Task<DM_SanPhams> FindById(int id);
         Task<long> ToTalCount(SanPhamFilterModel inputModel);

@@ -76,6 +76,10 @@ namespace Application.API.Controllers
                         GiaBanLe = g.GiaBanLe,
                         GiaCu = g.GiaCu,
                         pathAvatar = ReadFileToBase64(g.pathAvatar),
+                        tenThuongHieu = g.tenThuongHieu,
+                        tenLoaiSanPham = g.tenLoaiSanPham,
+                        xuatXu = g.xuatXu,
+                        tenDonViTinh = g.tenDonViTinh,
                         ThuocTinhs = g.ThuocTinhs
                     });
                     totalPage = (int)Math.Ceiling(((double)total / inputModel.pageSize));
@@ -128,6 +132,9 @@ namespace Application.API.Controllers
                     GiaBanLe = g.GiaBanLe,
                     GiaCu = g.GiaCu,
                     pathAvatar = ReadFileToBase64(g.pathAvatar),
+                    tenThuongHieu = g.tenThuongHieu,
+                    tenLoaiSanPham = g.tenLoaiSanPham,
+                    xuatXu = g.xuatXu,
                     ThuocTinhs = g.ThuocTinhs
                 };
                 MessageSuccess success = new MessageSuccess()
@@ -278,7 +285,8 @@ namespace Application.API.Controllers
             try
             {
 
-                await _manager.Delete(obj);
+                var data = await _manager.Delete(obj);
+                await _managerThuocTinhSP.DeleteBySanPham(data.Id);
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS
@@ -299,6 +307,7 @@ namespace Application.API.Controllers
             try
             {
                 await _manager.MultiDelete(lstid);
+                await _managerThuocTinhSP.BulkDeleteBySanPham(lstid);
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS

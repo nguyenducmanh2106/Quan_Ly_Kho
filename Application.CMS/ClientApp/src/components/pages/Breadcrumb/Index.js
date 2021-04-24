@@ -10,8 +10,8 @@ const BreadcrumbElement = (props) => {
     const [text, setText] = useState("Trang chủ")
     const [isLoading, setIsLoading] = useState(true)
     const history = useHistory()
-    console.log(history.location)
-    const routes = [
+    //console.log(history.location)
+    const routes = history.location.state?.action ? [
         {
             path: 'index',
             breadcrumbName: "Trang chủ",
@@ -25,7 +25,17 @@ const BreadcrumbElement = (props) => {
             breadcrumbName: history.location.state?.action ?? "",
         },
 
-    ];
+    ] : [
+            {
+                path: 'index',
+                breadcrumbName: "Trang chủ",
+            },
+            {
+                path: 'index',
+                breadcrumbName: history.location.state?.controller ?? "",
+            }
+
+        ];
     //useEffect(() => {
     //    async function getData() {
     //        var url = history.location.pathname;

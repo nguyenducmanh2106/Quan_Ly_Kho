@@ -1,38 +1,47 @@
 ﻿import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory, Route, Redirect } from 'react-router-dom';
-import FormCreate from './Create';
-import FormUpdate from './Update';
-import { Select, notification, Input, Skeleton, Card, Col, Row, Layout, Button, Space, Form, Modal } from 'antd';
+
+import {
+    Select, notification, Input, Skeleton,
+    Card, Col, Row, Layout, Button, Space, Form, Modal,
+    Drawer, DatePicker, Tooltip
+} from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import ListData from './ListData';
+import FormView from './View';
 import LoadingOverlay from 'react-loading-overlay'
-import Update from "./Update";
 import PrivateRoute from "../../../utils/PrivateRoute"
 import BounceLoader from 'react-spinners/BounceLoader'
 function Index({ onSetSanPhamUpdate }) {
     let history = useHistory()
     //khai báo state
     const [state, setState] = useState([]);
-
+    const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [search, setSearch] = useState({ Name: "", Status: -1 })
+    const [search, setSearch] = useState({ Name: "", Status: -1, LoaiSP: 0, ThuongHieu_Id: 0, XuatXu_Id: 0, NgayTao: "", TypeFilterNgayTao: -1 })
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
     const [nameSort, setNameSort] = useState('');
+    const [dataLoaiSP, setDataLoaiSP] = useState([]);
+    const [dataThuongHieu, setDataThuongHieu] = useState([]);
+    const [dataXuatXu, setDataXuatXu] = useState([]);
+    const [dataDonViTinh, setDataDonViTinh] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [page, setPage] = useState(1);
     const [ItemUpdate, setItemUpdate] = useState();
+    const [ItemShow, setItemShow] = useState();
     const [listItemRemove, setListItemRemove] = useState([]);
     const [isShowing, toggle] = useModal();
-    const [isShowingUpdate, toggleUpdate] = useModal();
+    const [isShowingView, toggleView] = useModal();
     const { Option } = Select;
     const { Header, Content, Footer } = Layout;
-    function onSearch(val) {
-        console.log('search:', val);
-    }
+    const [form] = Form.useForm();
+    const onReset = () => {
+        form.resetFields();
+    };
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -43,6 +52,38 @@ function Index({ onSetSanPhamUpdate }) {
             range: '${label} must be between ${min} and ${max}',
         },
     };
+    useState(() => {
+
+        async function getLoaiSanpham() {
+            var fetchData = await getAPI(`api/dm_loaisanpham/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataLoaiSP(fetchData.result)
+            }
+        }
+        async function getThuongHieu() {
+            var fetchData = await getAPI(`api/dm_thuonghieu/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataThuongHieu(fetchData.result)
+            }
+        }
+        async function getXuatXu() {
+            var fetchData = await getAPI(`api/dm_xuatxu/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataXuatXu(fetchData.result)
+            }
+        }
+        async function getDonViTinh() {
+            var fetchData = await getAPI(`api/dm_donvitinh/get-all-data-active`);
+            if (fetchData.status == true) {
+                setDataDonViTinh(fetchData.result)
+            }
+        }
+        //gọi hàm
+        getLoaiSanpham()
+        getThuongHieu()
+        getXuatXu()
+        getDonViTinh()
+    }, [dataLoaiSP, dataThuongHieu, dataXuatXu, dataDonViTinh])
     useEffect(() => {
         async function getData(page, pageSize) {
             let name = search.Name;
@@ -96,15 +137,20 @@ function Index({ onSetSanPhamUpdate }) {
     }
 
     async function onHandleSearch(data) {
-        let name = data.Name ? data.Name : "";
-        let status = data.Status ? data.Status : -1;
-        console.log(data)
+        //console.log(data)
+        var obj = {
+            Name: data.Name ?? "",
+            Status: data.Status ? Number.parseInt(data.Status) : -1,
+            page: page,
+            pageSize: pageSize,
+            nameSort: nameSort
+        }
         setSearch({
             ...search,
-            Name: name,
-            Status: status
+            Name: data.Name ?? "",
+            Status: data.Status ? Number.parseInt(data.Status) : -1
         })
-        var fetchData = await getAPI(`api/user/list_data?Name=${name}&Status=${status}&page=${page}&pageSize=${pageSize}&nameSort=${nameSort}`);
+        var fetchData = await postAPI(`api/dm_sanpham/list_data`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
@@ -213,27 +259,30 @@ function Index({ onSetSanPhamUpdate }) {
         }
 
     }
-    async function onPostUpdateItem(obj) {
-        setConfirmLoading(true)
-        var result = await postAPI('api/dm_sanpham/update', JSON.stringify(obj))
-        if (result.status) {
-            setAction(true)
-            toggleUpdate()
-            notification.success({
-                message: result.message,
-                duration: 3
-            })
+    const showDrawer = () => {
+        setIsVisibleDrawer(true)
+    };
+    const onSubmitTimKiemNangCao = async (data) => {
+        var obj = {
+            ...data,
+            NgayTao: search.NgayTao,
+            Name: data.Name ?? ""
         }
-        else {
-            toggleUpdate()
-            notification.error({
-                message: result.message,
-                duration: 3
-            })
+        var fetchData = await postAPI(`api/dm_sanpham/list_data`, JSON.stringify(obj));
+        if (fetchData.status == true) {
+            setState(fetchData.result)
         }
-
+        console.log(obj)
     }
-
+    const onChangeDatePicker = (date, dateString) => {
+        setSearch({
+            ...search,
+            NgayTao: dateString
+        })
+    }
+    const onClose = () => {
+        setIsVisibleDrawer(false)
+    };
     function openCreate() {
         history.push({
             pathname: '/dm_sanpham/create',
@@ -245,6 +294,9 @@ function Index({ onSetSanPhamUpdate }) {
             pathname: `/dm_sanpham/update/${item.id}`,
             state: { controller: "Danh mục sản phẩm", action: "Cập nhật" }
         });
+    }
+    const onShowItem = (item) => {
+        setItemShow(item)
     }
     return (
         <Content className="main-container main-container-component">
@@ -271,7 +323,6 @@ function Index({ onSetSanPhamUpdate }) {
                                                 showSearch
                                                 placeholder="-Chọn trạng thái-"
                                                 optionFilterProp="children"
-                                                onSearch={onSearch}
                                                 filterOption={(input, option) =>
                                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                                 }
@@ -287,6 +338,9 @@ function Index({ onSetSanPhamUpdate }) {
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
                                             </Button>
+                                            <Tooltip title="Tìm kiếm nâng cao">
+                                                <Button type="primary" icon={<AntdIcons.ControlOutlined />} onClick={showDrawer} />
+                                            </Tooltip>
                                         </Form.Item>
                                     </Col>
                                 </Form>
@@ -309,43 +363,156 @@ function Index({ onSetSanPhamUpdate }) {
                 </Row>
                 <Row>
                     <Skeleton loading={isLoading} active paragraph={false}>
-                        <LoadingOverlay
-                            active={isLoading}
-                            spinner
-                        //spinner={<BounceLoader />}
-                        //text='Loading your content...'
-                        >
-                            {/*<FormCreate*/}
-                            {/*    isShowing={isShowing}*/}
-                            {/*    hide={toggle}*/}
-                            {/*    onPostCreateItem={onPostCreateItem}*/}
-                            {/*    donvi={dataDonVi}*/}
-                            {/*    chucvu={dataChucVu}*/}
-                            {/*    nhomNguoiDung={dataNhomNguoiDung}*/}
-                            {/*    confirmLoading={confirmLoading}*/}
-                            {/*/>*/}
-                            {/*<FormUpdate*/}
-                            {/*    isShowing={isShowingUpdate}*/}
-                            {/*    hide={toggleUpdate}*/}
-                            {/*    item={ItemUpdate}*/}
-                            {/*    onPostUpdateItem={onPostUpdateItem}*/}
-                            {/*    donvi={dataDonVi}*/}
-                            {/*    chucvu={dataChucVu}*/}
-                            {/*    nhomNguoiDung={dataNhomNguoiDung}*/}
-                            {/*    confirmLoading={confirmLoading}*/}
-                            {/*/>*/}
-                            <ListData obj={state}
-                                onChangePage={onChangePage}
-                                onDeleteItem={onDelete}
-                                UpdateItem={onUpdateItem}
-                                onToggleFormpdate={toggleUpdate}
-                                onMultiDelete={setListItemRemove}
-                                onUpdateItemPosition={onUpdateItemPosition}
-                                toggleStatus={onToggleStatus}
-                                onSetNameSort={onSetNameSort}
+                        <FormView
+                            isShowing={isShowingView}
+                            hide={toggleView}
+                            item={ItemShow}
+                            confirmLoading={confirmLoading}
+                        />
+                        <ListData obj={state}
+                            onChangePage={onChangePage}
+                            onDeleteItem={onDelete}
+                            UpdateItem={onUpdateItem}
+                            onToggleView={toggleView}
+                            onMultiDelete={setListItemRemove}
+                            onUpdateItemPosition={onUpdateItemPosition}
+                            toggleStatus={onToggleStatus}
+                            onSetNameSort={onSetNameSort}
+                            onShowItem={onShowItem}
 
-                            />
-                        </LoadingOverlay>
+                        />
+                        <Drawer
+                            title="Tìm kiếm nâng cao"
+                            width="40vw"
+                            onClose={onClose}
+                            visible={isVisibleDrawer}
+                            bodyStyle={{ paddingBottom: 80 }}
+                            footer={
+                                <div
+                                    style={{
+                                        textAlign: 'right',
+                                    }}
+                                >
+                                    <Button onClick={onReset} style={{ marginRight: 8 }}>
+                                        Xoá bộ lọc
+              </Button>
+                                    <Button form="formTimKiemNangCao" key="submit" htmlType="submit" type="primary">
+                                        Lọc
+              </Button>
+                                </div>
+                            }
+                        >
+
+                            <Form
+                                id="formTimKiemNangCao"
+                                form={form}
+                                layout="vertical"
+                                initialValues={{
+                                    ["ThuongHieu_Id"]: -1,
+                                    ["XuatXu_Id"]: -1,
+                                    ["LoaiSP"]: -1,
+                                    ["TypeFilterNgayTao"]: -1
+                                }}
+                                onFinish={onSubmitTimKiemNangCao}
+                            /*hideRequiredMark*/
+                            >
+                                <Row gutter={16}>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="Name"
+                                            label="Tên,Mã,Barcode"
+                                        >
+                                            <Input placeholder="Mã sản phẩm,tên sản phẩm,barcode" allowClear />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="LoaiSP"
+                                            label="Loại sản phẩm"
+                                        >
+                                            <Select
+                                                showSearch
+                                                //style={{ width: 200 }}
+                                                placeholder="-- Chọn --"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                                filterSort={(optionA, optionB) =>
+                                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                                }
+                                            >
+                                                <Option value={-1}>-- Chọn --</Option>
+                                                {dataLoaiSP.map(item => {
+                                                    return (
+                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                    )
+                                                })}
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={16}>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="NgayTao"
+                                            label="Ngày tạo"
+                                        >
+                                            <DatePicker
+                                                style={{ width: '100%' }}
+                                                getPopupContainer={trigger => trigger.parentElement}
+                                                onChange={onChangeDatePicker}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="TypeFilterNgayTao"
+                                            label="Kiểu lọc ngày"
+                                        >
+                                            <Select placeholder="Please choose the type">
+                                                <Option value={-1}>-- Chon --</Option>
+                                                <Option value={0}>Bằng</Option>
+                                                <Option value={1}>Lớn hơn hoặc bằng</Option>
+                                                <Option value={2}>Nhỏ hơn hoặc bằng</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={16}>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="XuatXu_Id"
+                                            label="Xuất xứ"
+                                        >
+                                            <Select placeholder="Please choose">
+                                                <Option value={-1}>-- Chọn --</Option>
+                                                {dataXuatXu.map(item => {
+                                                    return (
+                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                    )
+                                                })}
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="ThuongHieu_Id"
+                                            label="Thương Hiệu"
+                                        >
+                                            <Select placeholder="Please choose the type">
+                                                <Option value={-1}>-- Chọn --</Option>
+                                                {dataThuongHieu.map(item => {
+                                                    return (
+                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                    )
+                                                })}
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Drawer>
                     </Skeleton>
                 </Row>
             </Card>

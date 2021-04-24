@@ -57,5 +57,14 @@ namespace Application.MODELS
         public string File_Base64 { get; set; }
         [NotMapped]
         public List<DM_ThuocTinhSPs> ThuocTinhs { get; set; }
+        [NotMapped]
+        public string tenThuongHieu { get; set; }
+        [NotMapped]
+        public string xuatXu { get; set; }
+        [NotMapped]
+        public string tenLoaiSanPham { get; set; }
+        [NotMapped]
+        public string tenDonViTinh { get; set; }
+
     }
 }

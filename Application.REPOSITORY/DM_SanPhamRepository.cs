@@ -29,6 +29,12 @@ namespace Application.REPOSITORY
             try
             {
                 var data = (from sp in db.DM_SanPhams
+                            join thuonghieu in db.DM_ThuongHieus on sp.ThuongHieu_Id equals thuonghieu.Id into tblThuongHieu_SPDefault
+                            from thuonghieuEmty in tblThuongHieu_SPDefault.DefaultIfEmpty()
+                            join xuatxu in db.DM_XuatXus on sp.XuatXu_Id equals xuatxu.Id into tblXuatXu_SPDefault
+                            from xuatxuEmty in tblXuatXu_SPDefault.DefaultIfEmpty()
+                            join loaisp in db.DM_LoaiSanPhams on sp.LoaiSP equals loaisp.Id into tblLoaiSPDefault
+                            from loaispEmty in tblLoaiSPDefault.DefaultIfEmpty()
                             where (sp.Id == Id)
                             select new DM_SanPhams()
                             {
@@ -53,6 +59,9 @@ namespace Application.REPOSITORY
                                 GiaBanLe = sp.GiaBanLe,
                                 GiaCu = sp.GiaCu,
                                 pathAvatar = sp.pathAvatar,
+                                tenLoaiSanPham = loaispEmty.Name ?? "",
+                                tenThuongHieu = thuonghieuEmty.Name ?? "",
+                                xuatXu = xuatxuEmty.Name ?? "",
                                 ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
                             }
                          ).SingleOrDefault();
@@ -69,6 +78,14 @@ namespace Application.REPOSITORY
             try
             {
                 var data = (from sp in db.DM_SanPhams
+                            join thuonghieu in db.DM_ThuongHieus on sp.ThuongHieu_Id equals thuonghieu.Id into tblThuongHieu_SPDefault
+                            from thuonghieuEmty in tblThuongHieu_SPDefault.DefaultIfEmpty()
+                            join xuatxu in db.DM_XuatXus on sp.XuatXu_Id equals xuatxu.Id into tblXuatXu_SPDefault
+                            from xuatxuEmty in tblXuatXu_SPDefault.DefaultIfEmpty()
+                            join loaisp in db.DM_LoaiSanPhams on sp.LoaiSP equals loaisp.Id into tblLoaiSPDefault
+                            from loaispEmty in tblLoaiSPDefault.DefaultIfEmpty()
+                            join donvitinh in db.DM_DonViTinhs on sp.DonViTinh_Id equals donvitinh.Id into tblDonViTinhDefault
+                            from donvitinhEmty in tblDonViTinhDefault.DefaultIfEmpty()
                             where ((inputModel.Status == (int)StatusEnum.All && inputModel.Status != (int)StatusEnum.Removed) || sp.Status == inputModel.Status)
                    && (string.IsNullOrEmpty(inputModel.Name) || sp.Code.ToLower().Contains(inputModel.Name.ToLower()) || sp.Name.ToLower().Contains(inputModel.Name.ToLower()) || sp.Barcode.ToLower().Contains(inputModel.Name.ToLower()))
                    && (inputModel.LoaiSP == -1 || sp.LoaiSP == inputModel.LoaiSP) && (inputModel.ThuongHieu_Id == -1 || sp.ThuongHieu_Id == inputModel.ThuongHieu_Id)
@@ -96,6 +113,10 @@ namespace Application.REPOSITORY
                                 GiaBanLe = sp.GiaBanLe,
                                 GiaCu = sp.GiaCu,
                                 pathAvatar = sp.pathAvatar,
+                                tenLoaiSanPham = loaispEmty.Name ?? "",
+                                tenThuongHieu = thuonghieuEmty.Name ?? "",
+                                xuatXu = xuatxuEmty.Name ?? "",
+                                tenDonViTinh = donvitinhEmty.Name ?? "",
                                 ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
                             }
                           );
@@ -137,6 +158,11 @@ namespace Application.REPOSITORY
                     {
                         var date = Convert.ToDateTime(inputModel.NgayTao);
                         data = data.Where(g => g.Created_At <= date);
+                    }
+                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                    {
+                        var date = Convert.ToDateTime(inputModel.NgayTao);
+                        data = data.Where(g => g.Created_At == date);
                     }
                 }
                 var result = data.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();

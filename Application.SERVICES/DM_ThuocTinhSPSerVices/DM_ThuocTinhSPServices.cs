@@ -20,6 +20,29 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
             _logger = logger;
         }
 
+        public async Task BulkDeleteBySanPham(string listItemDelete)
+        {
+            try
+            {
+                var arrayItemDelete = listItemDelete.Split(",").Select(Int64.Parse).ToList();
+                foreach (var item in arrayItemDelete)
+                {
+                    var exist = await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.sanPhamId == item);
+                    if (exist == null)
+                    {
+                        throw new Exception(MessageConst.DATA_NOT_FOUND);
+                    }
+                    await _unitOfWork.DM_ThuocTinhSPRepository.BulkDelete(exist);
+
+                }
+                await _unitOfWork.SaveChange();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task CreateOrUpdate(DM_ThuocTinhSPs obj)
         {
             try
@@ -36,6 +59,24 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
                     await _unitOfWork.DM_ThuocTinhSPRepository.Update(data);
                     await _unitOfWork.SaveChange();
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task DeleteBySanPham(int SanPhamId)
+        {
+            try
+            {
+                var exist = await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.sanPhamId == SanPhamId);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                await _unitOfWork.DM_ThuocTinhSPRepository.BulkDelete(exist);
+                await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
             {

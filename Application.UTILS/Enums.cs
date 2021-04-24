@@ -9,6 +9,8 @@ namespace Application.UTILS
     {
         [Description("Tất cả trạng thái")]
         All = -1,
+        [Description("Bằng")]
+        Equal = 0,
         [Description("Lớn hơn bằng")]
         Bigger_Or_Equal = 1,
         [Description("Nhỏ hơn bằng")]

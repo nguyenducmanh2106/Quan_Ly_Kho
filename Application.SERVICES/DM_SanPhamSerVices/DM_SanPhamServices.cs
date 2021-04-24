@@ -38,7 +38,7 @@ namespace Application.Services.DM_SanPhamSerVices
             }
         }
 
-        public async Task Delete(DM_SanPhams obj)
+        public async Task<DM_SanPhams> Delete(DM_SanPhams obj)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace Application.Services.DM_SanPhamSerVices
                 }
                 await _unitOfWork.DM_SanPhamRepository.Delete(obj);
                 await _unitOfWork.SaveChange();
+                return obj;
             }
             catch (Exception ex)
             {
@@ -186,6 +187,24 @@ namespace Application.Services.DM_SanPhamSerVices
                 GiaCu = g.GiaCu,
                 pathAvatar = g.pathAvatar
             });
+            if (!string.IsNullOrEmpty(inputModel.NgayTao))
+            {
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At <= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At == date);
+                }
+            }
             return data.LongCount();
         }
     }

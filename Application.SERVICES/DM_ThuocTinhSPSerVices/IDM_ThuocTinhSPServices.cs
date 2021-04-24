@@ -11,6 +11,8 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
     public interface IDM_ThuocTinhSPServices
     {
         Task CreateOrUpdate(DM_ThuocTinhSPs obj);
+        Task DeleteBySanPham(int SanPhamId);
+        Task BulkDeleteBySanPham(string listItemDelete);
         Task<List<DM_ThuocTinhSPs>> GetAllDataBySanPham(int SanPhamId);
     }
 }
