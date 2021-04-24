@@ -21,6 +21,7 @@ import DM_NhomThuocTinh from './components/pages/DM_NhomThuocTinh/Index';
 import DM_SanPham from './components/pages/DM_SanPham/Index';
 import DM_SanPham_Create from './components/pages/DM_SanPham/Create';
 import DM_SanPham_Update from './components/pages/DM_SanPham/Update';
+import DM_LoaiDeNghi from './components/pages/DM_LoaiDeNghi/Index';
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -50,6 +51,7 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_sanpham' component={DM_SanPham} />
             <PrivateRoute exact path='/dm_sanpham/create' component={DM_SanPham_Create} />
             <PrivateRoute exact path='/dm_sanpham/update/:id' component={DM_SanPham_Update} />
+            <PrivateRoute exact path='/dm_loaidenghi/' component={DM_LoaiDeNghi} />
         </Switch>
     );
 }

@@ -88,7 +88,11 @@ function Index({ onSetSanPhamUpdate }) {
         async function getData(page, pageSize) {
             let name = search.Name;
             let status = search.Status ? search.Status : -1;
-            var obj = {}
+            var obj = {
+                Name: name,
+                Status: status,
+                nameSort: nameSort
+            }
             var fetchData = await postAPI(`api/dm_sanpham/list_data/`, JSON.stringify(obj));
             if (fetchData.status == true) {
                 setState(fetchData.result)

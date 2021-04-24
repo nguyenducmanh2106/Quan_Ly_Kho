@@ -50,7 +50,7 @@ namespace Application.API.Controllers
                         Ordering = g.Ordering,
                         ParentId = g.ParentId,
                         Status = g.Status,
-                        Code=g.Code
+                        Code = g.Code
                     }).ToList();
                     MessageSuccess success = new MessageSuccess()
                     {
@@ -65,7 +65,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("list_data")]
-        public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "",string nameSort="")
+        public async Task<IActionResult> ListData(int page = 1, int pageSize = 10, int Status = -1, string Name = "", string nameSort = "")
         {
             try
             {
@@ -168,15 +168,16 @@ namespace Application.API.Controllers
                     ParentId = obj.ParentId,
                     Name = obj.Name,
                     Status = obj.Status,
-                    Code=obj.Code,
+                    Code = obj.Code,
                     Ordering = obj.Ordering,
                     Created_At = DateTime.Now.Date,
-                    TinhId=obj.TinhId,
-                    HuyenId=obj.HuyenId,
-                    XaId=obj.XaId,
-                    Address=obj.Address,
-                    Longitude=obj.Longitude,
-                    Latitude=obj.Latitude
+                    TinhId = obj.TinhId,
+                    HuyenId = obj.HuyenId,
+                    XaId = obj.XaId,
+                    Address = obj.Address,
+                    Longitude = obj.Longitude,
+                    Latitude = obj.Latitude,
+                    CapDo = obj.CapDo
                 };
                 await _manager.Create(objAdd);
                 MessageSuccess success = new MessageSuccess()
@@ -247,7 +248,7 @@ namespace Application.API.Controllers
                 };
                 return Ok(success);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Ok(new MessageError()
                 {

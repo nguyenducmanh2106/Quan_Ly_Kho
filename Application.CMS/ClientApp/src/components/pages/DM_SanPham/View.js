@@ -2,6 +2,7 @@
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Tabs } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
+import DetailComponent from "./Detail";
 const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
    console.log(item)
     const validateMessages = {
@@ -37,7 +38,7 @@ const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
                                     }
                                     key="1"
                                 >
-                                    Tab 1
+                                    <DetailComponent item={item}/>
     </Tabs.TabPane>
                                 <Tabs.TabPane
                                     tab={

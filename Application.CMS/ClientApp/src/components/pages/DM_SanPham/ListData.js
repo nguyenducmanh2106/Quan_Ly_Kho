@@ -156,7 +156,7 @@ function Table(props) {
         var itemClick = document.querySelectorAll("table th.sapxep");
         for (var item of itemClick) {
             var current_ClassName = item.className;
-            console.log(current_ClassName)
+            //console.log(current_ClassName)
             if (item.getAttribute("id") == name) {
                 if (current_ClassName == "sapxep" || current_ClassName == "sapxep _desc") {
                     item.className = "sapxep _asc"

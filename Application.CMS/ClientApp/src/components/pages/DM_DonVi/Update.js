@@ -69,6 +69,7 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                                 ["Address"]: item.address,
                                 ["Longitude"]: item.longitude,
                                 ["Latitude"]: item.latitude,
+                                ["CapDo"]: item.capDo,
                             }}
                         >
                             <Form.Item name="ParentId" label="Đơn vị cha">
@@ -161,6 +162,26 @@ const ModelUpdate = ({ isShowing, hide, data, item, onPostUpdateItem, confirmLoa
                             </Form.Item>
                             <Form.Item name="Address" label="Địa chỉ">
                                 <Input />
+                            </Form.Item>
+                            <Form.Item name="CapDo" label="Cấp đơn vị" rules={[{ required: true }]}
+                            >
+                                <Select
+                                    showSearch
+                                    //style={{ width: 200 }}
+                                    placeholder="-- Chọn --"
+                                    optionFilterProp="tp"
+                                    filterOption={(input, option) =>
+                                        option.tp.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    filterSort={(optionA, optionB) =>
+                                        optionA.tp.toLowerCase().localeCompare(optionB.tp.toLowerCase())
+                                    }
+
+                                >
+                                    <Select.Option value={1}>Cấp 1</Select.Option>
+                                    <Select.Option value={2}>Cấp 2</Select.Option>
+                                    <Select.Option value={3}>Cấp 3</Select.Option>
+                                </Select>
                             </Form.Item>
                             <Form.Item name="Longitude" label="Kinh độ" rules={[{ required: true }]}>
                                 <Input />

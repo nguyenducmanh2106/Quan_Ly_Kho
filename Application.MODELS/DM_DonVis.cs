@@ -26,8 +26,9 @@ namespace Application.MODELS
         public string Address { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+        public int? CapDo { get; set; }
         [NotMapped]
         public int Level { get; set; }
-        
+
     }
 }

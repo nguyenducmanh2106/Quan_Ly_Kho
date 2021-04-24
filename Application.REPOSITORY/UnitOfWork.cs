@@ -27,6 +27,8 @@ namespace Application.REPOSITORY
         IDM_ThuocTinhRepository DM_ThuocTinhRepository { get; }
         IDM_SanPhamRepository DM_SanPhamRepository { get; }
         IDM_ThuocTinhSPRepository DM_ThuocTinhSPRepository { get; }
+        IDM_LoaiDeNghiRepository DM_LoaiDeNghiRepository { get; }
+        IDM_DeNghiDieuDongRepository DM_DeNghiDieuDongRepository { get; }
         Task CreateTransaction();
         Task Commit();
         Task Rollback();
@@ -57,6 +59,8 @@ namespace Application.REPOSITORY
             DM_ThuocTinhRepository = new DM_ThuocTinhRepository(_dbContext);
             DM_SanPhamRepository = new DM_SanPhamRepository(_dbContext);
             DM_ThuocTinhSPRepository = new DM_ThuocTinhSPRepository(_dbContext);
+            DM_LoaiDeNghiRepository = new DM_LoaiDeNghiRepository(_dbContext);
+            DM_DeNghiDieuDongRepository = new DM_DeNghiDieuDongRepository(_dbContext);
         }
         public IUserRepository UserRepository { get; }
 
@@ -92,6 +96,10 @@ namespace Application.REPOSITORY
         public IDM_SanPhamRepository DM_SanPhamRepository { get; }
 
         public IDM_ThuocTinhSPRepository DM_ThuocTinhSPRepository { get; }
+
+        public IDM_LoaiDeNghiRepository DM_LoaiDeNghiRepository { get; }
+
+        public IDM_DeNghiDieuDongRepository DM_DeNghiDieuDongRepository { get; }
         #region Transaction
         public async Task CreateTransaction()
         {

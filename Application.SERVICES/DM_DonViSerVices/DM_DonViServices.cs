@@ -76,17 +76,18 @@ namespace Application.Services.DM_DonViSerVices
                 Ordering = g.Ordering,
                 ParentId = g.ParentId,
                 Status = g.Status,
-                Code=g.Code,
-                TinhId=g.TinhId,
-                HuyenId=g.HuyenId,
-                XaId=g.XaId,
-                Address=g.Address,
-                Longitude=g.Longitude,
-                Latitude=g.Latitude
+                Code = g.Code,
+                TinhId = g.TinhId,
+                HuyenId = g.HuyenId,
+                XaId = g.XaId,
+                Address = g.Address,
+                Longitude = g.Longitude,
+                Latitude = g.Latitude,
+                CapDo = g.CapDo
             });
             return data;
         }
-        
+
         public async Task<IQueryable<DM_DonVis>> GetOptions(int Status, string Name)
         {
             var data = (await _unitOfWork.DM_DonViRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)
@@ -99,7 +100,7 @@ namespace Application.Services.DM_DonViSerVices
                 Ordering = g.Ordering,
                 ParentId = g.ParentId,
                 Status = g.Status,
-                Code=g.Code
+                Code = g.Code
             });
             return data;
         }
@@ -112,7 +113,7 @@ namespace Application.Services.DM_DonViSerVices
                 var listItem = await _unitOfWork.DM_DonViRepository.FindBy(g => arrayItemDelete.Contains(g.Id));
                 await _unitOfWork.DM_DonViRepository.BulkDelete(listItem.ToList());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -142,6 +143,7 @@ namespace Application.Services.DM_DonViSerVices
                 exist.Address = obj.Address;
                 exist.Longitude = obj.Longitude;
                 exist.Latitude = obj.Latitude;
+                exist.CapDo = obj.CapDo;
                 await _unitOfWork.DM_DonViRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();

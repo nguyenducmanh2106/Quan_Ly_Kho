@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload } from 'antd';
-const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
+const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading, Tinh, Huyen, Xa, onChangeSelectTinh, onChangeSelectHuyen }) => {
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
@@ -55,6 +55,7 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,T
                             ["TinhId"]: -1,
                             ["HuyenId"]: -1,
                             ["XaId"]: -1,
+                            ["CapDo"]:1
                         }}
                     >
                         <Form.Item name="ParentId" label="Đơn vị cha">
@@ -148,6 +149,26 @@ const ModalCreate = ({ isShowing, hide, data, onPostCreateItem, confirmLoading,T
                         </Form.Item>
                         <Form.Item name="Address" label="Địa chỉ">
                             <Input />
+                        </Form.Item>
+                        <Form.Item name="CapDo" label="Cấp đơn vị" rules={[{ required: true }]}
+                        >
+                            <Select
+                                showSearch
+                                //style={{ width: 200 }}
+                                placeholder="-- Chọn --"
+                                optionFilterProp="tp"
+                                filterOption={(input, option) =>
+                                    option.tp.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                filterSort={(optionA, optionB) =>
+                                    optionA.tp.toLowerCase().localeCompare(optionB.tp.toLowerCase())
+                                }
+
+                            >
+                                <Select.Option value={1}>Cấp 1</Select.Option>
+                                <Select.Option value={2}>Cấp 2</Select.Option>
+                                <Select.Option value={3}>Cấp 3</Select.Option>
+                            </Select>
                         </Form.Item>
                         <Form.Item name="Longitude" label="Kinh độ" rules={[{ required: true }]}>
                             <Input />
