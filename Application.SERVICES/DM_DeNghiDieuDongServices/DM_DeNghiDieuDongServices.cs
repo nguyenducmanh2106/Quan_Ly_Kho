@@ -57,13 +57,18 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             }
         }
 
-        public async Task<List<DM_DeNghiDieuDongs>> getData(DeNghiDieuDongFilterModel inputModel)
+        public async Task<List<DM_DeNghiDieuDongs>> getDataNhan(DeNghiDieuDongFilterModel inputModel)
         {
 
-            var data = _unitOfWork.DM_DeNghiDieuDongRepository.getDataRepository(inputModel);
+            var data = _unitOfWork.DM_DeNghiDieuDongRepository.getDataTheoChiNhanhNhan(inputModel);
             return data;
         }
+        public async Task<List<DM_DeNghiDieuDongs>> getDataGui(DeNghiDieuDongFilterModel inputModel)
+        {
 
+            var data = _unitOfWork.DM_DeNghiDieuDongRepository.getDataTheoChiNhanhGui(inputModel);
+            return data;
+        }
         public async Task MultiDelete(string listItemDelete)
         {
             try
@@ -121,13 +126,12 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             }
         }
 
-        public async Task<long> ToTalCount(DeNghiDieuDongFilterModel inputModel)
+        public async Task<long> ToTalCountNhan(DeNghiDieuDongFilterModel inputModel)
         {
-            var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.Status == (int)StatusEnum.All && inputModel.Status != (int)StatusEnum.Removed) || g.Status == inputModel.Status)
-             && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()) || g.Name.ToLower().Contains(inputModel.Name.ToLower()) || g.Barcode.ToLower().Contains(inputModel.Name.ToLower()))
-             && (inputModel.LoaiSP == -1 || g.LoaiSP == inputModel.LoaiSP) && (inputModel.ThuongHieu_Id == -1 || g.ThuongHieu_Id == inputModel.ThuongHieu_Id)
-             && (inputModel.XuatXu_Id == -1 || g.XuatXu_Id == inputModel.XuatXu_Id)
-            ));
+            var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
+                    && (g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.ID_ChiNhanhNhan == -1 || g.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
+                    )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
@@ -146,7 +150,106 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                     data = data.Where(g => g.Created_At == date);
                 }
             }
+            if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
+            {
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
+                    data = data.Where(g => g.NgayDuyet >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
+                    data = data.Where(g => g.NgayDuyet <= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
+                    data = data.Where(g => g.NgayDuyet == date);
+                }
+            }
+            if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
+            {
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
+                    data = data.Where(g => g.ThoiGianGuiSanPham >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
+                    data = data.Where(g => g.ThoiGianGuiSanPham <= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
+                    data = data.Where(g => g.ThoiGianGuiSanPham == date);
+                }
+            }
             return data.LongCount();
         }
+        public async Task<long> ToTalCountGui(DeNghiDieuDongFilterModel inputModel)
+        {
+            var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
+                    && (g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.ID_ChiNhanhGui == -1 || g.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhGui)
+                    )));
+            if (!string.IsNullOrEmpty(inputModel.NgayTao))
+            {
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At <= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayTao);
+                    data = data.Where(g => g.Created_At == date);
+                }
+            }
+            if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
+            {
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
+                    data = data.Where(g => g.NgayDuyet >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
+                    data = data.Where(g => g.NgayDuyet <= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
+                    data = data.Where(g => g.NgayDuyet == date);
+                }
+            }
+            if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
+            {
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
+                    data = data.Where(g => g.ThoiGianGuiSanPham >= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
+                    data = data.Where(g => g.ThoiGianGuiSanPham <= date);
+                }
+                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                {
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
+                    data = data.Where(g => g.ThoiGianGuiSanPham == date);
+                }
+            }
+            return data.LongCount();
+        }
+
     }
 }

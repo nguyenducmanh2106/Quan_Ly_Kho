@@ -257,5 +257,26 @@ namespace Application.API.Controllers
             }
 
         }
+        [HttpGet("find-by-id")]
+        public async Task<IActionResult> FindById(int Id = 0)
+        {
+            try
+            {
+                await _manager.FindById(Id);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.DELETE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.DELETE_FAIL
+                });
+            }
+
+        }
     }
 }

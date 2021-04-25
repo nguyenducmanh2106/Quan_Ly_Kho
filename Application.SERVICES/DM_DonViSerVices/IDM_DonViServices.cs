@@ -16,5 +16,6 @@ namespace Application.Services.DM_DonViSerVices
         Task Update(DM_DonVis obj);
         Task Delete(DM_DonVis obj);
         Task MultiDelete(string listItemDelete);
+        Task<DM_DonVis> FindById(int Id);
     }
 }

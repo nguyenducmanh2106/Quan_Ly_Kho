@@ -10,12 +10,14 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
 {
     public interface IDM_DeNghiDieuDongServices
     {
-        Task<List<DM_DeNghiDieuDongs>> getData(DeNghiDieuDongFilterModel inputModel);
+        Task<List<DM_DeNghiDieuDongs>> getDataNhan(DeNghiDieuDongFilterModel inputModel);
+        Task<List<DM_DeNghiDieuDongs>> getDataGui(DeNghiDieuDongFilterModel inputModel);
         Task<DM_DeNghiDieuDongs> Create(DM_DeNghiDieuDongs obj);
         Task Update(DM_DeNghiDieuDongs obj);
         Task<DM_DeNghiDieuDongs> Delete(DM_DeNghiDieuDongs obj);
         Task MultiDelete(string listItemDelete);
         Task<DM_DeNghiDieuDongs> FindById(int id);
-        Task<long> ToTalCount(DeNghiDieuDongFilterModel inputModel);
+        Task<long> ToTalCountGui(DeNghiDieuDongFilterModel inputModel);
+        Task<long> ToTalCountNhan(DeNghiDieuDongFilterModel inputModel);
     }
 }

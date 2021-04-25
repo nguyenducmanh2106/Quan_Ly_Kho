@@ -42,6 +42,18 @@ namespace Application.MODELS
         public int? ID_BoPhanNhan { get; set; }
         [Column("ThoiGianGuiSanPham")]
         public DateTime? ThoiGianGuiSanPham { get; set; }
+        [NotMapped]
+        public string tenLoaiDeNghi { get; set; }
+        [NotMapped]
+        public string tenChiNhanhGui { get; set; }
+        [NotMapped]
+        public string tenChiNhanhNhan { get; set; }
+        [NotMapped]
+        public string tenNguoiGui { get; set; }
+        [NotMapped]
+        public string tenNguoiDuyet { get; set; }
+        [NotMapped]
+        public List<DM_ChiTietDeNghiDieuDongs> ChiTietDeNghiDieuDongs { get; set; }
 
     }
 }

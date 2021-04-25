@@ -69,9 +69,23 @@ namespace Application.API.Controllers
                     Avatar = user.Avatar
                 };
                 var tokenString = GenerateJWTToken(user);
-                MessageSuccess success = new MessageSuccess()
+                MessageSuccess success = new MessageSuccess();
+                if (dataFinal.isRoot == true)
                 {
-                    result = new
+                    success.result = new
+                    {
+                        access_token = tokenString,
+                        userDetails = dataFinal,
+                        permiss = new
+                        {
+                            isRoot = dataFinal.isRoot,
+                            permissionUser = per
+                        }
+                    };
+                }
+                else
+                {
+                    success.result = new
                     {
                         access_token = tokenString,
                         userDetails = dataFinal,
@@ -79,15 +93,9 @@ namespace Application.API.Controllers
                         {
                             isRoot = dataFinal.isRoot,
                             permissionUser = user.Permission,
-                            lstPermission = per
                         }
-                    }
-                };
-                //UTILS.SessionExtensions.Set<Users>(_session, UTILS.SessionExtensions.SessionAccount, user);
-                //Response.Cookies.Append("access_token_1", tokenString, new CookieOptions
-                //{
-                //    //HttpOnly = false
-                //});
+                    };
+                }
                 return Ok(success);
 
             }

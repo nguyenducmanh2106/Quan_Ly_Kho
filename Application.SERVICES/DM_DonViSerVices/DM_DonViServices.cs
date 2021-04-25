@@ -51,6 +51,18 @@ namespace Application.Services.DM_DonViSerVices
             }
         }
 
+        public async Task<DM_DonVis> FindById(int Id)
+        {
+            try
+            {
+                return await _unitOfWork.DM_DonViRepository.Get(g => g.Id == Id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<List<DM_DonVis>> GetAllDataActive()
         {
             try
