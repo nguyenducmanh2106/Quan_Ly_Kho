@@ -20,5 +20,6 @@ namespace Application.Services.DM_DonViTinhSerVices
         Task Delete(DM_DonViTinhs obj);
         Task MultiDelete(string listItemDelete);
         Task<List<DM_DonViTinhs>> GetAllDataActive();
+        Task<string> GetName(int Id);
     }
 }

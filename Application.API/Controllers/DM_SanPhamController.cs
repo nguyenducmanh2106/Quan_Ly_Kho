@@ -16,6 +16,7 @@ using Application.API.Middleware;
 using Newtonsoft.Json;
 using Application.MODELS.ViewModels;
 using Application.Services.DM_ThuocTinhSPSerVices;
+using Application.Services.DM_DonViTinhSerVices;
 
 namespace Application.API.Controllers
 {
@@ -25,14 +26,16 @@ namespace Application.API.Controllers
     {
         private readonly IDM_SanPhamServices _manager;
         private readonly IDM_ThuocTinhSPServices _managerThuocTinhSP;
+        private readonly IDM_DonViTinhServices _managerDVT;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_SanPhamController(IConfiguration config, IDM_ThuocTinhSPServices _managerThuocTinhSP, IDM_SanPhamServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_SanPhamController(IConfiguration config, IDM_DonViTinhServices _managerDVT, IDM_ThuocTinhSPServices _managerThuocTinhSP, IDM_SanPhamServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
             this._managerThuocTinhSP = _managerThuocTinhSP;
+            this._managerDVT = _managerDVT;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost("list_data")]
@@ -311,6 +314,55 @@ namespace Application.API.Controllers
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.DELETE_FAIL
+                });
+            }
+
+        }
+        [HttpGet("find-by-name")]
+        public async Task<IActionResult> FindByName(string Name = "")
+        {
+            try
+            {
+                var g = (await _manager.FindByName(Name)).Select(g => new DM_SanPhams()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    Code = g.Code,
+                    Barcode = g.Barcode,
+                    LoaiSP = g.LoaiSP,
+                    ThuongHieu_Id = g.ThuongHieu_Id,
+                    XuatXu_Id = g.XuatXu_Id,
+                    KhoiLuong = g.KhoiLuong,
+                    DonViTinh_Id = g.DonViTinh_Id,
+                    KichThuoc = g.KichThuoc,
+                    Avatar = g.Avatar,
+                    Status = g.Status,
+                    Created_At = g.Created_At,
+                    Updated_At = g.Updated_At,
+                    Created_By = g.Created_By,
+                    Updated_By = g.Updated_By,
+                    GiaNhap = g.GiaNhap,
+                    GiaBanBuon = g.GiaBanBuon,
+                    GiaBanLe = g.GiaBanLe,
+                    GiaCu = g.GiaCu,
+                    pathAvatar = ReadFileToBase64(g.pathAvatar),
+                    tenThuongHieu = g.tenThuongHieu,
+                    tenLoaiSanPham = g.tenLoaiSanPham,
+                    tenDonViTinh = g.tenDonViTinh,
+                    xuatXu = g.xuatXu,
+                    ThuocTinhs = g.ThuocTinhs
+                });
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = g
                 };
                 return Ok(success);
             }

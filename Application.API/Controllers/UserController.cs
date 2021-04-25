@@ -50,7 +50,7 @@ namespace Application.API.Controllers
             {
                 var response = Unauthorized();
                 Users user = await _manager.Login(login);
-                List<Permissions> per = await _Permanager.getAll();
+                string per = await _Permanager.getAll();
                 var dataFinal = new Users()
                 {
                     Id = user.Id,
@@ -66,7 +66,8 @@ namespace Application.API.Controllers
                     isRoot = user.isRoot,
                     isThongKe = user.isThongKe,
                     Status = user.Status,
-                    Avatar = user.Avatar
+                    Avatar = user.Avatar,
+                    CapDoDonVi=user.CapDoDonVi
                 };
                 var tokenString = GenerateJWTToken(user);
                 MessageSuccess success = new MessageSuccess();

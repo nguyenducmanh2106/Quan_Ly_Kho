@@ -91,6 +91,9 @@ function Table(props) {
                         {item.ordering}
                     </td>
                     <td>
+                        {item.capDo}
+                    </td>
+                    <td>
                         {item.code}
                     </td>
                     <td>
@@ -174,6 +177,10 @@ function Table(props) {
                                         </th>
                                         <th className="sapxep text-center" id="Ordering" onClick={() => onSort("Ordering")}>
                                             Thứ tự
+                                <i className="fa fa-sort"></i>
+                                        </th>
+                                        <th className="sapxep text-center" id="CapDo" onClick={() => onSort("CapDo")}>
+                                            Cấp đơn vị
                                 <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="sapxep text-center" id="Code" onClick={() => onSort("Code")}>

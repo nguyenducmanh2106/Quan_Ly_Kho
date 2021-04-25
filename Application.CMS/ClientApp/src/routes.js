@@ -22,6 +22,9 @@ import DM_SanPham from './components/pages/DM_SanPham/Index';
 import DM_SanPham_Create from './components/pages/DM_SanPham/Create';
 import DM_SanPham_Update from './components/pages/DM_SanPham/Update';
 import DM_LoaiDeNghi from './components/pages/DM_LoaiDeNghi/Index';
+import DM_DeNghiDieuDong from './components/pages/DM_DeNghiDieuDong/Index';
+import DM_DeNghiDieuDong_Create from './components/pages/DM_DeNghiDieuDong/Create';
+import DM_DeNghiDieuDong_Update from './components/pages/DM_DeNghiDieuDong/Update';
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -51,7 +54,11 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_sanpham' component={DM_SanPham} />
             <PrivateRoute exact path='/dm_sanpham/create' component={DM_SanPham_Create} />
             <PrivateRoute exact path='/dm_sanpham/update/:id' component={DM_SanPham_Update} />
-            <PrivateRoute exact path='/dm_loaidenghi/' component={DM_LoaiDeNghi} />
+            <PrivateRoute exact path='/dm_loaidenghi' component={DM_LoaiDeNghi} />
+            <PrivateRoute exact path='/dm_loaidenghi' component={DM_LoaiDeNghi} />
+            <PrivateRoute exact path='/dm_denghidieudong' component={DM_DeNghiDieuDong} />
+            <PrivateRoute exact path='/dm_denghidieudong/create' component={DM_DeNghiDieuDong_Create} />
+            <PrivateRoute exact path='/dm_denghidieudong/update/:id' component={DM_DeNghiDieuDong_Update} />
         </Switch>
     );
 }

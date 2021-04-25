@@ -24,7 +24,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
     };
-    useState(() => {
+    useEffect(() => {
 
         async function getLoaiSanpham() {
             var fetchData = await getAPI(`api/dm_loaisanpham/get-all-data-active`);

@@ -42,6 +42,8 @@ namespace Application.MODELS
         public int? ID_BoPhanNhan { get; set; }
         [Column("ThoiGianGuiSanPham")]
         public DateTime? ThoiGianGuiSanPham { get; set; }
+        [Column("Description")]
+        public string Description { get; set; }
         [NotMapped]
         public string tenLoaiDeNghi { get; set; }
         [NotMapped]

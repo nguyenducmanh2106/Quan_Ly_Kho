@@ -165,5 +165,16 @@ namespace Application.Services.DM_DonViTinhSerVices
             }
         }
 
+        public async Task<string> GetName(int Id)
+        {
+            try
+            {
+                return (await _unitOfWork.DM_DonViTinhRepository.Get(g => g.Id == Id)).Name;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

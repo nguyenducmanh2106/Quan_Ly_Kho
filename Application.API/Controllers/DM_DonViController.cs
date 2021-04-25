@@ -95,6 +95,12 @@ namespace Application.API.Controllers
                             case "Code_desc":
                                 dataExist = dataExist.OrderByDescending(g => g.Code);
                                 break;
+                            case "CapDo_asc":
+                                dataExist = dataExist.OrderBy(g => g.CapDo);
+                                break;
+                            case "CapDo_desc":
+                                dataExist = dataExist.OrderByDescending(g => g.CapDo);
+                                break;
                             case "Ordering_asc":
                                 dataExist = dataExist.OrderBy(g => g.Ordering);
                                 break;
@@ -262,10 +268,10 @@ namespace Application.API.Controllers
         {
             try
             {
-                await _manager.FindById(Id);
+                var data = await _manager.FindById(Id);
                 MessageSuccess success = new MessageSuccess()
                 {
-                    message = MessageConst.DELETE_SUCCESS
+                    result = data
                 };
                 return Ok(success);
             }

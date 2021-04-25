@@ -84,7 +84,8 @@ namespace Application.Services.UserServices
                     ChucVuId = data.ChucVuId,
                     Permission = remover_Permission_Duplicated,
                     isRoot = data.isRoot,
-                    isThongKe = data.isThongKe
+                    isThongKe = data.isThongKe,
+                    CapDoDonVi = (await _unitOfWork.DM_DonViRepository.Get(g => g.Id == data.DonViId)).CapDo
                 };
                 return user;
             }

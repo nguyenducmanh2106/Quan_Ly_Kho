@@ -11,6 +11,8 @@ namespace Application.Services.DM_SanPhamSerVices
     public interface IDM_SanPhamServices
     {
         Task<List<DM_SanPhams>> getData(SanPhamFilterModel inputModel);
+        Task<List<DM_SanPhams>> getAllActive();
+        Task<List<DM_SanPhams>> FindByName(string name);
         Task<DM_SanPhams> Create(DM_SanPhams obj);
         Task Update(DM_SanPhams obj);
         Task ToggleStatus(DM_SanPhams obj);

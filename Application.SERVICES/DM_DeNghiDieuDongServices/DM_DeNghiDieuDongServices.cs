@@ -100,6 +100,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                 exist.LoaiDeNghi_Id = obj.LoaiDeNghi_Id;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;
                 exist.ID_BoPhanGui = obj.ID_BoPhanGui;
+                exist.Description = obj.Description;
                 await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();

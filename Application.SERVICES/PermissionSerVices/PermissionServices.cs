@@ -42,7 +42,7 @@ namespace Application.Services.PermissionSerVices
             return result;
         }
 
-        public List<DataPermissionModal> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0,string indexParent="0")
+        public List<DataPermissionModal> GetChildGroup(int parentId, List<string> roles = null, string code = "", int langId = 0, string indexParent = "0")
         {
             var result = new List<DataPermissionModal>();
 
@@ -50,10 +50,10 @@ namespace Application.Services.PermissionSerVices
             var lstNhomQuyen = _unitOfWork.MenuRepository.getMenusByParentId(parentId);
             for (int index = 0; index < lstNhomQuyen.Count; index++)
             {
-                var indexValue = indexParent +"-"+ index.ToString();
+                var indexValue = indexParent + "-" + index.ToString();
                 var itemNhomQuyen = lstNhomQuyen[index];
                 var child = GetChildGroup(itemNhomQuyen.Id, roles, code, langId, indexValue);
-                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId, indexValue,child.Count);
+                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId, indexValue, child.Count);
                 child.AddRange(permission);
                 if (child.Count > 0)
                 {
@@ -86,7 +86,7 @@ namespace Application.Services.PermissionSerVices
             return result;
         }
 
-        public List<DataPermissionModal> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0, string indexParent = "",int startIndex=0)
+        public List<DataPermissionModal> GetPermissionGroup(string groupId = "", List<string> roles = null, int langId = 0, string indexParent = "", int startIndex = 0)
         {
             var result = new List<DataPermissionModal>();
             if (string.IsNullOrEmpty(groupId)) return result;
@@ -101,7 +101,7 @@ namespace Application.Services.PermissionSerVices
                     id = itemPermission.Code,
                     title = itemPermission.Name,
                     value = $"{indexParent}-{indexValue}",
-                    key = $"{indexParent}-{indexValue}" ,
+                    key = $"{indexParent}-{indexValue}",
                     iconCls = "hide",
                     @checked = check
                 };
@@ -222,8 +222,8 @@ namespace Application.Services.PermissionSerVices
                 var indexValue = indexParent + "-" + index.ToString();
                 var itemNhomQuyen = lstNhomQuyen[index];
                 var child = GetDataPermission(itemNhomQuyen.Id, roles, code, langId, indexValue);
-                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId, indexValue, child.Count(g=>string.IsNullOrEmpty(g.id)));
-                if (child.Count > 0|| permission.Count>0)
+                var permission = GetPermissionGroup(itemNhomQuyen.Id.ToString(), roles, langId, indexValue, child.Count(g => string.IsNullOrEmpty(g.id)));
+                if (child.Count > 0 || permission.Count > 0)
                 {
                     var obj = new DataPermissionModal()
                     {
@@ -235,11 +235,11 @@ namespace Application.Services.PermissionSerVices
                         iconCls = "hide",
                     };
                     result.Add(obj);
-                    if(child.Count > 0)
+                    if (child.Count > 0)
                     {
                         result.AddRange(child);
                     }
-                    if(permission.Count > 0)
+                    if (permission.Count > 0)
                     {
                         result.AddRange(permission);
                     }
@@ -283,9 +283,10 @@ namespace Application.Services.PermissionSerVices
             return result;
         }
 
-        public async Task<List<Permissions>> getAll()
+        public async Task<string> getAll()
         {
-            return (await _unitOfWork.PermissionRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).ToList();
+            var data = (await _unitOfWork.PermissionRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).Select(g => g.Code);
+            return String.Join(",", data);
         }
     }
 }

@@ -103,7 +103,7 @@ namespace Application.API.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return Ok(new MessageError());
             }
         }
         [HttpPost("create")]

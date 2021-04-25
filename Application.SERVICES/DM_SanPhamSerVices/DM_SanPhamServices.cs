@@ -207,5 +207,53 @@ namespace Application.Services.DM_SanPhamSerVices
             }
             return data.LongCount();
         }
+
+        public async Task<List<DM_SanPhams>> getAllActive()
+        {
+            try
+            {
+                var data = (await _unitOfWork.DM_SanPhamRepository.FindBy(g => g.Status == (int)StatusEnum.Active)).Select(g => new DM_SanPhams()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    Code = g.Code,
+                    Barcode = g.Barcode,
+                    LoaiSP = g.LoaiSP,
+                    ThuongHieu_Id = g.ThuongHieu_Id,
+                    XuatXu_Id = g.XuatXu_Id,
+                    KhoiLuong = g.KhoiLuong,
+                    DonViTinh_Id = g.DonViTinh_Id,
+                    KichThuoc = g.KichThuoc,
+                    Avatar = g.Avatar,
+                    Status = g.Status,
+                    Created_At = g.Created_At,
+                    Updated_At = g.Updated_At,
+                    Created_By = g.Created_By,
+                    Updated_By = g.Updated_By,
+                    GiaNhap = g.GiaNhap,
+                    GiaBanBuon = g.GiaBanBuon,
+                    GiaBanLe = g.GiaBanLe,
+                    GiaCu = g.GiaCu,
+                    pathAvatar = g.pathAvatar
+                }).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<DM_SanPhams>> FindByName(string name)
+        {
+            try
+            {
+                return _unitOfWork.DM_SanPhamRepository.FindByName_Repository(name);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

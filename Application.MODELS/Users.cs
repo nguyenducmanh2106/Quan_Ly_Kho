@@ -13,7 +13,7 @@ namespace Application.MODELS
         [Key]
         public int Id { get; set; }
         public string UserName { get; set; }
-         public string PassWord { get; set; }
+        public string PassWord { get; set; }
         public string Avatar { get; set; }
         public string FullName { get; set; }
         public DateTime Created_At { get; set; }
@@ -35,5 +35,7 @@ namespace Application.MODELS
         public string pathAvatar { get; set; }
         [NotMapped]
         public string File_Base64 { get; set; }
+        [NotMapped]
+        public int? CapDoDonVi { get; set; }
     }
 }

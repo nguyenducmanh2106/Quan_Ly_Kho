@@ -22,14 +22,18 @@ function Index({ onSetSanPhamUpdate }) {
     const [isVisibleDrawer, setIsVisibleDrawer] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [searchGui, setSearchGui] = useState({
+    const [search, setSearch] = useState({
         Name: "",
         Status: -1,
-        LoaiSP: 0,
-        ThuongHieu_Id: 0,
-        XuatXu_Id: 0,
+        ID_ChiNhanhGui: -1,
+        LoaiDeNghi_Id: -1,
         NgayTao: "",
-        TypeFilterNgayTao: -1
+        NgayDuyet: "",
+        ThoiGianGuiSanPham: "",
+        TypeFilterNgayTao: -1,
+        TypeFilterNgayDuyet: -1,
+        TypeFilterThoiGianGuiSanPham: -1,
+
     })
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
@@ -74,17 +78,19 @@ function Index({ onSetSanPhamUpdate }) {
         //gọi hàm
         getDonVi()
         getDonViById();
-    }, [dataDonVi])
+    }, [DataDonVi, DataDonViById])
     useEffect(() => {
         async function getData(page, pageSize) {
+            var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
             let name = search.Name;
             let status = search.Status ? search.Status : -1;
             var obj = {
                 Name: name,
                 Status: status,
-                nameSort: nameSort
+                nameSort: nameSort,
+                ID_ChiNhanhGui: Id
             }
-            var fetchData = await postAPI(`api/dm_sanpham/list_data_gui/`, JSON.stringify(obj));
+            var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui/`, JSON.stringify(obj));
             if (fetchData.status == true) {
                 setState(fetchData.result)
                 setIsLoading(!fetchData.status)
@@ -107,7 +113,7 @@ function Index({ onSetSanPhamUpdate }) {
             })
         }
         else {
-            var result = await postAPI('api/dm_sanpham/update', JSON.stringify(ItemPosition))
+            var result = await postAPI('api/dm_denghidieudong/update', JSON.stringify(ItemPosition))
             if (result.status) {
                 setAction(true)
                 notification.success({
@@ -145,7 +151,7 @@ function Index({ onSetSanPhamUpdate }) {
             Name: data.Name ?? "",
             Status: data.Status ? Number.parseInt(data.Status) : -1
         })
-        var fetchData = await postAPI(`api/dm_sanpham/list_data`, JSON.stringify(obj));
+        var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
@@ -192,7 +198,7 @@ function Index({ onSetSanPhamUpdate }) {
             cancelText: 'Quay lại',
             //okButtonProps: { loading: confirmLoading },
             onOk: () => {
-                return postAPI('api/dm_sanpham/delete', JSON.stringify(item)).then(result => {
+                return postAPI('api/dm_denghidieudong/delete', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
                         notification.success({
@@ -232,7 +238,7 @@ function Index({ onSetSanPhamUpdate }) {
                 cancelText: 'Quay lại',
                 //okButtonProps: { loading: confirmLoading },
                 onOk: () => {
-                    return postAPI('api/dm_sanpham/multidelete', formData).then(result => {
+                    return postAPI('api/dm_denghidieudong/multidelete', formData).then(result => {
                         if (result.status) {
                             setAction(true)
                             notification.success({
@@ -263,7 +269,7 @@ function Index({ onSetSanPhamUpdate }) {
             NgayTao: search.NgayTao,
             Name: data.Name ?? ""
         }
-        var fetchData = await postAPI(`api/dm_sanpham/list_data`, JSON.stringify(obj));
+        var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
@@ -280,14 +286,14 @@ function Index({ onSetSanPhamUpdate }) {
     };
     function openCreate() {
         history.push({
-            pathname: '/dm_sanpham/create',
-            state: { controller: "Danh mục sản phẩm", action: "Tạo mới" }
+            pathname: '/dm_denghidieudong/create',
+            state: { controller: "Yêu cầu nhập hàng", action: "Tạo mới" }
         });
     }
     const onUpdateItem = (item) => {
         history.push({
-            pathname: `/dm_sanpham/update/${item.id}`,
-            state: { controller: "Danh mục sản phẩm", action: "Cập nhật" }
+            pathname: `/dm_denghidieudong/update/${item.id}`,
+            state: { controller: "Yêu cầu nhập hàng", action: "Cập nhật" }
         });
     }
     const onShowItem = (item) => {
@@ -406,7 +412,9 @@ function Index({ onSetSanPhamUpdate }) {
                                     ["ThuongHieu_Id"]: -1,
                                     ["XuatXu_Id"]: -1,
                                     ["LoaiSP"]: -1,
-                                    ["TypeFilterNgayTao"]: -1
+                                    ["TypeFilterNgayTao"]: -1,
+                                    ["TypeFilterNgayDuyet"]: -1,
+                                    ["TypeFilterThoiGianGuiSanPham"]: -1,
                                 }}
                                 onFinish={onSubmitTimKiemNangCao}
                             /*hideRequiredMark*/
@@ -415,36 +423,13 @@ function Index({ onSetSanPhamUpdate }) {
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item
                                             name="Name"
-                                            label="Tên,Mã,Barcode"
+                                            label="Số điều động"
                                         >
-                                            <Input placeholder="Mã sản phẩm,tên sản phẩm,barcode" allowClear />
+                                            <Input placeholder="Số điều động" allowClear />
                                         </Form.Item>
                                     </Col>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
-                                        <Form.Item
-                                            name="LoaiSP"
-                                            label="Loại sản phẩm"
-                                        >
-                                            <Select
-                                                showSearch
-                                                //style={{ width: 200 }}
-                                                placeholder="-- Chọn --"
-                                                optionFilterProp="children"
-                                                filterOption={(input, option) =>
-                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                                }
-                                                filterSort={(optionA, optionB) =>
-                                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                                }
-                                            >
-                                                <Option value={-1}>-- Chọn --</Option>
-                                                {dataLoaiSP.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </Form.Item>
+
                                     </Col>
                                 </Row>
                                 <Row gutter={16}>
@@ -477,31 +462,53 @@ function Index({ onSetSanPhamUpdate }) {
                                 <Row gutter={16}>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item
-                                            name="XuatXu_Id"
-                                            label="Xuất xứ"
+                                            name="NgayDuyet"
+                                            label="Ngày duyệt"
                                         >
-                                            <Select placeholder="Please choose">
-                                                <Option value={-1}>-- Chọn --</Option>
-                                                {dataXuatXu.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
+                                            <DatePicker
+                                                style={{ width: '100%' }}
+                                                getPopupContainer={trigger => trigger.parentElement}
+                                                onChange={onChangeDatePicker}
+                                            />
                                         </Form.Item>
                                     </Col>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item
-                                            name="ThuongHieu_Id"
-                                            label="Thương Hiệu"
+                                            name="TypeFilterNgayDuyet"
+                                            label="Kiểu lọc ngày"
                                         >
                                             <Select placeholder="Please choose the type">
-                                                <Option value={-1}>-- Chọn --</Option>
-                                                {dataThuongHieu.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
+                                                <Option value={-1}>-- Chon --</Option>
+                                                <Option value={0}>Bằng</Option>
+                                                <Option value={1}>Lớn hơn hoặc bằng</Option>
+                                                <Option value={2}>Nhỏ hơn hoặc bằng</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={16}>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="ThoiGianGuiSanPham"
+                                            label="Ngày gửi hàng"
+                                        >
+                                            <DatePicker
+                                                style={{ width: '100%' }}
+                                                getPopupContainer={trigger => trigger.parentElement}
+                                                onChange={onChangeDatePicker}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item
+                                            name="TypeFilterThoiGianGuiSanPham"
+                                            label="Kiểu lọc ngày"
+                                        >
+                                            <Select placeholder="Please choose the type">
+                                                <Option value={-1}>-- Chon --</Option>
+                                                <Option value={0}>Bằng</Option>
+                                                <Option value={1}>Lớn hơn hoặc bằng</Option>
+                                                <Option value={2}>Nhỏ hơn hoặc bằng</Option>
                                             </Select>
                                         </Form.Item>
                                     </Col>
