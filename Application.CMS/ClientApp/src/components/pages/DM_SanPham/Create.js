@@ -268,14 +268,14 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, 'name']}
-                                                    fieldKey={[fieldKey, 'first']}
+                                                    fieldKey={[fieldKey, 'name']}
                                                 >
                                                     <Input placeholder="Tên thuộc tính" />
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, 'value']}
-                                                    fieldKey={[fieldKey, 'last']}
+                                                    fieldKey={[fieldKey, 'value']}
                                                 >
                                                     <Input placeholder="Giá trị" />
                                                 </Form.Item>

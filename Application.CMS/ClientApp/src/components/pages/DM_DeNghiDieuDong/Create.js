@@ -63,13 +63,24 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         getDonViById()
     }, [])
     const onSubmit = (data) => {
+        var ChiTietDieuDongs = []
+        var sp = document.querySelectorAll("#SanPhams .ant-table-row")
+        for (var i = 0; i < sp.length; i++) {
+            var obj = {
+                ID_SanPham: Number.parseInt(sp[i].querySelector(".ID_SanPham").value),
+                SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
+            }
+            ChiTietDieuDongs.push(obj)
+        }
         var obj = {
             ...data,
             Status: data.Status ? 1 : 2,
-            Created_By: getCurrentLogin().id
+            Created_By: getCurrentLogin().id,
+            ID_ChiNhanhGui: getCurrentLogin().donViId,
+            ChiTietDieuDongs: ChiTietDieuDongs
         }
-        //console.log(obj)
-        onPostCreateItem(obj).then()
+        console.log(obj)
+        //onPostCreateItem(obj).then()
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -121,18 +132,18 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
             if (fetchData.status == true) {
                 var data = await fetchData.result
                 var obj = {
-                    id: data.id,
+                    ID_SanPham: data.id,
                     name: data.name,
                     code: data.code,
                     barCode: data.barCode,
                     tenDonViTinh: data.tenDonViTinh,
-                    soLuong: 1
+                    SoLuongYeuCau: 1
                 }
                 var isExist = false
                 if (DataSanPhamSubmit.length > 0) {
                     DataSanPhamSubmit.map(item => {
-                        if (item.id === obj.id) {
-                            item.soLuong += 1
+                        if (item.ID_SanPham === obj.ID_SanPham) {
+                            item.SoLuongYeuCau += 1
                             isExist = true;
                             return;
                         }
@@ -167,7 +178,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
     }
     const onHandleDelete = (value) => {
         var result = DataSanPhamSubmit.filter(item => {
-            return item.id !== value.id
+            return item.ID_SanPham !== value.ID_SanPham
         })
         setDataSanPhamSubmit(result)
     }
@@ -190,7 +201,8 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                         {item.tenDonViTinh}
                     </td>
                     <td>
-                        <InputNumber min={1} max={99} defaultValue={3} defaultValue={item.soLuong} />
+                        <input type="hidden" className="ID_SanPham" defaultValue={item.ID_SanPham} />
+                        <InputNumber min={1} max={99} defaultValue={item.SoLuongYeuCau} />
                     </td>
                     <td>
                         <Tooltip title="Xoá">
@@ -198,9 +210,11 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                         </Tooltip>
                     </td>
                 </tr>
+
+
             );
         })
-        return result
+        return (result)
     }
     return (
         <Form
@@ -210,7 +224,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
             validateMessages={validateMessages}
             initialValues={{
                 "LoaiDeNghi_Id": 0,
-                "ID_ChiNhanhNhan": 0
+                "ID_ChiNhanhNhan": 0,
             }}
         >
             <Row gutter={24}>
@@ -352,7 +366,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
                                     <div className="ant-table-container">
                                         <div className="ant-table-content">
-                                            <table /*className="ant-table"*/ style={{ tableLayout: "auto" }}>
+                                            <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
                                                 <thead className="ant-table-thead">
                                                     <tr>
                                                         <th className="sapxep" id="Name">
