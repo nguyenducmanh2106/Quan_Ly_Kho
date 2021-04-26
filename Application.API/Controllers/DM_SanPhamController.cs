@@ -133,6 +133,7 @@ namespace Application.API.Controllers
                     GiaNhap = g.GiaNhap,
                     GiaBanBuon = g.GiaBanBuon,
                     GiaBanLe = g.GiaBanLe,
+                    tenDonViTinh = g.tenDonViTinh,
                     GiaCu = g.GiaCu,
                     pathAvatar = ReadFileToBase64(g.pathAvatar),
                     tenThuongHieu = g.tenThuongHieu,
@@ -326,12 +327,12 @@ namespace Application.API.Controllers
             }
 
         }
-        [HttpGet("find-by-name")]
-        public async Task<IActionResult> FindByName(string Name = "")
+        [HttpPost("find-by-name")]
+        public async Task<IActionResult> FindByName([FromBody] SanPhamFilterModel input)
         {
             try
             {
-                var g = (await _manager.FindByName(Name)).Select(g => new DM_SanPhams()
+                var g = (await _manager.FindByName(input.Name)).Select(g => new DM_SanPhams()
                 {
                     Id = g.Id,
                     Name = g.Name,

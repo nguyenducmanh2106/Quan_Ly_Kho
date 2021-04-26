@@ -1,16 +1,18 @@
-﻿import React, { useEffect, useState, useMemo } from 'react';
+﻿import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { getAPI, postAPI, postFormData, getCurrentLogin } from './../../../utils/helpers';
 import { url_upload } from './../../../utils/constants';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
+import logoDefault from "../../../static/images/user-profile.jpeg"
 import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
-    , Skeleton, Col, Row, Card, Tooltip, Space, notification, AutoComplete, Descriptions
+    , Skeleton, Col, Row, Card, Tooltip, Space, notification, AutoComplete, Descriptions, Spin, Image, Menu
 } from 'antd';
 const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
+    const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
     const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
     const [DataDonViById, setDataDonViById] = useState({});
     const [form] = Form.useForm();
@@ -100,29 +102,106 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
             })
         }
     }
-    const renderItem = (title, count) => ({
-        value: title,
-        label: (
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                }}
-            >
-                {title}
-                <span>
-                    {count}
-                </span>
-            </div>
-        ),
-    });
     const handleSearch = async (value) => {
-        var fetchData = await getAPI(`api/dm_sanpham/find-by-name?Name=${value}`);
-        if (fetchData.status == true) {
-            setDataSanPham(fetchData.result)
+        if (value.length > 2) {
+            var obj = {
+                Name: value
+            }
+            var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
+            if (fetchData.status == true) {
+                setDataSanPham(fetchData.result)
+            }
         }
-        console.log(value)
+        //console.log(value)
     };
+
+    const onHandleSelect = async (value, option) => {
+        if (value > 0) {
+            var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Id=${value}`);
+            if (fetchData.status == true) {
+                var data = await fetchData.result
+                var obj = {
+                    id: data.id,
+                    name: data.name,
+                    code: data.code,
+                    barCode: data.barCode,
+                    tenDonViTinh: data.tenDonViTinh,
+                    soLuong: 1
+                }
+                var isExist = false
+                if (DataSanPhamSubmit.length > 0) {
+                    DataSanPhamSubmit.map(item => {
+                        if (item.id === obj.id) {
+                            item.soLuong += 1
+                            isExist = true;
+                            return;
+                        }
+                    })
+                    if (isExist) {
+                        setDataSanPhamSubmit(
+                            [
+                                ...DataSanPhamSubmit
+                            ]
+                        )
+                    }
+                    else {
+                        setDataSanPhamSubmit(
+                            [
+                                ...DataSanPhamSubmit,
+                                obj
+                            ]
+                        )
+                    }
+                }
+                else {
+                    setDataSanPhamSubmit(
+                        [
+                            ...DataSanPhamSubmit,
+                            obj
+                        ]
+                    )
+                }
+                console.log(DataSanPhamSubmit)
+            }
+        }
+    }
+    const onHandleDelete = (value) => {
+        var result = DataSanPhamSubmit.filter(item => {
+            return item.id !== value.id
+        })
+        setDataSanPhamSubmit(result)
+    }
+    const renderBody = () => {
+        var result = ""
+        result = DataSanPhamSubmit.map((item, index) => {
+            return (
+                <tr key={item.id} className="ant-table-row ant-table-row-level-0">
+                    <td>
+                        {item.name}
+                    </td>
+
+                    <td style={{ textAlign: "center" }}>
+                        {item.code}
+                    </td>
+                    <td>
+                        {item.barcode}
+                    </td>
+                    <td>
+                        {item.tenDonViTinh}
+                    </td>
+                    <td>
+                        <InputNumber min={1} max={99} defaultValue={3} defaultValue={item.soLuong} />
+                    </td>
+                    <td>
+                        <Tooltip title="Xoá">
+                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onHandleDelete(item)} />
+                        </Tooltip>
+                    </td>
+                </tr>
+            );
+        })
+        return result
+    }
     return (
         <Form
             form={form}
@@ -211,7 +290,9 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                                 <Option value={0}>-- Chọn --</Option>
                                                 {DataLoaiDeNghi.map(item => {
                                                     return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                        <Option key={item.id} value={item.id}>
+                                                            {item.name}
+                                                        </Option>
                                                     )
                                                 })}
                                             </Select>
@@ -240,20 +321,80 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                     style={{
                                         width: '100%',
                                     }}
+                                    onFocus={() => setDataSanPham([])}
+                                    onSelect={onHandleSelect}
                                     onSearch={handleSearch}
-                                    backfill={true}
                                     placeholder="Sản phẩm"
                                     notFoundContent="Không tìm thấy sản phẩm"
                                 >
                                     {DataSanPham.map((item) => (
                                         <Option key={item.id} value={item.id}>
-                                            {item.name}
+                                            <Row>
+                                                <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
+                                                    <Image
+                                                        width={50}
+                                                        src={"data:image/png;base64," + item.pathAvatar}
+                                                        fallback={logoDefault}
+                                                    />
+                                                </Col>
+                                                <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
+                                                    <Row>
+                                                        <Col>{item.name}</Col>
+                                                        <Col>({item.code})</Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
                                         </Option>
                                     ))}
                                 </AutoComplete>
                             </Col>
+                            <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
+                                <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
+                                    <div className="ant-table-container">
+                                        <div className="ant-table-content">
+                                            <table /*className="ant-table"*/ style={{ tableLayout: "auto" }}>
+                                                <thead className="ant-table-thead">
+                                                    <tr>
+                                                        <th className="sapxep" id="Name">
+                                                            Tên
+                                                        </th>
+
+                                                        <th className="sapxep" id="Code">
+                                                            Mã SP
+                                                        </th>
+                                                        <th className="" id="Barcode">
+                                                            Mã vạch
+                                        </th>
+                                                        <th className="">
+                                                            ĐVT
+                                        </th>
+                                                        <th className="">
+                                                            Số lượng cần
+                                        </th>
+                                                        <th className="">
+                                                            Thao tác
+                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="ant-table-tbody">
+                                                    {renderBody()}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Col>
                         </Row>
                     </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
+                            Lưu
+                                    </Button>
+                    </Form.Item>
                 </Col>
             </Row>
         </Form >

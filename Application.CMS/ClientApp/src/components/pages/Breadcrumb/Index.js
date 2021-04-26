@@ -57,13 +57,13 @@ const BreadcrumbElement = (props) => {
         <>
             <Breadcrumb style={{ marginBottom: '24px' }}>
                 <Breadcrumb.Item><AntdIcons.HomeOutlined /></Breadcrumb.Item>
-                <Breadcrumb.Item>{history.location.state.controller}</Breadcrumb.Item>
-                {history.location.state.action ? <Breadcrumb.Item>{history.location.state.action}</Breadcrumb.Item> : null}
+                <Breadcrumb.Item>{history.location.state?.controller??""}</Breadcrumb.Item>
+                {history.location.state?.action ? <Breadcrumb.Item>{history.location.state?.action??""}</Breadcrumb.Item> : null}
             </Breadcrumb>
             <PageHeader
                 className="site-page-header"
-                title={history.location.state?.controller}
-                onBack={() => null}
+                title={history.location.state?.controller??""}
+                onBack={() => window.history.back()}
             //breadcrumb={{ routes }}
             //subTitle=""
             />
