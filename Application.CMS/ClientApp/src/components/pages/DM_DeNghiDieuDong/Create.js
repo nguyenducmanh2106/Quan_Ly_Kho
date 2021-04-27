@@ -16,6 +16,7 @@ const ModalCreate = () => {
     const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
     const [DataDonViById, setDataDonViById] = useState({});
     const [DataDonViCapDo, setDataDonViCapDo] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
@@ -71,6 +72,7 @@ const ModalCreate = () => {
         getDonViByCapDo()
     }, [])
     const onSubmit = (data) => {
+        setIsLoading(true)
         var ChiTietDeNghiDieuDongs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
@@ -85,10 +87,11 @@ const ModalCreate = () => {
             Status: 1,
             Created_By: getCurrentLogin().id,
             ID_ChiNhanhGui: getCurrentLogin().donViId,
-            ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs
+            ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs,
+            ID_BoPhanGui: getCurrentLogin().chucVuId
         }
         console.log(obj)
-        //onPostCreateItem(obj).then()
+        onPostCreateItem(obj)
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -106,6 +109,7 @@ const ModalCreate = () => {
         var result = await postAPI('api/dm_denghidieudong/create', JSON.stringify(obj))
         if (result.status) {
             //setAction(true)
+            setIsLoading(!result.status)
             notification.success({
                 message: result.message,
                 duration: 3
@@ -114,6 +118,7 @@ const ModalCreate = () => {
 
         }
         else {
+            setIsLoading(result.status)
             notification.error({
                 message: result.message,
                 duration: 3
@@ -136,7 +141,7 @@ const ModalCreate = () => {
 
     const onHandleSelect = async (value, option) => {
         if (value > 0) {
-            var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Id=${value}`);
+            var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
             if (fetchData.status == true) {
                 var data = await fetchData.result
                 var obj = {
@@ -225,96 +230,36 @@ const ModalCreate = () => {
         return (result)
     }
     return (
-        <Form
-            form={form}
-            layout="horizontal"
-            name="nest-messages" onFinish={onSubmit} id="myFormCreate"
-            validateMessages={validateMessages}
-            initialValues={{
-                "LoaiDeNghi_Id": 0,
-                "ID_ChiNhanhNhan": 0,
-            }}
-        >
-            <Row gutter={24}>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.InfoCircleOutlined />
+        <Spin spinning={isLoading}>
+            <Form
+                form={form}
+                layout="horizontal"
+                name="nest-messages" onFinish={onSubmit} id="myFormCreate"
+                validateMessages={validateMessages}
+                initialValues={{
+                    "LoaiDeNghi_Id": 0,
+                    "ID_ChiNhanhNhan": 0,
+                }}
+            >
+                <Row gutter={24}>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.InfoCircleOutlined />
                                                     Kho hàng
                                                 </Space>
-                        }>
-                        <Row>
-                            <Col>
-                                <Descriptions title="" layout="horizontal">
-                                    <Descriptions.Item label="Từ kho">{DataDonViById.name ?? ""}</Descriptions.Item>
-                                </Descriptions>
-                            </Col>
-                            <Col>
-                                {getCurrentLogin().capDoDonVi == 1 ?
-                                    <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
-                                        < Select
-                                            showSearch
-                                            //style={{ width: 200 }}
-                                            placeholder="-- Chọn --"
-                                            optionFilterProp="children"
-                                            filterOption={(input, option) =>
-                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                            }
-                                            filterSort={(optionA, optionB) =>
-                                                optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                            }
-                                        >
-                                            <Option value={0}>-- Chọn --</Option>
-                                            {DataDonVi.map(item => {
-                                                return (
-                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                )
-                                            })}
-                                        </Select>
-                                    </Form.Item> :
-                                    <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
-                                        <Select
-                                            showSearch
-                                            //style={{ width: 200 }}
-                                            placeholder="-- Chọn --"
-                                            optionFilterProp="level"
-                                            filterOption={(input, option) =>
-                                                option.level.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                            }
-                                            filterSort={(optionA, optionB) =>
-                                                optionA.level.toLowerCase().localeCompare(optionB.level.toLowerCase())
-                                            }
-                                        >
-                                            <Option value={0}>-- Chọn --</Option>
-                                            {DataDonViCapDo.map(item => {
-                                                return (
-                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                )
-                                            })}
-                                        </Select>
-                                    </Form.Item>
-                                }
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.DollarOutlined />
-                                                   Thông tin
-                                                </Space>
-                        }
-                    >
-                        <Row>
-                            <Col>
-                                <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                        <Form.Item name="LoaiDeNghi_Id" label="Loại đề nghị" {...tailLayout}>
+                            }>
+                            <Row>
+                                <Col>
+                                    <Descriptions title="" layout="horizontal">
+                                        <Descriptions.Item label="Từ kho">{DataDonViById.name ?? ""}</Descriptions.Item>
+                                    </Descriptions>
+                                </Col>
+                                <Col>
+                                    {getCurrentLogin().capDoDonVi == 1 ?
+                                        <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
                                             < Select
                                                 showSearch
                                                 //style={{ width: 200 }}
@@ -328,117 +273,179 @@ const ModalCreate = () => {
                                                 }
                                             >
                                                 <Option value={0}>-- Chọn --</Option>
-                                                {DataLoaiDeNghi.map(item => {
+                                                {DataDonVi.map(item => {
                                                     return (
-                                                        <Option key={item.id} value={item.id}>
-                                                            {item.name}
-                                                        </Option>
+                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                    )
+                                                })}
+                                            </Select>
+                                        </Form.Item> :
+                                        <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
+                                            <Select
+                                                showSearch
+                                                //style={{ width: 200 }}
+                                                placeholder="-- Chọn --"
+                                                optionFilterProp="level"
+                                                filterOption={(input, option) =>
+                                                    option.level.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                                filterSort={(optionA, optionB) =>
+                                                    optionA.level.toLowerCase().localeCompare(optionB.level.toLowerCase())
+                                                }
+                                            >
+                                                <Option value={0}>-- Chọn --</Option>
+                                                {DataDonViCapDo.map(item => {
+                                                    return (
+                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
                                                     )
                                                 })}
                                             </Select>
                                         </Form.Item>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                        <Form.Item name="Description" label="Ghi chú" {...tailLayout}>
-                                            <Input.TextArea
-                                                allowClear
-                                                showCount
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
-            </Row>
-            <Row gutter={24} style={{ marginTop: "16px" }}>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                    <Card>
-                        <Row>
-                            <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                <AutoComplete
-                                    style={{
-                                        width: '100%',
-                                    }}
-                                    onFocus={() => setDataSanPham([])}
-                                    onSelect={onHandleSelect}
-                                    onSearch={handleSearch}
-                                    placeholder="Sản phẩm"
-                                    notFoundContent="Không tìm thấy sản phẩm"
-                                >
-                                    {DataSanPham.map((item) => (
-                                        <Option key={item.id} value={item.id}>
-                                            <Row>
-                                                <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
-                                                    <Image
-                                                        width={50}
-                                                        preview={false}
-                                                        src={"data:image/png;base64," + item.pathAvatar}
-                                                        fallback={logoDefault}
-                                                    />
-                                                </Col>
-                                                <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
-                                                    <Row>
-                                                        <Col>{item.name}</Col>
-                                                        <Col>({item.code})</Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                        </Option>
-                                    ))}
-                                </AutoComplete>
-                            </Col>
-                            <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
-                                <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
-                                    <div className="ant-table-container">
-                                        <div className="ant-table-content">
-                                            <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
-                                                <thead className="ant-table-thead">
-                                                    <tr>
-                                                        <th className="sapxep" id="Name">
-                                                            Tên
+                                    }
+                                </Col>
+                            </Row>
+                        </Card>
+                    </Col>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.DollarOutlined />
+                                                   Thông tin
+                                                </Space>
+                            }
+                        >
+                            <Row>
+                                <Col>
+                                    <Row gutter={24}>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <Form.Item name="LoaiDeNghi_Id" label="Loại đề nghị" {...tailLayout}>
+                                                < Select
+                                                    showSearch
+                                                    //style={{ width: 200 }}
+                                                    placeholder="-- Chọn --"
+                                                    optionFilterProp="children"
+                                                    filterOption={(input, option) =>
+                                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                    }
+                                                    filterSort={(optionA, optionB) =>
+                                                        optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                                    }
+                                                >
+                                                    <Option value={0}>-- Chọn --</Option>
+                                                    {DataLoaiDeNghi.map(item => {
+                                                        return (
+                                                            <Option key={item.id} value={item.id}>
+                                                                {item.name}
+                                                            </Option>
+                                                        )
+                                                    })}
+                                                </Select>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <Form.Item name="Description" label="Ghi chú" {...tailLayout}>
+                                                <Input.TextArea
+                                                    allowClear
+                                                    showCount
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row gutter={24} style={{ marginTop: "16px" }}>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                        <Card>
+                            <Row>
+                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                    <AutoComplete
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                        onFocus={() => setDataSanPham([])}
+                                        onSelect={onHandleSelect}
+                                        onSearch={handleSearch}
+                                        placeholder="Sản phẩm"
+                                        notFoundContent="Không tìm thấy sản phẩm"
+                                    >
+                                        {DataSanPham.map((item) => (
+                                            <Option key={item.code} value={item.code}>
+                                                <Row>
+                                                    <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
+                                                        <Image
+                                                            width={50}
+                                                            preview={false}
+                                                            src={"data:image/png;base64," + item.pathAvatar}
+                                                            fallback={logoDefault}
+                                                        />
+                                                    </Col>
+                                                    <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
+                                                        <Row>
+                                                            <Col>{item.name}</Col>
+                                                            <Col>({item.code})</Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            </Option>
+                                        ))}
+                                    </AutoComplete>
+                                </Col>
+                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
+                                    <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
+                                        <div className="ant-table-container">
+                                            <div className="ant-table-content">
+                                                <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
+                                                    <thead className="ant-table-thead">
+                                                        <tr>
+                                                            <th className="sapxep" id="Name">
+                                                                Tên
                                                         </th>
 
-                                                        <th className="sapxep" id="Code">
-                                                            Mã SP
+                                                            <th className="sapxep" id="Code">
+                                                                Mã SP
                                                         </th>
-                                                        <th className="" id="Barcode">
-                                                            Mã vạch
+                                                            <th className="" id="Barcode">
+                                                                Mã vạch
                                         </th>
-                                                        <th className="">
-                                                            ĐVT
+                                                            <th className="">
+                                                                ĐVT
                                         </th>
-                                                        <th className="">
-                                                            Số lượng cần
+                                                            <th className="">
+                                                                Số lượng cần
                                         </th>
-                                                        <th className="">
-                                                            Thao tác
+                                                            <th className="">
+                                                                Thao tác
                                         </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="ant-table-tbody">
-                                                    {renderBody()}
-                                                </tbody>
-                                            </table>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="ant-table-tbody">
+                                                        {renderBody()}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
-                            Lưu
+                                </Col>
+                            </Row>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
+                                Lưu
                                     </Button>
-                    </Form.Item>
-                </Col>
-            </Row>
-        </Form >
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </Form >
+        </Spin>
     )
 }
 export default ModalCreate;

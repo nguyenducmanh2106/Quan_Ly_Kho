@@ -5,7 +5,7 @@ import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import { Can } from "../../elements/Config_Roles/Can"
-import { getLocalStorage } from "../../../utils/helpers"
+import { getLocalStorage, getCurrentLogin } from "../../../utils/helpers"
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
 import * as constantPermission from "../../../utils/constantPermission"
 import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
@@ -123,7 +123,7 @@ function Table(props) {
                                         </Menu.Item>
                                     }
 
-                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status === 1 ?
+                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status !== 1 ? null : item.created_By === getCurrentLogin().id ?
                                         <Menu.Item style={{ textAlign: "center" }} key="3">
                                             <Tooltip title="Chỉnh sửa">
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
@@ -198,7 +198,7 @@ function Table(props) {
                                         </th>
                                         <th className="">STT</th>
                                         <th className="sapxep" id="Created_At" onClick={() => onSort("Created_At")}>
-                                            Ngày gửi yêu cầu
+                                            Ngày gửi
                                             <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">
@@ -211,7 +211,7 @@ function Table(props) {
                                             
                                         </th>
                                         <th className="sapxep" id="ThoiGianHangVe" onClick={() => onSort("ThoiGianHangVe")}>
-                                            Thời gian hàng về
+                                            Ngày hàng về
                                             <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">

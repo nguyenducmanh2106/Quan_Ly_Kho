@@ -9,7 +9,7 @@ namespace Application.Services.UserServices
 {
     public interface IUserServices
     {
-        Task<IQueryable<Users>> getData(int page, int pageSize, int Status, string Name,int ChucVuId);
+        Task<IQueryable<Users>> getData(int page, int pageSize, int Status, string Name, int ChucVuId);
         Task ChangePassUser(Users obj);
         Task Create(Users obj);
         Task Update(Users obj);
@@ -19,5 +19,6 @@ namespace Application.Services.UserServices
         Task<Users> Login(Users login);
         Task<Users> FindById(int id);
         Task ChangePermission(Users obj);
+        string GetTenChucVu(int Id);
     }
 }

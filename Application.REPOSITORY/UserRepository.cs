@@ -9,7 +9,7 @@ namespace Application.REPOSITORY
 {
     public interface IUserRepository : IRepository<Users>
     {
-        
+        string GetTenChucVu(int Id);
     }
     public class UserRepository : Repository<Users>, IUserRepository
     {
@@ -19,6 +19,22 @@ namespace Application.REPOSITORY
             _db = dbContext;
         }
 
-       
+        public string GetTenChucVu(int Id)
+        {
+            try
+            {
+                var data = (from user in _db.Users
+                            join chucvu in _db.DM_ChucVus on user.ChucVuId equals chucvu.Id into chucvuDefault
+                            from chucvuEmty in chucvuDefault.DefaultIfEmpty()
+                            where user.Id == Id
+                            select chucvuEmty.Name ?? ""
+                          ).SingleOrDefault();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

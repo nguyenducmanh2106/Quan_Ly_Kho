@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.API\\Application.API.csproj",
+  "FilePath": "c:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.CMS\\Application.CMS.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
@@ -12432,6 +12432,61 @@
         }
       },
       {
+        "HashCode": 1482330922,
+        "Kind": "ITagHelper",
+        "Name": "Microsoft.AspNetCore.SpaServices.Prerendering.PrerenderTagHelper",
+        "AssemblyName": "Microsoft.AspNetCore.SpaServices",
+        "CaseSensitive": false,
+        "TagMatchingRules": [
+          {
+            "TagName": "*",
+            "Attributes": [
+              {
+                "Name": "asp-prerender-module"
+              }
+            ]
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "ITagHelper",
+            "Name": "asp-prerender-module",
+            "TypeName": "System.String",
+            "Metadata": {
+              "Common.PropertyName": "ModuleName"
+            }
+          },
+          {
+            "Kind": "ITagHelper",
+            "Name": "asp-prerender-export",
+            "TypeName": "System.String",
+            "Metadata": {
+              "Common.PropertyName": "ExportName"
+            }
+          },
+          {
+            "Kind": "ITagHelper",
+            "Name": "asp-prerender-data",
+            "TypeName": "System.Object",
+            "Metadata": {
+              "Common.PropertyName": "CustomDataParameter"
+            }
+          },
+          {
+            "Kind": "ITagHelper",
+            "Name": "asp-prerender-timeout",
+            "TypeName": "System.Int32",
+            "Metadata": {
+              "Common.PropertyName": "TimeoutMillisecondsParameter"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "ITagHelper",
+          "Common.TypeName": "Microsoft.AspNetCore.SpaServices.Prerendering.PrerenderTagHelper"
+        }
+      },
+      {
         "HashCode": -653984039,
         "Kind": "Components.Bind",
         "Name": "Bind",
@@ -14399,7 +14454,18 @@
     ],
     "CSharpLanguageVersion": 800
   },
-  "RootNamespace": "Application.API",
-  "Documents": [],
+  "RootNamespace": "Application.CMS",
+  "Documents": [
+    {
+      "FilePath": "c:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.CMS\\Pages\\_ViewImports.cshtml",
+      "TargetPath": "Pages\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\HT\\source\\repos\\Quan_Ly_Kho\\Application.CMS\\Pages\\Error.cshtml",
+      "TargetPath": "Pages\\Error.cshtml",
+      "FileKind": "mvc"
+    }
+  ],
   "SerializationFormat": "0.2"
 }

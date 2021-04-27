@@ -342,9 +342,6 @@ function Index({ onSetSanPhamUpdate }) {
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
                                             </Button>
-                                            <Tooltip title="Tìm kiếm nâng cao">
-                                                <Button type="primary" icon={<AntdIcons.ControlOutlined />} onClick={showDrawer} />
-                                            </Tooltip>
                                         </Form.Item>
                                     </Col>
                                 </Form>
@@ -359,6 +356,9 @@ function Index({ onSetSanPhamUpdate }) {
     </Button>
                                 <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
                                     Xoá nhiều
+    </Button>
+                                <Button type="primary" className="primary" onClick={showDrawer} icon={<AntdIcons.ControlOutlined />}>
+                                    Tìm kiếm nâng cao
     </Button>
                             </Space>
                         </Skeleton>

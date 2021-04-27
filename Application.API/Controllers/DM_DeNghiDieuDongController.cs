@@ -16,6 +16,7 @@ using Application.API.Middleware;
 using Newtonsoft.Json;
 using Application.MODELS.ViewModels;
 using Application.Services.DM_DeNghiDieuDongSerVices;
+using Application.Services.UserServices;
 
 namespace Application.API.Controllers
 {
@@ -24,15 +25,17 @@ namespace Application.API.Controllers
     public class DM_DeNghiDieuDongController : ControllerBase
     {
         private readonly IDM_DeNghiDieuDongServices _manager;
-        private readonly IDM_ChiTietDeNghiDieuDongServices _managerThuocTinhSP;
+        private readonly IDM_ChiTietDeNghiDieuDongServices _managerChiTiet;
+        private readonly IUserServices _managerUser;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_DeNghiDieuDongController(IConfiguration config, IDM_ChiTietDeNghiDieuDongServices _managerThuocTinhSP, IDM_DeNghiDieuDongServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_DeNghiDieuDongController(IConfiguration config, IUserServices _managerUser, IDM_ChiTietDeNghiDieuDongServices _managerChiTiet, IDM_DeNghiDieuDongServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
-            this._managerThuocTinhSP = _managerThuocTinhSP;
+            this._managerChiTiet = _managerChiTiet;
+            this._managerUser = _managerUser;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost("list_data_gui")]
@@ -68,7 +71,8 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenChiNhanhGui = g.tenChiNhanhNhan,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
-                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Code)
+                    tenBoPhanGui = _managerUser.GetTenChucVu(g.Created_By),
+                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -132,7 +136,8 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenChiNhanhGui = g.tenChiNhanhNhan,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
-                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Code)
+                    tenBoPhanGui = _managerUser.GetTenChucVu(g.Created_By),
+                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -193,7 +198,8 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenChiNhanhGui = g.tenChiNhanhNhan,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
-                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Code)
+                    tenBoPhanGui = _managerUser.GetTenChucVu(g.Created_By),
+                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code)
                 };
                 MessageSuccess success = new MessageSuccess()
                 {
@@ -223,7 +229,7 @@ namespace Application.API.Controllers
                         item.ID_DeNghiDieuDong = data.Code;
                     }
                 }
-                await _managerThuocTinhSP.BulkInsert(obj.ChiTietDeNghiDieuDongs);
+                await _managerChiTiet.BulkInsert(obj.ChiTietDeNghiDieuDongs);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS
@@ -251,7 +257,7 @@ namespace Application.API.Controllers
                         item.id = 0;
                     }
                 }
-                await _managerThuocTinhSP.BulkInsert(obj.ChiTietDeNghiDieuDongs);
+                await _managerChiTiet.BulkInsert(obj.ChiTietDeNghiDieuDongs);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS
@@ -272,7 +278,7 @@ namespace Application.API.Controllers
             {
 
                 var data = await _manager.Delete(obj);
-                await _managerThuocTinhSP.DeleteByID_DeNghiDieuDong(data.Code);
+                await _managerChiTiet.DeleteByID_DeNghiDieuDong(data.Code);
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS
@@ -293,7 +299,7 @@ namespace Application.API.Controllers
             try
             {
                 await _manager.MultiDelete(lstid);
-                await _managerThuocTinhSP.BulkDeleteByID_DeNghiDieuDong(lstid);
+                await _managerChiTiet.BulkDeleteByID_DeNghiDieuDong(lstid);
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS

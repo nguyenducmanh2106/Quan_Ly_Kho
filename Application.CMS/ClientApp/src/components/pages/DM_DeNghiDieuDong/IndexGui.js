@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory, Route, Redirect } from 'react-router-dom';
-
+import moment from 'moment';
 import {
     Select, notification, Input, Skeleton,
     Card, Col, Row, Layout, Button, Space, Form, Modal,
@@ -141,18 +141,20 @@ function Index({ onSetSanPhamUpdate }) {
         //console.log(data)
         var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
-            Name: data.Name ?? "",
-            Status: data.Status ? Number.parseInt(data.Status) : -1,
+            NgayTao: search.NgayTao,
+            Status: data.Status ? data.Status : -1,
             page: page,
             pageSize: pageSize,
             nameSort: nameSort,
-            ID_ChiNhanhGui: Id
+            ID_ChiNhanhGui: Id,
+            TypeFilterNgayTao: 0
         }
         setSearch({
             ...search,
-            Name: data.Name ?? "",
-            Status: data.Status ? Number.parseInt(data.Status) : -1
+            NgayTao: search.NgayTao,
+            Status: data.Status ? data.Status : -1
         })
+        console.log(obj)
         var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
@@ -279,10 +281,25 @@ function Index({ onSetSanPhamUpdate }) {
         }
         console.log(obj)
     }
-    const onChangeDatePicker = (date, dateString) => {
+    const onChangeDatePickerNgayTao = (date, dateString) => {
+        //console.log(date, dateString)
         setSearch({
             ...search,
             NgayTao: dateString
+        })
+    }
+    const onChangeDatePickerNgayDuyet = (date, dateString) => {
+        //console.log(date, dateString)
+        setSearch({
+            ...search,
+            NgayDuyet: dateString
+        })
+    }
+    const onChangeDatePickerNgayHangVe = (date, dateString) => {
+        //console.log(date, dateString)
+        setSearch({
+            ...search,
+            ThoiGianGuiSanPham: dateString
         })
     }
     const onClose = () => {
@@ -303,6 +320,7 @@ function Index({ onSetSanPhamUpdate }) {
     const onShowItem = async (item) => {
         setItemShow(item)
     }
+    let NgayTao = search.NgayTao
     return (
         <Content className="main-container main-container-component">
             <Card>
@@ -313,15 +331,21 @@ function Index({ onSetSanPhamUpdate }) {
                                 <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
                                     validateMessages={validateMessages}
                                     initialValues={{
-                                        //["Ordering"]: 0
+                                        //["NgayTao"]: moment(new Date().toString(), 'DD/MM/YYYY'),
+                                        ["Status"]: -1
                                     }}
                                 >
 
-                                    <Col xs={{ span: 24 }} lg={{ span: 14 }} md={{ span: 12 }}>
-                                        <Form.Item name="Name" label="" style={{ width: '100%' }}>
-                                            <Input placeholder="Tên sản phẩm,mã sản phẩm,barcode" allowClear prefix={<AntdIcons.SearchOutlined />} />
+                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>
+                                        <Form.Item name="NgayTao" label="" style={{ width: '100%' }}>
+                                            <DatePicker placeholder="Ngày duyệt" onChange={onChangeDatePickerNgayTao} />
                                         </Form.Item>
                                     </Col>
+                                    {/*<Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>*/}
+                                    {/*    <Form.Item name="NgayTao" label="" style={{ width: '100%' }}>*/}
+                                    {/*        <DatePicker placeholder="Ngày hàng về" onChange={onChangeDatePickerNgayTao} />*/}
+                                    {/*    </Form.Item>*/}
+                                    {/*</Col>*/}
                                     <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 12 }}>
                                         <Form.Item name="Status" label="" style={{ width: '100%' }}>
                                             <Select
@@ -332,9 +356,9 @@ function Index({ onSetSanPhamUpdate }) {
                                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                                 }
                                             >
-                                                <Option value="-1">Tất cả</Option>
-                                                <Option value="1">Đang chờ phê duyệt</Option>
-                                                <Option value="2">Đã phê duyệt</Option>
+                                                <Option value={-1}>Tất cả</Option>
+                                                <Option value={1}>Đang chờ phê duyệt</Option>
+                                                <Option value={2}>Đã phê duyệt</Option>
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -343,9 +367,6 @@ function Index({ onSetSanPhamUpdate }) {
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
                                             </Button>
-                                            <Tooltip title="Tìm kiếm nâng cao">
-                                                <Button type="primary" icon={<AntdIcons.ControlOutlined />} onClick={showDrawer} />
-                                            </Tooltip>
                                         </Form.Item>
                                     </Col>
                                 </Form>
@@ -360,6 +381,9 @@ function Index({ onSetSanPhamUpdate }) {
     </Button>
                                 <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
                                     Xoá nhiều
+    </Button>
+                                <Button type="primary" className="primary" onClick={showDrawer} icon={<AntdIcons.ControlOutlined />}>
+                                    Tìm kiếm nâng cao
     </Button>
                             </Space>
                         </Skeleton>
@@ -418,6 +442,9 @@ function Index({ onSetSanPhamUpdate }) {
                                     ["LoaiSP"]: -1,
                                     ["TypeFilterNgayTao"]: -1,
                                     ["TypeFilterNgayDuyet"]: -1,
+                                    ["NgayTao"]: moment(NgayTao ?? new Date(), 'YYYY-MM-DD'),
+                                    //["NgayDuyet"]: search.NgayDuyet ?? "",
+                                    //["ThoiGianGuiSanPham"]: search.ThoiGianGuiSanPham ?? "",
                                     ["TypeFilterThoiGianGuiSanPham"]: -1,
                                 }}
                                 onFinish={onSubmitTimKiemNangCao}
@@ -432,7 +459,7 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePicker}
+                                                onChange={onChangeDatePickerNgayTao}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -459,7 +486,7 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePicker}
+                                                onChange={onChangeDatePickerNgayDuyet}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -486,7 +513,7 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePicker}
+                                                onChange={onChangeDatePickerNgayHangVe}
                                             />
                                         </Form.Item>
                                     </Col>

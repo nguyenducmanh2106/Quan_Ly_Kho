@@ -94,6 +94,13 @@ const DetailComponent = ({ item }) => {
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>
+                                        <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Thời gian hàng về">
+                                                    {item.thoiGianGuiSanPham ? new Date(item.thoiGianGuiSanPham).getDate() + "/" + (new Date(item.thoiGianGuiSanPham).getMonth() + 1) + "/" + new Date(item.thoiGianGuiSanPham).getFullYear() + " " + new Date(item.thoiGianGuiSanPham).getHours() + ":" + new Date(item.thoiGianGuiSanPham).getMinutes() : ""}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
                                     </Col>
                                 </Row>
                             </Col>
@@ -107,15 +114,15 @@ const DetailComponent = ({ item }) => {
                                         </Col>
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
-                                                <Descriptions.Item label="Ngày duyệt">
-                                                    {item.ngayDuyet ? new Date(item.ngayDuyet).getDate() + "/" + (new Date(item.ngayDuyet).getMonth() + 1) + "/" + new Date(item.ngayDuyet).getFullYear() + " " + new Date(item.ngayDuyet).getHours() + ":" + new Date(item.ngayDuyet).getMinutes() : ""}
+                                                <Descriptions.Item label="Chức vụ">
+                                                    {item.tenBoPhanGui}
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
-                                                <Descriptions.Item label="Thời gian hàng về">
-                                                    {item.thoiGianGuiSanPham ? new Date(item.thoiGianGuiSanPham).getDate() + "/" + (new Date(item.thoiGianGuiSanPham).getMonth() + 1) + "/" + new Date(item.thoiGianGuiSanPham).getFullYear() + " " + new Date(item.thoiGianGuiSanPham).getHours() + ":" + new Date(item.thoiGianGuiSanPham).getMinutes() : ""}
+                                                <Descriptions.Item label="Ngày duyệt">
+                                                    {item.ngayDuyet ? new Date(item.ngayDuyet).getDate() + "/" + (new Date(item.ngayDuyet).getMonth() + 1) + "/" + new Date(item.ngayDuyet).getFullYear() + " " + new Date(item.ngayDuyet).getHours() + ":" + new Date(item.ngayDuyet).getMinutes() : ""}
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>

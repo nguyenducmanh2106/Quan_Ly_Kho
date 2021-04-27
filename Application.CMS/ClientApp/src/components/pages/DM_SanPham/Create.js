@@ -7,13 +7,14 @@ import * as AntdIcons from '@ant-design/icons';
 import { url_upload, getCurrentLogin } from "../../../utils/helpers";
 import {
     Form, Input, InputNumber, Button, Modal, Select,
-    Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse, Divider, notification
+    Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse, Divider, notification, Spin
 } from 'antd';
 const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
     const [dataLoaiSP, setDataLoaiSP] = useState([]);
     const [dataThuongHieu, setDataThuongHieu] = useState([]);
     const [dataXuatXu, setDataXuatXu] = useState([]);
     const [dataDonViTinh, setDataDonViTinh] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
@@ -57,6 +58,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         getDonViTinh()
     }, [])
     const onSubmit = (data) => {
+        setIsLoading(true)
         var obj = {
             ...data,
             Avatar: fileList.length > 0 ? fileList[0].name : null,
@@ -105,6 +107,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         var result = await postAPI('api/dm_sanpham/create', JSON.stringify(obj))
         if (result.status) {
             //setAction(true)
+            setIsLoading(!result.status)
             notification.success({
                 message: result.message,
                 duration: 3
@@ -113,6 +116,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
 
         }
         else {
+            setIsLoading(result.status)
             notification.error({
                 message: result.message,
                 duration: 3
@@ -121,299 +125,301 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         }
     }
     return (
-        <Form
-            form={form}
-            name="nest-messages" onFinish={onSubmit} id="myFormCreate"
-            validateMessages={validateMessages}
-            initialValues={{
-                ["ThuongHieu_Id"]: 0,
-                ["XuatXu_Id"]: 0,
-                ["LoaiSP"]: 0,
-                ["DonViTinh_Id"]: 0
-            }}
-        >
-            <Row gutter={24}>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 16 }}>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.InfoCircleOutlined />
+        <Spin spinning={isLoading}>
+            <Form
+                form={form}
+                name="nest-messages" onFinish={onSubmit} id="myFormCreate"
+                validateMessages={validateMessages}
+                initialValues={{
+                    ["ThuongHieu_Id"]: 0,
+                    ["XuatXu_Id"]: 0,
+                    ["LoaiSP"]: 0,
+                    ["DonViTinh_Id"]: 0
+                }}
+            >
+                <Row gutter={24}>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 16 }}>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.InfoCircleOutlined />
                                                     Thông tin
                                                 </Space>
-                        }>
-                        <Row>
-                            <Col>
-                                <Form.Item name="Name" label="Tên sản phẩm" rules={[{ required: true }]}>
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                            <Col>
-                                <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="Barcode" label="Mã vạch">
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="KhoiLuong" label="Khối lượng" >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="DonViTinh_Id" label="Đơn vị tính">
-                                            <Select
-                                                showSearch
-                                                //style={{ width: 200 }}
-                                                placeholder="-- Chọn --"
-                                                optionFilterProp="children"
-                                                filterOption={(input, option) =>
-                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                                }
-                                                filterSort={(optionA, optionB) =>
-                                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                                }
-                                            >
-                                                <Option value={0}>-- Chọn --</Option>
-                                                {dataDonViTinh.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                            }>
+                            <Row>
+                                <Col>
+                                    <Form.Item name="Name" label="Tên sản phẩm" rules={[{ required: true }]}>
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                                <Col>
+                                    <Row gutter={24}>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="Barcode" label="Mã vạch">
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="KhoiLuong" label="Khối lượng" >
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row gutter={24}>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="DonViTinh_Id" label="Đơn vị tính">
+                                                <Select
+                                                    showSearch
+                                                    //style={{ width: 200 }}
+                                                    placeholder="-- Chọn --"
+                                                    optionFilterProp="children"
+                                                    filterOption={(input, option) =>
+                                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                    }
+                                                    filterSort={(optionA, optionB) =>
+                                                        optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                                    }
+                                                >
+                                                    <Option value={0}>-- Chọn --</Option>
+                                                    {dataDonViTinh.map(item => {
+                                                        return (
+                                                            <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                        )
+                                                    })}
+                                                </Select>
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
 
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Form.Item name="Status" label="" valuePropName="checked">
-                                    <Checkbox>Đang giao dịch</Checkbox>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Card>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.DollarOutlined />
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Form.Item name="Status" label="" valuePropName="checked">
+                                        <Checkbox>Đang giao dịch</Checkbox>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </Card>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.DollarOutlined />
                                                     Giá sản phẩm
                                                 </Space>
-                        }
-                    >
-                        <Row>
-                            <Col>
-                                <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="GiaBanLe" label="Giá bán lẻ">
-                                            <InputNumber
-                                                style={{ width: "100%" }}
-                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="GiaBanBuon" label="Giá bán buôn">
-                                            <InputNumber
-                                                style={{ width: "100%" }}
-                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="GiaNhap" label="Giá nhập">
-                                            <InputNumber
-                                                style={{ width: "100%" }}
-                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="GiaCu" label="Giá cũ">
-                                            <InputNumber
-                                                style={{ width: "100%" }}
-                                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Card>
-                    <Collapse expandIconPosition="right" style={{ marginTop: 16 }}>
-                        <Collapse.Panel header="Thuộc tính" key="1">
-                            <Form.List name="ThuocTinhs">
-                                {(fields, { add, remove }) => (
-                                    <>
-                                        {fields.map(({ key, name, fieldKey, ...restField }) => (
-                                            <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name, 'name']}
-                                                    fieldKey={[fieldKey, 'name']}
-                                                >
-                                                    <Input placeholder="Tên thuộc tính" />
-                                                </Form.Item>
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name, 'value']}
-                                                    fieldKey={[fieldKey, 'value']}
-                                                >
-                                                    <Input placeholder="Giá trị" />
-                                                </Form.Item>
-                                                <AntdIcons.MinusCircleOutlined onClick={() => remove(name)} />
-                                            </Space>
-                                        ))}
-                                        <Form.Item>
-                                            <Button type="dashed" onClick={() => add()} icon={<AntdIcons.PlusOutlined />}>
-                                                Thêm thuộc tính
+                            }
+                        >
+                            <Row>
+                                <Col>
+                                    <Row gutter={24}>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="GiaBanLe" label="Giá bán lẻ">
+                                                <InputNumber
+                                                    style={{ width: "100%" }}
+                                                    formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                    parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="GiaBanBuon" label="Giá bán buôn">
+                                                <InputNumber
+                                                    style={{ width: "100%" }}
+                                                    formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                    parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row gutter={24}>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="GiaNhap" label="Giá nhập">
+                                                <InputNumber
+                                                    style={{ width: "100%" }}
+                                                    formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                    parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                            <Form.Item name="GiaCu" label="Giá cũ">
+                                                <InputNumber
+                                                    style={{ width: "100%" }}
+                                                    formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                    parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Card>
+                        <Collapse expandIconPosition="right" style={{ marginTop: 16 }}>
+                            <Collapse.Panel header="Thuộc tính" key="1">
+                                <Form.List name="ThuocTinhs">
+                                    {(fields, { add, remove }) => (
+                                        <>
+                                            {fields.map(({ key, name, fieldKey, ...restField }) => (
+                                                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                                    <Form.Item
+                                                        {...restField}
+                                                        name={[name, 'name']}
+                                                        fieldKey={[fieldKey, 'name']}
+                                                    >
+                                                        <Input placeholder="Tên thuộc tính" />
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        {...restField}
+                                                        name={[name, 'value']}
+                                                        fieldKey={[fieldKey, 'value']}
+                                                    >
+                                                        <Input placeholder="Giá trị" />
+                                                    </Form.Item>
+                                                    <AntdIcons.MinusCircleOutlined onClick={() => remove(name)} />
+                                                </Space>
+                                            ))}
+                                            <Form.Item>
+                                                <Button type="dashed" onClick={() => add()} icon={<AntdIcons.PlusOutlined />}>
+                                                    Thêm thuộc tính
               </Button>
-                                        </Form.Item>
-                                    </>
-                                )}
-                            </Form.List>
-                        </Collapse.Panel>
-                    </Collapse>
-                </Col>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 8 }}>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.BarsOutlined />
+                                            </Form.Item>
+                                        </>
+                                    )}
+                                </Form.List>
+                            </Collapse.Panel>
+                        </Collapse>
+                    </Col>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 8 }}>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.BarsOutlined />
                                                     Phân loại
                                                 </Space>
-                        }>
-                        <Row>
-                            <Col>
-                                <Form.Item name="LoaiSP" label="Loại sản phẩm">
-                                    <Select
-                                        showSearch
-                                        //style={{ width: 200 }}
-                                        placeholder="-- Chọn --"
-                                        optionFilterProp="children"
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                        filterSort={(optionA, optionB) =>
-                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                        }
-                                    >
-                                        <Option value={0}>-- Chọn --</Option>
-                                        {dataLoaiSP.map(item => {
-                                            return (
-                                                <Option key={item.id} value={item.id}>{item.name}</Option>
-                                            )
-                                        })}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                            <Col>
-                                <Form.Item name="ThuongHieu_Id" label="Thương Hiệu">
-                                    <Select
-                                        showSearch
-                                        //style={{ width: 200 }}
-                                        placeholder="-- Chọn --"
-                                        optionFilterProp="children"
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                        filterSort={(optionA, optionB) =>
-                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                        }
-                                    >
-                                        <Option value={0}>-- Chọn --</Option>
-                                        {dataThuongHieu.map(item => {
-                                            return (
-                                                <Option key={item.id} value={item.id}>{item.name}</Option>
-                                            )
-                                        })}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                            <Col>
-                                <Form.Item name="XuatXu_Id" label="Xuất xứ">
-                                    <Select
-                                        showSearch
-                                        //style={{ width: 200 }}
-                                        placeholder="-- Chọn --"
-                                        optionFilterProp="children"
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                        filterSort={(optionA, optionB) =>
-                                            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                        }
-                                    >
-                                        <Option value={0}>-- Chọn --</Option>
-                                        {dataXuatXu.map(item => {
-                                            return (
-                                                <Option key={item.id} value={item.id}>{item.name}</Option>
-                                            )
-                                        })}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
+                            }>
+                            <Row>
+                                <Col>
+                                    <Form.Item name="LoaiSP" label="Loại sản phẩm">
+                                        <Select
+                                            showSearch
+                                            //style={{ width: 200 }}
+                                            placeholder="-- Chọn --"
+                                            optionFilterProp="children"
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            filterSort={(optionA, optionB) =>
+                                                optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                            }
+                                        >
+                                            <Option value={0}>-- Chọn --</Option>
+                                            {dataLoaiSP.map(item => {
+                                                return (
+                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                )
+                                            })}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                                <Col>
+                                    <Form.Item name="ThuongHieu_Id" label="Thương Hiệu">
+                                        <Select
+                                            showSearch
+                                            //style={{ width: 200 }}
+                                            placeholder="-- Chọn --"
+                                            optionFilterProp="children"
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            filterSort={(optionA, optionB) =>
+                                                optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                            }
+                                        >
+                                            <Option value={0}>-- Chọn --</Option>
+                                            {dataThuongHieu.map(item => {
+                                                return (
+                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                )
+                                            })}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                                <Col>
+                                    <Form.Item name="XuatXu_Id" label="Xuất xứ">
+                                        <Select
+                                            showSearch
+                                            //style={{ width: 200 }}
+                                            placeholder="-- Chọn --"
+                                            optionFilterProp="children"
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            filterSort={(optionA, optionB) =>
+                                                optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                            }
+                                        >
+                                            <Option value={0}>-- Chọn --</Option>
+                                            {dataXuatXu.map(item => {
+                                                return (
+                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                )
+                                            })}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
 
-                        </Row>
-                    </Card>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.FileImageOutlined />
+                            </Row>
+                        </Card>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.FileImageOutlined />
                                                     Ảnh sản phẩm
                                                 </Space>
-                        }
-                    >
-                        <Row>
-                            <Col>
-                                <Form.Item name="Avatar" label="">
-                                    <ImgCrop rotate>
-                                        <Upload
-                                            accept="image/*"
-                                            action={url_upload}
-                                            listType="picture-card"
-                                            fileList={fileList}
-                                            onChange={onChange}
-                                            onPreview={onPreview}
-                                        //beforeUpload={beforeUpload}
-                                        >
-                                            {fileList.length < 1 && '+ Upload'}
-                                        </Upload>
-                                    </ImgCrop>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Divider />
-                        <Row>
-                            <Col>
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
-                                        Lưu
+                            }
+                        >
+                            <Row>
+                                <Col>
+                                    <Form.Item name="Avatar" label="">
+                                        <ImgCrop rotate>
+                                            <Upload
+                                                accept="image/*"
+                                                action={url_upload}
+                                                listType="picture-card"
+                                                fileList={fileList}
+                                                onChange={onChange}
+                                                onPreview={onPreview}
+                                            //beforeUpload={beforeUpload}
+                                            >
+                                                {fileList.length < 1 && '+ Upload'}
+                                            </Upload>
+                                        </ImgCrop>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Divider />
+                            <Row>
+                                <Col>
+                                    <Form.Item>
+                                        <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
+                                            Lưu
                                     </Button>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
-            </Row>
-        </Form >
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </Card>
+                    </Col>
+                </Row>
+            </Form >
+        </Spin>
     )
 }
 export default ModalCreate;

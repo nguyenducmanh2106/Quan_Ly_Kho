@@ -263,5 +263,16 @@ namespace Application.Services.UserServices
                 throw ex;
             }
         }
+        public string GetTenChucVu(int Id)
+        {
+            try
+            {
+                return _unitOfWork.UserRepository.GetTenChucVu(Id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

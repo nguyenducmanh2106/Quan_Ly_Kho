@@ -22,6 +22,7 @@ const FormUpdate = () => {
     const [dataXuatXu, setDataXuatXu] = useState([]);
     const [dataDonViTinh, setDataDonViTinh] = useState([]);
     const [SanPhamUpdate, setSanPhamUpdate] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const { Option } = Select;
 
     useEffect(() => {
@@ -93,6 +94,7 @@ const FormUpdate = () => {
         getSanPhamUpdate();
     }, [])
     const onSubmit = (data) => {
+        setIsLoading(true)
         var obj = {
             ...data,
             Id: SanPhamUpdate.id,
@@ -144,12 +146,14 @@ const FormUpdate = () => {
         var result = await postAPI('api/dm_sanpham/update', JSON.stringify(obj))
         if (result.status) {
             //setAction(true)
+            setIsLoading(!result.status)
             notification.success({
                 message: result.message,
                 duration: 3
             })
         }
         else {
+            setIsLoading(result.status)
             notification.error({
                 message: result.message,
                 duration: 3
