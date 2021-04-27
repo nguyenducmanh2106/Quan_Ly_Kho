@@ -296,7 +296,7 @@ function Index({ onSetSanPhamUpdate }) {
     }
     const onUpdateItem = (item) => {
         history.push({
-            pathname: `/dm_denghidieudong/update/${item.id}`,
+            pathname: `/dm_denghidieudong/update/${item.code}`,
             state: { controller: "Yêu cầu nhập hàng", action: "Cập nhật" }
         });
     }

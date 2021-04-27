@@ -151,12 +151,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                             <Col>
                                 <Row gutter={24}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="Code" label="Mã sản phẩm" >
+                                        <Form.Item name="Barcode" label="Mã vạch">
                                             <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="Barcode" label="Mã vạch">
+                                        <Form.Item name="KhoiLuong" label="Khối lượng" >
                                             <Input />
                                         </Form.Item>
                                     </Col>
@@ -164,11 +164,6 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                             </Col>
                             <Col>
                                 <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="KhoiLuong" label="Khối lượng" >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="DonViTinh_Id" label="Đơn vị tính">
                                             <Select
@@ -192,6 +187,9 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             </Select>
                                         </Form.Item>
                                     </Col>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+
+                                    </Col>
                                 </Row>
                             </Col>
                             <Col>
@@ -199,7 +197,6 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                     <Checkbox>Đang giao dịch</Checkbox>
                                 </Form.Item>
                             </Col>
-
                         </Row>
                     </Card>
                     <Card

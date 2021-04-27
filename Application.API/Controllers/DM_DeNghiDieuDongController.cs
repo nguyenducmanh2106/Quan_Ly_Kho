@@ -47,7 +47,7 @@ namespace Application.API.Controllers
                 var result = dataExist.Select(g => new DM_DeNghiDieuDongs()
                 {
                     Id = g.Id,
-                    SoDeNghiDieuDong = g.SoDeNghiDieuDong,
+                    Code = g.Code,
                     Created_At = g.Created_At,
                     Created_By = g.Created_By,
                     Updated_At = g.Updated_At,
@@ -68,7 +68,7 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenChiNhanhGui = g.tenChiNhanhNhan,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
-                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Id)
+                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Code)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -111,7 +111,7 @@ namespace Application.API.Controllers
                 var result = dataExist.Select(g => new DM_DeNghiDieuDongs()
                 {
                     Id = g.Id,
-                    SoDeNghiDieuDong = g.SoDeNghiDieuDong,
+                    Code = g.Code,
                     Created_At = g.Created_At,
                     Created_By = g.Created_By,
                     Updated_At = g.Updated_At,
@@ -132,7 +132,7 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenChiNhanhGui = g.tenChiNhanhNhan,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
-                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Id)
+                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Code)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -164,15 +164,15 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("find-by-id")]
-        public async Task<IActionResult> FindById(int Id = -1)
+        public async Task<IActionResult> FindById(string Code = "")
         {
             try
             {
-                var g = await _manager.FindById(Id);
+                var g = await _manager.FindById(Code);
                 var result = new DM_DeNghiDieuDongs()
                 {
                     Id = g.Id,
-                    SoDeNghiDieuDong = g.SoDeNghiDieuDong,
+                    Code = g.Code,
                     Created_At = g.Created_At,
                     Created_By = g.Created_By,
                     Updated_At = g.Updated_At,
@@ -193,7 +193,7 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenChiNhanhGui = g.tenChiNhanhNhan,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
-                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Id)
+                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Code)
                 };
                 MessageSuccess success = new MessageSuccess()
                 {
@@ -219,7 +219,7 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ChiTietDeNghiDieuDongs)
                     {
-                        item.ID_DeNghiDieuDong = data.Id;
+                        item.ID_DeNghiDieuDong = data.Code;
                         await _managerThuocTinhSP.CreateOrUpdate(item);
                     }
                 }
@@ -247,14 +247,11 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ChiTietDeNghiDieuDongs)
                     {
-                        if (item.id == 0)
-                        {
-                            item.ID_DeNghiDieuDong = obj.Id;
-                            await _managerThuocTinhSP.CreateOrUpdate(item);
-                        }
-                        else await _managerThuocTinhSP.CreateOrUpdate(item);
+                        item.ID_DeNghiDieuDong = obj.Code;
+                        item.id = 0;
                     }
                 }
+                await _managerThuocTinhSP.BulkInsert(obj.ChiTietDeNghiDieuDongs);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS
@@ -275,7 +272,7 @@ namespace Application.API.Controllers
             {
 
                 var data = await _manager.Delete(obj);
-                await _managerThuocTinhSP.DeleteByID_DeNghiDieuDong(data.Id);
+                await _managerThuocTinhSP.DeleteByID_DeNghiDieuDong(data.Code);
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS

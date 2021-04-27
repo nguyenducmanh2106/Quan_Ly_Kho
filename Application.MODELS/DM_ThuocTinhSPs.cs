@@ -18,6 +18,6 @@ namespace Application.MODELS
         [Column("Value")]
         public string value { get; set; }
         [Column("SanPhamId")]
-        public int sanPhamId { get; set; }
+        public string sanPhamId { get; set; }
     }
 }

@@ -12,8 +12,8 @@ namespace Application.MODELS
         [Key]
         [Required]
         public int Id { get; set; }
-        [Column("SoDeNghiDieuDong")]
-        public string SoDeNghiDieuDong { get; set; }
+        [Column("Code")]
+        public string Code { get; set; }
         [Column("Created_At")]
         public DateTime Created_At { get; set; }
         [Column("Updated_At")]

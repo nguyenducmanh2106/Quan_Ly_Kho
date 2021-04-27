@@ -75,7 +75,7 @@ const ModalCreate = () => {
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
-                ID_SanPham: Number.parseInt(sp[i].querySelector(".ID_SanPham").value),
+                ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
                 SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
             ChiTietDeNghiDieuDongs.push(obj)
@@ -88,7 +88,7 @@ const ModalCreate = () => {
             ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs
         }
         console.log(obj)
-        onPostCreateItem(obj).then()
+        //onPostCreateItem(obj).then()
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -140,7 +140,7 @@ const ModalCreate = () => {
             if (fetchData.status == true) {
                 var data = await fetchData.result
                 var obj = {
-                    ID_SanPham: data.id,
+                    ID_SanPham: data.code,
                     name: data.name,
                     code: data.code,
                     barCode: data.barCode,

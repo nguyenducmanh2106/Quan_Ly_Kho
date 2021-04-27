@@ -96,6 +96,7 @@ const FormUpdate = () => {
         var obj = {
             ...data,
             Id: SanPhamUpdate.id,
+            Code: SanPhamUpdate.code,
             Avatar: fileList.length > 0 ? fileList[0].name : null,
             File_Base64: FileListDefault.length > 0 ? FileListDefault[0].thumbUrl.split(",").splice(1).join("") : null,
             Status: data.Status ? 1 : 2,
@@ -186,12 +187,12 @@ const FormUpdate = () => {
                             <Col>
                                 <Row gutter={24}>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="Code" label="Mã sản phẩm" >
+                                        <Form.Item name="Barcode" label="Mã vạch">
                                             <Input />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="Barcode" label="Mã vạch">
+                                        <Form.Item name="KhoiLuong" label="Khối lượng" >
                                             <Input />
                                         </Form.Item>
                                     </Col>
@@ -199,11 +200,6 @@ const FormUpdate = () => {
                             </Col>
                             <Col>
                                 <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                        <Form.Item name="KhoiLuong" label="Khối lượng" >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
                                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                         <Form.Item name="DonViTinh_Id" label="Đơn vị tính">
                                             <Select
@@ -226,6 +222,9 @@ const FormUpdate = () => {
                                                 })}
                                             </Select>
                                         </Form.Item>
+                                    </Col>
+                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+
                                     </Col>
                                 </Row>
                             </Col>
@@ -303,15 +302,23 @@ const FormUpdate = () => {
                                             <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                                                 <Form.Item
                                                     {...restField}
+                                                    name={[name, 'id']}
+                                                    fieldKey={[fieldKey, 'id']}
+                                                    style={{ display: "none" }}
+                                                >
+                                                    <Input />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
                                                     name={[name, 'name']}
-                                                    fieldKey={[fieldKey, 'first']}
+                                                    fieldKey={[fieldKey, 'name']}
                                                 >
                                                     <Input placeholder="Tên thuộc tính" />
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, 'value']}
-                                                    fieldKey={[fieldKey, 'last']}
+                                                    fieldKey={[fieldKey, 'value']}
                                                 >
                                                     <Input placeholder="Giá trị" />
                                                 </Form.Item>

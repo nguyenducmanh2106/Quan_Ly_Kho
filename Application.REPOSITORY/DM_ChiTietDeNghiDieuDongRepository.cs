@@ -9,7 +9,7 @@ namespace Application.REPOSITORY
 {
     public interface IDM_ChiTietDeNghiDieuDongRepository : IRepository<DM_ChiTietDeNghiDieuDongs>
     {
-        IQueryable<DM_ChiTietDeNghiDieuDongs> GetData_ByID_DieuDong(int ID_DieuDong);
+        IQueryable<DM_ChiTietDeNghiDieuDongs> GetData_ByID_DieuDong(string ID_DieuDong);
     }
     public class DM_ChiTietDeNghiDieuDongRepository : Repository<DM_ChiTietDeNghiDieuDongs>, IDM_ChiTietDeNghiDieuDongRepository
     {
@@ -19,12 +19,12 @@ namespace Application.REPOSITORY
             db = dbContext;
         }
 
-        public IQueryable<DM_ChiTietDeNghiDieuDongs> GetData_ByID_DieuDong(int ID_DieuDong)
+        public IQueryable<DM_ChiTietDeNghiDieuDongs> GetData_ByID_DieuDong(string ID_DieuDong)
         {
             try
             {
                 var data = (from chitiet in db.DM_ChiTietDeNghiDieuDongs
-                            join sanpham in db.DM_SanPhams on chitiet.ID_SanPham equals sanpham.Id into SanPhamDefault
+                            join sanpham in db.DM_SanPhams on chitiet.ID_SanPham equals sanpham.Code into SanPhamDefault
                             from sanPhamEmty in SanPhamDefault.DefaultIfEmpty()
                             join donViTinh in db.DM_DonViTinhs on sanPhamEmty.DonViTinh_Id equals donViTinh.Id into DVTDefault
                             from donvitinhEmty in DVTDefault.DefaultIfEmpty()

@@ -14,7 +14,7 @@ namespace Application.REPOSITORY
     {
         List<DM_DeNghiDieuDongs> getDataTheoChiNhanhGui(DeNghiDieuDongFilterModel inputModel);
         List<DM_DeNghiDieuDongs> getDataTheoChiNhanhNhan(DeNghiDieuDongFilterModel inputModel);
-        DM_DeNghiDieuDongs FindByID_Repository(int Id);
+        DM_DeNghiDieuDongs FindByID_Repository(string Code);
     }
     public class DM_DeNghiDieuDongRepository : Repository<DM_DeNghiDieuDongs>, IDM_DeNghiDieuDongRepository
     {
@@ -23,7 +23,7 @@ namespace Application.REPOSITORY
         {
             db = dbContext;
         }
-        public DM_DeNghiDieuDongs FindByID_Repository(int Id)
+        public DM_DeNghiDieuDongs FindByID_Repository(string Code)
         {
             try
             {
@@ -31,11 +31,11 @@ namespace Application.REPOSITORY
                      from denghi in db.DM_DeNghiDieuDongs
                      join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                      from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
-                     where (denghi.Id == Id)
+                     where (denghi.Code == Code)
                      select new DM_DeNghiDieuDongs()
                      {
                          Id = denghi.Id,
-                         SoDeNghiDieuDong = denghi.SoDeNghiDieuDong,
+                         Code = denghi.Code,
                          Created_At = denghi.Created_At,
                          Created_By = denghi.Created_By,
                          Updated_At = denghi.Updated_At,
@@ -75,13 +75,13 @@ namespace Application.REPOSITORY
                     join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                     from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
                     where ((inputModel.LoaiDeNghi_Id == -1 || denghi.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )
                     select new DM_DeNghiDieuDongs()
                     {
                         Id = denghi.Id,
-                        SoDeNghiDieuDong = denghi.SoDeNghiDieuDong,
+                        Code = denghi.Code,
                         Created_At = denghi.Created_At,
                         Created_By = denghi.Created_By,
                         Updated_At = denghi.Updated_At,
@@ -190,13 +190,13 @@ namespace Application.REPOSITORY
                     join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                     from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
                     where ((inputModel.LoaiDeNghi_Id == -1 || denghi.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhGui == -1 || denghi.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
                     )
                     select new DM_DeNghiDieuDongs()
                     {
                         Id = denghi.Id,
-                        SoDeNghiDieuDong = denghi.SoDeNghiDieuDong,
+                        Code = denghi.Code,
                         Created_At = denghi.Created_At,
                         Created_By = denghi.Created_By,
                         Updated_At = denghi.Updated_At,

@@ -24,7 +24,7 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
         {
             try
             {
-                var arrayItemDelete = listItemDelete.Split(",").Select(Int64.Parse).ToList();
+                var arrayItemDelete = listItemDelete.Split(",");
                 foreach (var item in arrayItemDelete)
                 {
                     var exist = await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.sanPhamId == item);
@@ -43,22 +43,40 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
             }
         }
 
+        public async Task BulkUpdate(List<DM_ThuocTinhSPs> obj)
+        {
+            var data = await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.sanPhamId == obj[0].sanPhamId);
+            if (data != null)
+            {
+                await _unitOfWork.DM_ThuocTinhSPRepository.BulkDelete(data);
+                await _unitOfWork.SaveChange();
+            }
+            List<DM_ThuocTinhSPs> insertObj = obj.Select(g => new DM_ThuocTinhSPs()
+            {
+                name = g.name,
+                value = g.value,
+                sanPhamId = g.sanPhamId
+            }).ToList();
+            await _unitOfWork.DM_ThuocTinhSPRepository.BulkInsert(insertObj);
+        }
+
         public async Task CreateOrUpdate(DM_ThuocTinhSPs obj)
         {
             try
             {
-                if (obj.id == 0)
+                var data = await _unitOfWork.DM_ThuocTinhSPRepository.FindBy(g => g.sanPhamId == obj.sanPhamId);
+                if (data != null)
                 {
-                    await _unitOfWork.DM_ThuocTinhSPRepository.Add(obj);
-                }
-                else
-                {
-                    var data = await _unitOfWork.DM_ThuocTinhSPRepository.Get(g => g.id == obj.id);
-                    data.name = obj.name;
-                    data.value = obj.value;
-                    await _unitOfWork.DM_ThuocTinhSPRepository.Update(data);
+                    await _unitOfWork.DM_ThuocTinhSPRepository.BulkDelete(data);
                     await _unitOfWork.SaveChange();
                 }
+                var insertObj = new DM_ThuocTinhSPs()
+                {
+                    name = obj.name,
+                    sanPhamId = obj.sanPhamId,
+                    value = obj.value
+                };
+                await _unitOfWork.DM_ThuocTinhSPRepository.Add(insertObj);
             }
             catch (Exception ex)
             {
@@ -66,7 +84,7 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
             }
         }
 
-        public async Task DeleteBySanPham(int SanPhamId)
+        public async Task DeleteBySanPham(string SanPhamId)
         {
             try
             {
@@ -84,7 +102,7 @@ namespace Application.Services.DM_ThuocTinhSPSerVices
             }
         }
 
-        public async Task<List<DM_ThuocTinhSPs>> GetAllDataBySanPham(int SanPhamId)
+        public async Task<List<DM_ThuocTinhSPs>> GetAllDataBySanPham(string SanPhamId)
         {
             try
             {

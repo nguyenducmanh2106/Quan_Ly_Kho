@@ -101,11 +101,11 @@ namespace Application.API.Controllers
             try
             {
                 var data = await _manager.GetAllDataActive();
-                    MessageSuccess success = new MessageSuccess()
-                    {
-                        result = data
-                    };
-                    return Ok(success);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
             }
             catch (Exception ex)
             {

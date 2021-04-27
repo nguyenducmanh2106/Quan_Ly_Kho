@@ -295,7 +295,7 @@ function Index({ onSetSanPhamUpdate }) {
     }
     const onUpdateItem = (item) => {
         history.push({
-            pathname: `/dm_sanpham/update/${item.id}`,
+            pathname: `/dm_sanpham/update/${item.code}`,
             state: { controller: "Danh mục sản phẩm", action: "Cập nhật" }
         });
     }

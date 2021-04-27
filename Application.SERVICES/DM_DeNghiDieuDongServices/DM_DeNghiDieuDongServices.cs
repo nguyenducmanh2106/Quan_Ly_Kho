@@ -28,6 +28,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             try
             {
                 obj.Created_At = DateTime.Now;
+                obj.Code = Common.GenerateCodeItem();
                 var data = await _unitOfWork.DM_DeNghiDieuDongRepository.Add(obj);
                 return data;
             }
@@ -41,7 +42,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         {
             try
             {
-                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Id == obj.Id);
+                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Code == obj.Code);
                 if (exist == null)
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
@@ -72,8 +73,8 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         {
             try
             {
-                var arrayItemDelete = listItemDelete.Split(",").Select(Int32.Parse).ToList();
-                var listItem = await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => arrayItemDelete.Contains(g.Id));
+                var arrayItemDelete = listItemDelete.Split(",");
+                var listItem = await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => arrayItemDelete.Contains(g.Code));
                 await _unitOfWork.DM_DeNghiDieuDongRepository.BulkDelete(listItem.ToList());
             }
             catch (Exception ex)
@@ -87,12 +88,11 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             //await _unitOfWork.CreateTransaction();
             try
             {
-                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Id == obj.Id);
+                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Code == obj.Code);
                 if (exist == null)
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
-                exist.SoDeNghiDieuDong = obj.SoDeNghiDieuDong;
                 exist.Status = (int)ContentStatusEnum.Approving;
                 exist.Updated_At = DateTime.Now.Date;
                 exist.Updated_By = obj.Updated_By;
@@ -113,12 +113,12 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         }
 
 
-        public async Task<DM_DeNghiDieuDongs> FindById(int id)
+        public async Task<DM_DeNghiDieuDongs> FindById(string Code)
         {
             try
             {
                 //return await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Id == id);
-                var result = _unitOfWork.DM_DeNghiDieuDongRepository.FindByID_Repository(id);
+                var result = _unitOfWork.DM_DeNghiDieuDongRepository.FindByID_Repository(Code);
                 return result;
             }
             catch (Exception ex)
@@ -130,7 +130,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         public async Task<long> ToTalCountNhan(DeNghiDieuDongFilterModel inputModel)
         {
             var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || g.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
@@ -192,7 +192,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         public async Task<long> ToTalCountGui(DeNghiDieuDongFilterModel inputModel)
         {
             var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhGui == -1 || g.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
                     )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))

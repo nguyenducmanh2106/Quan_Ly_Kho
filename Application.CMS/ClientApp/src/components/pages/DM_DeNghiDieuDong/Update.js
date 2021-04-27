@@ -69,7 +69,7 @@ const FormUpdate = () => {
             }
         }
         async function getItemUpdate() {
-            var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Id=${id}`);
+            var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Code=${id}`);
             if (fetchData.status == true) {
                 var data = fetchData.result;
                 setItemUpdte(data)
@@ -94,6 +94,7 @@ const FormUpdate = () => {
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
+                id: sp[i].querySelector(".id_chitietdieudong").value ? Number.parseInt(sp[i].querySelector(".id_chitietdieudong").value) : 0,
                 ID_SanPham: Number.parseInt(sp[i].querySelector(".ID_SanPham").value),
                 SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
@@ -101,13 +102,14 @@ const FormUpdate = () => {
         }
         var obj = {
             ...data,
+            id: ItemUpdate.id,
             Status: 1,
             Created_By: getCurrentLogin().id,
             ID_ChiNhanhGui: getCurrentLogin().donViId,
             ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs
         }
         console.log(obj)
-        //onPostCreateItem(obj).then()
+        onPostUpdateItem(obj).then()
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -119,10 +121,10 @@ const FormUpdate = () => {
             range: '${label} must be between ${min} and ${max}',
         },
     };
-    async function onPostCreateItem(obj) {
+    async function onPostUpdateItem(obj) {
         console.log(obj)
         //setConfirmLoading(true)
-        var result = await postAPI('api/dm_denghidieudong/create', JSON.stringify(obj))
+        var result = await postAPI('api/dm_denghidieudong/update', JSON.stringify(obj))
         if (result.status) {
             //setAction(true)
             notification.success({
@@ -229,6 +231,7 @@ const FormUpdate = () => {
                     </td>
                     <td>
                         <input type="hidden" className="ID_SanPham" defaultValue={item.iD_SanPham} />
+                        <input type="hidden" className="id_chitietdieudong" defaultValue={item.id} />
                         <InputNumber min={1} max={99} defaultValue={item.soLuongYeuCau} />
                     </td>
                     <td>

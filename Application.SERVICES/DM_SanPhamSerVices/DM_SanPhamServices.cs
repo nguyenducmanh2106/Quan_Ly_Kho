@@ -28,6 +28,7 @@ namespace Application.Services.DM_SanPhamSerVices
         {
             try
             {
+                obj.Code = Common.GenerateCodeItem();
                 obj.Created_At = DateTime.Now.Date;
                 var data = await _unitOfWork.DM_SanPhamRepository.Add(obj);
                 return data;
@@ -111,7 +112,6 @@ namespace Application.Services.DM_SanPhamSerVices
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
                 exist.Name = obj.Name;
-                exist.Code = obj.Code;
                 exist.Barcode = obj.Barcode;
                 exist.LoaiSP = obj.LoaiSP;
                 exist.ThuongHieu_Id = obj.ThuongHieu_Id;
@@ -144,12 +144,12 @@ namespace Application.Services.DM_SanPhamSerVices
         }
 
 
-        public async Task<DM_SanPhams> FindById(int id)
+        public async Task<DM_SanPhams> FindById(string Code)
         {
             try
             {
                 //return await _unitOfWork.DM_SanPhamRepository.Get(g => g.Id == id);
-                return _unitOfWork.DM_SanPhamRepository.FindByID_Repository(id);
+                return _unitOfWork.DM_SanPhamRepository.FindByID_Repository(Code);
             }
             catch (Exception ex)
             {

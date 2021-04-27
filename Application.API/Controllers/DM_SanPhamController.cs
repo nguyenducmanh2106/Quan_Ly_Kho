@@ -107,11 +107,11 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("find-by-id")]
-        public async Task<IActionResult> FindById(int Id = -1)
+        public async Task<IActionResult> FindById(string Code = "")
         {
             try
             {
-                var g = await _manager.FindById(Id);
+                var g = await _manager.FindById(Code);
                 var data = new DM_SanPhams()
                 {
                     Id = g.Id,
@@ -174,7 +174,7 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ThuocTinhs)
                     {
-                        item.sanPhamId = data.Id;
+                        item.sanPhamId = data.Code;
                         await _managerThuocTinhSP.CreateOrUpdate(item);
                     }
                 }
@@ -227,14 +227,11 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ThuocTinhs)
                     {
-                        if (item.id == 0)
-                        {
-                            item.sanPhamId = obj.Id;
-                            await _managerThuocTinhSP.CreateOrUpdate(item);
-                        }
-                        else await _managerThuocTinhSP.CreateOrUpdate(item);
+                        item.id = 0;
+                        item.sanPhamId = obj.Code;
                     }
                 }
+                await _managerThuocTinhSP.BulkUpdate(obj.ThuocTinhs);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS
@@ -278,7 +275,7 @@ namespace Application.API.Controllers
             {
 
                 var data = await _manager.Delete(obj);
-                await _managerThuocTinhSP.DeleteBySanPham(data.Id);
+                await _managerThuocTinhSP.DeleteBySanPham(data.Code);
                 MessageSuccess success = new MessageSuccess()
                 {
                     message = MessageConst.DELETE_SUCCESS

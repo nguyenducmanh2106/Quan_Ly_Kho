@@ -8,6 +8,13 @@ namespace Application.UTILS
 {
     public class Common
     {
+        public static string GenerateCodeItem()
+        {
+            return DateTime.Now.Year.ToString() +
+            DateTime.Now.Month.ToString() +
+            DateTime.Now.Day.ToString() +
+            DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();
+        }
         //private static APPDbContext db = new APPDbContext();
 
         //public static string getCategoryTemp(string _table = "", string _field = "*", Int32 _currentId = 0)
@@ -149,10 +156,10 @@ namespace Application.UTILS
             {
                 for (int i = 0; i < Level; i++)
                 {
-                    alias+="--";
+                    alias += "--";
                 }
             }
-            return alias+" "+Name;
+            return alias + " " + Name;
         }
         public static string GetNameFile(string LinkFile)
         {
@@ -436,34 +443,34 @@ namespace Application.UTILS
                 }
             }
         }
-//        public static List<int> GetFullChild(string table, int idCate = 0, string ParentID = "ParentId", string id = "Id")
-//        {
-//            using (var db = new dbContext())
-//            {
-//                var lstId = new List<int>();
-//                lstId = db.Database.SqlQuery<int>(@"WITH newtable AS(
-//select * FROM " + table + @" WHERE ID = " + idCate + @"
-//UNION ALL
-//select u.* FROM " + table + @" u INNER JOIN newtable new ON u." + ParentID + @" = new." + id + @"
-//)
-//select " + id + @" FROM newtable").ToList();
-//                return lstId;
-//            }
-//        }
-//        public static List<int> GetFullParent(string table, int idCate = 0, string ParentID = "ParentId", string id = "Id")
-//        {
-//            using (var db = new dbContext())
-//            {
-//                var lstId = new List<int>();
-//                lstId = db.Database.SqlQuery<int>(@"WITH newtable AS(
-//select * FROM " + table + @" WHERE ID = " + idCate + @"
-//UNION ALL
-//select u.* FROM " + table + @" u INNER JOIN newtable new ON u." + id + @" = new." + ParentID + @"
-//)
-//select " + id + @" FROM newtable").ToList();
-//                return lstId;
-//            }
-//        }
+        //        public static List<int> GetFullChild(string table, int idCate = 0, string ParentID = "ParentId", string id = "Id")
+        //        {
+        //            using (var db = new dbContext())
+        //            {
+        //                var lstId = new List<int>();
+        //                lstId = db.Database.SqlQuery<int>(@"WITH newtable AS(
+        //select * FROM " + table + @" WHERE ID = " + idCate + @"
+        //UNION ALL
+        //select u.* FROM " + table + @" u INNER JOIN newtable new ON u." + ParentID + @" = new." + id + @"
+        //)
+        //select " + id + @" FROM newtable").ToList();
+        //                return lstId;
+        //            }
+        //        }
+        //        public static List<int> GetFullParent(string table, int idCate = 0, string ParentID = "ParentId", string id = "Id")
+        //        {
+        //            using (var db = new dbContext())
+        //            {
+        //                var lstId = new List<int>();
+        //                lstId = db.Database.SqlQuery<int>(@"WITH newtable AS(
+        //select * FROM " + table + @" WHERE ID = " + idCate + @"
+        //UNION ALL
+        //select u.* FROM " + table + @" u INNER JOIN newtable new ON u." + id + @" = new." + ParentID + @"
+        //)
+        //select " + id + @" FROM newtable").ToList();
+        //                return lstId;
+        //            }
+        //        }
         //public static string RemoveHtmlTags(string input)
         //{
         //    try

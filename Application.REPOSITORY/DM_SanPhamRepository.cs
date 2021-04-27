@@ -14,7 +14,7 @@ namespace Application.REPOSITORY
     public interface IDM_SanPhamRepository : IRepository<DM_SanPhams>
     {
         List<DM_SanPhams> getDataRepository(SanPhamFilterModel inputModel);
-        DM_SanPhams FindByID_Repository(int Id);
+        DM_SanPhams FindByID_Repository(string Code);
         List<DM_SanPhams> FindByName_Repository(string name);
     }
     public class DM_SanPhamRepository : Repository<DM_SanPhams>, IDM_SanPhamRepository
@@ -25,7 +25,7 @@ namespace Application.REPOSITORY
             db = dbContext;
         }
 
-        public DM_SanPhams FindByID_Repository(int Id)
+        public DM_SanPhams FindByID_Repository(string Code)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace Application.REPOSITORY
                             from loaispEmty in tblLoaiSPDefault.DefaultIfEmpty()
                             join dvt in db.DM_DonViTinhs on sp.DonViTinh_Id equals dvt.Id into tblDVTDefault
                             from dvtEmpty in tblDVTDefault.DefaultIfEmpty()
-                            where (sp.Id == Id)
+                            where (sp.Code == Code)
                             select new DM_SanPhams()
                             {
                                 Id = sp.Id,
@@ -66,7 +66,7 @@ namespace Application.REPOSITORY
                                 tenThuongHieu = thuonghieuEmty.Name ?? "",
                                 tenDonViTinh = dvtEmpty.Name ?? "",
                                 xuatXu = xuatxuEmty.Name ?? "",
-                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
+                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Code).ToList()
                             }
                          ).SingleOrDefault();
                 return data;
@@ -118,7 +118,7 @@ namespace Application.REPOSITORY
                                 tenThuongHieu = thuonghieuEmty.Name ?? "",
                                 tenDonViTinh = dvtEmpty.Name ?? "",
                                 xuatXu = xuatxuEmty.Name ?? "",
-                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
+                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Code).ToList()
                             }
                          ).ToList();
                 return data;
@@ -173,7 +173,7 @@ namespace Application.REPOSITORY
                                 tenThuongHieu = thuonghieuEmty.Name ?? "",
                                 xuatXu = xuatxuEmty.Name ?? "",
                                 tenDonViTinh = donvitinhEmty.Name ?? "",
-                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Id).ToList()
+                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Code).ToList()
                             }
                           );
                 if (!string.IsNullOrEmpty(inputModel.nameSort))
