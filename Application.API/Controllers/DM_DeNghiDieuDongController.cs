@@ -219,11 +219,11 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ChiTietDeNghiDieuDongs)
                     {
+                        item.id = 0;
                         item.ID_DeNghiDieuDong = data.Code;
-                        await _managerThuocTinhSP.CreateOrUpdate(item);
                     }
                 }
-
+                await _managerThuocTinhSP.BulkInsert(obj.ChiTietDeNghiDieuDongs);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS

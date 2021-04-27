@@ -95,14 +95,15 @@ const FormUpdate = () => {
         for (var i = 0; i < sp.length; i++) {
             var obj = {
                 id: sp[i].querySelector(".id_chitietdieudong").value ? Number.parseInt(sp[i].querySelector(".id_chitietdieudong").value) : 0,
-                ID_SanPham: Number.parseInt(sp[i].querySelector(".ID_SanPham").value),
+                ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
                 SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
             ChiTietDeNghiDieuDongs.push(obj)
         }
         var obj = {
             ...data,
-            id: ItemUpdate.id,
+            Id: ItemUpdate.id,
+            Code: ItemUpdate.code,
             Status: 1,
             Created_By: getCurrentLogin().id,
             ID_ChiNhanhGui: getCurrentLogin().donViId,
@@ -157,11 +158,11 @@ const FormUpdate = () => {
 
     const onHandleSelect = async (value, option) => {
         if (value > 0) {
-            var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Id=${value}`);
+            var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
             if (fetchData.status == true) {
                 var data = await fetchData.result
                 var obj = {
-                    iD_SanPham: data.id,
+                    iD_SanPham: data.code,
                     tenSanPham: data.name,
                     code: data.code,
                     barCode: data.barCode,
@@ -389,7 +390,7 @@ const FormUpdate = () => {
                                     notFoundContent="Không tìm thấy sản phẩm"
                                 >
                                     {DataSanPham.map((item) => (
-                                        <Option key={item.id} value={item.id}>
+                                        <Option key={item.code} value={item.code}>
                                             <Row>
                                                 <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
                                                     <Image

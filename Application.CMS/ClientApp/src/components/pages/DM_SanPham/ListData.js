@@ -33,7 +33,7 @@ function Table(props) {
     const onShow = (item) => {
         props.onToggleView();
         props.onShowItem(item)
-        
+
     }
     const update = (item) => {
         //props.onToggleFormpdate();
@@ -88,7 +88,7 @@ function Table(props) {
                     <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                         <td className="ant-table-cell">
                             <label className="ant-checkbox-wrapper">
-                                <input className="checkbox-tick" type="checkbox" id={item.id} onChange={handleInputChange} />
+                                <input className="checkbox-tick" type="checkbox" id={item.code} onChange={handleInputChange} />
                                 <span />
                             </label>
                         </td>

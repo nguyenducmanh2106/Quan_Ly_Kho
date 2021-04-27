@@ -57,7 +57,7 @@ const FormUpdate = () => {
     }, [])
     useEffect(() => {
         let getSanPhamUpdate = async () => {
-            var fetchdata = await getAPI(`api/dm_sanpham/find-by-id?id=${id}`);
+            var fetchdata = await getAPI(`api/dm_sanpham/find-by-id?Code=${id}`);
             if (fetchdata.status == true) {
                 var data = fetchdata.result
                 var img = [

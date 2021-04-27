@@ -174,11 +174,11 @@ namespace Application.API.Controllers
                 {
                     foreach (var item in obj.ThuocTinhs)
                     {
+                        item.id = 0;
                         item.sanPhamId = data.Code;
-                        await _managerThuocTinhSP.CreateOrUpdate(item);
                     }
                 }
-
+                await _managerThuocTinhSP.BulkUpdate(obj.ThuocTinhs);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS

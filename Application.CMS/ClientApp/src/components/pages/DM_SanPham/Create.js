@@ -55,7 +55,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         getThuongHieu()
         getXuatXu()
         getDonViTinh()
-    }, [dataLoaiSP, dataThuongHieu, dataXuatXu, dataDonViTinh])
+    }, [])
     const onSubmit = (data) => {
         var obj = {
             ...data,
