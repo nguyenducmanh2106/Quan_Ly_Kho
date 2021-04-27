@@ -56,7 +56,7 @@ namespace Application.API.Controllers
                     Id = user.Id,
                     FullName = user.FullName,
                     UserName = user.UserName,
-                    pathAvatar = ReadFileToBase64(user.pathAvatar),
+                    pathAvatar = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, user.pathAvatar),
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     UserGroupID = user.UserGroupID,
@@ -67,7 +67,7 @@ namespace Application.API.Controllers
                     isThongKe = user.isThongKe,
                     Status = user.Status,
                     Avatar = user.Avatar,
-                    CapDoDonVi=user.CapDoDonVi
+                    CapDoDonVi = user.CapDoDonVi
                 };
                 var tokenString = GenerateJWTToken(user);
                 MessageSuccess success = new MessageSuccess();
@@ -148,7 +148,7 @@ namespace Application.API.Controllers
                         Id = g.Id,
                         FullName = g.FullName,
                         UserName = g.UserName,
-                        pathAvatar = ReadFileToBase64(g.pathAvatar),
+                        pathAvatar = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.pathAvatar),
                         Email = g.Email,
                         PhoneNumber = g.PhoneNumber,
                         UserGroupID = g.UserGroupID,
@@ -209,18 +209,6 @@ namespace Application.API.Controllers
                     message = MessageConst.CREATE_FAIL
                 });
             }
-        }
-        public dynamic ReadFileToBase64(string filename)
-        {
-            string host = this._hostingEnvironment.WebRootPath;
-            string folderFile = $"{host}/{filename}";
-            string result = "";
-            if (!string.IsNullOrEmpty(filename) && System.IO.File.Exists(folderFile))
-            {
-                byte[] bytes = System.IO.File.ReadAllBytes(folderFile);
-                result = Convert.ToBase64String(bytes);
-            }
-            return result;
         }
         private string GetPathAndFilename(string filename)
         {

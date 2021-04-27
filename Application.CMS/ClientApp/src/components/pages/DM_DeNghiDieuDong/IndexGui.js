@@ -139,12 +139,14 @@ function Index({ onSetSanPhamUpdate }) {
 
     async function onHandleSearch(data) {
         //console.log(data)
+        var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
             Name: data.Name ?? "",
             Status: data.Status ? Number.parseInt(data.Status) : -1,
             page: page,
             pageSize: pageSize,
-            nameSort: nameSort
+            nameSort: nameSort,
+            ID_ChiNhanhGui: Id
         }
         setSearch({
             ...search,
@@ -264,10 +266,12 @@ function Index({ onSetSanPhamUpdate }) {
         setIsVisibleDrawer(true)
     };
     const onSubmitTimKiemNangCao = async (data) => {
+        var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
             ...data,
             NgayTao: search.NgayTao,
-            Name: data.Name ?? ""
+            Name: data.Name ?? "",
+            ID_ChiNhanhGui: Id
         }
         var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui`, JSON.stringify(obj));
         if (fetchData.status == true) {
@@ -296,7 +300,7 @@ function Index({ onSetSanPhamUpdate }) {
             state: { controller: "Yêu cầu nhập hàng", action: "Cập nhật" }
         });
     }
-    const onShowItem = (item) => {
+    const onShowItem = async (item) => {
         setItemShow(item)
     }
     return (
@@ -329,8 +333,8 @@ function Index({ onSetSanPhamUpdate }) {
                                                 }
                                             >
                                                 <Option value="-1">Tất cả</Option>
-                                                <Option value="1">Hoạt động</Option>
-                                                <Option value="2">Ngừng hoạt động</Option>
+                                                <Option value="1">Đang chờ phê duyệt</Option>
+                                                <Option value="2">Đã phê duyệt</Option>
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -419,19 +423,6 @@ function Index({ onSetSanPhamUpdate }) {
                                 onFinish={onSubmitTimKiemNangCao}
                             /*hideRequiredMark*/
                             >
-                                <Row gutter={16}>
-                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
-                                        <Form.Item
-                                            name="Name"
-                                            label="Số điều động"
-                                        >
-                                            <Input placeholder="Số điều động" allowClear />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
-
-                                    </Col>
-                                </Row>
                                 <Row gutter={16}>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item

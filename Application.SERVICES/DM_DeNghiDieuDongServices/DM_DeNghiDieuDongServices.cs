@@ -23,12 +23,11 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             _logger = logger;
         }
 
-
         public async Task<DM_DeNghiDieuDongs> Create(DM_DeNghiDieuDongs obj)
         {
             try
             {
-                obj.Created_At = DateTime.Now.Date;
+                obj.Created_At = DateTime.Now;
                 var data = await _unitOfWork.DM_DeNghiDieuDongRepository.Add(obj);
                 return data;
             }
@@ -119,7 +118,8 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             try
             {
                 //return await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Id == id);
-                return _unitOfWork.DM_DeNghiDieuDongRepository.FindByID_Repository(id);
+                var result = _unitOfWork.DM_DeNghiDieuDongRepository.FindByID_Repository(id);
+                return result;
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         public async Task<long> ToTalCountNhan(DeNghiDieuDongFilterModel inputModel)
         {
             var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || g.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
@@ -192,8 +192,8 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         public async Task<long> ToTalCountGui(DeNghiDieuDongFilterModel inputModel)
         {
             var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
-                    && (inputModel.ID_ChiNhanhGui == -1 || g.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhGui)
+                    && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.ID_ChiNhanhGui == -1 || g.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
                     )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {

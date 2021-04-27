@@ -78,7 +78,7 @@ namespace Application.API.Controllers
                         GiaBanBuon = g.GiaBanBuon,
                         GiaBanLe = g.GiaBanLe,
                         GiaCu = g.GiaCu,
-                        pathAvatar = ReadFileToBase64(g.pathAvatar),
+                        pathAvatar = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.pathAvatar),
                         tenThuongHieu = g.tenThuongHieu,
                         tenLoaiSanPham = g.tenLoaiSanPham,
                         xuatXu = g.xuatXu,
@@ -135,7 +135,7 @@ namespace Application.API.Controllers
                     GiaBanLe = g.GiaBanLe,
                     tenDonViTinh = g.tenDonViTinh,
                     GiaCu = g.GiaCu,
-                    pathAvatar = ReadFileToBase64(g.pathAvatar),
+                    pathAvatar = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.pathAvatar),
                     tenThuongHieu = g.tenThuongHieu,
                     tenLoaiSanPham = g.tenLoaiSanPham,
                     xuatXu = g.xuatXu,
@@ -191,18 +191,6 @@ namespace Application.API.Controllers
                     message = MessageConst.CREATE_FAIL
                 });
             }
-        }
-        public dynamic ReadFileToBase64(string filename)
-        {
-            string host = this._hostingEnvironment.WebRootPath;
-            string folderFile = $"{host}/{filename}";
-            string result = "";
-            if (!string.IsNullOrEmpty(filename) && System.IO.File.Exists(folderFile))
-            {
-                byte[] bytes = System.IO.File.ReadAllBytes(folderFile);
-                result = Convert.ToBase64String(bytes);
-            }
-            return result;
         }
         private string GetPathAndFilename(string filename)
         {
@@ -354,7 +342,7 @@ namespace Application.API.Controllers
                     GiaBanBuon = g.GiaBanBuon,
                     GiaBanLe = g.GiaBanLe,
                     GiaCu = g.GiaCu,
-                    pathAvatar = ReadFileToBase64(g.pathAvatar),
+                    pathAvatar = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.pathAvatar),
                     tenThuongHieu = g.tenThuongHieu,
                     tenLoaiSanPham = g.tenLoaiSanPham,
                     tenDonViTinh = g.tenDonViTinh,

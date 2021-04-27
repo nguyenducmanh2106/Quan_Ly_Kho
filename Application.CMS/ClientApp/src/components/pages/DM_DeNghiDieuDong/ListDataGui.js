@@ -7,7 +7,8 @@ import logoDefault from "../../../static/images/user-profile.jpeg"
 import { Can } from "../../elements/Config_Roles/Can"
 import { getLocalStorage } from "../../../utils/helpers"
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
-import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Table(props) {
     //khai báo state
     //console.log(Can)
@@ -33,7 +34,7 @@ function Table(props) {
     const onShow = (item) => {
         props.onToggleView();
         props.onShowItem(item)
-        
+
     }
     const update = (item) => {
         //props.onToggleFormpdate();
@@ -96,47 +97,47 @@ function Table(props) {
                             {(index + 1) + (page - 1) * pageSize}
                         </td>
                         <td>
-                            <Image
-                                width={70}
-                                src={base64_avatar}
-                                fallback={logoDefault}
-                            />
+                            {new Date(item.created_At).getDate()}/{new Date(item.created_At).getMonth() + 1}/{new Date(item.created_At).getFullYear()} {new Date(item.created_At).getHours()}:{new Date(item.created_At).getMinutes()}
                         </td>
                         <td>
-                            {item.name}
+                            {item.tenChiNhanhNhan}
                         </td>
 
                         <td style={{ textAlign: "center" }}>
-                            {item.code}
+                            {item.tenNguoiGui}
                         </td>
                         <td>
-                            {item.barcode}
+                            {item.thoiGianGuiSanPham ? new Date(item.thoiGianGuiSanPham).getDate() + "/" + (new Date(item.thoiGianGuiSanPham).getMonth() + 1) + "/" + new Date(item.thoiGianGuiSanPham).getFullYear() + " " + new Date(item.thoiGianGuiSanPham).getHours() + ":" + new Date(item.thoiGianGuiSanPham).getMinutes() : ""}
                         </td>
                         <td>
-                            {item.status == 1 ? <Button type="primary" className="success-outline" ghost onClick={() => toggleStatus(2, item)}>
-                                <Badge status="success" text="Đang hoạt động" />
-                            </Button> : <Button type="primary" ghost className="danger-outline" onClick={() => toggleStatus(1, item)}>
-                                    <Badge status="error" text="Ngừng hoạt động" />
-                                </Button>}
+                            {item.status == 1 ? <Badge status="processing" text="Đang chờ phê duyệt" /> : <Badge status="success" text="Đã phê duyệt" />}
                         </td>
                         <td>
                             <Dropdown placement="bottomCenter" overlay={() => (
                                 <Menu>
-                                    <Menu.Item style={{ textAlign: "center" }} key="2">
-                                        <Tooltip title="Thông tin">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="3">
-                                        <Tooltip title="Chỉnh sửa">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="4">
-                                        <Tooltip title="Xoá">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
+                                    {!_isPermission(constantPermission.VIEW, constantPermission.DM_DENGHI_DIEUDONG) ? null :
+                                        <Menu.Item style={{ textAlign: "center" }} key="2">
+                                            <Tooltip title="Thông tin">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
+                                            </Tooltip>
+                                        </Menu.Item>
+                                    }
+
+                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status === 1 ?
+                                        <Menu.Item style={{ textAlign: "center" }} key="3">
+                                            <Tooltip title="Chỉnh sửa">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                            </Tooltip>
+                                        </Menu.Item> : null
+                                    }
+                                    {!_isPermission(constantPermission.DELETE, constantPermission.DM_DENGHI_DIEUDONG) ? null :
+                                        <Menu.Item style={{ textAlign: "center" }} key="4">
+                                            <Tooltip title="Xoá">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                            </Tooltip>
+                                        </Menu.Item>
+                                    }
+
 
                                 </Menu>
                             )} trigger={['click']}>
@@ -157,6 +158,7 @@ function Table(props) {
         for (var item of itemClick) {
             var current_ClassName = item.className;
             //console.log(current_ClassName)
+            console.log(item.getAttribute("id") + " " + name)
             if (item.getAttribute("id") == name) {
                 if (current_ClassName == "sapxep" || current_ClassName == "sapxep _desc") {
                     item.className = "sapxep _asc"
@@ -195,20 +197,22 @@ function Table(props) {
                                             </label>
                                         </th>
                                         <th className="">STT</th>
-                                        <th className="" id="Avatar">
-                                            Ảnh
-                                        </th>
-                                        <th className="sapxep" id="Name" onClick={() => onSort("Name")}>
-                                            Tên
-                                        <i className="fa fa-sort"></i>
-                                        </th>
-
-                                        <th className="sapxep" id="Code" onClick={() => onSort("Code")}>
-                                            Mã
+                                        <th className="sapxep" id="Created_At" onClick={() => onSort("Created_At")}>
+                                            Ngày gửi yêu cầu
                                             <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="" id="Barcode">
-                                            Mã vạch
+                                        <th className="">
+                                            Kho gửi đi
+                                            
+                                        </th>
+
+                                        <th className=""  >
+                                            Người gửi
+                                            
+                                        </th>
+                                        <th className="sapxep" id="ThoiGianHangVe" onClick={() => onSort("ThoiGianHangVe")}>
+                                            Thời gian hàng về
+                                            <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">
                                             Trạng thái

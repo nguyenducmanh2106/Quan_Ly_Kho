@@ -1,12 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import ImgCrop from 'antd-img-crop';
-import { url_upload } from "../../../utils/helpers";
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import {
     Form, Input, InputNumber, Button, Select,
-    Checkbox, Upload, Skeleton, Col, Row, Card,
-    Tooltip, Space, Collapse, Divider, notification, Descriptions, Image
+    Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse, Divider, notification, Descriptions, Image
 } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
@@ -14,7 +11,20 @@ import {
     useParams
 } from "react-router-dom";
 
-const DetailComponent = ({ item }) => {
+const FormUpdate = () => {
+    let { id } = useParams();
+    const [item, setItem] = useState({});
+    useEffect(() => {
+        const getSanPhamUpdate = async () => {
+            var fetchdata = await getAPI(`api/dm_sanpham/find-by-id?id=${id}`);
+            if (fetchdata.status == true) {
+                var data = fetchdata.result
+                setItem(data)
+            }
+        }
+        //gọi hàm
+        getSanPhamUpdate();
+    }, [])
     const renderThuocTinh = () => {
         var thuocTinhs = item?.thuocTinhs;
         console.log(thuocTinhs?.length ?? "")
@@ -152,4 +162,4 @@ const DetailComponent = ({ item }) => {
         </Row>
     )
 }
-export default DetailComponent;
+export default FormUpdate;

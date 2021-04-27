@@ -12,7 +12,6 @@ namespace Application.MODELS
         public APPDbContext(DbContextOptions options) : base(options)
         {
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 

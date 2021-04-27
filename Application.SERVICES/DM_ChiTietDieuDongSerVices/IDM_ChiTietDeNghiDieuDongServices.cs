@@ -13,6 +13,6 @@ namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
         Task CreateOrUpdate(DM_ChiTietDeNghiDieuDongs obj);
         Task DeleteByID_DeNghiDieuDong(int ID_DeNghiDieuDong);
         Task BulkDeleteByID_DeNghiDieuDong(string listItemDelete);
-        Task<List<DM_ChiTietDeNghiDieuDongs>> GetAllDataByID_DeNghiDieuDong(int ID_DeNghiDieuDong);
+        List<DM_ChiTietDeNghiDieuDongs> GetAllDataByID_DeNghiDieuDong(int ID_DeNghiDieuDong);
     }
 }

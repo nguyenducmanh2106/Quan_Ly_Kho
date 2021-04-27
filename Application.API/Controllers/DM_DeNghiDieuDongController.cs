@@ -44,7 +44,32 @@ namespace Application.API.Controllers
                 long total = 0;
                 var stt = (inputModel.page - 1) * inputModel.pageSize;
                 var dataExist = (await _manager.getDataGui(inputModel));
-
+                var result = dataExist.Select(g => new DM_DeNghiDieuDongs()
+                {
+                    Id = g.Id,
+                    SoDeNghiDieuDong = g.SoDeNghiDieuDong,
+                    Created_At = g.Created_At,
+                    Created_By = g.Created_By,
+                    Updated_At = g.Updated_At,
+                    Updated_By = g.Updated_By,
+                    NgayDuyet = g.NgayDuyet,
+                    TaiKhoanDuyet = g.TaiKhoanDuyet,
+                    Status = g.Status,
+                    LoaiDeNghi_Id = g.LoaiDeNghi_Id,
+                    LyDoTuChoi = g.LyDoTuChoi,
+                    ID_BoPhanGui = g.ID_BoPhanGui,
+                    ID_ChiNhanhGui = g.ID_ChiNhanhGui,
+                    ID_BoPhanNhan = g.ID_BoPhanNhan,
+                    ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
+                    ThoiGianGuiSanPham = g.ThoiGianGuiSanPham,
+                    Description = g.Description,
+                    tenLoaiDeNghi = g.tenLoaiDeNghi,
+                    tenNguoiGui = g.tenNguoiGui,
+                    tenNguoiDuyet = g.tenNguoiDuyet,
+                    tenChiNhanhGui = g.tenChiNhanhNhan,
+                    tenChiNhanhNhan = g.tenChiNhanhNhan,
+                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Id)
+                }).ToList();
                 if (dataExist == null)
                 {
                     return Ok(new MessageError());
@@ -58,7 +83,7 @@ namespace Application.API.Controllers
                     {
                         result = new
                         {
-                            data = dataExist,
+                            data = result,
                             totalPage,
                             total,
                             stt,
@@ -83,7 +108,32 @@ namespace Application.API.Controllers
                 long total = 0;
                 var stt = (inputModel.page - 1) * inputModel.pageSize;
                 var dataExist = (await _manager.getDataNhan(inputModel));
-
+                var result = dataExist.Select(g => new DM_DeNghiDieuDongs()
+                {
+                    Id = g.Id,
+                    SoDeNghiDieuDong = g.SoDeNghiDieuDong,
+                    Created_At = g.Created_At,
+                    Created_By = g.Created_By,
+                    Updated_At = g.Updated_At,
+                    Updated_By = g.Updated_By,
+                    NgayDuyet = g.NgayDuyet,
+                    TaiKhoanDuyet = g.TaiKhoanDuyet,
+                    Status = g.Status,
+                    LoaiDeNghi_Id = g.LoaiDeNghi_Id,
+                    LyDoTuChoi = g.LyDoTuChoi,
+                    ID_BoPhanGui = g.ID_BoPhanGui,
+                    ID_ChiNhanhGui = g.ID_ChiNhanhGui,
+                    ID_BoPhanNhan = g.ID_BoPhanNhan,
+                    ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
+                    ThoiGianGuiSanPham = g.ThoiGianGuiSanPham,
+                    Description = g.Description,
+                    tenLoaiDeNghi = g.tenLoaiDeNghi,
+                    tenNguoiGui = g.tenNguoiGui,
+                    tenNguoiDuyet = g.tenNguoiDuyet,
+                    tenChiNhanhGui = g.tenChiNhanhNhan,
+                    tenChiNhanhNhan = g.tenChiNhanhNhan,
+                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Id)
+                }).ToList();
                 if (dataExist == null)
                 {
                     return Ok(new MessageError());
@@ -97,7 +147,7 @@ namespace Application.API.Controllers
                     {
                         result = new
                         {
-                            data = dataExist,
+                            data = result,
                             totalPage,
                             total,
                             stt,
@@ -119,9 +169,35 @@ namespace Application.API.Controllers
             try
             {
                 var g = await _manager.FindById(Id);
+                var result = new DM_DeNghiDieuDongs()
+                {
+                    Id = g.Id,
+                    SoDeNghiDieuDong = g.SoDeNghiDieuDong,
+                    Created_At = g.Created_At,
+                    Created_By = g.Created_By,
+                    Updated_At = g.Updated_At,
+                    Updated_By = g.Updated_By,
+                    NgayDuyet = g.NgayDuyet,
+                    TaiKhoanDuyet = g.TaiKhoanDuyet,
+                    Status = g.Status,
+                    LoaiDeNghi_Id = g.LoaiDeNghi_Id,
+                    LyDoTuChoi = g.LyDoTuChoi,
+                    ID_BoPhanGui = g.ID_BoPhanGui,
+                    ID_ChiNhanhGui = g.ID_ChiNhanhGui,
+                    ID_BoPhanNhan = g.ID_BoPhanNhan,
+                    ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
+                    ThoiGianGuiSanPham = g.ThoiGianGuiSanPham,
+                    Description = g.Description,
+                    tenLoaiDeNghi = g.tenLoaiDeNghi,
+                    tenNguoiGui = g.tenNguoiGui,
+                    tenNguoiDuyet = g.tenNguoiDuyet,
+                    tenChiNhanhGui = g.tenChiNhanhNhan,
+                    tenChiNhanhNhan = g.tenChiNhanhNhan,
+                    ChiTietDeNghiDieuDongs = _managerThuocTinhSP.GetAllDataByID_DeNghiDieuDong(g.Id)
+                };
                 MessageSuccess success = new MessageSuccess()
                 {
-                    result = g
+                    result = result
                 };
                 return Ok(success);
             }

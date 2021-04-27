@@ -56,7 +56,7 @@ namespace Application.REPOSITORY
                          tenNguoiDuyet = db.Users.Where(g => g.Id == denghi.TaiKhoanDuyet).SingleOrDefault().FullName ?? "",
                          tenChiNhanhGui = db.DM_DonVis.Where(g => g.Id == denghi.ID_ChiNhanhGui).SingleOrDefault().Name ?? "",
                          tenChiNhanhNhan = db.DM_DonVis.Where(g => g.Id == denghi.ID_ChiNhanhNhan).SingleOrDefault().Name ?? "",
-                         ChiTietDeNghiDieuDongs = db.DM_ChiTietDeNghiDieuDongs.Where(g => g.ID_DeNghiDieuDong == denghi.Id).ToList()
+                         //ChiTietDeNghiDieuDongs = db.DM_ChiTietDeNghiDieuDongs.Where(g => g.ID_DeNghiDieuDong == denghi.Id).ToList()
                      }
                      ).SingleOrDefault();
                 return data;
@@ -75,7 +75,7 @@ namespace Application.REPOSITORY
                     join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                     from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
                     where ((inputModel.LoaiDeNghi_Id == -1 || denghi.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )
                     select new DM_DeNghiDieuDongs()
@@ -108,11 +108,17 @@ namespace Application.REPOSITORY
                 {
                     switch (inputModel.nameSort)
                     {
-                        case "Name_asc":
-                            data = data.OrderBy(g => g.SoDeNghiDieuDong);
+                        case "Created_At_asc":
+                            data = data.OrderBy(g => g.Created_At);
                             break;
-                        case "Name_desc":
-                            data = data.OrderByDescending(g => g.SoDeNghiDieuDong);
+                        case "Created_At_desc":
+                            data = data.OrderByDescending(g => g.Created_At);
+                            break;
+                        case "ThoiGianHangVe_asc":
+                            data = data.OrderBy(g => g.ThoiGianGuiSanPham);
+                            break;
+                        case "ThoiGianHangVe_desc":
+                            data = data.OrderByDescending(g => g.ThoiGianGuiSanPham);
                             break;
                         default:
                             data = data.OrderByDescending(g => g.Created_At);
@@ -121,56 +127,50 @@ namespace Application.REPOSITORY
                 }
                 if (!string.IsNullOrEmpty(inputModel.NgayTao))
                 {
+                    var date = Convert.ToDateTime(inputModel.NgayTao).Date;
                     if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayTao);
-                        data = data.Where(g => g.Created_At >= date);
+                        data = data.Where(g => g.Created_At.Date >= date);
                     }
                     if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayTao);
-                        data = data.Where(g => g.Created_At <= date);
+                        data = data.Where(g => g.Created_At.Date <= date);
                     }
                     if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayTao);
-                        data = data.Where(g => g.Created_At == date);
+                        data = data.Where(g => g.Created_At.Date == date);
                     }
                 }
                 if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
                 {
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet).Date;
+                    if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                        data = data.Where(g => g.NgayDuyet >= date);
+                        data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet >= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                    if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                        data = data.Where(g => g.NgayDuyet <= date);
+                        data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet <= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                    if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                        data = data.Where(g => g.NgayDuyet == date);
+                        data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet == date));
                     }
                 }
                 if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
                 {
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham).Date;
+                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                        data = data.Where(g => g.ThoiGianGuiSanPham >= date);
+                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham >= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                        data = data.Where(g => g.ThoiGianGuiSanPham <= date);
+                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham <= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                        data = data.Where(g => g.ThoiGianGuiSanPham == date);
+                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham == date));
                     }
                 }
                 var result = data.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();
@@ -190,7 +190,7 @@ namespace Application.REPOSITORY
                     join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                     from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
                     where ((inputModel.LoaiDeNghi_Id == -1 || denghi.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.SoDeNghiDieuDong.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhGui == -1 || denghi.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
                     )
                     select new DM_DeNghiDieuDongs()
@@ -223,11 +223,17 @@ namespace Application.REPOSITORY
                 {
                     switch (inputModel.nameSort)
                     {
-                        case "Name_asc":
-                            data = data.OrderBy(g => g.SoDeNghiDieuDong);
+                        case "Created_At_asc":
+                            data = data.OrderBy(g => g.Created_At);
                             break;
-                        case "Name_desc":
-                            data = data.OrderByDescending(g => g.SoDeNghiDieuDong);
+                        case "Created_At_desc":
+                            data = data.OrderByDescending(g => g.Created_At);
+                            break;
+                        case "ThoiGianHangVe_asc":
+                            data = data.OrderBy(g => g.ThoiGianGuiSanPham);
+                            break;
+                        case "ThoiGianHangVe_desc":
+                            data = data.OrderByDescending(g => g.ThoiGianGuiSanPham);
                             break;
                         default:
                             data = data.OrderByDescending(g => g.Created_At);
@@ -236,56 +242,50 @@ namespace Application.REPOSITORY
                 }
                 if (!string.IsNullOrEmpty(inputModel.NgayTao))
                 {
+                    var date = Convert.ToDateTime(inputModel.NgayTao).Date;
                     if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayTao);
-                        data = data.Where(g => g.Created_At >= date);
+                        data = data.Where(g => g.Created_At.Date >= date);
                     }
                     if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayTao);
-                        data = data.Where(g => g.Created_At <= date);
+                        data = data.Where(g => g.Created_At.Date <= date);
                     }
                     if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayTao);
-                        data = data.Where(g => g.Created_At == date);
+                        data = data.Where(g => g.Created_At.Date == date);
                     }
                 }
                 if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
                 {
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                    var date = Convert.ToDateTime(inputModel.NgayDuyet).Date;
+                    if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                        data = data.Where(g => g.NgayDuyet >= date);
+                        data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet >= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                    if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                        data = data.Where(g => g.NgayDuyet <= date);
+                        data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet <= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                    if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                        data = data.Where(g => g.NgayDuyet == date);
+                        data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet == date));
                     }
                 }
                 if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
                 {
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
+                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham).Date;
+                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                        data = data.Where(g => g.ThoiGianGuiSanPham >= date);
+                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham >= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
+                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                        data = data.Where(g => g.ThoiGianGuiSanPham <= date);
+                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham <= date));
                     }
-                    if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
+                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Equal)
                     {
-                        var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                        data = data.Where(g => g.ThoiGianGuiSanPham == date);
+                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham == date));
                     }
                 }
                 var result = data.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();

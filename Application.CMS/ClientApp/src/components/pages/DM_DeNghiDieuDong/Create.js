@@ -9,12 +9,13 @@ import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification, AutoComplete, Descriptions, Spin, Image, Menu
 } from 'antd';
-const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi, chucvu, nhomNguoiDung }) => {
+const ModalCreate = () => {
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
     const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
     const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
     const [DataDonViById, setDataDonViById] = useState({});
+    const [DataDonViCapDo, setDataDonViCapDo] = useState([]);
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
@@ -50,6 +51,12 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                 setDataDonViById(fetchData.result)
             }
         }
+        async function getDonViByCapDo() {
+            var fetchData = await getAPI(`api/dm_donvi/get-donvi-by-level?level=1`);
+            if (fetchData.status == true) {
+                setDataDonViCapDo(fetchData.result)
+            }
+        }
         async function getLoaiDeNghi() {
             var fetchData = await getAPI(`api/dm_loaidenghi/get-all-data-active`);
             if (fetchData.status == true) {
@@ -61,26 +68,27 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
         getDonVi()
         getLoaiDeNghi()
         getDonViById()
+        getDonViByCapDo()
     }, [])
     const onSubmit = (data) => {
-        var ChiTietDieuDongs = []
+        var ChiTietDeNghiDieuDongs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
                 ID_SanPham: Number.parseInt(sp[i].querySelector(".ID_SanPham").value),
                 SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
-            ChiTietDieuDongs.push(obj)
+            ChiTietDeNghiDieuDongs.push(obj)
         }
         var obj = {
             ...data,
-            Status: data.Status ? 1 : 2,
+            Status: 1,
             Created_By: getCurrentLogin().id,
             ID_ChiNhanhGui: getCurrentLogin().donViId,
-            ChiTietDieuDongs: ChiTietDieuDongs
+            ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs
         }
         console.log(obj)
-        //onPostCreateItem(obj).then()
+        onPostCreateItem(obj).then()
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -95,7 +103,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
     async function onPostCreateItem(obj) {
         console.log(obj)
         //setConfirmLoading(true)
-        var result = await postAPI('api/dm_sanpham/create', JSON.stringify(obj))
+        var result = await postAPI('api/dm_denghidieudong/create', JSON.stringify(obj))
         if (result.status) {
             //setAction(true)
             notification.success({
@@ -266,9 +274,27 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                             })}
                                         </Select>
                                     </Form.Item> :
-                                    <Descriptions title="" layout="horizontal">
-                                        <Descriptions.Item label="Đến kho">Zhou Maomao</Descriptions.Item>
-                                    </Descriptions>
+                                    <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
+                                        <Select
+                                            showSearch
+                                            //style={{ width: 200 }}
+                                            placeholder="-- Chọn --"
+                                            optionFilterProp="level"
+                                            filterOption={(input, option) =>
+                                                option.level.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            filterSort={(optionA, optionB) =>
+                                                optionA.level.toLowerCase().localeCompare(optionB.level.toLowerCase())
+                                            }
+                                        >
+                                            <Option value={0}>-- Chọn --</Option>
+                                            {DataDonViCapDo.map(item => {
+                                                return (
+                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                )
+                                            })}
+                                        </Select>
+                                    </Form.Item>
                                 }
                             </Col>
                         </Row>
@@ -347,6 +373,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                                 <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
                                                     <Image
                                                         width={50}
+                                                        preview={false}
                                                         src={"data:image/png;base64," + item.pathAvatar}
                                                         fallback={logoDefault}
                                                     />

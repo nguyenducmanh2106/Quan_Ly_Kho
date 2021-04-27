@@ -284,5 +284,26 @@ namespace Application.API.Controllers
             }
 
         }
+        [HttpGet("get-donvi-by-level")]
+        public async Task<IActionResult> GetDonViByLevel(int level = 0)
+        {
+            try
+            {
+                var data = await _manager.GetDonViByLevel(level);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.DELETE_FAIL
+                });
+            }
+
+        }
     }
 }

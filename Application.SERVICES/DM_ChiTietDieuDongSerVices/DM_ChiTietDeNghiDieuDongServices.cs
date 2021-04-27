@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Application.UTILS;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
 {
@@ -14,10 +15,12 @@ namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<DM_ChiTietDeNghiDieuDongs> _logger;
-        public DM_ChiTietDeNghiDieuDongServices(IUnitOfWork unitOfWork, ILogger<DM_ChiTietDeNghiDieuDongs> logger)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public DM_ChiTietDeNghiDieuDongServices(IUnitOfWork unitOfWork, IHostingEnvironment _hostingEnvironment, ILogger<DM_ChiTietDeNghiDieuDongs> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            this._hostingEnvironment = _hostingEnvironment;
         }
 
         public async Task BulkDeleteByID_DeNghiDieuDong(string listItemDelete)
@@ -85,12 +88,25 @@ namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
             }
         }
 
-        public async Task<List<DM_ChiTietDeNghiDieuDongs>> GetAllDataByID_DeNghiDieuDong(int ID_DeNghiDieuDong)
+        public List<DM_ChiTietDeNghiDieuDongs> GetAllDataByID_DeNghiDieuDong(int ID_DeNghiDieuDong)
         {
             try
             {
-                var data = (await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.FindBy(g => g.ID_DeNghiDieuDong == ID_DeNghiDieuDong)).ToList();
-                return data;
+                var data = _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.GetData_ByID_DieuDong(ID_DeNghiDieuDong);
+                var result = data.ToList().Select(g => new DM_ChiTietDeNghiDieuDongs()
+                {
+                    id = g.id,
+                    ID_DeNghiDieuDong = g.ID_DeNghiDieuDong,
+                    ID_SanPham = g.ID_SanPham,
+                    SoLuongDuyet = g.SoLuongDuyet,
+                    SoLuongYeuCau = g.SoLuongYeuCau,
+                    tenSanPham = g.tenSanPham,
+                    tenDonViTinh = g.tenDonViTinh,
+                    code = g.code,
+                    barCode = g.barCode,
+                    imgSanPham = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.imgSanPham)
+                }).ToList();
+                return result;
             }
             catch (Exception ex)
             {

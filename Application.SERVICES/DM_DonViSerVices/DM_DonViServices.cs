@@ -100,6 +100,19 @@ namespace Application.Services.DM_DonViSerVices
             return data;
         }
 
+        public async Task<List<DM_DonVis>> GetDonViByLevel(int level)
+        {
+            try
+            {
+                var data = (await _unitOfWork.DM_DonViRepository.FindBy(g => g.Status == (int)StatusEnum.Active && g.CapDo == level)).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IQueryable<DM_DonVis>> GetOptions(int Status, string Name)
         {
             var data = (await _unitOfWork.DM_DonViRepository.FindBy(g => (Status == (int)StatusEnum.All || g.Status == Status)

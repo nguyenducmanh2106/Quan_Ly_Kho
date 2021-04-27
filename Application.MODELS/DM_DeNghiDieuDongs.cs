@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-
+using System.Linq;
 namespace Application.MODELS
 {
     [Table("DM_DeNghiDieuDongs")]
@@ -56,6 +56,5 @@ namespace Application.MODELS
         public string tenNguoiDuyet { get; set; }
         [NotMapped]
         public List<DM_ChiTietDeNghiDieuDongs> ChiTietDeNghiDieuDongs { get; set; }
-
     }
 }

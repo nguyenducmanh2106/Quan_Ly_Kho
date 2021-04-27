@@ -130,15 +130,15 @@ namespace Application.API
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseSession();
-            app.Use(async (context, next) =>
-            {
-                var JWToken = context.Session.GetString("access_token");
-                if (!string.IsNullOrEmpty(JWToken))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
-                }
-                await next();
-            });
+            //app.Use(async (context, next) =>
+            //{
+            //    var JWToken = context.Session.GetString("access_token");
+            //    if (!string.IsNullOrEmpty(JWToken))
+            //    {
+            //        context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+            //    }
+            //    await next();
+            //});
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

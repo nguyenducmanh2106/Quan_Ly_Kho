@@ -21,6 +21,7 @@ import DM_NhomThuocTinh from './components/pages/DM_NhomThuocTinh/Index';
 import DM_SanPham from './components/pages/DM_SanPham/Index';
 import DM_SanPham_Create from './components/pages/DM_SanPham/Create';
 import DM_SanPham_Update from './components/pages/DM_SanPham/Update';
+import DM_SanPham_Detail_NewPage from './components/pages/DM_SanPham/DetailNewPage';
 import DM_LoaiDeNghi from './components/pages/DM_LoaiDeNghi/Index';
 import DM_DeNghiDieuDong from './components/pages/DM_DeNghiDieuDong/Index';
 import DM_DeNghiDieuDong_Create from './components/pages/DM_DeNghiDieuDong/Create';
@@ -54,6 +55,7 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_sanpham' component={DM_SanPham} />
             <PrivateRoute exact path='/dm_sanpham/create' component={DM_SanPham_Create} />
             <PrivateRoute exact path='/dm_sanpham/update/:id' component={DM_SanPham_Update} />
+            <PrivateRoute exact path='/dm_sanpham/view/:id' component={DM_SanPham_Detail_NewPage} />
             <PrivateRoute exact path='/dm_loaidenghi' component={DM_LoaiDeNghi} />
             <PrivateRoute exact path='/dm_loaidenghi' component={DM_LoaiDeNghi} />
             <PrivateRoute exact path='/dm_denghidieudong' component={DM_DeNghiDieuDong} />
