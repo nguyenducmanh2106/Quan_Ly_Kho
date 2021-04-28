@@ -20,7 +20,7 @@ const FormUpdate = () => {
     const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
     const [DataDonViById, setDataDonViById] = useState({});
     const [DataDonViCapDo, setDataDonViCapDo] = useState([]);
-    const [ItemUpdate, setItemUpdte] = useState({});
+    const [ItemUpdate, setItemUpdate] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm();
     const onReset = () => {
@@ -73,7 +73,7 @@ const FormUpdate = () => {
             var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Code=${id}`);
             if (fetchData.status == true) {
                 var data = fetchData.result;
-                setItemUpdte(data)
+                setItemUpdate(data)
                 setDataSanPhamSubmit(data.chiTietDeNghiDieuDongs)
                 form.setFieldsValue({
                     ID_ChiNhanhNhan: data.iD_ChiNhanhNhan,

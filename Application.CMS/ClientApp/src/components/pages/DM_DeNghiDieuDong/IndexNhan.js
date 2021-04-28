@@ -10,7 +10,7 @@ import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
 import { getAPI, postAPI, postFormData, getLocalStorage } from './../../../utils/helpers';
 import { USER_LOCALSTORAGE } from './../../../utils/constants';
-import ListData from './ListDataGui';
+import ListData from './ListDataNhan';
 import FormView from './View';
 import LoadingOverlay from 'react-loading-overlay'
 import PrivateRoute from "../../../utils/PrivateRoute"
@@ -25,7 +25,7 @@ function Index({ onSetSanPhamUpdate }) {
     const [search, setSearch] = useState({
         Name: "",
         Status: -1,
-        ID_ChiNhanhGui: -1,
+        ID_ChiNhanhNhan: -1,
         LoaiDeNghi_Id: -1,
         NgayTao: "",
         NgayDuyet: "",
@@ -50,10 +50,6 @@ function Index({ onSetSanPhamUpdate }) {
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
-        //setSearch({
-        //    ...search,
-        //    NgayTao: ''
-        //})
     };
     const validateMessages = {
         required: '${label} không được để trống',
@@ -92,9 +88,9 @@ function Index({ onSetSanPhamUpdate }) {
                 Name: name,
                 Status: status,
                 nameSort: nameSort,
-                ID_ChiNhanhGui: Id
+                ID_ChiNhanhNhan: Id
             }
-            var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui/`, JSON.stringify(obj));
+            var fetchData = await postAPI(`api/dm_denghidieudong/list_data_nhan/`, JSON.stringify(obj));
             if (fetchData.status == true) {
                 setState(fetchData.result)
                 setIsLoading(!fetchData.status)
@@ -155,7 +151,7 @@ function Index({ onSetSanPhamUpdate }) {
             page: page,
             pageSize: pageSize,
             nameSort: nameSort,
-            ID_ChiNhanhGui: Id,
+            ID_ChiNhanhNhan: Id,
             TypeFilterNgayTao: 0,
             TypeFilterNgayDuyet: 0,
             TypeFilterThoiGianGuiSanPham: 0,
@@ -165,7 +161,7 @@ function Index({ onSetSanPhamUpdate }) {
         //    Status: data.Status ? data.Status : -1
         //})
         console.log(obj)
-        var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui`, JSON.stringify(obj));
+        var fetchData = await postAPI(`api/dm_denghidieudong/list_data_nhan`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
@@ -288,10 +284,10 @@ function Index({ onSetSanPhamUpdate }) {
             NgayDuyet: NgayDuyet,
             ThoiGianGuiSanPham: ThoiGianGuiSanPham,
             Name: data.Name ?? "",
-            ID_ChiNhanhGui: Id,
+            ID_ChiNhanhNhan: Id,
             Status: search.Status
         }
-        var fetchData = await postAPI(`api/dm_denghidieudong/list_data_gui`, JSON.stringify(obj));
+        var fetchData = await postAPI(`api/dm_denghidieudong/list_data_nhan`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
@@ -324,13 +320,13 @@ function Index({ onSetSanPhamUpdate }) {
     function openCreate() {
         history.push({
             pathname: '/dm_denghidieudong/create',
-            state: { controller: "Yêu cầu nhập hàng - Tạo mới", action: "Tạo mới" }
+            state: { controller: "Yêu cầu nhập hàng", action: "Tạo mới" }
         });
     }
     const onUpdateItem = (item) => {
         history.push({
             pathname: `/dm_denghidieudong/update/${item.code}`,
-            state: { controller: "Yêu cầu nhập hàng - Cập nhật", action: "Cập nhật" }
+            state: { controller: "Yêu cầu nhập hàng", action: "Cập nhật" }
         });
     }
     const onShowItem = async (item) => {
@@ -414,9 +410,9 @@ function Index({ onSetSanPhamUpdate }) {
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Space size={8}>
-                                <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>
-                                    Thêm mới
-    </Button>
+    {/*                            <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>*/}
+    {/*                                Thêm mới*/}
+    {/*</Button>*/}
                                 <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
                                     Xoá nhiều
     </Button>

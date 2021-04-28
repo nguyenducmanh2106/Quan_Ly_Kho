@@ -101,9 +101,8 @@ function Table(props) {
                             {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
-                            {item.tenChiNhanhNhan}
+                            {item.tenChiNhanhGui}
                         </td>
-
                         <td style={{ textAlign: "center" }}>
                             {item.thoiGianGuiSanPham ? moment(item.thoiGianGuiSanPham).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
@@ -126,7 +125,7 @@ function Table(props) {
 
                                     {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status !== 1 ? null : item.created_By === getCurrentLogin().id ?
                                         <Menu.Item style={{ textAlign: "center" }} key="3">
-                                            <Tooltip title="Chỉnh sửa">
+                                            <Tooltip title="Duyệt đơn">
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
                                             </Tooltip>
                                         </Menu.Item> : null
@@ -154,7 +153,7 @@ function Table(props) {
 
         return result
     }
-    const onSort = (name) => {
+    const onSortNhan = (name) => {
         var itemClick = document.querySelectorAll("table th.sapxep");
         for (var item of itemClick) {
             var current_ClassName = item.className;
@@ -198,19 +197,18 @@ function Table(props) {
                                             </label>
                                         </th>
                                         <th className="">STT</th>
-                                        <th className="sapxep" id="Created_At" onClick={() => onSort("Created_At")}>
-                                            Ngày gửi
+                                        <th className="sapxep" id="Created_At" onClick={() => onSortNhan("Created_At")}>
+                                            Ngày nhận yêu cầu
                                             <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">
-                                            Gửi đến kho
+                                            Kho yêu cầu
                                         </th>
-
-                                        <th className="sapxep" id="NgayGiaoHang" onClick={() => onSort("NgayGiaoHang")} >
+                                        <th className="sapxep" id="NgayGiaoHang" onClick={() => onSortNhan("NgayGiaoHang")} >
                                             Ngày giao hàng
                                             <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="sapxep" id="NgayNhanHang" onClick={() => onSort("NgayNhanHang")}>
+                                        <th className="sapxep" id="NgayNhanHang" onClick={() => onSortNhan("NgayNhanHang")}>
                                             Ngày nhận hàng
                                             <i className="fa fa-sort"></i>
                                         </th>

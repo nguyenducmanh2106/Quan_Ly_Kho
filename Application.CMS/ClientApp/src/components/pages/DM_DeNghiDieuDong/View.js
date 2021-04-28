@@ -5,7 +5,7 @@ import * as AntdIcons from '@ant-design/icons';
 import DetailComponent from "./Detail";
 import { getAPI, postAPI, postFormData, getLocalStorage } from './../../../utils/helpers';
 const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
-    console.log(item)
+    //console.log(item)
     const validateMessages = {
         required: '${label} không được để trống',
         types: {

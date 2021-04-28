@@ -41,6 +41,7 @@ namespace Application.REPOSITORY
                          Updated_At = denghi.Updated_At,
                          Updated_By = denghi.Updated_By,
                          NgayDuyet = denghi.NgayDuyet,
+                         NgayNhanSanPham = denghi.NgayNhanSanPham,
                          TaiKhoanDuyet = denghi.TaiKhoanDuyet,
                          Status = denghi.Status,
                          LoaiDeNghi_Id = denghi.LoaiDeNghi_Id,
@@ -87,6 +88,7 @@ namespace Application.REPOSITORY
                         Updated_At = denghi.Updated_At,
                         Updated_By = denghi.Updated_By,
                         NgayDuyet = denghi.NgayDuyet,
+                        NgayNhanSanPham = denghi.NgayNhanSanPham,
                         TaiKhoanDuyet = denghi.TaiKhoanDuyet,
                         Status = denghi.Status,
                         LoaiDeNghi_Id = denghi.LoaiDeNghi_Id,
@@ -114,11 +116,17 @@ namespace Application.REPOSITORY
                         case "Created_At_desc":
                             data = data.OrderByDescending(g => g.Created_At);
                             break;
-                        case "ThoiGianHangVe_asc":
+                        case "NgayGiaoHang_asc":
                             data = data.OrderBy(g => g.ThoiGianGuiSanPham);
                             break;
-                        case "ThoiGianHangVe_desc":
+                        case "NgayGiaoHang_desc":
                             data = data.OrderByDescending(g => g.ThoiGianGuiSanPham);
+                            break;
+                        case "NgayNhanHang_asc":
+                            data = data.OrderBy(g => g.NgayNhanSanPham);
+                            break;
+                        case "NgayNhanHang_desc":
+                            data = data.OrderByDescending(g => g.NgayNhanSanPham);
                             break;
                         default:
                             data = data.OrderByDescending(g => g.Created_At);
@@ -155,6 +163,22 @@ namespace Application.REPOSITORY
                     if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Equal)
                     {
                         data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet == date));
+                    }
+                }
+                if (!string.IsNullOrEmpty(inputModel.NgayNhanSanPham))
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayNhanSanPham).Date;
+                    if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Bigger_Or_Equal)
+                    {
+                        data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham >= date));
+                    }
+                    if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Smaller_Or_Equal)
+                    {
+                        data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham <= date));
+                    }
+                    if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Equal)
+                    {
+                        data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
                     }
                 }
                 if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
@@ -202,6 +226,7 @@ namespace Application.REPOSITORY
                         Updated_At = denghi.Updated_At,
                         Updated_By = denghi.Updated_By,
                         NgayDuyet = denghi.NgayDuyet,
+                        NgayNhanSanPham = denghi.NgayNhanSanPham,
                         TaiKhoanDuyet = denghi.TaiKhoanDuyet,
                         Status = denghi.Status,
                         LoaiDeNghi_Id = denghi.LoaiDeNghi_Id,
@@ -270,6 +295,22 @@ namespace Application.REPOSITORY
                     if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Equal)
                     {
                         data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet == date));
+                    }
+                }
+                if (!string.IsNullOrEmpty(inputModel.NgayNhanSanPham))
+                {
+                    var date = Convert.ToDateTime(inputModel.NgayNhanSanPham).Date;
+                    if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Bigger_Or_Equal)
+                    {
+                        data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham >= date));
+                    }
+                    if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Smaller_Or_Equal)
+                    {
+                        data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham <= date));
+                    }
+                    if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Equal)
+                    {
+                        data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
                     }
                 }
                 if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))

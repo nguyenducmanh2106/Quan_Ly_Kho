@@ -15,11 +15,27 @@ import {
     useParams, Link
 } from "react-router-dom";
 
-const DetailComponent = ({ item }) => {
+const DetailComponent = () => {
+    let { id } = useParams();
+    const [item, setItem] = useState({})
+    useEffect(() => {
+        async function getItemUpdate() {
+            var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Code=${id}`);
+            if (fetchData.status == true) {
+                var data = fetchData.result;
+                setItem(data)
+            }
+        }
+        //gọi hàm
+        getItemUpdate();
+    }, [])
+    console.log(item)
     const base64_avatar = "data:image/png;base64," + item.pathAvatar;
     const renderBody = () => {
         var result = ""
-        result = item.chiTietDeNghiDieuDongs.map((value) => {
+        var chiTietDeNghiDieuDongs = item?.chiTietDeNghiDieuDongs;
+        var array = chiTietDeNghiDieuDongs ?? []
+        result = array.map((value) => {
             const base64_avatar = "data:image/png;base64," + value.imgSanPham
             return (
                 <tr key={value.id} className="ant-table-row ant-table-row-level-0">
@@ -85,13 +101,16 @@ const DetailComponent = ({ item }) => {
                                         </Col>
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
-                                                <Descriptions.Item label="Đến kho">{item.tenChiNhanhNhan}</Descriptions.Item>
+                                                <Descriptions.Item label="Đến kho">
+                                                    {item.tenChiNhanhNhan}
+                                                </Descriptions.Item>
                                             </Descriptions>
                                         </Col>
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
                                                 <Descriptions.Item label="Ngày tạo">
-                                                    {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""} </Descriptions.Item>
+                                                    {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""}
+                                                </Descriptions.Item>
                                             </Descriptions>
                                         </Col>
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>

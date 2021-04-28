@@ -151,6 +151,22 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                     data = data.Where(g => g.Created_At == date);
                 }
             }
+            if (!string.IsNullOrEmpty(inputModel.NgayNhanSanPham))
+            {
+                var date = Convert.ToDateTime(inputModel.NgayNhanSanPham).Date;
+                if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham >= date));
+                }
+                if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham <= date));
+                }
+                if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Equal)
+                {
+                    data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
+                }
+            }
             if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
             {
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
@@ -211,6 +227,22 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                 {
                     var date = Convert.ToDateTime(inputModel.NgayTao);
                     data = data.Where(g => g.Created_At == date);
+                }
+            }
+            if (!string.IsNullOrEmpty(inputModel.NgayNhanSanPham))
+            {
+                var date = Convert.ToDateTime(inputModel.NgayNhanSanPham).Date;
+                if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham >= date));
+                }
+                if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham <= date));
+                }
+                if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Equal)
+                {
+                    data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
                 }
             }
             if (!string.IsNullOrEmpty(inputModel.NgayDuyet))

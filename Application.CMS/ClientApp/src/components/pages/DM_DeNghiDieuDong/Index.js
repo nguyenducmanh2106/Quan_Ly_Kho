@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState, useMemo } from 'react';
-import { useHistory, Route, Redirect } from 'react-router-dom';
+import { useHistory, Route, Redirect, Link, Switch } from 'react-router-dom';
 
 import {
     Select, notification, Input, Skeleton,
@@ -16,20 +16,41 @@ import LoadingOverlay from 'react-loading-overlay'
 import PrivateRoute from "../../../utils/PrivateRoute"
 import BounceLoader from 'react-spinners/BounceLoader'
 import IndexGui from './IndexGui'
+import DM_DeNghiDieuDong_Create from './Create'
+import DM_DeNghiDieuDong_Update from './Update'
+import IndexNhan from './IndexNhan'
 function Index({ onSetSanPhamUpdate }) {
     let history = useHistory()
     //khai báo state
     const { Header, Content, Footer } = Layout;
+    const changeTab = (key) => {
+        console.log(key)
+        if (key == 1) {
+            history.push({
+                pathname: "/dm_denghidieudong/nhap", state: { controller: "Yêu cầu nhập-xuất hàng", action: "Nhập" }
+            });
+        }
+        else {
+            history.push({
+                pathname: "/dm_denghidieudong/xuat", state: {
+                    controller: "Yêu cầu nhập-xuất hàng", action: "Xuất"
+                }
+            });
+        }
+    }
     return (
         <Content className="main-container main-container-component">
             <Card>
-                <Tabs defaultActiveKey="1">
-                    <Tabs.TabPane tab="Yêu cầu nhập hàng" key="1">
-                        <IndexGui />
+
+                <Tabs defaultActiveKey="1" onChange={changeTab}>
+                    <Tabs.TabPane tab=" Yêu cầu nhập hàng" key="1">
+                        <PrivateRoute exact path='/dm_denghidieudong/update/:id' component={DM_DeNghiDieuDong_Update} />
+                        <PrivateRoute exact path='/dm_denghidieudong/create' component={DM_DeNghiDieuDong_Create} />
+                        <PrivateRoute exact path='/dm_denghidieudong/nhap' component={IndexGui} />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="Yêu cầu xuất hàng" key="2">
-                        Yêu cầu xuất hàng
-    </Tabs.TabPane>
+                        <PrivateRoute exact path='/dm_denghidieudong/xuat' component={IndexNhan} />
+                    </Tabs.TabPane>
                 </Tabs>
             </Card>
         </Content>

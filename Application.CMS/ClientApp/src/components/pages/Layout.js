@@ -9,18 +9,18 @@ import { Layout, Menu, Breadcrumb, Button, Input, Avatar, Switch, Skeleton } fro
 import Main from './Mains';
 import MyIcon from "../elements/Icon-Antd/Icon";
 import MenuSidebar from './menu-sidebar/MenuSidebar';
-
+import Logo from "./../../static/images/logo-re.png"
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     UserOutlined,
     VideoCameraOutlined,
     UploadOutlined,
-    MoreOutlined 
+    MoreOutlined
 } from '@ant-design/icons';
 import ReactDOM from 'react-dom';
 const LayoutForm = () => {
-    
+
     const { Header, Content, Footer, Sider } = Layout;
     const [appLoadingState, updateAppLoading] = useState(true);
     //const [Breadcrumb, setBreadcrumb] = useState("");
@@ -41,11 +41,11 @@ const LayoutForm = () => {
                     mode="inline"
                     theme="dark"
                 >
-                    <div className={menusidebarState ?"logo toggleLogo":"logo"}>
+                    <div className={menusidebarState ? "logo toggleLogo" : "logo"}>
                         <a>
-                            <img className="logo--full" src="https://sapo.dktcdn.net/fe-cdn-production/images/sapo-pos-w.png" width={130} />
+                            <img className="logo--full" src={Logo} width={130} />
                         </a>
-                        <MoreOutlined onClick={toggleMenuSidebar} twoToneColor="#eb2f96" style={{ fontSize:"30px" }} />
+                        <MoreOutlined onClick={toggleMenuSidebar} twoToneColor="#eb2f96" style={{ fontSize: "30px" }} />
                     </div>
                     <div className="menuWrapper">
                         <div className="menuInner">
@@ -55,15 +55,15 @@ const LayoutForm = () => {
                 </Menu>
             </Sider>
             <Layout className="site-layout">
-                <HeaderElement/>
+                <HeaderElement />
                 <Content
                     style={{
                         padding: "24px",
                         minHeight: '100vh',
                     }}
-                    //className={menusidebarState ? "collapsed mainContnet" : "mainContnet"}
+                //className={menusidebarState ? "collapsed mainContnet" : "mainContnet"}
                 >
-                    <BreadcrumbForm/>
+                    <BreadcrumbForm />
                     <Main />
                 </Content>
             </Layout>
@@ -75,4 +75,4 @@ const LayoutForm = () => {
 
 
 export default LayoutForm;
- //<HeaderElement /> 
+ //<HeaderElement />
