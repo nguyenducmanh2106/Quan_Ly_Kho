@@ -7,6 +7,8 @@ import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification, AutoComplete, Descriptions, Spin, Image, Menu, Badge, Modal
 } from 'antd';
+import TuChoi from "./TuChoi";
+import useModal from './../../elements/modal/useModal';
 import * as AntdIcons from '@ant-design/icons';
 import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
 import {
@@ -14,13 +16,11 @@ import {
 } from "react-router-dom";
 
 const FormUpdate = () => {
+    const [isShowing, toggle] = useModal();
+    const [confirmLoading, setConfirmLoading] = useState(false);
     let { id } = useParams();
-    const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
     const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
-    const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
-    const [DataDonViById, setDataDonViById] = useState({});
-    const [DataDonViCapDo, setDataDonViCapDo] = useState([]);
     const [ItemUpdate, setItemUpdate] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [form] = Form.useForm();
@@ -45,31 +45,7 @@ const FormUpdate = () => {
         },
     };
     useEffect(() => {
-        async function getDonVi() {
-            var fetchData = await getAPI(`api/dm_donvi/get-all-data-active`);
-            if (fetchData.status == true) {
-                setDataDonVi(fetchData.result)
-            }
-        }
-        async function getDonViById() {
-            var Id = getCurrentLogin().donViId
-            var fetchData = await getAPI(`api/dm_donvi/find-by-id?Id=${Id}`);
-            if (fetchData.status == true) {
-                setDataDonViById(fetchData.result)
-            }
-        }
-        async function getDonViByCapDo() {
-            var fetchData = await getAPI(`api/dm_donvi/get-donvi-by-level?level=1`);
-            if (fetchData.status == true) {
-                setDataDonViCapDo(fetchData.result)
-            }
-        }
-        async function getLoaiDeNghi() {
-            var fetchData = await getAPI(`api/dm_loaidenghi/get-all-data-active`);
-            if (fetchData.status == true) {
-                setDataLoaiDeNghi(fetchData.result)
-            }
-        }
+
         async function getItemUpdate() {
             var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Code=${id}`);
             if (fetchData.status == true) {
@@ -86,10 +62,6 @@ const FormUpdate = () => {
         }
         //gọi hàm
         getItemUpdate();
-        getDonVi()
-        getLoaiDeNghi()
-        getDonViById()
-        getDonViByCapDo()
     }, [])
     const onSubmit = (data) => {
         var ChiTietDeNghiDieuDongs = []
@@ -98,7 +70,7 @@ const FormUpdate = () => {
             var obj = {
                 id: sp[i].querySelector(".id_chitietdieudong").value ? Number.parseInt(sp[i].querySelector(".id_chitietdieudong").value) : 0,
                 ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
-                SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
+                SoLuongPheDuyet: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
             ChiTietDeNghiDieuDongs.push(obj)
         }
@@ -155,6 +127,53 @@ const FormUpdate = () => {
         });
 
     }
+    const onSubmitReject = (obj) => {
+        console.log(obj)
+    }
+    const onReject = async (obj) => {
+        Modal.confirm({
+            title: 'Bạn có chắc chắn từ chối không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: <Form {...layout} name="nest-messages" onFinish={onSubmitReject} id="myFormReject"
+                validateMessages={validateMessages}
+                initialValues={{
+                    ["Ordering"]: 0,
+                    ["TinhId"]: -1,
+                    ["HuyenId"]: -1,
+                    ["XaId"]: -1,
+                    ["CapDo"]: 1
+                }}
+            >
+                <Form.Item name="Name" label="Tên đơn vị" rules={[{ required: true }]}>
+                    <Input />
+                </Form.Item>
+            </Form>,
+            okButtonProps: { form: 'myFormReject', key: 'reject', htmlType: 'submit' },
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            //onOk: () => {
+            //    console.log(document.querySelector('#lydo').value)
+            //    return postAPI('api/dm_denghidieudong/update', JSON.stringify(obj)).then(result => {
+            //        if (result.status) {
+            //            notification.success({
+            //                message: result.message,
+            //                duration: 3
+
+            //            })
+            //        }
+            //        else {
+            //            notification.error({
+            //                message: result.message,
+            //                duration: 3
+
+            //            })
+            //        }
+            //    });
+            //}
+        });
+
+    }
     const renderBody = () => {
         var result = ""
         result = DataSanPhamSubmit.map((item, index) => {
@@ -191,6 +210,11 @@ const FormUpdate = () => {
     }
     return (
         <Spin spinning={isLoading}>
+            <TuChoi item={ItemUpdate}
+                isShowing={isShowing}
+                hide={toggle}
+                confirmLoading={confirmLoading}
+            />
             <Form
                 form={form}
                 layout="horizontal"
@@ -342,7 +366,7 @@ const FormUpdate = () => {
                                 <Button type="primary" htmlType="submit" icon={<AntdIcons.CheckSquareOutlined />}>
                                     Duyệt
                                     </Button>
-                                <Button type="primary" danger htmlType="submit" icon={<AntdIcons.CloseSquareOutlined />}>
+                                <Button type="primary" danger icon={<AntdIcons.CloseSquareOutlined />} onClick={toggle}>
                                     Từ chối
                                     </Button>
                             </Space>
