@@ -49,6 +49,7 @@ function Table(props) {
     const toggleStatus = (status, item) => {
         item.status = status;
         props.toggleStatus(item)
+        //console.log(item)
     }
     const handleInputChange = (event) => {
         var arrayRemove = []
@@ -111,7 +112,13 @@ function Table(props) {
                             {item.ngayNhanSanPham ? moment(item.ngayNhanSanPham).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
-                            {item.status == 1 ? <Badge status="processing" text="Đang chờ phê duyệt" /> : <Badge status="success" text="Đã phê duyệt" />}
+                            {item.status == 1 ?
+                                <Badge status="processing" text="Đang chờ phê duyệt" />
+                                : item.status == 2 ? <Badge status="success" text="Đã phê duyệt" /> : item.status == 3 ?
+                                    <Badge status="error" text="Trả về" /> : item.status == 4 ?
+                                        <Badge status="warning" text="Nhận lại" /> : item.status == 5 ?
+                                            <Badge color="cyan" text="Đã nhận hàng" /> : ""
+                            }
                         </td>
                         <td>
                             <Dropdown placement="bottomCenter" overlay={() => (
@@ -123,16 +130,22 @@ function Table(props) {
                                             </Tooltip>
                                         </Menu.Item>
                                     }
-
-                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status !== 1 ? null : item.created_By === getCurrentLogin().id ?
+                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 1) ? null : item.created_By === getCurrentLogin().id ?
                                         <Menu.Item style={{ textAlign: "center" }} key="3">
+                                            <Tooltip title="Lấy lại">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.RedoOutlined />} onClick={() => toggleStatus(4, item)} />
+                                            </Tooltip>
+                                        </Menu.Item> : null
+                                    }
+                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 3 && item.status != 4) ? null : item.created_By === getCurrentLogin().id ?
+                                        <Menu.Item style={{ textAlign: "center" }} key="4">
                                             <Tooltip title="Chỉnh sửa">
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
                                             </Tooltip>
                                         </Menu.Item> : null
                                     }
                                     {!_isPermission(constantPermission.DELETE, constantPermission.DM_DENGHI_DIEUDONG) ? null :
-                                        <Menu.Item style={{ textAlign: "center" }} key="4">
+                                        <Menu.Item style={{ textAlign: "center" }} key="5">
                                             <Tooltip title="Xoá">
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
                                             </Tooltip>
@@ -206,8 +219,8 @@ function Table(props) {
                                             Gửi đến kho
                                         </th>
 
-                                        <th className="sapxep" id="NgayGiaoHang" onClick={() => onSort("NgayGiaoHang")} >
-                                            Ngày giao hàng
+                                        <th className="sapxep" id="NgayDuyet" onClick={() => onSort("NgayDuyet")} >
+                                            Ngày duyệt
                                             <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="sapxep" id="NgayNhanHang" onClick={() => onSort("NgayNhanHang")}>

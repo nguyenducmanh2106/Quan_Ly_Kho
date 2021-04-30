@@ -76,7 +76,8 @@ namespace Application.REPOSITORY
                     join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                     from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
                     where ((inputModel.LoaiDeNghi_Id == -1 || denghi.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
+                    && ((inputModel.Status == (int)ContentStatusEnum.All && denghi.Status != (int)ContentStatusEnum.Rollback && denghi.Status != (int)ContentStatusEnum.Revoked) || denghi.Status == inputModel.Status)
+                    && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )
                     select new DM_DeNghiDieuDongs()
@@ -116,11 +117,11 @@ namespace Application.REPOSITORY
                         case "Created_At_desc":
                             data = data.OrderByDescending(g => g.Created_At);
                             break;
-                        case "NgayGiaoHang_asc":
-                            data = data.OrderBy(g => g.ThoiGianGuiSanPham);
+                        case "NgayDuyet_asc":
+                            data = data.OrderBy(g => g.NgayDuyet);
                             break;
-                        case "NgayGiaoHang_desc":
-                            data = data.OrderByDescending(g => g.ThoiGianGuiSanPham);
+                        case "NgayDuyet_desc":
+                            data = data.OrderByDescending(g => g.NgayDuyet);
                             break;
                         case "NgayNhanHang_asc":
                             data = data.OrderBy(g => g.NgayNhanSanPham);
@@ -181,22 +182,22 @@ namespace Application.REPOSITORY
                         data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
                     }
                 }
-                if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham).Date;
-                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Bigger_Or_Equal)
-                    {
-                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham >= date));
-                    }
-                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Smaller_Or_Equal)
-                    {
-                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham <= date));
-                    }
-                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Equal)
-                    {
-                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham == date));
-                    }
-                }
+                //if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
+                //{
+                //    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham).Date;
+                //    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Bigger_Or_Equal)
+                //    {
+                //        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham >= date));
+                //    }
+                //    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Smaller_Or_Equal)
+                //    {
+                //        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham <= date));
+                //    }
+                //    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Equal)
+                //    {
+                //        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham == date));
+                //    }
+                //}
                 var result = data.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();
                 return result;
             }
@@ -214,7 +215,8 @@ namespace Application.REPOSITORY
                     join loaidenghi in db.DM_LoaiDeNghis on denghi.LoaiDeNghi_Id equals loaidenghi.Id into tblLoaiDeNghiDefault
                     from loaidenghiEmty in tblLoaiDeNghiDefault.DefaultIfEmpty()
                     where ((inputModel.LoaiDeNghi_Id == -1 || denghi.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
-                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
+                    && (inputModel.Status == -1 || denghi.Status == inputModel.Status)
+                    && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhGui == -1 || denghi.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
                     )
                     select new DM_DeNghiDieuDongs()
@@ -254,11 +256,17 @@ namespace Application.REPOSITORY
                         case "Created_At_desc":
                             data = data.OrderByDescending(g => g.Created_At);
                             break;
-                        case "ThoiGianHangVe_asc":
-                            data = data.OrderBy(g => g.ThoiGianGuiSanPham);
+                        case "NgayDuyet_asc":
+                            data = data.OrderBy(g => g.NgayDuyet);
                             break;
-                        case "ThoiGianHangVe_desc":
-                            data = data.OrderByDescending(g => g.ThoiGianGuiSanPham);
+                        case "NgayDuyet_desc":
+                            data = data.OrderByDescending(g => g.NgayDuyet);
+                            break;
+                        case "NgayNhanHang_asc":
+                            data = data.OrderBy(g => g.NgayNhanSanPham);
+                            break;
+                        case "NgayNhanHang_desc":
+                            data = data.OrderByDescending(g => g.NgayNhanSanPham);
                             break;
                         default:
                             data = data.OrderByDescending(g => g.Created_At);
@@ -313,22 +321,22 @@ namespace Application.REPOSITORY
                         data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
                     }
                 }
-                if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham).Date;
-                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Bigger_Or_Equal)
-                    {
-                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham >= date));
-                    }
-                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Smaller_Or_Equal)
-                    {
-                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham <= date));
-                    }
-                    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Equal)
-                    {
-                        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham == date));
-                    }
-                }
+                //if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
+                //{
+                //    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham).Date;
+                //    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Bigger_Or_Equal)
+                //    {
+                //        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham >= date));
+                //    }
+                //    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Smaller_Or_Equal)
+                //    {
+                //        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham <= date));
+                //    }
+                //    if (inputModel.TypeFilterThoiGianGuiSanPham == (int)TypeFilter.Equal)
+                //    {
+                //        data = data.Where(g => (g.ThoiGianGuiSanPham.HasValue && g.ThoiGianGuiSanPham == date));
+                //    }
+                //}
                 var result = data.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();
                 return result;
             }

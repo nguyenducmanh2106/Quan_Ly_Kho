@@ -62,8 +62,15 @@ public enum ContentStatusEnum
     Approving = 1,
     [Description("Đã phê duyệt")] // == Đăng tải
     Approved = 2,
+    [Description("Trả về")] // == bị từ chối
+    Revoked = 3,
+    [Description("lấy lại đơn")] // == lấy lại đơn
+    Rollback = 4,
+    [Description("Đã nhận hàng")] // == đã nhận được hàng
+    Received = 5,
     [Description("Đã xóa")]
-    Delete = 3
+    Delete = 6,
+
     //[Description("Đăng tải")]
     //Published = 3,
     //[Description("Thu hồi")]

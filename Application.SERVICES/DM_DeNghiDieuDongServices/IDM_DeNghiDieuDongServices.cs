@@ -17,6 +17,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         Task<DM_DeNghiDieuDongs> Delete(DM_DeNghiDieuDongs obj);
         Task MultiDelete(string listItemDelete);
         Task<DM_DeNghiDieuDongs> FindById(string Code);
+        Task ToggleStatus(DM_DeNghiDieuDongs obj);
         Task<long> ToTalCountGui(DeNghiDieuDongFilterModel inputModel);
         Task<long> ToTalCountNhan(DeNghiDieuDongFilterModel inputModel);
     }

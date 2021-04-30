@@ -37,7 +37,27 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                 throw ex;
             }
         }
-
+        public async Task ToggleStatus(DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Code == obj.Code);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                exist.Status = obj.Status;
+                await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
         public async Task<DM_DeNghiDieuDongs> Delete(DM_DeNghiDieuDongs obj)
         {
             try
@@ -95,6 +115,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                 }
                 exist.Status = (int)ContentStatusEnum.Approving;
                 exist.Updated_At = DateTime.Now.Date;
+                exist.Created_At = DateTime.Now.Date;
                 exist.Updated_By = obj.Updated_By;
                 exist.LoaiDeNghi_Id = obj.LoaiDeNghi_Id;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;

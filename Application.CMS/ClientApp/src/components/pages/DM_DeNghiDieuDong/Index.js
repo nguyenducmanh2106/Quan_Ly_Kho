@@ -24,7 +24,7 @@ function Index({ onSetSanPhamUpdate }) {
     //khai báo state
     const { Header, Content, Footer } = Layout;
     const changeTab = (key) => {
-        console.log(key)
+        //console.log(key)
         if (key == 1) {
             history.push({
                 pathname: "/dm_denghidieudong/nhap", state: { controller: "Yêu cầu nhập-xuất hàng", action: "Nhập" }
@@ -44,8 +44,8 @@ function Index({ onSetSanPhamUpdate }) {
 
                 <Tabs defaultActiveKey="1" onChange={changeTab}>
                     <Tabs.TabPane tab=" Yêu cầu nhập hàng" key="1">
-                        <PrivateRoute exact path='/dm_denghidieudong/update/:id' component={DM_DeNghiDieuDong_Update} />
-                        <PrivateRoute exact path='/dm_denghidieudong/create' component={DM_DeNghiDieuDong_Create} />
+                        {/*<PrivateRoute exact path='/dm_denghidieudong/update/:id' component={DM_DeNghiDieuDong_Update} />*/}
+                        {/*<PrivateRoute exact path='/dm_denghidieudong/create' component={DM_DeNghiDieuDong_Create} />*/}
                         <PrivateRoute exact path='/dm_denghidieudong/nhap' component={IndexGui} />
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="Yêu cầu xuất hàng" key="2">

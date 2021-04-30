@@ -296,6 +296,27 @@ namespace Application.API.Controllers
                 });
             }
         }
+        [HttpPost("toggle-status")]
+        public async Task<IActionResult> ToggleStatus([FromBody] DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+
+                await _manager.ToggleStatus(obj);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
         [HttpPost("multidelete")]
         public async Task<IActionResult> MultiDelete([FromForm] string lstid)
         {

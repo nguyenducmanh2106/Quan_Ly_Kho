@@ -29,10 +29,10 @@ function Index({ onSetSanPhamUpdate }) {
         LoaiDeNghi_Id: -1,
         NgayTao: "",
         NgayDuyet: "",
-        ThoiGianGuiSanPham: "",
+        NgayNhanSanPham: "",
         TypeFilterNgayTao: -1,
         TypeFilterNgayDuyet: -1,
-        TypeFilterThoiGianGuiSanPham: -1,
+        TypeFilterNgayNhanSanPham: -1,
 
     })
     //Thực hiện thao tác update,create,delete sẽ load lại trang
@@ -145,12 +145,12 @@ function Index({ onSetSanPhamUpdate }) {
         //console.log(data.NgayTao.toDate())
         var NgayTao = data.NgayTao ? new Date(data.NgayTao.toDate()) : "";
         var NgayDuyet = data.NgayDuyet ? new Date(data.NgayDuyet.toDate()) : "";
-        var ThoiGianGuiSanPham = data.ThoiGianGuiSanPham ? new Date(data.ThoiGianGuiSanPham.toDate()) : "";
+        var NgayNhanSanPham = data.NgayNhanSanPham ? new Date(data.NgayNhanSanPham.toDate()) : "";
         var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
             NgayTao: NgayTao,
             NgayDuyet: NgayDuyet,
-            ThoiGianGuiSanPham: ThoiGianGuiSanPham,
+            NgayNhanSanPham: NgayNhanSanPham,
             Status: data.Status ? data.Status : -1,
             page: page,
             pageSize: pageSize,
@@ -158,7 +158,7 @@ function Index({ onSetSanPhamUpdate }) {
             ID_ChiNhanhGui: Id,
             TypeFilterNgayTao: 0,
             TypeFilterNgayDuyet: 0,
-            TypeFilterThoiGianGuiSanPham: 0,
+            TypeFilterNgayNhanSanPham: 0,
         }
         //setSearch({
         //    ...search,
@@ -183,7 +183,7 @@ function Index({ onSetSanPhamUpdate }) {
             cancelText: 'Quay lại',
             //okButtonProps: { loading: confirmLoading },
             onOk: () => {
-                return postAPI('api/dm_sanpham/toggle-status', JSON.stringify(item)).then(result => {
+                return postAPI('api/dm_denghidieudong/toggle-status', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
                         notification.success({
@@ -281,12 +281,12 @@ function Index({ onSetSanPhamUpdate }) {
         var Id = getLocalStorage(USER_LOCALSTORAGE).donViId;
         var NgayTao = data.NgayTao ? new Date(data.NgayTao.toDate()) : "";
         var NgayDuyet = data.NgayDuyet ? new Date(data.NgayDuyet.toDate()) : "";
-        var ThoiGianGuiSanPham = data.ThoiGianGuiSanPham ? new Date(data.ThoiGianGuiSanPham.toDate()) : "";
+        var NgayNhanSanPham = data.NgayNhanSanPham ? new Date(data.NgayNhanSanPham.toDate()) : "";
         var obj = {
             ...data,
             NgayTao: NgayTao,
             NgayDuyet: NgayDuyet,
-            ThoiGianGuiSanPham: ThoiGianGuiSanPham,
+            NgayNhanSanPham: NgayNhanSanPham,
             Name: data.Name ?? "",
             ID_ChiNhanhGui: Id,
             Status: search.Status
@@ -311,11 +311,11 @@ function Index({ onSetSanPhamUpdate }) {
             NgayDuyet: dateString
         })
     }
-    const onChangeDatePickerNgayHangVe = (date, dateString) => {
+    const onChangeDatePickerNgayNhanSanPham = (date, dateString) => {
         //console.log(date, dateString)
         setSearch({
             ...search,
-            ThoiGianGuiSanPham: dateString
+            NgayNhanSanPham: dateString
         })
     }
     const onClose = () => {
@@ -323,13 +323,13 @@ function Index({ onSetSanPhamUpdate }) {
     };
     function openCreate() {
         history.push({
-            pathname: '/dm_denghidieudong/create',
+            pathname: '/dm_denghidieudong-create/create',
             state: { controller: "Yêu cầu nhập hàng - Tạo mới", action: "Tạo mới" }
         });
     }
     const onUpdateItem = (item) => {
         history.push({
-            pathname: `/dm_denghidieudong/update/${item.code}`,
+            pathname: `/dm_denghidieudong-update/update/${item.code}`,
             state: { controller: "Yêu cầu nhập hàng - Cập nhật", action: "Cập nhật" }
         });
     }
@@ -338,7 +338,7 @@ function Index({ onSetSanPhamUpdate }) {
     }
     let NgayTao = search.NgayTao
     let NgayDuyet = search.NgayDuyet
-    let ThoiGianGuiSanPham = search.ThoiGianGuiSanPham
+    let NgayNhanSanPham = search.NgayNhanSanPham
     return (
         <Content className="main-container main-container-component">
             <Card>
@@ -352,7 +352,7 @@ function Index({ onSetSanPhamUpdate }) {
                                     initialValues={{
                                         //["NgayTao"]: moment(NgayTao, 'YYYY-MM-DD').isValid() ? moment(NgayTao, 'YYYY-MM-DD') : moment(new Date(), 'YYYY-MM-DD'),
                                         //["NgayDuyet"]: moment(NgayDuyet, 'YYYY-MM-DD').isValid() ? moment(NgayDuyet, 'YYYY-MM-DD') : "",
-                                        //["NgayHangVe"]: moment(ThoiGianGuiSanPham, 'YYYY-MM-DD').isValid() ? moment(ThoiGianGuiSanPham, 'YYYY-MM-DD') : "",
+                                        //["NgayNhanSanPham"]: moment(NgayNhanSanPham, 'YYYY-MM-DD').isValid() ? moment(NgayNhanSanPham, 'YYYY-MM-DD') : "",
                                         ["Status"]: -1
                                     }}
                                 >
@@ -375,12 +375,12 @@ function Index({ onSetSanPhamUpdate }) {
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 8 }}>
-                                        <Form.Item name="NgayHangVe" label="" style={{ width: '100%' }}>
+                                        <Form.Item name="NgayNhanSanPham" label="" style={{ width: '100%' }}>
                                             <DatePicker placeholder="Ngày hàng về"
                                                 style={{ width: '100%' }}
                                                 format={"DD/MM/YYYY"}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayHangVe}
+                                                onChange={onChangeDatePickerNgayNhanSanPham}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -395,8 +395,10 @@ function Index({ onSetSanPhamUpdate }) {
                                                 }
                                             >
                                                 <Option value={-1}>Tất cả</Option>
-                                                <Option value={1}>Đang chờ phê duyệt</Option>
+                                                <Option value={1}>Chờ phê duyệt</Option>
                                                 <Option value={2}>Đã phê duyệt</Option>
+                                                <Option value={3}>Trả về</Option>
+                                                <Option value={5}>Đã nhận hàng</Option>
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -434,6 +436,7 @@ function Index({ onSetSanPhamUpdate }) {
                             isShowing={isShowingView}
                             hide={toggleView}
                             item={ItemShow}
+                            toggleStatus={onToggleStatus}
                             confirmLoading={confirmLoading}
                         />
                         <ListData obj={state}
@@ -480,10 +483,10 @@ function Index({ onSetSanPhamUpdate }) {
                                     ["LoaiSP"]: -1,
                                     ["TypeFilterNgayTao"]: -1,
                                     ["TypeFilterNgayDuyet"]: -1,
-                                    ["TypeFilterThoiGianGuiSanPham"]: -1,
+                                    ["TypeFilterNgayNhanSanPham"]: -1,
                                     //["NgayTao"]: moment(NgayTao, 'YYYY-MM-DD').isValid() ? moment(NgayTao, 'YYYY-MM-DD') : moment(new Date(), 'YYYY-MM-DD'),
                                     //["NgayDuyet"]: moment(NgayDuyet, 'YYYY-MM-DD').isValid() ? moment(NgayDuyet, 'YYYY-MM-DD') : "",
-                                    //["NgayHangVe"]: moment(ThoiGianGuiSanPham, 'YYYY-MM-DD').isValid() ? moment(ThoiGianGuiSanPham, 'YYYY-MM-DD') : "",
+                                    //["NgayNhanSanPham"]: moment(NgayNhanSanPham, 'YYYY-MM-DD').isValid() ? moment(NgayNhanSanPham, 'YYYY-MM-DD') : "",
                                 }}
                                 onFinish={onSubmitTimKiemNangCao}
                                 hideRequiredMark                            >
@@ -546,20 +549,20 @@ function Index({ onSetSanPhamUpdate }) {
                                 <Row gutter={16}>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item
-                                            name="NgayHangVe"
-                                            label="Ngày gửi hàng"
+                                            name="NgayNhanSanPham"
+                                            label="Ngày nhận hàng"
                                         >
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayHangVe}
+                                                onChange={onChangeDatePickerNgayNhanSanPham}
                                                 format={"DD/MM/YYYY"}
                                             />
                                         </Form.Item>
                                     </Col>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item
-                                            name="TypeFilterThoiGianGuiSanPham"
+                                            name="TypeFilterNgayNhanSanPham"
                                             label="Kiểu lọc ngày"
                                         >
                                             <Select placeholder="Please choose the type">

@@ -7,16 +7,27 @@ import logoDefault from "../../../static/images/user-profile.jpeg"
 import {
     Form, Input, InputNumber, Button, Select,
     Checkbox, Upload, Skeleton, Col, Row, Card,
-    Tooltip, Space, Collapse, Divider, notification, Descriptions, Typography, Image
+    Tooltip, Space, Collapse, Divider, notification, Descriptions, Typography, Image, Badge
 } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
-import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
+import { getAPI, postAPI, getCurrentLogin, getLocalStorage } from './../../../utils/helpers';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 import {
     useParams, Link
 } from "react-router-dom";
 
-const DetailComponent = ({ item }) => {
+const DetailComponent = ({ item, toggleStatus }) => {
     const base64_avatar = "data:image/png;base64," + item.pathAvatar;
+    useEffect(() => {
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
+    }, [])
+    const onToggleStatus = (status, item) => {
+        item.status = status;
+        toggleStatus(item)
+        //console.log(item)
+    }
     const renderBody = () => {
         var result = ""
         result = item.chiTietDeNghiDieuDongs.map((value) => {
@@ -60,6 +71,15 @@ const DetailComponent = ({ item }) => {
     }
     return (
         <>
+            <Row>
+                <Col style={{ textAlign: "right" }}>
+                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 1) ? null : item.created_By === getCurrentLogin().id ?
+                        <Button style={{ margin: "0 !important" }} type="primary" icon={<AntdIcons.RedoOutlined />} onClick={() => onToggleStatus(4, item)}>
+                            Lấy lại
+                            </Button>
+                        : null}
+                </Col>
+            </Row>
             <Row gutter={24}>
                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 16 }}>
                     <Card
@@ -71,7 +91,14 @@ const DetailComponent = ({ item }) => {
                                                 </Space>
                         }
                         extra={<span>
-                            Trạng thái: {item.status == 1 ? <Typography.Text type="warning">Đang chờ phê duyệt</Typography.Text> : <Typography.Text type="success">Đã phê duyệt</Typography.Text>}
+
+                            Trạng thái:  {item.status == 1 ?
+                                <Badge status="processing" text="Đang chờ phê duyệt" />
+                                : item.status == 2 ? <Badge status="success" text="Đã phê duyệt" /> : item.status == 3 ?
+                                    <Badge status="error" text="Trả về" /> : item.status == 4 ?
+                                        <Badge status="warning" text="Nhận lại" /> : item.status == 5 ?
+                                            <Badge color="cyan" text="Đã nhận hàng" /> : ""
+                            }
                         </span>}
                     >
                         <Row gutter={24}>

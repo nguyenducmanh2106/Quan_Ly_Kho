@@ -110,7 +110,13 @@ function Table(props) {
                             {item.ngayNhanSanPham ? moment(item.ngayNhanSanPham).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
-                            {item.status == 1 ? <Badge status="processing" text="Đang chờ phê duyệt" /> : <Badge status="success" text="Đã phê duyệt" />}
+                            {item.status == 1 ?
+                                <Badge status="processing" text="Đang chờ phê duyệt" />
+                                : item.status == 2 ? <Badge status="success" text="Đã phê duyệt" /> : item.status == 3 ?
+                                    <Badge status="error" text="Trả về" /> : item.status == 4 ?
+                                        <Badge status="warning" text="Nhận lại" /> : item.status == 5 ?
+                                            <Badge color="cyan" text="Đã nhận hàng" /> : ""
+                            }
                         </td>
                         <td>
                             <Dropdown placement="bottomCenter" overlay={() => (
@@ -123,12 +129,12 @@ function Table(props) {
                                         </Menu.Item>
                                     }
 
-                                    {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status !== 1 ? null : item.created_By === getCurrentLogin().id ?
+                                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null :
                                         <Menu.Item style={{ textAlign: "center" }} key="3">
                                             <Tooltip title="Duyệt đơn">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.AuditOutlined   />} onClick={() => update(item)} />
                                             </Tooltip>
-                                        </Menu.Item> : null
+                                        </Menu.Item>
                                     }
                                     {!_isPermission(constantPermission.DELETE, constantPermission.DM_DENGHI_DIEUDONG) ? null :
                                         <Menu.Item style={{ textAlign: "center" }} key="4">
@@ -204,8 +210,8 @@ function Table(props) {
                                         <th className="">
                                             Kho yêu cầu
                                         </th>
-                                        <th className="sapxep" id="NgayGiaoHang" onClick={() => onSortNhan("NgayGiaoHang")} >
-                                            Ngày giao hàng
+                                        <th className="sapxep" id="NgayDuyet" onClick={() => onSortNhan("NgayDuyet")} >
+                                            Ngày duyệt
                                             <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="sapxep" id="NgayNhanHang" onClick={() => onSortNhan("NgayNhanHang")}>

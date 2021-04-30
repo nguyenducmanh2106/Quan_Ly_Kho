@@ -4,7 +4,7 @@ import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Tabs
 import * as AntdIcons from '@ant-design/icons';
 import DetailComponent from "./Detail";
 import { getAPI, postAPI, postFormData, getLocalStorage } from './../../../utils/helpers';
-const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
+const ModalView = ({ item, isShowing, hide, confirmLoading, toggleStatus }) => {
     //console.log(item)
     const validateMessages = {
         required: '${label} không được để trống',
@@ -29,7 +29,7 @@ const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
                             /*okButtonProps={{ form: 'myFormCreate', key: 'submit', htmlType: 'submit' }}*/
                             footer={null}
                         >
-                            <DetailComponent item={item} />
+                            <DetailComponent item={item} toggleStatus={toggleStatus}/>
                         </Modal>
                     </  React.Fragment>, document.body
                 ) : null
