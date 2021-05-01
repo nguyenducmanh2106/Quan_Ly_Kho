@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 import ImgCrop from 'antd-img-crop';
 import moment from 'moment'
-import { url_upload } from "../../../utils/helpers";
+import { url_upload, FormatMoney } from "../../../utils/helpers";
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import {
     Form, Input, InputNumber, Button, Select,
@@ -18,7 +18,7 @@ import {
     useParams, Link
 } from "react-router-dom";
 
-const DetailComponent = ({ item, toggleStatus }) => {
+const DetailComponent = ({ item, toggleStatus, onReceived, hide }) => {
     const base64_avatar = "data:image/png;base64," + item.pathAvatar;
     useEffect(() => {
         defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
@@ -27,6 +27,9 @@ const DetailComponent = ({ item, toggleStatus }) => {
         item.status = status;
         toggleStatus(item)
         //console.log(item)
+    }
+    const NhanHang = (item) => {
+        onReceived(item)
     }
     const renderBody = () => {
         var result = ""
@@ -78,6 +81,11 @@ const DetailComponent = ({ item, toggleStatus }) => {
                             Lấy lại
                             </Button>
                         : null}
+                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 2) ? null :
+                        <Button style={{ margin: "0 !important" }} type="primary" icon={<AntdIcons.FileDoneOutlined />} onClick={() => NhanHang(item)}>
+                            Nhận hàng
+                            </Button>
+                    }
                 </Col>
             </Row>
             <Row gutter={24}>
@@ -97,7 +105,7 @@ const DetailComponent = ({ item, toggleStatus }) => {
                                 : item.status == 2 ? <Badge status="success" text="Đã phê duyệt" /> : item.status == 3 ?
                                     <Badge status="error" text="Trả về" /> : item.status == 4 ?
                                         <Badge status="warning" text="Nhận lại" /> : item.status == 5 ?
-                                            <Badge color="cyan" text="Đã nhận hàng" /> : ""
+                                            <Badge color="purple" text="Đã nhận hàng" /> : ""
                             }
                         </span>}
                     >
@@ -123,8 +131,8 @@ const DetailComponent = ({ item, toggleStatus }) => {
                                         </Col>
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
-                                                <Descriptions.Item label="Thời gian hàng về">
-                                                    {item.thoiGianGuiSanPham ? moment(item.thoiGianGuiSanPham).format('DD/MM/YYYY, HH:mm') : ""}
+                                                <Descriptions.Item label="Ngày nhận được hàng">
+                                                    {item.ngayNhanSanPham ? moment(item.ngayNhanSanPham).format('DD/MM/YYYY, HH:mm') : ""}
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>
@@ -149,7 +157,14 @@ const DetailComponent = ({ item, toggleStatus }) => {
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
                                                 <Descriptions.Item label="Ngày duyệt">
-                                                    {item.ngayDuyet ? new Date(item.ngayDuyet).getDate() + "/" + (new Date(item.ngayDuyet).getMonth() + 1) + "/" + new Date(item.ngayDuyet).getFullYear() + " " + new Date(item.ngayDuyet).getHours() + ":" + new Date(item.ngayDuyet).getMinutes() : ""}
+                                                    {item.ngayDuyet ? moment(item.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
+                                        <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Lý do từ chối">
+                                                    {item.lyDoTuChoi ?? ""}
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>

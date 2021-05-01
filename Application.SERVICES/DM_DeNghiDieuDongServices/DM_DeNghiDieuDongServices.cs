@@ -47,6 +47,74 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
                 exist.Status = obj.Status;
+                exist.NgayDuyet = DateTime.Now;
+                await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+        public async Task PheDuyet(DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Code == obj.Code);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                exist.Status = obj.Status;
+                exist.LyDoTuChoi = "";
+                exist.NgayDuyet = DateTime.Now;
+                await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+        public async Task TuChoi(DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Code == obj.Code);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                exist.LyDoTuChoi = obj.LyDoTuChoi;
+                exist.Status = obj.Status;
+                await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+        public async Task NhanHang(DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                var exist = await _unitOfWork.DM_DeNghiDieuDongRepository.Get(g => g.Code == obj.Code);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                exist.Status = obj.Status;
+                exist.NgayNhanSanPham = DateTime.Now;
                 await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();
@@ -156,20 +224,34 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                     )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
+                var date = Convert.ToDateTime(inputModel.NgayTao).Date;
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
                 {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At >= date);
+                    data = data.Where(g => g.Created_At.Date >= date);
                 }
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
                 {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At <= date);
+                    data = data.Where(g => g.Created_At.Date <= date);
                 }
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
                 {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At == date);
+                    data = data.Where(g => g.Created_At.Date == date);
+                }
+            }
+            if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
+            {
+                var date = Convert.ToDateTime(inputModel.NgayDuyet).Date;
+                if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet >= date));
+                }
+                if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet <= date));
+                }
+                if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Equal)
+                {
+                    data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet == date));
                 }
             }
             if (!string.IsNullOrEmpty(inputModel.NgayNhanSanPham))
@@ -186,42 +268,6 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                 if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Equal)
                 {
                     data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
-                }
-            }
-            if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
-            {
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                    data = data.Where(g => g.NgayDuyet >= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                    data = data.Where(g => g.NgayDuyet <= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                    data = data.Where(g => g.NgayDuyet == date);
-                }
-            }
-            if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
-            {
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                    data = data.Where(g => g.ThoiGianGuiSanPham >= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                    data = data.Where(g => g.ThoiGianGuiSanPham <= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                    data = data.Where(g => g.ThoiGianGuiSanPham == date);
                 }
             }
             return data.LongCount();
@@ -234,20 +280,34 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                     )));
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
+                var date = Convert.ToDateTime(inputModel.NgayTao).Date;
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
                 {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At >= date);
+                    data = data.Where(g => g.Created_At.Date >= date);
                 }
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
                 {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At <= date);
+                    data = data.Where(g => g.Created_At.Date <= date);
                 }
                 if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
                 {
-                    var date = Convert.ToDateTime(inputModel.NgayTao);
-                    data = data.Where(g => g.Created_At == date);
+                    data = data.Where(g => g.Created_At.Date == date);
+                }
+            }
+            if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
+            {
+                var date = Convert.ToDateTime(inputModel.NgayDuyet).Date;
+                if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Bigger_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet >= date));
+                }
+                if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Smaller_Or_Equal)
+                {
+                    data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet <= date));
+                }
+                if (inputModel.TypeFilterNgayDuyet == (int)TypeFilter.Equal)
+                {
+                    data = data.Where(g => (g.NgayDuyet.HasValue && g.NgayDuyet == date));
                 }
             }
             if (!string.IsNullOrEmpty(inputModel.NgayNhanSanPham))
@@ -264,42 +324,6 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                 if (inputModel.TypeFilterNgayNhanSanPham == (int)TypeFilter.Equal)
                 {
                     data = data.Where(g => (g.NgayNhanSanPham.HasValue && g.NgayNhanSanPham == date));
-                }
-            }
-            if (!string.IsNullOrEmpty(inputModel.NgayDuyet))
-            {
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                    data = data.Where(g => g.NgayDuyet >= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                    data = data.Where(g => g.NgayDuyet <= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.NgayDuyet);
-                    data = data.Where(g => g.NgayDuyet == date);
-                }
-            }
-            if (!string.IsNullOrEmpty(inputModel.ThoiGianGuiSanPham))
-            {
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Bigger_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                    data = data.Where(g => g.ThoiGianGuiSanPham >= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Smaller_Or_Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                    data = data.Where(g => g.ThoiGianGuiSanPham <= date);
-                }
-                if (inputModel.TypeFilterNgayTao == (int)TypeFilter.Equal)
-                {
-                    var date = Convert.ToDateTime(inputModel.ThoiGianGuiSanPham);
-                    data = data.Where(g => g.ThoiGianGuiSanPham == date);
                 }
             }
             return data.LongCount();

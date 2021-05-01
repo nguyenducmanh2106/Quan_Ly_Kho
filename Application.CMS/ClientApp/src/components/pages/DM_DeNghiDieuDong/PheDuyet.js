@@ -70,7 +70,7 @@ const FormUpdate = () => {
             var obj = {
                 id: sp[i].querySelector(".id_chitietdieudong").value ? Number.parseInt(sp[i].querySelector(".id_chitietdieudong").value) : 0,
                 ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
-                SoLuongPheDuyet: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
+                SoLuongDuyet: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
             ChiTietDeNghiDieuDongs.push(obj)
         }
@@ -107,7 +107,7 @@ const FormUpdate = () => {
             cancelText: 'Quay lại',
             //okButtonProps: { loading: confirmLoading },
             onOk: () => {
-                return postAPI('api/dm_denghidieudong/update', JSON.stringify(obj)).then(result => {
+                return postAPI('api/dm_denghidieudong/pheduyet', JSON.stringify(obj)).then(result => {
                     if (result.status) {
                         notification.success({
                             message: result.message,

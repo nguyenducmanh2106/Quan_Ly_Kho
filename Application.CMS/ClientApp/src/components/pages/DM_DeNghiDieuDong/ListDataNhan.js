@@ -104,7 +104,7 @@ function Table(props) {
                             {item.tenChiNhanhGui}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                            {item.thoiGianGuiSanPham ? moment(item.thoiGianGuiSanPham).format('DD/MM/YYYY, HH:mm') : ""}
+                            {item.ngayDuyet ? moment(item.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
                             {item.ngayNhanSanPham ? moment(item.ngayNhanSanPham).format('DD/MM/YYYY, HH:mm') : ""}
@@ -115,7 +115,7 @@ function Table(props) {
                                 : item.status == 2 ? <Badge status="success" text="Đã phê duyệt" /> : item.status == 3 ?
                                     <Badge status="error" text="Trả về" /> : item.status == 4 ?
                                         <Badge status="warning" text="Nhận lại" /> : item.status == 5 ?
-                                            <Badge color="cyan" text="Đã nhận hàng" /> : ""
+                                            <Badge color="purple" text="Đã nhận hàng" /> : ""
                             }
                         </td>
                         <td>
@@ -129,10 +129,10 @@ function Table(props) {
                                         </Menu.Item>
                                     }
 
-                                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null :
+                                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status == 2 ? null :
                                         <Menu.Item style={{ textAlign: "center" }} key="3">
                                             <Tooltip title="Duyệt đơn">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.AuditOutlined   />} onClick={() => update(item)} />
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.AuditOutlined />} onClick={() => update(item)} />
                                             </Tooltip>
                                         </Menu.Item>
                                     }

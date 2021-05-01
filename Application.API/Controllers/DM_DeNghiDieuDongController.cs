@@ -231,8 +231,9 @@ namespace Application.API.Controllers
                         item.id = 0;
                         item.ID_DeNghiDieuDong = data.Code;
                     }
+                    await _managerChiTiet.BulkInsert(obj.ChiTietDeNghiDieuDongs);
                 }
-                await _managerChiTiet.BulkInsert(obj.ChiTietDeNghiDieuDongs);
+
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS
@@ -259,8 +260,76 @@ namespace Application.API.Controllers
                         item.ID_DeNghiDieuDong = obj.Code;
                         item.id = 0;
                     }
+                    await _managerChiTiet.BulkInsert(obj.ChiTietDeNghiDieuDongs);
                 }
-                await _managerChiTiet.BulkInsert(obj.ChiTietDeNghiDieuDongs);
+
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("pheduyet")]
+        public async Task<IActionResult> PheDuyet([FromBody] DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                obj.Status = (int)ContentStatusEnum.Approved;
+                await _manager.PheDuyet(obj);
+                if (obj.ChiTietDeNghiDieuDongs != null)
+                {
+                    foreach (var item in obj.ChiTietDeNghiDieuDongs)
+                    {
+                        await _managerChiTiet.Update(item);
+                    }
+                }
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("tuchoi")]
+        public async Task<IActionResult> TuChoi([FromBody] DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                obj.Status = (int)ContentStatusEnum.Revoked;
+                await _manager.TuChoi(obj);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("nhanhang")]
+        public async Task<IActionResult> NhanHang([FromBody] DM_DeNghiDieuDongs obj)
+        {
+            try
+            {
+                obj.Status = (int)ContentStatusEnum.Received;
+                await _manager.NhanHang(obj);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS

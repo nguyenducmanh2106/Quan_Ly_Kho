@@ -177,8 +177,9 @@ namespace Application.API.Controllers
                         item.id = 0;
                         item.sanPhamId = data.Code;
                     }
+                    await _managerThuocTinhSP.BulkUpdate(obj.ThuocTinhs);
                 }
-                await _managerThuocTinhSP.BulkUpdate(obj.ThuocTinhs);
+
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS
@@ -230,8 +231,9 @@ namespace Application.API.Controllers
                         item.id = 0;
                         item.sanPhamId = obj.Code;
                     }
+                    await _managerThuocTinhSP.BulkUpdate(obj.ThuocTinhs);
                 }
-                await _managerThuocTinhSP.BulkUpdate(obj.ThuocTinhs);
+
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS

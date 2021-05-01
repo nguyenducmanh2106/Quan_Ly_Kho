@@ -6,7 +6,7 @@ import {
     Checkbox, Upload, Skeleton, Col, Row, Card, Tooltip, Space, Collapse, Divider, notification, Descriptions, Image
 } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
-import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
+import { getAPI, postAPI, getCurrentLogin, FormatMoney } from './../../../utils/helpers';
 import {
     useParams
 } from "react-router-dom";
@@ -83,16 +83,16 @@ const FormUpdate = () => {
                         </Col>
                         <Col lg={{ span: 12 }} md={{ span: 24 }} sm={{ span: 24 }}>
                             <Descriptions>
-                                <Descriptions.Item label="Giá cũ">{item.giaCu}</Descriptions.Item>
+                                <Descriptions.Item label="Giá cũ">{item.giaCu?.FormatMoney(item.giaCu, " đ")}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá nhập">{item.giaNhap}</Descriptions.Item>
+                                <Descriptions.Item label="Giá nhập">{item.giaNhap?.FormatMoney(item.giaNhap, " đ")}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá bán">{item.giaBanLe}</Descriptions.Item>
+                                <Descriptions.Item label="Giá bán">{item.giaBanLe?.FormatMoney(item.giaBanLe, " đ")}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá bán buôn">{item.giaBanBuon}</Descriptions.Item>
+                                <Descriptions.Item label="Giá bán buôn">{item.giaBanBuon?.FormatMoney(item.giaBanBuon, " đ")}</Descriptions.Item>
                             </Descriptions>
                         </Col>
                     </Row>

@@ -63,23 +63,18 @@ namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
             await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.BulkInsert(insertObj);
         }
 
-        public async Task CreateOrUpdate(DM_ChiTietDeNghiDieuDongs obj)
+        public async Task Update(DM_ChiTietDeNghiDieuDongs obj)
         {
             try
             {
-                var data = await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.FindBy(g => g.ID_DeNghiDieuDong == obj.ID_DeNghiDieuDong);
-                if (data != null)
+                var data = await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.Get(g => g.id == obj.id);
+                if (data == null)
                 {
-                    await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.BulkDelete(data);
-                    await _unitOfWork.SaveChange();
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
-                var insertObj = new DM_ChiTietDeNghiDieuDongs()
-                {
-                    ID_DeNghiDieuDong = obj.ID_DeNghiDieuDong,
-                    ID_SanPham = obj.ID_SanPham,
-                    SoLuongYeuCau = obj.SoLuongYeuCau
-                };
-                await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.Add(insertObj);
+                data.SoLuongDuyet = obj.SoLuongDuyet;
+                await _unitOfWork.DM_ChiTietDeNghiDieuDongRepository.Update(data);
+                await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
             {

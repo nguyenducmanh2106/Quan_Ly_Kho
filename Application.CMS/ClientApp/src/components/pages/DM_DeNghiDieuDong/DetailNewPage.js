@@ -116,7 +116,7 @@ const DetailComponent = () => {
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
                                                 <Descriptions.Item label="Thời gian hàng về">
-                                                    {item.thoiGianGuiSanPham ? moment(item.thoiGianGuiSanPham).format('DD/MM/YYYY, HH:mm') : ""}
+                                                    {item.ngayNhanSanPham ? moment(item.ngayNhanSanPham).format('DD/MM/YYYY, HH:mm') : ""}
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>
@@ -141,7 +141,14 @@ const DetailComponent = () => {
                                         <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
                                             <Descriptions>
                                                 <Descriptions.Item label="Ngày duyệt">
-                                                    {item.ngayDuyet ? new Date(item.ngayDuyet).getDate() + "/" + (new Date(item.ngayDuyet).getMonth() + 1) + "/" + new Date(item.ngayDuyet).getFullYear() + " " + new Date(item.ngayDuyet).getHours() + ":" + new Date(item.ngayDuyet).getMinutes() : ""}
+                                                    {item.ngayDuyet ? moment(item.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
+                                        <Col lg={{ span: 24 }} md={{ span: 24 }} sm={{ span: 24 }}>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Lý do từ chối">
+                                                    {item.lyDoTuChoi ?? ""}
                                                 </Descriptions.Item>
                                             </Descriptions>
                                         </Col>

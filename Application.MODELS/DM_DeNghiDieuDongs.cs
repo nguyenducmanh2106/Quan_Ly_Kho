@@ -42,7 +42,7 @@ namespace Application.MODELS
         public int? ID_BoPhanNhan { get; set; }
         [Column("ThoiGianGuiSanPham")]
         public DateTime? ThoiGianGuiSanPham { get; set; }
-        [NotMapped]
+        [Column("NgayNhanSanPham")]
         public DateTime? NgayNhanSanPham { get; set; }
         [Column("Description")]
         public string Description { get; set; }

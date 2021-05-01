@@ -51,6 +51,9 @@ function Table(props) {
         props.toggleStatus(item)
         //console.log(item)
     }
+    const NhanHang = (item) => {
+        props.onReceived(item)
+    }
     const handleInputChange = (event) => {
         var arrayRemove = []
         var arrayCheck = document.querySelectorAll(".checkbox-tick");
@@ -106,7 +109,7 @@ function Table(props) {
                         </td>
 
                         <td style={{ textAlign: "center" }}>
-                            {item.thoiGianGuiSanPham ? moment(item.thoiGianGuiSanPham).format('DD/MM/YYYY, HH:mm') : ""}
+                            {item.ngayDuyet ? moment(item.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
                             {item.ngayNhanSanPham ? moment(item.ngayNhanSanPham).format('DD/MM/YYYY, HH:mm') : ""}
@@ -117,7 +120,7 @@ function Table(props) {
                                 : item.status == 2 ? <Badge status="success" text="Đã phê duyệt" /> : item.status == 3 ?
                                     <Badge status="error" text="Trả về" /> : item.status == 4 ?
                                         <Badge status="warning" text="Nhận lại" /> : item.status == 5 ?
-                                            <Badge color="cyan" text="Đã nhận hàng" /> : ""
+                                            <Badge color="purple" text="Đã nhận hàng" /> : ""
                             }
                         </td>
                         <td>
@@ -136,6 +139,13 @@ function Table(props) {
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.RedoOutlined />} onClick={() => toggleStatus(4, item)} />
                                             </Tooltip>
                                         </Menu.Item> : null
+                                    }
+                                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 2) ? null :
+                                        <Menu.Item style={{ textAlign: "center" }} key="6">
+                                            <Tooltip title="Nhận hàng">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.FileDoneOutlined />} onClick={() => NhanHang(item)} />
+                                            </Tooltip>
+                                        </Menu.Item>
                                     }
                                     {!_isPermission(constantPermission.EDIT, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 3 && item.status != 4) ? null : item.created_By === getCurrentLogin().id ?
                                         <Menu.Item style={{ textAlign: "center" }} key="4">

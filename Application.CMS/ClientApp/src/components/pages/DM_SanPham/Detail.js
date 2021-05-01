@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ImgCrop from 'antd-img-crop';
-import { url_upload } from "../../../utils/helpers";
+import { url_upload, FormatMoney } from "../../../utils/helpers";
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import {
     Form, Input, InputNumber, Button, Select,
@@ -73,16 +73,16 @@ const DetailComponent = ({ item }) => {
                         </Col>
                         <Col lg={{ span: 12 }} md={{ span: 24 }} sm={{ span: 24 }}>
                             <Descriptions>
-                                <Descriptions.Item label="Giá cũ">{item.giaCu}</Descriptions.Item>
+                                <Descriptions.Item label="Giá cũ">{item.giaCu?.FormatMoney(item.giaCu, " đ")}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá nhập">{item.giaNhap}</Descriptions.Item>
+                                <Descriptions.Item label="Giá nhập">{item.giaNhap?.FormatMoney(item.giaNhap, " đ")}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá bán">{item.giaBanLe}</Descriptions.Item>
+                                <Descriptions.Item label="Giá bán">{item.giaBanLe?.FormatMoney(item.giaBanLe, " đ")}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá bán buôn">{item.giaBanBuon}</Descriptions.Item>
+                                <Descriptions.Item label="Giá bán buôn">{item.giaBanBuon?.FormatMoney(item.giaBanBuon, " đ")}</Descriptions.Item>
                             </Descriptions>
                         </Col>
                     </Row>

@@ -186,10 +186,43 @@ function Index({ onSetSanPhamUpdate }) {
                 return postAPI('api/dm_denghidieudong/toggle-status', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
+                        toggleView()
                         notification.success({
                             message: result.message,
                             duration: 3
 
+                        })
+                    }
+                    else {
+                        notification.error({
+                            message: result.message,
+                            duration: 3
+
+                        })
+                    }
+                });
+            }
+        });
+    }
+    const onReceived = (item) => {
+        var obj = {
+            Code: item.code
+        }
+        Modal.confirm({
+            title: 'Bạn có chắc chắn không?',
+            icon: <AntdIcons.ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: 'Đồng ý',
+            cancelText: 'Quay lại',
+            //okButtonProps: { loading: confirmLoading },
+            onOk: () => {
+                return postAPI('api/dm_denghidieudong/nhanhang', JSON.stringify(obj)).then(result => {
+                    if (result.status) {
+                        setAction(true)
+                        toggleView()
+                        notification.success({
+                            message: result.message,
+                            duration: 3
                         })
                     }
                     else {
@@ -437,6 +470,7 @@ function Index({ onSetSanPhamUpdate }) {
                             hide={toggleView}
                             item={ItemShow}
                             toggleStatus={onToggleStatus}
+                            onReceived={onReceived}
                             confirmLoading={confirmLoading}
                         />
                         <ListData obj={state}
@@ -447,6 +481,7 @@ function Index({ onSetSanPhamUpdate }) {
                             onMultiDelete={setListItemRemove}
                             onUpdateItemPosition={onUpdateItemPosition}
                             toggleStatus={onToggleStatus}
+                            onReceived={onReceived}
                             onSetNameSort={onSetNameSort}
                             onShowItem={onShowItem}
 

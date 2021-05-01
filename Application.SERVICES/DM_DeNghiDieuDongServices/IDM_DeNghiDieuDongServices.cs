@@ -20,5 +20,8 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
         Task ToggleStatus(DM_DeNghiDieuDongs obj);
         Task<long> ToTalCountGui(DeNghiDieuDongFilterModel inputModel);
         Task<long> ToTalCountNhan(DeNghiDieuDongFilterModel inputModel);
+        Task TuChoi(DM_DeNghiDieuDongs obj);
+        Task PheDuyet(DM_DeNghiDieuDongs obj);
+        Task NhanHang(DM_DeNghiDieuDongs obj);
     }
 }

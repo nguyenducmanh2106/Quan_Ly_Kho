@@ -189,5 +189,7 @@ export async function getAPI(url, data, isCheckToken = true) {
     }
     //return JsonData
 }
-
+export const FormatMoney = (money, currency) => {
+    return money.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + currency;
+}
 //# sourceMappingURL=helpers.js.map
