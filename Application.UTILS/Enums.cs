@@ -27,6 +27,28 @@ namespace Application.UTILS
         [Description("Đã xóa")]
         Removed = 0
     }
+    public enum StatusThanhToan
+    {
+        [Description("Tất cả trạng thái")]
+        All = -1,
+        [Description("Đã thanh toán")]
+        Da_Thanh_Toan = 1,
+        [Description("Chưa thanh toán")]
+        Chua_Thanh_Toan = 2,
+        [Description("Thanh toán một phần")]
+        Thanh_Toan_Mot_Phan = 2,
+        [Description("Hoàn tiền toàn bộ")]
+        HoanTien = 0
+    }
+    public enum StatusNhapKho
+    {
+        [Description("Tất cả trạng thái")]
+        All = -1,
+        [Description("Chờ Nhập Hàng")]
+        Cho_Nhap_Hang = 1,
+        [Description("Đã nhập hàng")]
+        Da_Nhap_Hang = 2,
+    }
     public enum RolesEnum
     {
         [Description("Thêm mới")]

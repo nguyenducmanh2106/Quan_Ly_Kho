@@ -1,0 +1,327 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Application.MODELS;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Application.UTILS;
+using Application.Services.DM_ChiTietNhapHangSerVices;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Application.API.Middleware;
+using Newtonsoft.Json;
+using Application.MODELS.ViewModels;
+using Application.Services.DM_NhapHangSerVices;
+using Application.Services.UserServices;
+
+namespace Application.API.Controllers
+{
+    [ApiController]
+    [Route("api/dm_nhaphang")]
+    public class DM_NhapHangController : ControllerBase
+    {
+        private readonly IDM_NhapHangServices _manager;
+        private readonly IDM_ChiTietNhapHangServices _managerChiTiet;
+        private readonly IUserServices _managerUser;
+        private readonly IConfiguration _config;
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public DM_NhapHangController(IConfiguration config, IUserServices _managerUser, IDM_ChiTietNhapHangServices _managerChiTiet, IDM_NhapHangServices _manager, IHostingEnvironment hostingEnvironment)
+        {
+            _config = config;
+            this._manager = _manager;
+            this._managerChiTiet = _managerChiTiet;
+            this._managerUser = _managerUser;
+            _hostingEnvironment = hostingEnvironment;
+        }
+        [HttpPost("list_data")]
+        public async Task<IActionResult> ListData(DM_NhapHangFilterModel inputModel)
+        {
+            try
+            {
+                var totalPage = 0;
+                long total = 0;
+                var stt = (inputModel.page - 1) * inputModel.pageSize;
+                var dataExist = (await _manager.getData(inputModel));
+                var result = dataExist.Select(g => new DM_NhapHangs()
+                {
+                    Id = g.Id,
+                    Code = g.Code,
+                    Created_At = g.Created_At,
+                    Created_By = g.Created_By,
+                    Updated_At = g.Updated_At,
+                    Updated_By = g.Updated_By,
+                    NgayDuyet = g.NgayDuyet,
+                    TaiKhoanDuyet = g.TaiKhoanDuyet,
+                    Status = g.Status,
+                    ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
+                    NgayHenGiao = g.NgayHenGiao,
+                    NgayNhapKho = g.NgayNhapKho,
+                    ID_NhaCungCap = g.ID_NhaCungCap,
+                    Description = g.Description,
+                    tenChiNhanhNhan = g.tenChiNhanhNhan,
+                    tenNguoiDuyet = g.tenNguoiDuyet,
+                    tenNhaCungCap = g.tenNhaCungCap,
+                    tenNguoiTao = g.tenNguoiTao,
+                    ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code)
+                }).ToList();
+                if (dataExist == null)
+                {
+                    return Ok(new MessageError());
+                }
+                else
+                {
+
+                    total = (await _manager.ToTalCount(inputModel));
+                    totalPage = (int)Math.Ceiling(((double)total / inputModel.pageSize));
+                    MessageSuccess success = new MessageSuccess()
+                    {
+                        result = new
+                        {
+                            data = result,
+                            totalPage,
+                            total,
+                            stt,
+                            page = inputModel.page,
+                            pageSize = inputModel.pageSize
+                        }
+                    };
+                    return Ok(success);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("find-by-id")]
+        public async Task<IActionResult> FindById(string Code = "")
+        {
+            try
+            {
+                var g = await _manager.FindById(Code);
+                var result = new DM_NhapHangs()
+                {
+                    Id = g.Id,
+                    Code = g.Code,
+                    Created_At = g.Created_At,
+                    Created_By = g.Created_By,
+                    Updated_At = g.Updated_At,
+                    Updated_By = g.Updated_By,
+                    NgayDuyet = g.NgayDuyet,
+                    TaiKhoanDuyet = g.TaiKhoanDuyet,
+                    Status = g.Status,
+                    ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
+                    NgayHenGiao = g.NgayHenGiao,
+                    NgayNhapKho = g.NgayNhapKho,
+                    ID_NhaCungCap = g.ID_NhaCungCap,
+                    Description = g.Description,
+                    tenChiNhanhNhan = g.tenChiNhanhNhan,
+                    tenNguoiDuyet = g.tenNguoiDuyet,
+                    tenNhaCungCap = g.tenNhaCungCap,
+                    tenNguoiTao = g.tenNguoiTao,
+                    ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code)
+                };
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = result
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CREATE_FAIL
+                });
+            }
+        }
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+                var data = await _manager.Create(obj);
+                if (obj.ChiTietNhapHangs != null)
+                {
+                    foreach (var item in obj.ChiTietNhapHangs)
+                    {
+                        item.Id = 0;
+                        item.ID_DM_NhapHang = data.Code;
+                    }
+                    await _managerChiTiet.BulkInsert(obj.ChiTietNhapHangs);
+                }
+
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.CREATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CREATE_FAIL
+                });
+            }
+        }
+        [HttpPost("update")]
+        public async Task<IActionResult> Update([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+                await _manager.Update(obj);
+                if (obj.ChiTietNhapHangs != null)
+                {
+                    foreach (var item in obj.ChiTietNhapHangs)
+                    {
+                        item.ID_DM_NhapHang = obj.Code;
+                        item.Id = 0;
+                    }
+                    await _managerChiTiet.BulkInsert(obj.ChiTietNhapHangs);
+                }
+
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("pheduyet")]
+        public async Task<IActionResult> PheDuyet([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+                obj.Status = (int)ContentStatusEnum.Approved;
+                await _manager.PheDuyet(obj);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("tuchoi")]
+        public async Task<IActionResult> TuChoi([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+                obj.Status = (int)ContentStatusEnum.Revoked;
+                await _manager.TuChoi(obj);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("nhanhang")]
+        public async Task<IActionResult> NhanHang([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+                obj.Status = (int)ContentStatusEnum.Received;
+                await _manager.NhanHang(obj);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("delete")]
+        public async Task<IActionResult> Delete([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+
+                var data = await _manager.Delete(obj);
+                await _managerChiTiet.DeleteByID_NhapHang(data.Code);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.DELETE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.DELETE_FAIL
+                });
+            }
+        }
+        [HttpPost("toggle-status")]
+        public async Task<IActionResult> ToggleStatus([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+
+                await _manager.ToggleStatus(obj);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("multidelete")]
+        public async Task<IActionResult> MultiDelete([FromForm] string lstid)
+        {
+            try
+            {
+                await _manager.MultiDelete(lstid);
+                await _managerChiTiet.BulkDeleteByID_NhapHang(lstid);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    message = MessageConst.DELETE_SUCCESS
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.DELETE_FAIL
+                });
+            }
+
+        }
+    }
+}

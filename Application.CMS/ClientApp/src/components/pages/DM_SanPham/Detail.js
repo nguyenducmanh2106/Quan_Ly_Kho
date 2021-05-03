@@ -73,16 +73,16 @@ const DetailComponent = ({ item }) => {
                         </Col>
                         <Col lg={{ span: 12 }} md={{ span: 24 }} sm={{ span: 24 }}>
                             <Descriptions>
-                                <Descriptions.Item label="Giá cũ">{item.giaCu?.FormatMoney(item.giaCu, " đ")}</Descriptions.Item>
+                                <Descriptions.Item label="Giá cũ">{item.giaCu ? FormatMoney(item.giaCu, " đ") : ""}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá nhập">{item.giaNhap?.FormatMoney(item.giaNhap, " đ")}</Descriptions.Item>
+                                <Descriptions.Item label="Giá nhập">{item.giaNhap ? FormatMoney(item.giaNhap, " đ") : ""}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá bán">{item.giaBanLe?.FormatMoney(item.giaBanLe, " đ")}</Descriptions.Item>
+                                <Descriptions.Item label="Giá bán">{item.giaBanLe ? FormatMoney(item.giaBanLe, " đ") : ""}</Descriptions.Item>
                             </Descriptions>
                             <Descriptions>
-                                <Descriptions.Item label="Giá bán buôn">{item.giaBanBuon?.FormatMoney(item.giaBanBuon, " đ")}</Descriptions.Item>
+                                <Descriptions.Item label="Giá bán buôn">{item.giaBanBuon ? FormatMoney(item.giaBanBuon, " đ") : ""}</Descriptions.Item>
                             </Descriptions>
                         </Col>
                     </Row>

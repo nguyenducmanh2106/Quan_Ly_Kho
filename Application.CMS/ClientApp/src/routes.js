@@ -29,6 +29,8 @@ import DM_DeNghiDieuDong_Create from './components/pages/DM_DeNghiDieuDong/Creat
 import DM_DeNghiDieuDong_Update from './components/pages/DM_DeNghiDieuDong/Update';
 import DM_DeNghiDieuDong_Detail_NewPage from './components/pages/DM_DeNghiDieuDong/DetailNewPage';
 import DM_DeNghiDieuDong_PheDuyet from './components/pages/DM_DeNghiDieuDong/PheDuyet';
+import DM_NhapHang from './components/pages/DM_NhapHang/Index';
+import DM_NhapHang_Create from './components/pages/DM_NhapHang/Create';
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -66,6 +68,8 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_denghidieudong-update/update/:id' component={DM_DeNghiDieuDong_Update} />
             <PrivateRoute exact path='/dm_denghidieudong-pheduyet/pheduyet/:id' component={DM_DeNghiDieuDong_PheDuyet} />
             {/*<PrivateRoute path='/dm_denghidieudong/view/:id' component={DM_DeNghiDieuDong_Detail_NewPage} />*/}
+            <PrivateRoute exact path='/dm_nhaphang' component={DM_NhapHang} />
+            <PrivateRoute exact path='/dm_nhaphang/create' component={DM_NhapHang_Create} />
         </Switch>
     );
 }
