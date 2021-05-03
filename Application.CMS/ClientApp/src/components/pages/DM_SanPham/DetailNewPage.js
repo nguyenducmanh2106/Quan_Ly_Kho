@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import moment from 'moment'
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import {
     Form, Input, InputNumber, Button, Select,
@@ -77,7 +78,7 @@ const FormUpdate = () => {
                             </Descriptions>
                             <Descriptions>
                                 <Descriptions.Item label="Ngày tạo">
-                                    {new Date(item.created_At).getDate()}/{new Date(item.created_At).getMonth() + 1}/{new Date(item.created_At).getFullYear()}
+                                    {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""}
                                 </Descriptions.Item>
                             </Descriptions>
                         </Col>

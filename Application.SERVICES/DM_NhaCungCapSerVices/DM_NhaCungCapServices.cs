@@ -50,6 +50,35 @@ namespace Application.Services.DM_NhaCungCapSerVices
             }
         }
 
+        public async Task<List<DM_NhaCungCaps>> FindByAttributes(DM_NhaCungCaps obj)
+        {
+            try
+            {
+                var data = (await _unitOfWork.DM_NhaCungCapRepository.FindBy(g => string.IsNullOrEmpty(obj.Name)
+                 || (g.Name.ToLower().Contains(obj.Name.ToLower().Trim())) || (g.Code.ToLower().Contains(obj.Name.ToLower().Trim()))
+                 || (g.Phone.ToLower().Contains(obj.Name.ToLower().Trim()))
+                )).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<DM_NhaCungCaps> FindById(int id)
+        {
+            try
+            {
+                var data = await _unitOfWork.DM_NhaCungCapRepository.Get(g => g.Id == id);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<List<DM_NhaCungCaps>> GetAllDataActive()
         {
             try

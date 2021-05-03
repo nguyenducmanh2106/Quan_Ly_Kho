@@ -7,16 +7,21 @@ import logoDefault from "../../../static/images/user-profile.jpeg"
 import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
-    , Skeleton, Col, Row, Card, Tooltip, Space, notification, AutoComplete, Descriptions, Spin, Image, Menu
+    , Skeleton, Col, Row, Card, Tooltip, Space, notification,
+    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox
 } from 'antd';
 const ModalCreate = () => {
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
+    const [DataNCC, setDataNCC] = useState([]);
     const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
     const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
     const [DataDonViById, setDataDonViById] = useState({});
     const [DataDonViCapDo, setDataDonViCapDo] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isVisibleInfoNCC, setIsVisibleInfoNCC] = useState(false);
+    const [isThanhToanNCC, setIsThanhToanNCC] = useState(false);
+    const [nhaCungCapSelected, setNhaCungCapSelected] = useState({});
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
@@ -72,26 +77,32 @@ const ModalCreate = () => {
         getDonViByCapDo()
     }, [])
     const onSubmit = (data) => {
-        setIsLoading(true)
-        var ChiTietDeNghiDieuDongs = []
-        var sp = document.querySelectorAll("#SanPhams .ant-table-row")
-        for (var i = 0; i < sp.length; i++) {
-            var obj = {
-                ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
-                SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
-            }
-            ChiTietDeNghiDieuDongs.push(obj)
-        }
+        var NgayHenGiao = data.NgayHenGiao ? new Date(data.NgayHenGiao.toDate()) : null;
         var obj = {
             ...data,
-            Status: 1,
-            Created_By: getCurrentLogin().id,
-            ID_ChiNhanhGui: getCurrentLogin().donViId,
-            ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs,
-            ID_BoPhanGui: getCurrentLogin().chucVuId
+            NgayHenGiao
         }
         console.log(obj)
-        onPostCreateItem(obj)
+        //setIsLoading(true)
+        //var ChiTietDeNghiDieuDongs = []
+        //var sp = document.querySelectorAll("#SanPhams .ant-table-row")
+        //for (var i = 0; i < sp.length; i++) {
+        //    var obj = {
+        //        ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
+        //        SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
+        //    }
+        //    ChiTietDeNghiDieuDongs.push(obj)
+        //}
+        //var obj = {
+        //    ...data,
+        //    Status: 1,
+        //    Created_By: getCurrentLogin().id,
+        //    ID_ChiNhanhGui: getCurrentLogin().donViId,
+        //    ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs,
+        //    ID_BoPhanGui: getCurrentLogin().chucVuId
+        //}
+        //console.log(obj)
+        //onPostCreateItem(obj)
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -138,7 +149,29 @@ const ModalCreate = () => {
         }
         //console.log(value)
     };
-
+    const handleSearchNCC = async (value) => {
+        if (value.length > 2) {
+            var obj = {
+                Name: value
+            }
+            var fetchData = await postAPI(`api/dm_nhacungcap/find-by-attributes`, JSON.stringify(obj));
+            if (fetchData.status == true) {
+                setDataNCC(fetchData.result)
+            }
+        }
+        //console.log(value)
+    };
+    const onHandleSelectNCC = async (value, option) => {
+        console.log(value)
+        if (value > 0) {
+            var fetchData = await getAPI(`api/dm_nhacungcap/find-by-id?id=${value}`);
+            if (fetchData.status == true) {
+                var data = await fetchData.result
+                setNhaCungCapSelected(data)
+                setIsVisibleInfoNCC(true)
+            }
+        }
+    }
     const onHandleSelect = async (value, option) => {
         if (value > 0) {
             var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
@@ -150,7 +183,8 @@ const ModalCreate = () => {
                     code: data.code,
                     barCode: data.barCode,
                     tenDonViTinh: data.tenDonViTinh,
-                    SoLuongYeuCau: 1
+                    SoLuongYeuCau: 1,
+                    giaNhap: data.giaNhap
                 }
                 var isExist = false
                 if (DataSanPhamSubmit.length > 0) {
@@ -189,6 +223,21 @@ const ModalCreate = () => {
             }
         }
     }
+    const tinhTongTien = () => {
+        var arraySanPham = []
+        var sp = document.querySelectorAll("#SanPhams .ant-table-row");
+        for (var index = 0; index < sp.length; index++) {
+            var soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
+            var giaNhap = sp[index].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value ?? 0;
+            var obj = {
+                SoLuong: soLuong,
+                GiaNhap: giaNhap.replace(/\đ\s?|(,*)/g, ''),
+                TongTien: soLuong * giaNhap.replace(/\đ\s?|(,*)/g, '')
+            }
+            arraySanPham.push(obj)
+        }
+        console.log(arraySanPham)
+    }
     const onHandleDelete = (value) => {
         var result = DataSanPhamSubmit.filter(item => {
             return item.ID_SanPham !== value.ID_SanPham
@@ -198,9 +247,11 @@ const ModalCreate = () => {
     const renderBody = () => {
         var result = ""
         result = DataSanPhamSubmit.map((item, index) => {
+            var giaNhap = item.giaNhap;
             return (
                 <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                     <td>
+                        <input type="hidden" className="ID_SanPham" defaultValue={item.code} />
                         {item.name}
                     </td>
 
@@ -208,14 +259,23 @@ const ModalCreate = () => {
                         {item.code}
                     </td>
                     <td>
-                        {item.barcode}
-                    </td>
-                    <td>
                         {item.tenDonViTinh}
                     </td>
-                    <td>
-                        <input type="hidden" className="ID_SanPham" defaultValue={item.ID_SanPham} />
-                        <InputNumber min={1} max={99} defaultValue={item.SoLuongYeuCau} />
+                    <td className="SoLuong" id={item.ID_SanPham}>
+                        <InputNumber min={1} max={99} defaultValue={1} onChange={tinhTongTien} />
+                    </td>
+                    <td className="GiaNhap">
+                        <InputNumber
+                            defaultValue={giaNhap}
+                            style={{ width: "100%" }}
+                            formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                            onChange={tinhTongTien}
+
+                        />
+                    </td>
+                    <td className="TongTien">
+
                     </td>
                     <td>
                         <Tooltip title="Xoá">
@@ -228,6 +288,31 @@ const ModalCreate = () => {
             );
         })
         return (result)
+
+    }
+    const onChangeDatePicker = (date, dateString) => {
+        //console.log(date, dateString)
+
+    }
+
+    const renderNCC = () => {
+        var item = nhaCungCapSelected;
+        return (
+            <>
+                <Descriptions title={<Space>Thông tin  <AntdIcons.CloseCircleTwoTone onClick={() => setIsVisibleInfoNCC(false)} /> </Space>} >
+                    <Descriptions.Item label="Tên nhà cung cấp">{item.name}</Descriptions.Item>
+                </Descriptions>
+                <Descriptions>
+                    <Descriptions.Item label="Số điện thoại">{item.phone}</Descriptions.Item>
+                </Descriptions>
+                <Descriptions>
+                    <Descriptions.Item label="Địa chỉ">{item.address}</Descriptions.Item>
+                </Descriptions>
+            </>)
+    }
+    const onChange = (e) => {
+        //console.log(e.target.checked)
+        setIsThanhToanNCC(e.target.checked)
     }
     return (
         <Spin spinning={isLoading}>
@@ -237,82 +322,189 @@ const ModalCreate = () => {
                 name="nest-messages" onFinish={onSubmit} id="myFormCreate"
                 validateMessages={validateMessages}
                 initialValues={{
-                    "LoaiDeNghi_Id": 0,
-                    "ID_ChiNhanhNhan": 0,
+                    "SoTienThanhToan": 0,
+                    "HinhThucThanhToan": 1
                 }}
             >
-                <Row gutter={24}>
-                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                <Row gutter={16}>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 17 }}>
                         <Card
                             style={{ marginTop: 16 }}
                             title={
                                 <Space size={8}>
                                     <AntdIcons.InfoCircleOutlined />
-                                                    Kho hàng
+                                                    Thông tin nhà cung cấp
                                                 </Space>
                             }>
                             <Row>
-                                <Col>
-                                    <Descriptions title="" layout="horizontal">
-                                        <Descriptions.Item label="Từ kho">{DataDonViById.name ?? ""}</Descriptions.Item>
-                                    </Descriptions>
+                                <Col style={{ display: isVisibleInfoNCC ? "none" : "inherit" }}>
+                                    <Form.Item name="ID_NhaCungCap" label="" rules={[{ required: true }]}>
+                                        <AutoComplete
+                                            style={{
+                                                width: '100%',
+                                            }}
+                                            onFocus={() => setDataNCC([])}
+                                            onSelect={onHandleSelectNCC}
+                                            onSearch={handleSearchNCC}
+                                            placeholder="Tìm kiếm nhà cung cấp theo SĐT, tên, mã nhà cung cấp"
+                                            notFoundContent="Không tìm thấy nhà cung cấp nào"
+                                        >
+                                            {/*<Option key={0} value={0}>*/}
+                                            {/*    <Row>*/}
+                                            {/*        <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>*/}
+                                            {/*            <AntdIcons.PlusCircleOutlined />*/}
+                                            {/*        </Col>*/}
+                                            {/*        <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>*/}
+                                            {/*            Thêm mới nhà cung cấp*/}
+                                            {/*        </Col>*/}
+                                            {/*    </Row>*/}
+                                            {/*</Option>*/}
+                                            {DataNCC.map((item) => (
+                                                <Option key={item.id} value={item.id}>
+                                                    <Row>
+                                                        <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
+                                                            {item.name}
+                                                        </Col>
+                                                        <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
+                                                            {item.phone}
+                                                        </Col>
+                                                    </Row>
+                                                </Option>
+                                            ))}
+                                        </AutoComplete>
+                                    </Form.Item>
+
                                 </Col>
-                                <Col>
-                                    {getCurrentLogin().capDoDonVi == 1 ?
-                                        <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
-                                            < Select
-                                                showSearch
-                                                //style={{ width: 200 }}
-                                                placeholder="-- Chọn --"
-                                                optionFilterProp="children"
-                                                filterOption={(input, option) =>
-                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                                }
-                                                filterSort={(optionA, optionB) =>
-                                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                                }
+                                <Col style={{ display: isVisibleInfoNCC ? "inherit" : "none" }}>
+                                    {renderNCC()}
+                                </Col>
+                            </Row>
+                        </Card>
+                        <Row gutter={16}>
+                            <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                <Card
+                                    style={{ marginTop: 16 }}
+                                    title={
+                                        <Space size={8}>
+                                            <AntdIcons.InfoCircleOutlined />
+                                                    Thông tin sản phẩm
+                                                </Space>
+                                    }>
+                                    <Row>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <AutoComplete
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                                onFocus={() => setDataSanPham([])}
+                                                onSelect={onHandleSelect}
+                                                onSearch={handleSearch}
+                                                placeholder="Sản phẩm"
+                                                notFoundContent="Không tìm thấy sản phẩm"
                                             >
-                                                <Option value={0}>-- Chọn --</Option>
-                                                {DataDonVi.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </Form.Item> :
-                                        <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
-                                            <Select
-                                                showSearch
-                                                //style={{ width: 200 }}
-                                                placeholder="-- Chọn --"
-                                                optionFilterProp="level"
-                                                filterOption={(input, option) =>
-                                                    option.level.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                                }
-                                                filterSort={(optionA, optionB) =>
-                                                    optionA.level.toLowerCase().localeCompare(optionB.level.toLowerCase())
-                                                }
-                                            >
-                                                <Option value={0}>-- Chọn --</Option>
-                                                {DataDonViCapDo.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </Form.Item>
-                                    }
+                                                {DataSanPham.map((item) => (
+                                                    <Option key={item.code} value={item.code}>
+                                                        <Row>
+                                                            <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
+                                                                <Image
+                                                                    width={50}
+                                                                    preview={false}
+                                                                    src={"data:image/png;base64," + item.pathAvatar}
+                                                                    fallback={logoDefault}
+                                                                />
+                                                            </Col>
+                                                            <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
+                                                                <Row>
+                                                                    <Col>{item.name}</Col>
+                                                                    <Col>({item.code})</Col>
+                                                                </Row>
+                                                            </Col>
+                                                        </Row>
+                                                    </Option>
+                                                ))}
+                                            </AutoComplete>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
+                                            <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
+                                                <div className="ant-table-container">
+                                                    <div className="ant-table-content">
+                                                        <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
+                                                            <thead className="ant-table-thead">
+                                                                <tr>
+                                                                    <th className="sapxep" id="Name">
+                                                                        Tên
+                                                        </th>
+
+                                                                    <th className="sapxep" id="Code">
+                                                                        Mã SP
+                                                        </th>
+                                                                    <th className="" id="Barcode">
+                                                                        ĐVT
+                                        </th>
+                                                                    <th className="">
+                                                                        Số lượng
+                                        </th>
+                                                                    <th className="" style={{ width: "25%" }}>
+                                                                        Giá nhập
+                                        </th>
+                                                                    <th className="" style={{ width: "20%" }}>
+                                                                        Thành tiền
+                                        </th>
+                                                                    <th className="">
+                                                                        Thao tác
+                                        </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody className="ant-table-tbody">
+                                                                {renderBody()}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        </Row>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.CreditCardOutlined />
+                                                   Thanh toán
+                                                </Space>
+                            }
+                            extra={<Checkbox va onChange={onChange} valuePropName="checked">Thanh toán với nhà cung cấp</Checkbox>}
+                        >
+                            <Row gutter={24} style={{ display: isThanhToanNCC ? "block" : "none" }}>
+                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                    <Form.Item name="HinhThucThanhToan" label="Hình thức thanh toán" rules={[{ required: true }]}>
+                                        <Select>
+                                            <Option value={1}>Tiền mặt</Option>
+                                            <Option value={2}>Chuyển khoản</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                                    <Form.Item name="SoTienThanhToan" label="Số tiền thanh toán">
+                                        <InputNumber
+                                            style={{ width: "100%" }}
+                                            formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                                        />
+                                    </Form.Item>
                                 </Col>
                             </Row>
                         </Card>
                     </Col>
-                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 7 }}>
                         <Card
                             style={{ marginTop: 16 }}
                             title={
                                 <Space size={8}>
                                     <AntdIcons.DollarOutlined />
-                                                   Thông tin
+                                                   Thông tin đơn nhập hàng
                                                 </Space>
                             }
                         >
@@ -320,7 +512,7 @@ const ModalCreate = () => {
                                 <Col>
                                     <Row gutter={24}>
                                         <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                            <Form.Item name="LoaiDeNghi_Id" label="Loại đề nghị" {...tailLayout}>
+                                            <Form.Item name="ID_ChiNhanhNhan" label="Chi nhánh" rules={[{ required: true }]}>
                                                 < Select
                                                     showSearch
                                                     //style={{ width: 200 }}
@@ -334,107 +526,40 @@ const ModalCreate = () => {
                                                     }
                                                 >
                                                     <Option value={0}>-- Chọn --</Option>
-                                                    {DataLoaiDeNghi.map(item => {
+                                                    {DataDonVi.map(item => {
                                                         return (
-                                                            <Option key={item.id} value={item.id}>
-                                                                {item.name}
-                                                            </Option>
+                                                            <Option key={item.id} value={item.id}>{item.name}</Option>
                                                         )
                                                     })}
                                                 </Select>
                                             </Form.Item>
                                         </Col>
                                         <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                            <Form.Item name="Description" label="Ghi chú" {...tailLayout}>
+                                            <Form.Item name="NgayHenGiao" label="Ngày hẹn giao" style={{ width: '100%' }}>
+                                                <DatePicker placeholder="Ngày hẹn giao"
+                                                    style={{ width: '100%' }}
+                                                    format={"DD/MM/YYYY"}
+                                                    getPopupContainer={trigger => trigger.parentElement}
+                                                    onChange={onChangeDatePicker}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <Form.Item name="Description" label="Ghi chú">
                                                 <Input.TextArea
                                                     allowClear
                                                     showCount
                                                 />
                                             </Form.Item>
                                         </Col>
+
                                     </Row>
                                 </Col>
                             </Row>
                         </Card>
                     </Col>
                 </Row>
-                <Row gutter={24} style={{ marginTop: "16px" }}>
-                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                        <Card>
-                            <Row>
-                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                    <AutoComplete
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                        onFocus={() => setDataSanPham([])}
-                                        onSelect={onHandleSelect}
-                                        onSearch={handleSearch}
-                                        placeholder="Sản phẩm"
-                                        notFoundContent="Không tìm thấy sản phẩm"
-                                    >
-                                        {DataSanPham.map((item) => (
-                                            <Option key={item.code} value={item.code}>
-                                                <Row>
-                                                    <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
-                                                        <Image
-                                                            width={50}
-                                                            preview={false}
-                                                            src={"data:image/png;base64," + item.pathAvatar}
-                                                            fallback={logoDefault}
-                                                        />
-                                                    </Col>
-                                                    <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
-                                                        <Row>
-                                                            <Col>{item.name}</Col>
-                                                            <Col>({item.code})</Col>
-                                                        </Row>
-                                                    </Col>
-                                                </Row>
-                                            </Option>
-                                        ))}
-                                    </AutoComplete>
-                                </Col>
-                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
-                                    <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
-                                        <div className="ant-table-container">
-                                            <div className="ant-table-content">
-                                                <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
-                                                    <thead className="ant-table-thead">
-                                                        <tr>
-                                                            <th className="sapxep" id="Name">
-                                                                Tên
-                                                        </th>
 
-                                                            <th className="sapxep" id="Code">
-                                                                Mã SP
-                                                        </th>
-                                                            <th className="" id="Barcode">
-                                                                Mã vạch
-                                        </th>
-                                                            <th className="">
-                                                                ĐVT
-                                        </th>
-                                                            <th className="">
-                                                                Số lượng cần
-                                        </th>
-                                                            <th className="">
-                                                                Thao tác
-                                        </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="ant-table-tbody">
-                                                        {renderBody()}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Card>
-                    </Col>
-                </Row>
                 <Row>
                     <Col>
                         <Form.Item>

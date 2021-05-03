@@ -320,13 +320,13 @@ function Index({ onSetSanPhamUpdate }) {
     function openCreate() {
         history.push({
             pathname: '/dm_nhaphang/create',
-            state: { controller: "Yêu cầu nhập hàng", action: "Tạo mới" }
+            state: { controller: "Phiếu nhập kho", action: "Tạo mới" }
         });
     }
     const onUpdateItem = (item) => {
         history.push({
             pathname: `/dm_nhaphang-pheduyet/pheduyet/${item.code}`,
-            state: { controller: "Yêu cầu nhập hàng - Phê duyệt", action: "Phê duyệt" }
+            state: { controller: "Phiếu nhập kho", action: "Phê duyệt" }
         });
     }
     const onShowItem = async (item) => {

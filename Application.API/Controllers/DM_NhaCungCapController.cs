@@ -208,5 +208,45 @@ namespace Application.API.Controllers
             }
 
         }
+        [HttpPost("find-by-attributes")]
+        public async Task<IActionResult> FindByAttributes([FromBody] DM_NhaCungCaps obj)
+        {
+            try
+            {
+                var data = await _manager.FindByAttributes(obj);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CREATE_FAIL
+                });
+            }
+        }
+        [HttpGet("find-by-id")]
+        public async Task<IActionResult> FindById(int id)
+        {
+            try
+            {
+                var data = await _manager.FindById(id);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CREATE_FAIL
+                });
+            }
+        }
     }
 }

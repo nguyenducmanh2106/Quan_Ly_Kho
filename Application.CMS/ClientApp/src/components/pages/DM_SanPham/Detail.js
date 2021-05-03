@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ImgCrop from 'antd-img-crop';
+import moment from 'moment'
 import { url_upload, FormatMoney } from "../../../utils/helpers";
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import {
@@ -67,7 +68,7 @@ const DetailComponent = ({ item }) => {
                             </Descriptions>
                             <Descriptions>
                                 <Descriptions.Item label="Ngày tạo">
-                                    {new Date(item.created_At).getDate()}/{new Date(item.created_At).getMonth() + 1}/{new Date(item.created_At).getFullYear()}
+                                    {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""}
                                 </Descriptions.Item>
                             </Descriptions>
                         </Col>
