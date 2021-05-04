@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import { getAPI, postAPI, postFormData, getCurrentLogin } from './../../../utils/helpers';
+import { getAPI, postAPI, postFormData, getCurrentLogin, FormatMoney } from './../../../utils/helpers';
 import { url_upload } from './../../../utils/constants';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import logoDefault from "../../../static/images/user-profile.jpeg"
@@ -8,7 +8,7 @@ import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification,
-    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox
+    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography
 } from 'antd';
 const ModalCreate = () => {
     const [DataDonVi, setDataDonVi] = useState([]);
@@ -22,9 +22,17 @@ const ModalCreate = () => {
     const [isVisibleInfoNCC, setIsVisibleInfoNCC] = useState(false);
     const [isThanhToanNCC, setIsThanhToanNCC] = useState(false);
     const [nhaCungCapSelected, setNhaCungCapSelected] = useState({});
+    const [tomTatSP, setTomTatSP] = useState({ TongSl: 0, TongGiaTien: 0 });
+    const [TongSl, setTongSl] = useState(0);
+    const [chietKhau, setChietKhau] = useState(0);
+    const [tienPhaiTra, setTienPhaiTra] = useState(0);
+    const [isVisible, setIsVisible] = useState(false)
     const [form] = Form.useForm();
     const onReset = () => {
         form.resetFields();
+    };
+    const handleVisibleChange = visible => {
+        setIsVisible(visible);
     };
     const { Option } = Select;
     const layout = {
@@ -82,26 +90,28 @@ const ModalCreate = () => {
             ...data,
             NgayHenGiao
         }
-        console.log(obj)
         //setIsLoading(true)
-        //var ChiTietDeNghiDieuDongs = []
-        //var sp = document.querySelectorAll("#SanPhams .ant-table-row")
-        //for (var i = 0; i < sp.length; i++) {
-        //    var obj = {
-        //        ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
-        //        SoLuongYeuCau: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
-        //    }
-        //    ChiTietDeNghiDieuDongs.push(obj)
-        //}
-        //var obj = {
-        //    ...data,
-        //    Status: 1,
-        //    Created_By: getCurrentLogin().id,
-        //    ID_ChiNhanhGui: getCurrentLogin().donViId,
-        //    ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs,
-        //    ID_BoPhanGui: getCurrentLogin().chucVuId
-        //}
-        //console.log(obj)
+        var ChiTietNhapHangs = []
+        var sp = document.querySelectorAll("#SanPhams .ant-table-row")
+        for (var i = 0; i < sp.length; i++) {
+            var obj = {
+                ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
+                SoLuong: sp[i].querySelector(".SoLuong").querySelector(".ant-input-number-input").value,
+                GiaNhap: sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0
+            }
+            ChiTietNhapHangs.push(obj)
+        }
+        var obj = {
+            ...data,
+            Status: 0,
+            Created_By: getCurrentLogin().id,
+            ChiTietNhapHangs: ChiTietNhapHangs,
+            ChietKhau: chietKhau,
+            TongTien: tomTatSP.TongGiaTien,
+            TongTienPhaiTra: tienPhaiTra,
+            ThanhToan: data.SoTienThanhToan == tienPhaiTra ? 1 : (data.SoTienThanhToan < tienPhaiTra && data.SoTienThanhToan != 0) ? 3 : data.SoTienThanhToan == 0 ? 2 : -1
+        }
+        console.log(obj)
         //onPostCreateItem(obj)
     }
     const validateMessages = {
@@ -116,8 +126,8 @@ const ModalCreate = () => {
     };
     async function onPostCreateItem(obj) {
         console.log(obj)
-        //setConfirmLoading(true)
-        var result = await postAPI('api/dm_denghidieudong/create', JSON.stringify(obj))
+        setConfirmLoading(true)
+        var result = await postAPI('api/dm_nhaphang/create', JSON.stringify(obj))
         if (result.status) {
             //setAction(true)
             setIsLoading(!result.status)
@@ -144,7 +154,8 @@ const ModalCreate = () => {
             }
             var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
             if (fetchData.status == true) {
-                setDataSanPham(fetchData.result)
+                var data = fetchData.result
+                setDataSanPham(data)
             }
         }
         //console.log(value)
@@ -172,35 +183,45 @@ const ModalCreate = () => {
             }
         }
     }
-    const onHandleSelect = async (value, option) => {
-        if (value > 0) {
-            var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
-            if (fetchData.status == true) {
-                var data = await fetchData.result
-                var obj = {
-                    ID_SanPham: data.code,
-                    name: data.name,
-                    code: data.code,
-                    barCode: data.barCode,
-                    tenDonViTinh: data.tenDonViTinh,
-                    SoLuongYeuCau: 1,
-                    giaNhap: data.giaNhap
-                }
-                var isExist = false
-                if (DataSanPhamSubmit.length > 0) {
-                    DataSanPhamSubmit.map(item => {
-                        if (item.ID_SanPham === obj.ID_SanPham) {
-                            item.SoLuongYeuCau += 1
-                            isExist = true;
-                            return;
+    const onHandleSelect = useCallback(
+        async (value, option) => {
+            if (value > 0) {
+                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
+                if (fetchData.status == true) {
+                    var data = await fetchData.result
+                    var obj = {
+                        ID_SanPham: data.code,
+                        name: data.name,
+                        code: data.code,
+                        barCode: data.barCode,
+                        tenDonViTinh: data.tenDonViTinh,
+                        SoLuongYeuCau: 1,
+                        giaNhap: data.giaNhap
+                    }
+                    var isExist = false
+                    if (DataSanPhamSubmit.length > 0) {
+                        DataSanPhamSubmit.map(item => {
+                            if (item.ID_SanPham === obj.ID_SanPham) {
+                                item.SoLuongYeuCau += 1
+                                isExist = true;
+                                return;
+                            }
+                        })
+                        if (isExist) {
+                            setDataSanPhamSubmit(
+                                [
+                                    ...DataSanPhamSubmit
+                                ]
+                            )
                         }
-                    })
-                    if (isExist) {
-                        setDataSanPhamSubmit(
-                            [
-                                ...DataSanPhamSubmit
-                            ]
-                        )
+                        else {
+                            setDataSanPhamSubmit(
+                                [
+                                    ...DataSanPhamSubmit,
+                                    obj
+                                ]
+                            )
+                        }
                     }
                     else {
                         setDataSanPhamSubmit(
@@ -210,91 +231,143 @@ const ModalCreate = () => {
                             ]
                         )
                     }
+                    renderTomTat()
                 }
-                else {
-                    setDataSanPhamSubmit(
-                        [
-                            ...DataSanPhamSubmit,
-                            obj
-                        ]
-                    )
-                }
-                console.log(DataSanPhamSubmit)
             }
-        }
-    }
+
+        },
+        [DataSanPhamSubmit]
+    )
     const tinhTongTien = () => {
-        var arraySanPham = []
-        var sp = document.querySelectorAll("#SanPhams .ant-table-row");
-        for (var index = 0; index < sp.length; index++) {
-            var soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
-            var giaNhap = sp[index].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value ?? 0;
-            var obj = {
+        let arraySanPham = []
+        let tongSl = 0;
+        let tongTienDonHang = 0;
+        let sp = document.querySelectorAll("#SanPhams .ant-table-row");
+        for (let index = 0; index < sp.length; index++) {
+            let soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
+            let giaNhap = sp[index].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value ?? 0;
+            let tongTien = soLuong * giaNhap.replace(/\đ\s?|(,*)/g, '')
+            let obj = {
                 SoLuong: soLuong,
                 GiaNhap: giaNhap.replace(/\đ\s?|(,*)/g, ''),
-                TongTien: soLuong * giaNhap.replace(/\đ\s?|(,*)/g, '')
+                TongTien: tongTien
             }
+            tongSl += Number.parseInt(soLuong);
+            tongTienDonHang += tongTien;
             arraySanPham.push(obj)
+            sp[index].querySelector(".TongTien").innerHTML = FormatMoney(tongTien, " đ")
         }
+        setTomTatSP({
+            ...tomTatSP,
+            TongSl: tongSl,
+            TongGiaTien: tongTienDonHang
+        })
+        onChangeChietKhau(tongTienDonHang)
         console.log(arraySanPham)
     }
     const onHandleDelete = (value) => {
         var result = DataSanPhamSubmit.filter(item => {
             return item.ID_SanPham !== value.ID_SanPham
         })
+
         setDataSanPhamSubmit(result)
     }
-    const renderBody = () => {
-        var result = ""
-        result = DataSanPhamSubmit.map((item, index) => {
-            var giaNhap = item.giaNhap;
-            return (
-                <tr key={item.id} className="ant-table-row ant-table-row-level-0">
-                    <td>
-                        <input type="hidden" className="ID_SanPham" defaultValue={item.code} />
-                        {item.name}
-                    </td>
-
-                    <td style={{ textAlign: "center" }}>
-                        {item.code}
-                    </td>
-                    <td>
-                        {item.tenDonViTinh}
-                    </td>
-                    <td className="SoLuong" id={item.ID_SanPham}>
-                        <InputNumber min={1} max={99} defaultValue={1} onChange={tinhTongTien} />
-                    </td>
-                    <td className="GiaNhap">
-                        <InputNumber
-                            defaultValue={giaNhap}
-                            style={{ width: "100%" }}
-                            formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            parser={value => value.replace(/\đ\s?|(,*)/g, '')}
-                            onChange={tinhTongTien}
-
-                        />
-                    </td>
-                    <td className="TongTien">
-
-                    </td>
-                    <td>
-                        <Tooltip title="Xoá">
-                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onHandleDelete(item)} />
-                        </Tooltip>
-                    </td>
-                </tr>
-
-
-            );
-        })
-        return (result)
-
+    const renderTomTat = (TongSl, TongGiaTien) => {
+        console.log(TongSl)
+        var data = ""
+        data = <tr>
+            <td>Số lượng :{TongSl}</td>
+        </tr>
+        return data;
     }
+    const renderBody = useCallback(
+        () => {
+            var result = ""
+            var TongSl = 0;
+            var TongGiaTien = 0
+            result = DataSanPhamSubmit.map((item, index) => {
+                var giaNhap = item.giaNhap;
+                TongSl += 1;
+                TongGiaTien += Number.parseInt(giaNhap)
+                return (
+                    <tr key={item.id} className="ant-table-row ant-table-row-level-0">
+                        <td>
+                            <input type="hidden" className="ID_SanPham" defaultValue={item.code} />
+                            {item.name}
+                        </td>
+
+                        <td style={{ textAlign: "center" }}>
+                            {item.code}
+                        </td>
+                        <td>
+                            {item.tenDonViTinh}
+                        </td>
+                        <td className="SoLuong" id={item.ID_SanPham}>
+                            <InputNumber min={1} max={99} onChange={tinhTongTien} />
+                        </td>
+                        <td className="GiaNhap">
+                            <InputNumber
+                                defaultValue={giaNhap}
+                                style={{ width: "100%" }}
+                                formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\đ\s?|(,*)/g, '')}
+                                onChange={tinhTongTien}
+
+                            />
+                        </td>
+                        <td className="TongTien">
+                            {FormatMoney(giaNhap, " đ")}
+                        </td>
+                        <td>
+                            <Tooltip title="Xoá">
+                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onHandleDelete(item)} />
+                            </Tooltip>
+                        </td>
+                    </tr>
+
+
+                );
+            })
+            renderTomTat(TongSl, TongGiaTien)
+            return (result)
+
+        },
+        [DataSanPhamSubmit]
+    )
+
     const onChangeDatePicker = (date, dateString) => {
         //console.log(date, dateString)
 
     }
+    const onChangeChietKhau = (TongTien) => {
+        let Chietkhau = 0
+        let dvt = form.getFieldsValue("prefix").prefix;
+        let ck = form.getFieldsValue("ChietKhau").ChietKhau ?? 0;
+        console.log(TongTien)
+        console.log(ck)
+        if (dvt == 1) {
+            Chietkhau = TongTien * ck / 100;
+        }
+        else {
+            Chietkhau = Number.parseInt(ck);
+        }
+        setChietKhau(Chietkhau)
+        setTienPhaiTra(TongTien - Chietkhau)
+    }
+    const prefixSelector = (
 
+        <Form.Item name="prefix" noStyle>
+            <Select
+                onChange={() => onChangeChietKhau(tomTatSP.TongGiaTien)}
+                style={{
+                    width: 70,
+                }}
+            >
+                <Option value={1}>%</Option>
+                <Option value={2}>Tiền mặt</Option>
+            </Select>
+        </Form.Item>
+    );
     const renderNCC = () => {
         var item = nhaCungCapSelected;
         return (
@@ -390,7 +463,7 @@ const ModalCreate = () => {
                                                     Thông tin sản phẩm
                                                 </Space>
                                     }>
-                                    <Row>
+                                    <Row className="ThongTinSP">
                                         <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
                                             <AutoComplete
                                                 style={{
@@ -447,7 +520,7 @@ const ModalCreate = () => {
                                                                     <th className="" style={{ width: "25%" }}>
                                                                         Giá nhập
                                         </th>
-                                                                    <th className="" style={{ width: "20%" }}>
+                                                                    <th className="">
                                                                         Thành tiền
                                         </th>
                                                                     <th className="">
@@ -462,6 +535,63 @@ const ModalCreate = () => {
                                                     </div>
                                                 </div>
                                             </div>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }} className="TomTat">
+                                            {DataSanPhamSubmit.length > 0 ?
+                                                <>
+                                                    <Descriptions title="" >
+                                                        <Descriptions.Item label="Số lượng" className="TongSoLuong">{tomTatSP.TongSl}</Descriptions.Item>
+                                                    </Descriptions>
+                                                    <Descriptions>
+                                                        <Descriptions.Item label="Tổng tiền" className="TongGiaTien">
+                                                            {FormatMoney(tomTatSP.TongGiaTien, " đ")}
+                                                        </Descriptions.Item>
+                                                    </Descriptions>
+                                                    <Descriptions>
+                                                        <Descriptions.Item label={<Popover
+                                                            content={
+                                                                <Form.Item
+                                                                    name="ChietKhau"
+                                                                    label=""
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: 'Please input your phone number!',
+                                                                        },
+                                                                    ]}
+                                                                >
+
+                                                                    <Input
+                                                                        onChange={() => onChangeChietKhau(tomTatSP.TongGiaTien)}
+                                                                        addonBefore={prefixSelector}
+                                                                        style={{
+                                                                            width: '100%',
+                                                                        }}
+                                                                    />
+                                                                </Form.Item>
+                                                            }
+                                                            title="Title"
+                                                            trigger="click"
+                                                            visible={isVisible}
+                                                            onVisibleChange={handleVisibleChange}
+                                                        >
+                                                            <Typography.Link href="#">
+                                                                Chiết khẩu <AntdIcons.DownOutlined />
+                                                            </Typography.Link>
+
+                                                        </Popover>
+                                                        }>
+                                                            {FormatMoney(chietKhau, " đ")}
+                                                        </Descriptions.Item>
+                                                    </Descriptions>
+                                                    <Descriptions>
+                                                        <Descriptions.Item label={<Typography.Text type="warning">Tiền phải trả</Typography.Text>}>
+                                                            {FormatMoney(tienPhaiTra, " đ")}
+                                                        </Descriptions.Item>
+                                                    </Descriptions>
+                                                </> :
+                                                <Empty description="Đơn hàng của bạn chưa có sản phẩm" />
+                                            }
                                         </Col>
                                     </Row>
                                 </Card>
@@ -489,6 +619,8 @@ const ModalCreate = () => {
                                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
                                     <Form.Item name="SoTienThanhToan" label="Số tiền thanh toán">
                                         <InputNumber
+                                            min={0}
+                                            max={tienPhaiTra}
                                             style={{ width: "100%" }}
                                             formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                             parser={value => value.replace(/\đ\s?|(,*)/g, '')}
