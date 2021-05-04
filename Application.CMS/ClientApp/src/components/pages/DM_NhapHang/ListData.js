@@ -6,13 +6,15 @@ import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import { Can } from "../../elements/Config_Roles/Can"
-import { getLocalStorage, getCurrentLogin } from "../../../utils/helpers"
+import { getLocalStorage, getCurrentLogin, FormatMoney } from "../../../utils/helpers"
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
 import * as constantPermission from "../../../utils/constantPermission"
 import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
+import { useHistory } from 'react-router-dom'
 function Table(props) {
     //khai báo state
     //console.log(Can)
+    let history = useHistory()
     const [array, setArray] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -33,9 +35,10 @@ function Table(props) {
         props.onChangePage(page, size)
     }
     const onShow = (item) => {
-        props.onToggleView();
-        props.onShowItem(item)
-
+        history.push({
+            pathname: `/dm_nhaphang/view/${item.code}`,
+            state: { controller: "Đơn nhập hàng", action: item.code }
+        });
     }
     const update = (item) => {
         //props.onToggleFormpdate();
@@ -111,23 +114,25 @@ function Table(props) {
                             }
                         </td>
                         <td>
-                            {item.status == 1 ?
+                            {item.thanhToan == 1 ?
                                 <Badge color="green" text="Đã thanh toán" />
-                                : item.status == 2 ? <Badge color="geekblue" text="Chưa thanh toán" /> : item.status == 3 ?
-                                    <Badge color="orange" text="Thanh toán một phần" /> : item.status == 4 ?
-                                        <Badge color="purple" text="Hoàn tiền một phần" /> : item.status == 5 ?
+                                : item.thanhToan == 2 ? <Badge color="geekblue" text="Chưa thanh toán" /> : item.thanhToan == 3 ?
+                                    <Badge color="orange" text="Thanh toán một phần" /> : item.thanhToan == 4 ?
+                                        <Badge color="purple" text="Hoàn tiền một phần" /> : item.thanhToan == 5 ?
                                             <Badge color="green" text="Hoàn tiền toàn bộ" /> : ""
                             }
                         </td>
                         <td>
-                            {item.status == 1 ?
+                            {item.nhapKho == 1 ?
                                 <Badge color="geekblue" text="Chờ nhập hàng" />
-                                : item.status == 2 ? <Badge color="green" text="Đã nhập hàng" /> : item.status == 3 ?
-                                    <Badge color="orange" text="Thanh toán một phần" /> : item.status == 4 ?
+                                : item.nhapKho == 2 ? <Badge color="green" text="Đã nhập hàng" /> : item.nhapKho == 3 ?
+                                    <Badge color="orange" text="Thanh toán một phần" /> : item.nhapKho == 4 ?
                                         <Badge color="green" text="Hoàn tiền toàn bộ" /> : ""
                             }
                         </td>
-                        <td></td>
+                        <td>
+                            {FormatMoney(item.tongTienPhaiTra, " đ")}
+                        </td>
                         <td>
                             {item.tenNguoiTao}
                         </td>

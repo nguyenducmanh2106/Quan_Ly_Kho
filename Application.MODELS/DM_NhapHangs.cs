@@ -32,6 +32,7 @@ namespace Application.MODELS
         public decimal? ChietKhau { get; set; }
         public DateTime? NgayHenGiao { get; set; }
         public DateTime? NgayNhapKho { get; set; }
+        public decimal? TongTienPhaiTra { get; set; }
         public int? ID_NhaCungCap { get; set; }
         public int? ID_ChiNhanhNhan { get; set; }
         [NotMapped]
@@ -44,5 +45,13 @@ namespace Application.MODELS
         public string tenNguoiTao { get; set; }
         [NotMapped]
         public List<DM_ChiTietNhapHangs> ChiTietNhapHangs { get; set; }
+        [NotMapped]
+        public List<ThanhToanDonHangs> ThanhToanDonHangs { get; set; }
+        [NotMapped]
+        public ThanhToanDonHangs ThanhToanDonHang { get; set; }
+        [NotMapped]
+        public DM_NhaCungCaps nhaCungCaps { get; set; }
+        [NotMapped]
+        public decimal TongDaThanhToan { get; set; }
     }
 }

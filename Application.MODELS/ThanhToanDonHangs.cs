@@ -16,5 +16,12 @@ namespace Application.MODELS
         public int? NguoiThanhToan { get; set; }
         public DateTime? NgayThanhToan { get; set; }
         public int? HinhThucThanhToan { get; set; }
+        [NotMapped]
+        public string tenHinhThucThanhToan { get; set; }
+        [NotMapped]
+        public string tenNguoiThanhToan { get; set; }
+        [NotMapped]
+        public decimal? TongDaThanhToan { get; set; }
+
     }
 }

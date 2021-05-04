@@ -90,29 +90,36 @@ const ModalCreate = () => {
             ...data,
             NgayHenGiao
         }
-        //setIsLoading(true)
+
         var ChiTietNhapHangs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
                 ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
-                SoLuong: sp[i].querySelector(".SoLuong").querySelector(".ant-input-number-input").value,
-                GiaNhap: sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0
+                SoLuong: Number.parseInt(sp[i].querySelector(".SoLuong").querySelector(".ant-input-number-input").value),
+                GiaNhap: Number.parseInt(sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0)
             }
             ChiTietNhapHangs.push(obj)
+        }
+        var ThanhToanDonHang = {
+            TongTienDaTra: Number.parseInt(data.TongTienDaTra ?? 0),
+            NguoiThanhToan: getCurrentLogin().id,
+            HinhThucThanhToan: data.HinhThucThanhToan
         }
         var obj = {
             ...data,
             Status: 0,
+            NhapKho: 1,
             Created_By: getCurrentLogin().id,
             ChiTietNhapHangs: ChiTietNhapHangs,
+            ThanhToanDonHang: ThanhToanDonHang,
             ChietKhau: chietKhau,
             TongTien: tomTatSP.TongGiaTien,
             TongTienPhaiTra: tienPhaiTra,
-            ThanhToan: data.SoTienThanhToan == tienPhaiTra ? 1 : (data.SoTienThanhToan < tienPhaiTra && data.SoTienThanhToan != 0) ? 3 : data.SoTienThanhToan == 0 ? 2 : -1
+            ThanhToan: data.SoTienThanhToan == tienPhaiTra ? 1 : (data.TongTienDaTra < tienPhaiTra && data.TongTienDaTra != 0) ? 3 : data.TongTienDaTra == 0 ? 2 : -1
         }
         console.log(obj)
-        //onPostCreateItem(obj)
+        onPostCreateItem(obj)
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -126,10 +133,9 @@ const ModalCreate = () => {
     };
     async function onPostCreateItem(obj) {
         console.log(obj)
-        setConfirmLoading(true)
+        setIsLoading(true)
         var result = await postAPI('api/dm_nhaphang/create', JSON.stringify(obj))
         if (result.status) {
-            //setAction(true)
             setIsLoading(!result.status)
             notification.success({
                 message: result.message,
@@ -396,7 +402,8 @@ const ModalCreate = () => {
                 validateMessages={validateMessages}
                 initialValues={{
                     "SoTienThanhToan": 0,
-                    "HinhThucThanhToan": 1
+                    "HinhThucThanhToan": 1,
+                    "TongTienDaTra": 0
                 }}
             >
                 <Row gutter={16}>
@@ -553,12 +560,6 @@ const ModalCreate = () => {
                                                                 <Form.Item
                                                                     name="ChietKhau"
                                                                     label=""
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Please input your phone number!',
-                                                                        },
-                                                                    ]}
                                                                 >
 
                                                                     <Input
@@ -617,7 +618,7 @@ const ModalCreate = () => {
                                     </Form.Item>
                                 </Col>
                                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                    <Form.Item name="SoTienThanhToan" label="Số tiền thanh toán">
+                                    <Form.Item name="TongTienDaTra" label="Số tiền thanh toán">
                                         <InputNumber
                                             min={0}
                                             max={tienPhaiTra}

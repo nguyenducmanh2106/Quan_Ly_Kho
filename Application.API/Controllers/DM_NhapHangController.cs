@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Application.MODELS.ViewModels;
 using Application.Services.DM_NhapHangSerVices;
 using Application.Services.UserServices;
+using Application.Services.ThanhToanDonHangSerVices;
 
 namespace Application.API.Controllers
 {
@@ -26,16 +27,18 @@ namespace Application.API.Controllers
     {
         private readonly IDM_NhapHangServices _manager;
         private readonly IDM_ChiTietNhapHangServices _managerChiTiet;
+        private readonly IThanhToanDonHangServices _managerThanhToan;
         private readonly IUserServices _managerUser;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_NhapHangController(IConfiguration config, IUserServices _managerUser, IDM_ChiTietNhapHangServices _managerChiTiet, IDM_NhapHangServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_NhapHangController(IConfiguration config, IThanhToanDonHangServices _managerThanhToan, IUserServices _managerUser, IDM_ChiTietNhapHangServices _managerChiTiet, IDM_NhapHangServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
             this._managerChiTiet = _managerChiTiet;
             this._managerUser = _managerUser;
+            this._managerThanhToan = _managerThanhToan;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost("list_data")]
@@ -58,6 +61,9 @@ namespace Application.API.Controllers
                     NgayDuyet = g.NgayDuyet,
                     TaiKhoanDuyet = g.TaiKhoanDuyet,
                     Status = g.Status,
+                    ThanhToan = g.ThanhToan,
+                    NhapKho = g.NhapKho,
+                    TongTienPhaiTra = g.TongTienPhaiTra,
                     ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
                     NgayHenGiao = g.NgayHenGiao,
                     NgayNhapKho = g.NgayNhapKho,
@@ -115,6 +121,9 @@ namespace Application.API.Controllers
                     NgayDuyet = g.NgayDuyet,
                     TaiKhoanDuyet = g.TaiKhoanDuyet,
                     Status = g.Status,
+                    nhaCungCaps = g.nhaCungCaps,
+                    ChietKhau = g.ChietKhau,
+                    TongTienPhaiTra = g.TongTienPhaiTra,
                     ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
                     NgayHenGiao = g.NgayHenGiao,
                     NgayNhapKho = g.NgayNhapKho,
@@ -124,6 +133,8 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenNhaCungCap = g.tenNhaCungCap,
                     tenNguoiTao = g.tenNguoiTao,
+                    TongDaThanhToan = _managerThanhToan.TongDaThanhToan(g.Code),
+                    ThanhToanDonHangs = _managerThanhToan.GetAllDataActiveByID_NhapHang(g.Code),
                     ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code)
                 };
                 MessageSuccess success = new MessageSuccess()
@@ -155,7 +166,11 @@ namespace Application.API.Controllers
                     }
                     await _managerChiTiet.BulkInsert(obj.ChiTietNhapHangs);
                 }
-
+                if (obj.ThanhToanDonHang.TongTienDaTra > 0)
+                {
+                    obj.ThanhToanDonHang.ID_NhapHang = data.Code;
+                    await _managerThanhToan.Create(obj.ThanhToanDonHang);
+                }
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.CREATE_SUCCESS

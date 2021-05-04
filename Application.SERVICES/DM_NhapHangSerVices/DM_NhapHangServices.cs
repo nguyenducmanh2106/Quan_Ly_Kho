@@ -178,6 +178,7 @@ namespace Application.Services.DM_NhapHangSerVices
                 exist.Updated_By = obj.Updated_By;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;
                 exist.ID_NhaCungCap = obj.ID_NhaCungCap;
+                exist.TongTienPhaiTra = obj.TongTienPhaiTra;
                 exist.Description = obj.Description;
                 exist.ChietKhau = obj.ChietKhau;
                 await _unitOfWork.DM_NhapHangRepository.Update(exist);
