@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
-import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown, Space } from 'antd';
+import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown, Space, Typography } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
@@ -108,28 +108,32 @@ function Table(props) {
                         </td>
                         <td style={{ textAlign: "center" }}>
                             {item.status == 1 ?
-                                <Badge color="green" text="Hoàn thành" />
-                                : item.status == 2 ? <Badge color="orange" text="Đang giao dịch" /> : item.status == 0 ?
-                                    <Badge color="geekblue" text="Đặt hàng" /> : ""
+                                <Typography.Link href="javascript:void(0)">
+                                    Duyệt
+                                </Typography.Link>
+                                : item.status == 2 ? <Typography.Text type="success">Nhập hàng</Typography.Text> : item.status == 0 ?
+                                    <Typography.Text type="warning">Đặt hàng</Typography.Text> : item.status == 3 ?
+                                        <Typography.Text type="success">Hoàn thành</Typography.Text> : item.status == 4 ?
+                                            <Typography.Text type="danger">Huỷ đơn</Typography.Text> : ""
                             }
                         </td>
-                        <td>
-                            {item.thanhToan == 1 ?
-                                <Badge color="green" text="Đã thanh toán" />
-                                : item.thanhToan == 2 ? <Badge color="geekblue" text="Chưa thanh toán" /> : item.thanhToan == 3 ?
-                                    <Badge color="orange" text="Thanh toán một phần" /> : item.thanhToan == 4 ?
-                                        <Badge color="purple" text="Hoàn tiền một phần" /> : item.thanhToan == 5 ?
-                                            <Badge color="green" text="Hoàn tiền toàn bộ" /> : ""
-                            }
-                        </td>
-                        <td>
-                            {item.nhapKho == 1 ?
-                                <Badge color="geekblue" text="Chờ nhập hàng" />
-                                : item.nhapKho == 2 ? <Badge color="green" text="Đã nhập hàng" /> : item.nhapKho == 3 ?
-                                    <Badge color="orange" text="Thanh toán một phần" /> : item.nhapKho == 4 ?
-                                        <Badge color="green" text="Hoàn tiền toàn bộ" /> : ""
-                            }
-                        </td>
+                        {/*<td>*/}
+                        {/*    {item.thanhToan == 1 ?*/}
+                        {/*        <Badge color="green" text="Đã thanh toán" />*/}
+                        {/*        : item.thanhToan == 2 ? <Badge color="geekblue" text="Chưa thanh toán" /> : item.thanhToan == 3 ?*/}
+                        {/*            <Badge color="orange" text="Thanh toán một phần" /> : item.thanhToan == 4 ?*/}
+                        {/*                <Badge color="purple" text="Hoàn tiền một phần" /> : item.thanhToan == 5 ?*/}
+                        {/*                    <Badge color="green" text="Hoàn tiền toàn bộ" /> : ""*/}
+                        {/*    }*/}
+                        {/*</td>*/}
+                        {/*<td>*/}
+                        {/*    {item.nhapKho == 1 ?*/}
+                        {/*        <Badge color="geekblue" text="Chờ nhập hàng" />*/}
+                        {/*        : item.nhapKho == 2 ? <Badge color="green" text="Đã nhập hàng" /> : item.nhapKho == 3 ?*/}
+                        {/*            <Badge color="orange" text="Thanh toán một phần" /> : item.nhapKho == 4 ?*/}
+                        {/*                <Badge color="green" text="Hoàn tiền toàn bộ" /> : ""*/}
+                        {/*    }*/}
+                        {/*</td>*/}
                         <td>
                             {FormatMoney(item.tongTienPhaiTra, " đ")}
                         </td>
@@ -233,12 +237,12 @@ function Table(props) {
                                         <th className="sapxep"  >
                                             Trạng thái
                                         </th>
-                                        <th className="sapxep" >
-                                            Thanh toán
-                                        </th>
-                                        <th className="">
-                                            Nhập kho
-                                        </th>
+                                        {/*<th className="sapxep" >*/}
+                                        {/*    Thanh toán*/}
+                                        {/*</th>*/}
+                                        {/*<th className="">*/}
+                                        {/*    Nhập kho*/}
+                                        {/*</th>*/}
                                         <th className="">
                                             Tổng tiền
                                         </th>

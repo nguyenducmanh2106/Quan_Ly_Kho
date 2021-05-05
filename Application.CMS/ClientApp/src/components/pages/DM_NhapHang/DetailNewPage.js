@@ -9,7 +9,7 @@ import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification,
-    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Timeline, Steps
+    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Timeline, Steps, Divider
 } from 'antd';
 import { useParams, useHistory } from 'react-router-dom'
 const ModalCreate = () => {
@@ -140,11 +140,17 @@ const ModalCreate = () => {
             <Row>
                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}></Col>
                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
-                    <Steps current={1} size="small">
+                    {console.log(nhapHang?.status)}
+                    <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : 4} size="small">
                         <Steps.Step title="Đặt hàng" description={nhapHang.created_At ? moment(nhapHang.created_At).format('DD/MM/YYYY, HH:mm') : ""} />
                         <Steps.Step title="Duyệt" description={nhapHang.ngayDuyet ? moment(nhapHang.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""} />
                         <Steps.Step title="Nhập kho" description={nhapHang.ngayNhapKho ? moment(nhapHang.ngayNhapKho).format('DD/MM/YYYY, HH:mm') : ""} />
-                        <Steps.Step title="Hoàn thành" description="This is a description." />
+                        {nhapHang?.status != 4 ?
+                            <Steps.Step title="Hoàn thành" description={nhapHang.ngayHoanThanh ? moment(nhapHang.ngayHoanThanh).format('DD/MM/YYYY, HH:mm') : ""} />
+                            :
+                            <Steps.Step title={<Typography.Text type="danger">Huỷ đơn</Typography.Text>} description={nhapHang.ngayHuyDon ? moment(nhapHang.ngayHuyDon).format('DD/MM/YYYY, HH:mm') : ""} />
+                        }
+
                     </Steps>
                 </Col>
             </Row>
@@ -247,56 +253,56 @@ const ModalCreate = () => {
                             </Card>
                         </Col>
                     </Row>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Row>
-                                <Col>
-                                    <Space size={8}>
-                                        <AntdIcons.CreditCardOutlined />
-                                                   Thanh toán
-                                    </Space>
-                                </Col>
-                                <Col>
-                                    <Row>
-                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                            <Descriptions>
-                                                <Descriptions.Item label="Đã thanh toán">
-                                                    {FormatMoney(nhapHang.tongDaThanhToan ?? 0, " đ")}
-                                                </Descriptions.Item>
-                                            </Descriptions>
-                                        </Col>
-                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                            <Descriptions>
-                                                <Descriptions.Item label="Còn phải trả">
-                                                    {FormatMoney(nhapHang.tongTienPhaiTra - nhapHang.tongDaThanhToan, " đ")}
-                                                </Descriptions.Item>
-                                            </Descriptions>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
+                    {/*<Card*/}
+                    {/*    style={{ marginTop: 16 }}*/}
+                    {/*    title={*/}
+                    {/*        <Row>*/}
+                    {/*            <Col>*/}
+                    {/*                <Space size={8}>*/}
+                    {/*                    <AntdIcons.CreditCardOutlined />*/}
+                    {/*                               Thanh toán*/}
+                    {/*                </Space>*/}
+                    {/*            </Col>*/}
+                    {/*            <Col>*/}
+                    {/*                <Row>*/}
+                    {/*                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
+                    {/*                        <Descriptions>*/}
+                    {/*                            <Descriptions.Item label="Đã thanh toán">*/}
+                    {/*                                {FormatMoney(nhapHang.tongDaThanhToan ?? 0, " đ")}*/}
+                    {/*                            </Descriptions.Item>*/}
+                    {/*                        </Descriptions>*/}
+                    {/*                    </Col>*/}
+                    {/*                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
+                    {/*                        <Descriptions>*/}
+                    {/*                            <Descriptions.Item label="Còn phải trả">*/}
+                    {/*                                {FormatMoney(nhapHang.tongTienPhaiTra - nhapHang.tongDaThanhToan, " đ")}*/}
+                    {/*                            </Descriptions.Item>*/}
+                    {/*                        </Descriptions>*/}
+                    {/*                    </Col>*/}
+                    {/*                </Row>*/}
+                    {/*            </Col>*/}
+                    {/*        </Row>*/}
 
-                        }
-                        extra={<Button>Xác nhận thanh toán</Button>}
-                    >
-                        <Row gutter={24}>
-                            <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                <Timeline>
-                                    {thanhToan.map(item => {
-                                        return (
-                                            <Timeline.Item>
-                                                <p> Xác nhận thanh toán {FormatMoney(item.tongTienDaTra ?? 0, " đ")}</p>
-                                                <p>{item.ngayThanhToan ? moment(item.ngayThanhToan).format('DD/MM/YYYY, HH:mm') : ""}</p>
-                                                <p>Người thanh toán: {item.tenNguoiThanhToan}</p>
-                                                <p>Phương thức thanh toán: {item.tenHinhThucThanhToan}</p>
-                                            </Timeline.Item>
-                                        )
-                                    })}
-                                </Timeline>
-                            </Col>
-                        </Row>
-                    </Card>
+                    {/*    }*/}
+                    {/*    extra={<Button>Xác nhận thanh toán</Button>}*/}
+                    {/*>*/}
+                    {/*    <Row gutter={24}>*/}
+                    {/*        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>*/}
+                    {/*            <Timeline>*/}
+                    {/*                {thanhToan.map(item => {*/}
+                    {/*                    return (*/}
+                    {/*                        <Timeline.Item>*/}
+                    {/*                            <p> Xác nhận thanh toán {FormatMoney(item.tongTienDaTra ?? 0, " đ")}</p>*/}
+                    {/*                            <p>{item.ngayThanhToan ? moment(item.ngayThanhToan).format('DD/MM/YYYY, HH:mm') : ""}</p>*/}
+                    {/*                            <p>Người thanh toán: {item.tenNguoiThanhToan}</p>*/}
+                    {/*                            <p>Phương thức thanh toán: {item.tenHinhThucThanhToan}</p>*/}
+                    {/*                        </Timeline.Item>*/}
+                    {/*                    )*/}
+                    {/*                })}*/}
+                    {/*            </Timeline>*/}
+                    {/*        </Col>*/}
+                    {/*    </Row>*/}
+                    {/*</Card>*/}
                 </Col>
                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 7 }}>
                     <Card
@@ -339,14 +345,24 @@ const ModalCreate = () => {
                     </Card>
                 </Col>
             </Row>
-
+            <Divider />
             <Row>
-                <Col>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit" icon={<AntdIcons.SaveOutlined />}>
-                            Lưu
-                                    </Button>
-                    </Form.Item>
+                <Col style={{ textAlign: "right" }}>
+                    {nhapHang?.status == 0 ?
+                        <Button type="primary" icon={<AntdIcons.SaveOutlined />}>
+                            Duyệt đơn
+                                    </Button> :
+                        nhapHang?.status == 1 ?
+                            <Button type="primary" icon={<AntdIcons.SaveOutlined />}>
+                                Nhập kho
+                                    </Button> :
+                            nhapHang?.status == 2 ?
+                                <Button type="primary" icon={<AntdIcons.SaveOutlined />}>
+                                    Hoàn thành
+                                    </Button> :
+                                ""
+
+                    }
                 </Col>
             </Row>
         </Form >

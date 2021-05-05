@@ -47,6 +47,8 @@ namespace Application.REPOSITORY
                          ID_ChiNhanhNhan = denghi.ID_ChiNhanhNhan,
                          NgayHenGiao = denghi.NgayHenGiao,
                          NgayNhapKho = denghi.NgayNhapKho,
+                         NgayHuyDon = denghi.NgayHuyDon,
+                         NgayHoanThanh = denghi.NgayHoanThanh,
                          ID_NhaCungCap = denghi.ID_NhaCungCap,
                          Description = denghi.Description,
                          nhaCungCaps = db.DM_NhaCungCaps.Where(g => g.Id == denghi.ID_NhaCungCap).SingleOrDefault(),
@@ -70,7 +72,7 @@ namespace Application.REPOSITORY
             {
                 var data = (
                     from denghi in db.DM_NhapHangs
-                    where (((inputModel.Status == (int)ContentStatusEnum.All && denghi.Status != (int)ContentStatusEnum.Rollback && denghi.Status != (int)ContentStatusEnum.Revoked) || denghi.Status == inputModel.Status)
+                    where (((inputModel.Status == (int)ContentStatusEnum.All || denghi.Status == inputModel.Status))
                     && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )
@@ -88,6 +90,8 @@ namespace Application.REPOSITORY
                         NhapKho = denghi.NhapKho,
                         TongTienPhaiTra = denghi.TongTienPhaiTra,
                         Status = denghi.Status,
+                        NgayHuyDon = denghi.NgayHuyDon,
+                        NgayHoanThanh = denghi.NgayHoanThanh,
                         ID_ChiNhanhNhan = denghi.ID_ChiNhanhNhan,
                         NgayHenGiao = denghi.NgayHenGiao,
                         NgayNhapKho = denghi.NgayNhapKho,

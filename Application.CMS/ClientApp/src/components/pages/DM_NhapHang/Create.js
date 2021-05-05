@@ -598,38 +598,38 @@ const ModalCreate = () => {
                                 </Card>
                             </Col>
                         </Row>
-                        <Card
-                            style={{ marginTop: 16 }}
-                            title={
-                                <Space size={8}>
-                                    <AntdIcons.CreditCardOutlined />
-                                                   Thanh toán
-                                                </Space>
-                            }
-                            extra={<Checkbox va onChange={onChange} valuePropName="checked">Thanh toán với nhà cung cấp</Checkbox>}
-                        >
-                            <Row gutter={24} style={{ display: isThanhToanNCC ? "block" : "none" }}>
-                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                    <Form.Item name="HinhThucThanhToan" label="Hình thức thanh toán" rules={[{ required: true }]}>
-                                        <Select>
-                                            <Option value={1}>Tiền mặt</Option>
-                                            <Option value={2}>Chuyển khoản</Option>
-                                        </Select>
-                                    </Form.Item>
-                                </Col>
-                                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-                                    <Form.Item name="TongTienDaTra" label="Số tiền thanh toán">
-                                        <InputNumber
-                                            min={0}
-                                            max={tienPhaiTra}
-                                            style={{ width: "100%" }}
-                                            formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                            parser={value => value.replace(/\đ\s?|(,*)/g, '')}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Card>
+                        {/*<Card*/}
+                        {/*    style={{ marginTop: 16 }}*/}
+                        {/*    title={*/}
+                        {/*        <Space size={8}>*/}
+                        {/*            <AntdIcons.CreditCardOutlined />*/}
+                        {/*                           Thanh toán*/}
+                        {/*                        </Space>*/}
+                        {/*    }*/}
+                        {/*    extra={<Checkbox va onChange={onChange} valuePropName="checked">Thanh toán với nhà cung cấp</Checkbox>}*/}
+                        {/*>*/}
+                        {/*    <Row gutter={24} style={{ display: isThanhToanNCC ? "block" : "none" }}>*/}
+                        {/*        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
+                        {/*            <Form.Item name="HinhThucThanhToan" label="Hình thức thanh toán" rules={[{ required: true }]}>*/}
+                        {/*                <Select>*/}
+                        {/*                    <Option value={1}>Tiền mặt</Option>*/}
+                        {/*                    <Option value={2}>Chuyển khoản</Option>*/}
+                        {/*                </Select>*/}
+                        {/*            </Form.Item>*/}
+                        {/*        </Col>*/}
+                        {/*        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
+                        {/*            <Form.Item name="TongTienDaTra" label="Số tiền thanh toán">*/}
+                        {/*                <InputNumber*/}
+                        {/*                    min={0}*/}
+                        {/*                    max={tienPhaiTra}*/}
+                        {/*                    style={{ width: "100%" }}*/}
+                        {/*                    formatter={value => `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}*/}
+                        {/*                    parser={value => value.replace(/\đ\s?|(,*)/g, '')}*/}
+                        {/*                />*/}
+                        {/*            </Form.Item>*/}
+                        {/*        </Col>*/}
+                        {/*    </Row>*/}
+                        {/*</Card>*/}
                     </Col>
                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 7 }}>
                         <Card

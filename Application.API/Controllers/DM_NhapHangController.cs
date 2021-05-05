@@ -127,6 +127,8 @@ namespace Application.API.Controllers
                     ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
                     NgayHenGiao = g.NgayHenGiao,
                     NgayNhapKho = g.NgayNhapKho,
+                    NgayHoanThanh = g.NgayHoanThanh,
+                    NgayHuyDon = g.NgayHuyDon,
                     ID_NhaCungCap = g.ID_NhaCungCap,
                     Description = g.Description,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
