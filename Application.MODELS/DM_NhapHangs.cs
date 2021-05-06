@@ -37,6 +37,8 @@ namespace Application.MODELS
         public decimal? TongTienPhaiTra { get; set; }
         public int? ID_NhaCungCap { get; set; }
         public int? ID_ChiNhanhNhan { get; set; }
+        public int? TongSoLuong { get; set; }
+        public decimal? TongTien { get; set; }
         [NotMapped]
         public string tenChiNhanhNhan { get; set; }
         [NotMapped]
@@ -55,5 +57,7 @@ namespace Application.MODELS
         public DM_NhaCungCaps nhaCungCaps { get; set; }
         [NotMapped]
         public decimal TongDaThanhToan { get; set; }
+        [NotMapped]
+        public List<ChiTietKhos> ChiTietKho { get; set; }
     }
 }

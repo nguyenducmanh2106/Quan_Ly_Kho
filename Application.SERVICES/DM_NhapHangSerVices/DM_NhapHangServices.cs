@@ -91,6 +91,7 @@ namespace Application.Services.DM_NhapHangSerVices
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
                 exist.Status = obj.Status;
+                exist.NgayHuyDon = DateTime.Now;
                 await _unitOfWork.DM_NhapHangRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();
@@ -113,6 +114,28 @@ namespace Application.Services.DM_NhapHangSerVices
                 }
                 exist.Status = obj.Status;
                 exist.NgayNhapKho = DateTime.Now;
+                await _unitOfWork.DM_NhapHangRepository.Update(exist);
+                await _unitOfWork.SaveChange();
+                //_unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, MessageConst.UPDATE_FAIL, null);
+                //_unitOfWork.Rollback();
+                throw new Exception(MessageConst.UPDATE_FAIL);
+            }
+        }
+        public async Task HoanThanh(DM_NhapHangs obj)
+        {
+            try
+            {
+                var exist = await _unitOfWork.DM_NhapHangRepository.Get(g => g.Code == obj.Code);
+                if (exist == null)
+                {
+                    throw new Exception(MessageConst.DATA_NOT_FOUND);
+                }
+                exist.Status = obj.Status;
+                exist.NgayHoanThanh = DateTime.Now;
                 await _unitOfWork.DM_NhapHangRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();
@@ -173,12 +196,14 @@ namespace Application.Services.DM_NhapHangSerVices
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
-                exist.Status = (int)ContentStatusEnum.Approving;
                 exist.Updated_At = DateTime.Now.Date;
                 exist.Updated_By = obj.Updated_By;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;
                 exist.ID_NhaCungCap = obj.ID_NhaCungCap;
                 exist.TongTienPhaiTra = obj.TongTienPhaiTra;
+                exist.TongTien = obj.TongTien;
+                exist.NgayHenGiao = Convert.ToDateTime(obj.NgayHenGiao);
+                exist.TongSoLuong = obj.TongSoLuong;
                 exist.Description = obj.Description;
                 exist.ChietKhau = obj.ChietKhau;
                 await _unitOfWork.DM_NhapHangRepository.Update(exist);

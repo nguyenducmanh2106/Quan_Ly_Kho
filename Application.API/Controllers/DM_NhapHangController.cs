@@ -18,6 +18,7 @@ using Application.MODELS.ViewModels;
 using Application.Services.DM_NhapHangSerVices;
 using Application.Services.UserServices;
 using Application.Services.ThanhToanDonHangSerVices;
+using Application.Services.ChiTietKhoSerVices;
 
 namespace Application.API.Controllers
 {
@@ -29,15 +30,17 @@ namespace Application.API.Controllers
         private readonly IDM_ChiTietNhapHangServices _managerChiTiet;
         private readonly IThanhToanDonHangServices _managerThanhToan;
         private readonly IUserServices _managerUser;
+        private readonly IChiTietKhoServices _managerChiTietKho;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_NhapHangController(IConfiguration config, IThanhToanDonHangServices _managerThanhToan, IUserServices _managerUser, IDM_ChiTietNhapHangServices _managerChiTiet, IDM_NhapHangServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_NhapHangController(IConfiguration config, IChiTietKhoServices _managerChiTietKho, IThanhToanDonHangServices _managerThanhToan, IUserServices _managerUser, IDM_ChiTietNhapHangServices _managerChiTiet, IDM_NhapHangServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
             this._managerChiTiet = _managerChiTiet;
             this._managerUser = _managerUser;
+            this._managerChiTietKho = _managerChiTietKho;
             this._managerThanhToan = _managerThanhToan;
             _hostingEnvironment = hostingEnvironment;
         }
@@ -63,6 +66,8 @@ namespace Application.API.Controllers
                     Status = g.Status,
                     ThanhToan = g.ThanhToan,
                     NhapKho = g.NhapKho,
+                    TongSoLuong = g.TongSoLuong,
+                    TongTien = g.TongTien,
                     TongTienPhaiTra = g.TongTienPhaiTra,
                     ID_ChiNhanhNhan = g.ID_ChiNhanhNhan,
                     NgayHenGiao = g.NgayHenGiao,
@@ -128,6 +133,8 @@ namespace Application.API.Controllers
                     NgayHenGiao = g.NgayHenGiao,
                     NgayNhapKho = g.NgayNhapKho,
                     NgayHoanThanh = g.NgayHoanThanh,
+                    TongSoLuong=g.TongSoLuong,
+                    TongTien=g.TongTien,
                     NgayHuyDon = g.NgayHuyDon,
                     ID_NhaCungCap = g.ID_NhaCungCap,
                     Description = g.Description,
@@ -220,7 +227,7 @@ namespace Application.API.Controllers
         {
             try
             {
-                obj.Status = (int)ContentStatusEnum.Approved;
+                obj.Status = (int)DatHangStatus.Duyet;
                 await _manager.PheDuyet(obj);
                 return Ok(new MessageSuccess()
                 {
@@ -235,12 +242,33 @@ namespace Application.API.Controllers
                 });
             }
         }
-        [HttpPost("tuchoi")]
-        public async Task<IActionResult> TuChoi([FromBody] DM_NhapHangs obj)
+        [HttpPost("hoanthanh")]
+        public async Task<IActionResult> HoanThanh([FromBody] DM_NhapHangs obj)
         {
             try
             {
-                obj.Status = (int)ContentStatusEnum.Revoked;
+                obj.Status = (int)DatHangStatus.HoanThanh;
+                await _manager.HoanThanh(obj);
+                await _managerChiTietKho.CreateOrUpdate(obj.ChiTietKho);
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.UPDATE_FAIL
+                });
+            }
+        }
+        [HttpPost("huydon")]
+        public async Task<IActionResult> HuyDon([FromBody] DM_NhapHangs obj)
+        {
+            try
+            {
+                obj.Status = (int)DatHangStatus.HuyDon;
                 await _manager.TuChoi(obj);
                 return Ok(new MessageSuccess()
                 {
@@ -255,12 +283,12 @@ namespace Application.API.Controllers
                 });
             }
         }
-        [HttpPost("nhanhang")]
+        [HttpPost("nhapkho")]
         public async Task<IActionResult> NhanHang([FromBody] DM_NhapHangs obj)
         {
             try
             {
-                obj.Status = (int)ContentStatusEnum.Received;
+                obj.Status = (int)DatHangStatus.NhapKho;
                 await _manager.NhanHang(obj);
                 return Ok(new MessageSuccess()
                 {

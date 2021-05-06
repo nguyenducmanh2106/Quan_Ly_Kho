@@ -20,6 +20,7 @@ namespace Application.Services.DM_NhapHangSerVices
         Task<long> ToTalCount(DM_NhapHangFilterModel inputModel);
         Task TuChoi(DM_NhapHangs obj);
         Task PheDuyet(DM_NhapHangs obj);
+        Task HoanThanh(DM_NhapHangs obj);
         Task NhanHang(DM_NhapHangs obj);
     }
 }

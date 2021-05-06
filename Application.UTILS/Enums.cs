@@ -66,6 +66,21 @@ namespace Application.UTILS
 
     }
 }
+public enum DatHangStatus
+{
+    [Description("Tất cả")]
+    All = -1,
+    [Description("Đặt hàng")]
+    DatHang = 0,
+    [Description("Duyệt")] // == Đăng tải
+    Duyet = 1,
+    [Description("Nhập kho")] // == bị từ chối
+    NhapKho = 2,
+    [Description("Hoàn thành")] // == bị từ chối
+    HoanThanh = 3,
+    [Description("Huỷ đơn")] // == bị từ chối
+    HuyDon = 4,
+}
 public enum ContentTypeEnum
 {
     [Description("Bài viết thường")]

@@ -31,6 +31,7 @@ import DM_DeNghiDieuDong_Detail_NewPage from './components/pages/DM_DeNghiDieuDo
 import DM_DeNghiDieuDong_PheDuyet from './components/pages/DM_DeNghiDieuDong/PheDuyet';
 import DM_NhapHang from './components/pages/DM_NhapHang/Index';
 import DM_NhapHang_Create from './components/pages/DM_NhapHang/Create';
+import DM_NhapHang_Update from './components/pages/DM_NhapHang/Update';
 import DM_NhapHang_DetailNewPage from './components/pages/DM_NhapHang/DetailNewPage';
 // import our users pages
 
@@ -71,6 +72,7 @@ const RouteSinglePage = () => {
             {/*<PrivateRoute path='/dm_denghidieudong/view/:id' component={DM_DeNghiDieuDong_Detail_NewPage} />*/}
             <PrivateRoute exact path='/dm_nhaphang' component={DM_NhapHang} />
             <PrivateRoute exact path='/dm_nhaphang/create' component={DM_NhapHang_Create} />
+            <PrivateRoute exact path='/dm_nhaphang/update/:id' component={DM_NhapHang_Update} />
             <PrivateRoute exact path='/dm_nhaphang/view/:id' component={DM_NhapHang_DetailNewPage} />
         </Switch>
     );

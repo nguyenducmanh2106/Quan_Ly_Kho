@@ -323,11 +323,28 @@ function Index({ onSetSanPhamUpdate }) {
             state: { controller: "Phiếu nhập kho", action: "Tạo mới" }
         });
     }
-    const onUpdateItem = (item) => {
-        history.push({
-            pathname: `/dm_nhaphang-pheduyet/pheduyet/${item.code}`,
-            state: { controller: "Phiếu nhập kho", action: "Phê duyệt" }
-        });
+    const onUpdateItem = async (item) => {
+        var obj = {
+            Code: item.code
+        }
+        var result = await postAPI('api/dm_nhaphang/pheduyet', JSON.stringify(obj))
+        if (result.status) {
+            notification.success({
+                message: result.message,
+                duration: 3
+
+            })
+            setAction(result.status)
+
+        }
+        else {
+            notification.error({
+                message: result.message,
+                duration: 3
+
+            })
+            setAction(result.status)
+        }
     }
     const onShowItem = async (item) => {
         setItemShow(item)

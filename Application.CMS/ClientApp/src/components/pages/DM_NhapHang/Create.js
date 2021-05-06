@@ -8,16 +8,13 @@ import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification,
-    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography
+    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Divider
 } from 'antd';
 const ModalCreate = () => {
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
     const [DataNCC, setDataNCC] = useState([]);
     const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
-    const [DataLoaiDeNghi, setDataLoaiDeNghi] = useState([]);
-    const [DataDonViById, setDataDonViById] = useState({});
-    const [DataDonViCapDo, setDataDonViCapDo] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isVisibleInfoNCC, setIsVisibleInfoNCC] = useState(false);
     const [isThanhToanNCC, setIsThanhToanNCC] = useState(false);
@@ -58,31 +55,9 @@ const ModalCreate = () => {
                 setDataDonVi(fetchData.result)
             }
         }
-        async function getDonViById() {
-            var Id = getCurrentLogin().donViId
-            var fetchData = await getAPI(`api/dm_donvi/find-by-id?Id=${Id}`);
-            if (fetchData.status == true) {
-                setDataDonViById(fetchData.result)
-            }
-        }
-        async function getDonViByCapDo() {
-            var fetchData = await getAPI(`api/dm_donvi/get-donvi-by-level?level=1`);
-            if (fetchData.status == true) {
-                setDataDonViCapDo(fetchData.result)
-            }
-        }
-        async function getLoaiDeNghi() {
-            var fetchData = await getAPI(`api/dm_loaidenghi/get-all-data-active`);
-            if (fetchData.status == true) {
-                setDataLoaiDeNghi(fetchData.result)
-            }
-        }
 
         //gọi hàm
         getDonVi()
-        getLoaiDeNghi()
-        getDonViById()
-        getDonViByCapDo()
     }, [])
     const onSubmit = (data) => {
         var NgayHenGiao = data.NgayHenGiao ? new Date(data.NgayHenGiao.toDate()) : null;
@@ -112,9 +87,11 @@ const ModalCreate = () => {
             NhapKho: 1,
             Created_By: getCurrentLogin().id,
             ChiTietNhapHangs: ChiTietNhapHangs,
+            NgayHenGiao,
             ThanhToanDonHang: ThanhToanDonHang,
             ChietKhau: chietKhau,
             TongTien: tomTatSP.TongGiaTien,
+            TongSoLuong: tomTatSP.TongSl,
             TongTienPhaiTra: tienPhaiTra,
             ThanhToan: data.SoTienThanhToan == tienPhaiTra ? 1 : (data.TongTienDaTra < tienPhaiTra && data.TongTienDaTra != 0) ? 3 : data.TongTienDaTra == 0 ? 2 : -1
         }
@@ -692,7 +669,7 @@ const ModalCreate = () => {
                         </Card>
                     </Col>
                 </Row>
-
+                <Divider />
                 <Row>
                     <Col>
                         <Form.Item>

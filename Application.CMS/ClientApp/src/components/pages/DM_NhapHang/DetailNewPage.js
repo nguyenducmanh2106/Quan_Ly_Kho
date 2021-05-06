@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment'
-import { getAPI, postAPI, postFormData, getCurrentLogin, FormatMoney } from './../../../utils/helpers';
+import { getAPI, postAPI, postFormData, getCurrentLogin, FormatMoney, getLocalStorage } from './../../../utils/helpers';
 import { url_upload } from './../../../utils/constants';
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import logoDefault from "../../../static/images/user-profile.jpeg"
@@ -9,9 +9,12 @@ import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification,
-    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Timeline, Steps, Divider
+    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Timeline, Steps, Divider, Dropdown
 } from 'antd';
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as PERMISSION from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 const ModalCreate = () => {
     let history = useHistory()
     const [DataSanPham, setDataSanPham] = useState([]);
@@ -22,7 +25,7 @@ const ModalCreate = () => {
     const [TongSl, setTongSl] = useState(0);
     const [TongGiaTien, setTongGiaTien] = useState(0)
     const [chietKhau, setChietKhau] = useState(0);
-
+    const [isRefresh, setIsRefresh] = useState(false)
     let { id } = useParams();
     useEffect(() => {
         async function getData() {
@@ -37,7 +40,8 @@ const ModalCreate = () => {
 
         //gọi hàm
         getData()
-    }, [])
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
+    }, [isRefresh])
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -86,6 +90,113 @@ const ModalCreate = () => {
             state: { controller: "Danh mục sản phẩm", action: item.code }
         });
     }
+    const PheDuyet = async (item) => {
+        setIsRefresh(false)
+        var obj = {
+            Code: item.code
+        }
+        var result = await postAPI('api/dm_nhaphang/pheduyet', JSON.stringify(obj))
+        if (result.status) {
+            notification.success({
+                message: result.message,
+                duration: 3
+
+            })
+            setIsRefresh(result.status)
+
+        }
+        else {
+            notification.error({
+                message: result.message,
+                duration: 3
+
+            })
+            setIsRefresh(result.status)
+        }
+    }
+    const NhapKho = async (item) => {
+        setIsRefresh(false)
+        var obj = {
+            Code: item.code
+        }
+        var result = await postAPI('api/dm_nhaphang/nhapkho', JSON.stringify(obj))
+        if (result.status) {
+            notification.success({
+                message: result.message,
+                duration: 3
+            })
+
+            setIsRefresh(result.status)
+
+        }
+        else {
+            notification.error({
+                message: result.message,
+                duration: 3
+            })
+            setIsRefresh(result.status)
+        }
+    }
+    const HoanThanh = async (item) => {
+        //console.log(item)
+        var ChiTietKho = []
+        item.chiTietNhapHangs.map(value => {
+            var nhaphang = {
+                Id_SanPham: value.iD_SanPham,
+                Id_Kho: item.iD_ChiNhanhNhan,
+                SoLuong: value.soLuong
+            }
+            ChiTietKho.push(nhaphang)
+        })
+        setIsRefresh(false)
+        var obj = {
+            Code: item.code,
+            ChiTietKho: ChiTietKho
+        }
+        //console.log(obj)
+        var result = await postAPI('api/dm_nhaphang/hoanthanh', JSON.stringify(obj))
+        if (result.status) {
+            notification.success({
+                message: result.message,
+                duration: 3
+            })
+
+            setIsRefresh(result.status)
+
+        }
+        else {
+            notification.error({
+                message: result.message,
+                duration: 3
+            })
+            setIsRefresh(result.status)
+        }
+    }
+    const HuyDon = useCallback(
+
+        async (item) => {
+            setIsRefresh(false)
+            var obj = {
+                Code: item.code
+            }
+            var result = await postAPI('api/dm_nhaphang/huydon', JSON.stringify(obj))
+            if (result.status) {
+                notification.success({
+                    message: result.message,
+                    duration: 3
+                })
+                setIsRefresh(result.status)
+            }
+            else {
+                notification.error({
+                    message: result.message,
+                    duration: 3
+                })
+                setIsRefresh(result.status)
+            }
+        },
+        [isRefresh]
+    )
     const renderBody = useCallback(
         () => {
             var result = ""
@@ -129,6 +240,33 @@ const ModalCreate = () => {
         },
         [DataSanPham]
     )
+    const onUpdateItem = (item) => {
+        history.push({
+            pathname: `/dm_nhaphang/update/${item.code}`,
+            state: { controller: "Phiếu nhập kho", action: "Cập nhật" }
+        });
+    }
+    const menu = (
+        <Menu>
+            {_isPermission(PERMISSION.DUYET, PERMISSION.DM_NHAPHANG) && nhapHang?.status == 0 ?
+                <Menu.Item key="0" style={{ borderBottom: "1px solid #d8dee6" }}>
+                    <a href="javascript:void(0)" onClick={() => HuyDon(nhapHang)}>Huỷ đơn</a>
+                </Menu.Item> :
+                ""
+            }
+            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_NHAPHANG) && getCurrentLogin().id == nhapHang?.created_By ?
+                <Menu.Item key="1" style={{ borderBottom: "1px solid #d8dee6" }}>
+                    <a href="javascript:void(0)" onClick={() => onUpdateItem(nhapHang)}>Sửa</a>
+                </Menu.Item> :
+                ""
+            }
+            <Menu.Item key="2">
+                <a href="javascript:void(0)">
+                    <AntdIcons.PrinterOutlined /> In đơn nhập hàng
+                    </a>
+            </Menu.Item>
+        </Menu>
+    );
     console.log(nhapHang)
     return (
         <Form
@@ -138,13 +276,20 @@ const ModalCreate = () => {
             }}
         >
             <Row>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}></Col>
+                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>
+                    <Dropdown overlay={menu} trigger={['click']}>
+                        <Button>
+                            Thêm thao tác <AntdIcons.DownOutlined />
+                        </Button>
+                    </Dropdown>
+                </Col>
                 <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
-                    {console.log(nhapHang?.status)}
-                    <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : 4} size="small">
+                    <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : 4}
+
+                        size="small">
                         <Steps.Step title="Đặt hàng" description={nhapHang.created_At ? moment(nhapHang.created_At).format('DD/MM/YYYY, HH:mm') : ""} />
-                        <Steps.Step title="Duyệt" description={nhapHang.ngayDuyet ? moment(nhapHang.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""} />
-                        <Steps.Step title="Nhập kho" description={nhapHang.ngayNhapKho ? moment(nhapHang.ngayNhapKho).format('DD/MM/YYYY, HH:mm') : ""} />
+                        <Steps.Step status={nhapHang?.status == 4 ? 'wait' : (nhapHang?.status > 0 && nhapHang?.status != 4) ? 'finish' : 'process'} title="Duyệt" description={nhapHang.ngayDuyet && nhapHang?.status != 4 ? moment(nhapHang.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""} />
+                        <Steps.Step status={nhapHang?.status == 4 ? 'wait' : nhapHang?.status == 0 ? 'wait' : (nhapHang?.status > 1 && nhapHang?.status != 4) ? 'finish' : 'process'} title="Nhập kho" description={nhapHang.ngayNhapKho && nhapHang?.status != 4 ? moment(nhapHang.ngayNhapKho).format('DD/MM/YYYY, HH:mm') : ""} />
                         {nhapHang?.status != 4 ?
                             <Steps.Step title="Hoàn thành" description={nhapHang.ngayHoanThanh ? moment(nhapHang.ngayHoanThanh).format('DD/MM/YYYY, HH:mm') : ""} />
                             :
@@ -348,16 +493,16 @@ const ModalCreate = () => {
             <Divider />
             <Row>
                 <Col style={{ textAlign: "right" }}>
-                    {nhapHang?.status == 0 ?
-                        <Button type="primary" icon={<AntdIcons.SaveOutlined />}>
+                    {nhapHang?.status == 0 && _isPermission(PERMISSION.DUYET, PERMISSION.DM_NHAPHANG) ?
+                        <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => PheDuyet(nhapHang)}>
                             Duyệt đơn
                                     </Button> :
-                        nhapHang?.status == 1 ?
-                            <Button type="primary" icon={<AntdIcons.SaveOutlined />}>
+                        nhapHang?.status == 1 && _isPermission(PERMISSION.NHAPKHO, PERMISSION.DM_NHAPHANG) ?
+                            <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => NhapKho(nhapHang)}>
                                 Nhập kho
                                     </Button> :
-                            nhapHang?.status == 2 ?
-                                <Button type="primary" icon={<AntdIcons.SaveOutlined />}>
+                            nhapHang?.status == 2 && _isPermission(PERMISSION.NHAPKHO, PERMISSION.DM_NHAPHANG) ?
+                                <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => HoanThanh(nhapHang)}>
                                     Hoàn thành
                                     </Button> :
                                 ""
