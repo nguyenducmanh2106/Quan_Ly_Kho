@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Application.MODELS.ViewModels;
 using Application.Services.DM_DeNghiDieuDongSerVices;
 using Application.Services.UserServices;
+using Application.Services.ChiTietKhoSerVices;
 
 namespace Application.API.Controllers
 {
@@ -26,16 +27,18 @@ namespace Application.API.Controllers
     {
         private readonly IDM_DeNghiDieuDongServices _manager;
         private readonly IDM_ChiTietDeNghiDieuDongServices _managerChiTiet;
+        private readonly IChiTietKhoServices _managerChiTietKho;
         private readonly IUserServices _managerUser;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_DeNghiDieuDongController(IConfiguration config, IUserServices _managerUser, IDM_ChiTietDeNghiDieuDongServices _managerChiTiet, IDM_DeNghiDieuDongServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_DeNghiDieuDongController(IConfiguration config, IChiTietKhoServices _managerChiTietKho, IUserServices _managerUser, IDM_ChiTietDeNghiDieuDongServices _managerChiTiet, IDM_DeNghiDieuDongServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
             this._managerChiTiet = _managerChiTiet;
             this._managerUser = _managerUser;
+            this._managerChiTietKho = _managerChiTietKho;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost("list_data_gui")]
@@ -330,6 +333,7 @@ namespace Application.API.Controllers
             {
                 obj.Status = (int)ContentStatusEnum.Received;
                 await _manager.NhanHang(obj);
+                await _managerChiTietKho.CreateOrUpdate(obj.ChiTietKhos);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS

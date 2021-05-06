@@ -202,7 +202,7 @@ namespace Application.Services.DM_NhapHangSerVices
                 exist.ID_NhaCungCap = obj.ID_NhaCungCap;
                 exist.TongTienPhaiTra = obj.TongTienPhaiTra;
                 exist.TongTien = obj.TongTien;
-                exist.NgayHenGiao = Convert.ToDateTime(obj.NgayHenGiao);
+                exist.NgayHenGiao = obj.NgayHenGiao;
                 exist.TongSoLuong = obj.TongSoLuong;
                 exist.Description = obj.Description;
                 exist.ChietKhau = obj.ChietKhau;

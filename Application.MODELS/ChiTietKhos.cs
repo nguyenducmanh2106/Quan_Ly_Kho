@@ -14,5 +14,9 @@ namespace Application.MODELS
         public int? Id_Kho { get; set; }
         public string Id_SanPham { get; set; }
         public int? SoLuong { get; set; }
+        [NotMapped]
+        public int? ID_ChiNhanhGui { get; set; }
+        [NotMapped]
+        public int? ID_ChiNhanhNhan { get; set; }
     }
 }

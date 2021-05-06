@@ -47,5 +47,37 @@ namespace Application.Services.ChiTietKhoSerVices
                 throw ex;
             }
         }
+
+        public async Task DieuDong(List<ChiTietKhos> obj)
+        {
+            try
+            {
+                foreach (var item in obj)
+                {
+                    var isExistKhoNhan = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.ID_ChiNhanhGui && g.Id_SanPham == item.Id_SanPham));
+                    var isExistGui = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.ID_ChiNhanhGui && g.Id_SanPham == item.Id_SanPham));
+                    if (isExistKhoNhan != null)
+                    {
+                        isExistKhoNhan.SoLuong += item.SoLuong;
+                        await _unitOfWork.ChiTietKhoRepository.Update(isExistKhoNhan);
+                    }
+                    else
+                    {
+                        item.Id_Kho = item.ID_ChiNhanhGui;
+                        await _unitOfWork.ChiTietKhoRepository.Add(item);
+                    }
+                    if (isExistGui != null)
+                    {
+                        isExistKhoNhan.SoLuong -= item.SoLuong;
+                        await _unitOfWork.ChiTietKhoRepository.Update(isExistKhoNhan);
+                    }
+                }
+                await _unitOfWork.SaveChange();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

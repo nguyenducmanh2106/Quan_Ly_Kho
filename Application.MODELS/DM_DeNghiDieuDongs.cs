@@ -60,5 +60,7 @@ namespace Application.MODELS
         public string tenBoPhanGui { get; set; }
         [NotMapped]
         public List<DM_ChiTietDeNghiDieuDongs> ChiTietDeNghiDieuDongs { get; set; }
+        [NotMapped]
+        public List<ChiTietKhos> ChiTietKhos { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace Application.Services.ChiTietKhoSerVices
     public interface IChiTietKhoServices
     {
         Task CreateOrUpdate(List<ChiTietKhos> obj);
+        Task DieuDong(List<ChiTietKhos> obj);
     }
 }

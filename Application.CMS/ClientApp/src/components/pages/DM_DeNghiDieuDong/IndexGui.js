@@ -205,36 +205,49 @@ function Index({ onSetSanPhamUpdate }) {
         });
     }
     const onReceived = (item) => {
-        var obj = {
-            Code: item.code
-        }
-        Modal.confirm({
-            title: 'Bạn có chắc chắn không?',
-            icon: <AntdIcons.ExclamationCircleOutlined />,
-            content: 'Bla bla ...',
-            okText: 'Đồng ý',
-            cancelText: 'Quay lại',
-            //okButtonProps: { loading: confirmLoading },
-            onOk: () => {
-                return postAPI('api/dm_denghidieudong/nhanhang', JSON.stringify(obj)).then(result => {
-                    if (result.status) {
-                        setAction(true)
-                        toggleView()
-                        notification.success({
-                            message: result.message,
-                            duration: 3
-                        })
-                    }
-                    else {
-                        notification.error({
-                            message: result.message,
-                            duration: 3
-
-                        })
-                    }
-                });
+        var ChiTietKhos = []
+        item.chiTietDeNghiDieuDongs.map(value => {
+            var chitietkho = {
+                Id_SanPham: value.iD_SanPham,
+                //Id_Kho: item.iD_ChiNhanhNhan,
+                ID_ChiNhanhGui: item.iD_ChiNhanhGui,
+                ID_ChiNhanhNhan: item.iD_ChiNhanhNhan,
+                SoLuong: value.soLuongDuyet
             }
-        });
+            ChiTietKhos.push(chitietkho)
+        })
+        var obj = {
+            Code: item.code,
+            ChiTietKhos
+        }
+        console.log(obj)
+        //Modal.confirm({
+        //    title: 'Bạn có chắc chắn không?',
+        //    icon: <AntdIcons.ExclamationCircleOutlined />,
+        //    content: 'Bla bla ...',
+        //    okText: 'Đồng ý',
+        //    cancelText: 'Quay lại',
+        //    //okButtonProps: { loading: confirmLoading },
+        //    onOk: () => {
+        //        return postAPI('api/dm_denghidieudong/nhanhang', JSON.stringify(obj)).then(result => {
+        //            if (result.status) {
+        //                setAction(true)
+        //                toggleView()
+        //                notification.success({
+        //                    message: result.message,
+        //                    duration: 3
+        //                })
+        //            }
+        //            else {
+        //                notification.error({
+        //                    message: result.message,
+        //                    duration: 3
+
+        //                })
+        //            }
+        //        });
+        //    }
+        //});
     }
     const onDelete = (item) => {
         Modal.confirm({
