@@ -23,7 +23,7 @@ namespace Application.Services.ChiTietKhoSerVices
             this._hostingEnvironment = _hostingEnvironment;
         }
 
-        public async Task CreateOrUpdate(List<ChiTietKhos> obj)
+        public async Task CreateOrUpdateNhapHang(List<ChiTietKhos> obj)
         {
             try
             {
@@ -47,7 +47,46 @@ namespace Application.Services.ChiTietKhoSerVices
                 throw ex;
             }
         }
-
+        public async Task CreateOrUpdateXuatHang(List<ChiTietKhos> obj)
+        {
+            try
+            {
+                List<string> arrThongBao = new List<string>();
+                foreach (var item in obj)
+                {
+                    var isExist = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.Id_Kho && g.Id_SanPham == item.Id_SanPham));
+                    if (isExist != null)
+                    {
+                        if (isExist.SoLuong >= item.SoLuong)
+                        {
+                            isExist.SoLuong -= item.SoLuong;
+                            await _unitOfWork.ChiTietKhoRepository.Update(isExist);
+                        }
+                        else
+                        {
+                            arrThongBao.Add(item.Id_SanPham);
+                        }
+                    }
+                    else
+                    {
+                        arrThongBao.Add(item.Id_SanPham);
+                    }
+                }
+                if (arrThongBao.Count > 0)
+                {
+                    var strThongBao = string.Join(",", arrThongBao);
+                    throw new Exception($"Sản phẩm {strThongBao} trong kho hiện không đủ số lượng");
+                }
+                else
+                {
+                    await _unitOfWork.SaveChange();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public async Task DieuDong(List<ChiTietKhos> obj)
         {
             try
@@ -113,16 +152,24 @@ namespace Application.Services.ChiTietKhoSerVices
             }
         }
 
-        public async Task<int> getSoLuongByID_KhoAndID_SanPham(ChiTietKhos obj)
+        public int getSoLuongByID_KhoAndID_SanPham(ChiTietKhos obj)
         {
             try
             {
-                var data = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == obj.Id_Kho && g.Id_SanPham == obj.Id_SanPham));
-                if (data == null)
-                {
-                    return 0;
-                }
-                else return data.SoLuong ?? 0;
+                var data = _unitOfWork.ChiTietKhoRepository.getSoLuongByID_KhoAndID_SanPham(obj);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public int getSoLuongByID_KhoAndID_SanPham(int Id_Kho, string ID_SanPham)
+        {
+            try
+            {
+                var data = _unitOfWork.ChiTietKhoRepository.getSoLuongByID_KhoAndID_SanPham(Id_Kho, ID_SanPham);
+                return data;
             }
             catch (Exception ex)
             {

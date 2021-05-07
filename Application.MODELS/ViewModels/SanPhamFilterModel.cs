@@ -16,5 +16,6 @@ namespace Application.MODELS.ViewModels
         public int LoaiSP { get; set; } = -1;
         public int Status { get; set; } = -1;
         public string nameSort { get; set; } = "";
+        public int Id_Kho { get; set; } = -1;
     }
 }

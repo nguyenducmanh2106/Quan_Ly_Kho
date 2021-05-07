@@ -200,7 +200,7 @@ namespace Application.Services.DM_NhapHangSerVices
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
                 DateTime? isNull = null;
-                obj.NgayHenGiao = obj.strNgayHenGiao != null ? Convert.ToDateTime(obj.strNgayHenGiao) : isNull;
+                exist.NgayHenGiao = obj.strNgayHenGiao != null ? Convert.ToDateTime(obj.strNgayHenGiao) : isNull;
                 exist.Updated_At = DateTime.Now.Date;
                 exist.Updated_By = obj.Updated_By;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;

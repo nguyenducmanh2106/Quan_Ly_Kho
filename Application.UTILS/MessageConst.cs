@@ -21,5 +21,6 @@ namespace Application.UTILS
         public const string SPECIAL_CHAR = "Không được nhập ký tự đặc biệt";
         public const string LENGTH_ERROR = "vượt quá ký tự quy định";
         public const string CAN_NHAP_THEM_HANG = "Hàng trong kho không đủ";
+        public const string KHO_RONG = "Trong kho không có mặt hàng";
     }
 }

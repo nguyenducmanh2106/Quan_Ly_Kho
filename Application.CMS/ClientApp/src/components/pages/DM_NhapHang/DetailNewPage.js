@@ -256,7 +256,7 @@ const ModalCreate = () => {
                 </Menu.Item> :
                 ""
             }
-            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_NHAPHANG) && getCurrentLogin().id == nhapHang?.created_By ?
+            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_NHAPHANG) && getCurrentLogin().id == nhapHang?.created_By && nhapHang?.status == 0 ?
                 <Menu.Item key="1" style={{ borderBottom: "1px solid #d8dee6" }}>
                     <a href="javascript:void(0)" onClick={() => onUpdateItem(nhapHang)}>Sửa</a>
                 </Menu.Item> :
@@ -383,7 +383,7 @@ const ModalCreate = () => {
                                         </Descriptions>
                                         <Descriptions>
                                             <Descriptions.Item label={<Typography.Link href="javascript:void(0)">
-                                                Chiết khẩu <AntdIcons.DownOutlined />
+                                                Chiết khẩu
                                             </Typography.Link>
                                             }>
                                                 {FormatMoney(nhapHang.chietKhau ?? 0, " đ")}

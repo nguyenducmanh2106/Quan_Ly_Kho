@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Application.MODELS.ViewModels;
 using Application.Services.DM_ThuocTinhSPSerVices;
 using Application.Services.DM_DonViTinhSerVices;
+using Application.Services.ChiTietKhoSerVices;
 
 namespace Application.API.Controllers
 {
@@ -27,15 +28,17 @@ namespace Application.API.Controllers
         private readonly IDM_SanPhamServices _manager;
         private readonly IDM_ThuocTinhSPServices _managerThuocTinhSP;
         private readonly IDM_DonViTinhServices _managerDVT;
+        private readonly IChiTietKhoServices _managerChiTietKho;
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public DM_SanPhamController(IConfiguration config, IDM_DonViTinhServices _managerDVT, IDM_ThuocTinhSPServices _managerThuocTinhSP, IDM_SanPhamServices _manager, IHostingEnvironment hostingEnvironment)
+        public DM_SanPhamController(IConfiguration config, IChiTietKhoServices _managerChiTietKho, IDM_DonViTinhServices _managerDVT, IDM_ThuocTinhSPServices _managerThuocTinhSP, IDM_SanPhamServices _manager, IHostingEnvironment hostingEnvironment)
         {
             _config = config;
             this._manager = _manager;
             this._managerThuocTinhSP = _managerThuocTinhSP;
             this._managerDVT = _managerDVT;
+            this._managerChiTietKho = _managerChiTietKho;
             _hostingEnvironment = hostingEnvironment;
         }
         [HttpPost("list_data")]
@@ -321,6 +324,7 @@ namespace Application.API.Controllers
             {
                 var g = (await _manager.FindByName(input.Name)).Select(g => new DM_SanPhams()
                 {
+                    SoLuongTrongKho = _managerChiTietKho.getSoLuongByID_KhoAndID_SanPham(input.Id_Kho, g.Code),
                     Id = g.Id,
                     Name = g.Name,
                     Code = g.Code,

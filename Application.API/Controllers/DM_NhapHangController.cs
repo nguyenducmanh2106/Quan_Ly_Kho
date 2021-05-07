@@ -247,9 +247,9 @@ namespace Application.API.Controllers
         {
             try
             {
+                await _managerChiTietKho.CreateOrUpdateNhapHang(obj.ChiTietKho);
                 obj.Status = (int)DatHangStatus.HoanThanh;
                 await _manager.HoanThanh(obj);
-                await _managerChiTietKho.CreateOrUpdate(obj.ChiTietKho);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS

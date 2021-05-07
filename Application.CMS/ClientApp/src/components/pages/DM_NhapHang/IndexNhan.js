@@ -88,7 +88,9 @@ function Index({ onSetSanPhamUpdate }) {
                 Name: name,
                 Status: status,
                 nameSort: nameSort,
-                ID_ChiNhanhNhan: Id
+                ID_ChiNhanhNhan: Id,
+                page,
+                pageSize
             }
             var fetchData = await postAPI(`api/dm_nhaphang/list_data/`, JSON.stringify(obj));
             if (fetchData.status == true) {

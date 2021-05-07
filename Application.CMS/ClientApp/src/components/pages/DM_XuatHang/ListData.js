@@ -104,15 +104,15 @@ function Table(props) {
                             {item.code}
                         </td>
                         <td>
-                            {item.tenNhaCungCap}
+                            {getCurrentLogin().capDoDonVi == 1 && item.tenNhaCungCap ? item.tenNhaCungCap : getCurrentLogin().capDoDonVi != 1 && item.khachHang ? item.khachHang : ""}
                         </td>
                         <td style={{ textAlign: "center" }}>
                             {item.status == 1 ?
                                 <Typography.Link href="javascript:void(0)">
                                     Duyệt
                                 </Typography.Link>
-                                : item.status == 2 ? <Typography.Text type="success">Nhập hàng</Typography.Text> : item.status == 0 ?
-                                    <Typography.Text type="warning">Đặt hàng</Typography.Text> : item.status == 3 ?
+                                : item.status == 2 ? <Typography.Text type="success">Xuất hàng</Typography.Text> : item.status == 0 ?
+                                    <Typography.Text type="warning">Đơn xuất hàng</Typography.Text> : item.status == 3 ?
                                         <Typography.Text type="success">Hoàn thành</Typography.Text> : item.status == 4 ?
                                             <Typography.Text type="danger">Huỷ đơn</Typography.Text> : ""
                             }
@@ -231,9 +231,16 @@ function Table(props) {
                                         <th className="sapxep" >
                                             Mã đơn
                                         </th>
-                                        <th className="">
-                                            Tên Nhà cung cấp
+                                        {getCurrentLogin().capDoDonVi == 1 ?
+                                            <th className="">
+                                                Tên Nhà cung cấp
                                         </th>
+                                            :
+                                            <th className="">
+                                                Tên khách hàng
+                                        </th>
+
+                                        }
                                         <th className="sapxep"  >
                                             Trạng thái
                                         </th>

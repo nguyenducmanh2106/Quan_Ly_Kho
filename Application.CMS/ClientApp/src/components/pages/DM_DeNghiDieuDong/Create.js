@@ -129,7 +129,8 @@ const ModalCreate = () => {
     const handleSearch = async (value) => {
         if (value.length > 2) {
             var obj = {
-                Name: value
+                Name: value,
+                Id_Kho: getCurrentLogin().donViId
             }
             var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
             if (fetchData.status == true) {
@@ -388,6 +389,7 @@ const ModalCreate = () => {
                                                         <Row>
                                                             <Col>{item.name}</Col>
                                                             <Col>({item.code})</Col>
+                                                            <Col>(Số lượng: {item.soLuongTrongKho})</Col>
                                                         </Row>
                                                     </Col>
                                                 </Row>

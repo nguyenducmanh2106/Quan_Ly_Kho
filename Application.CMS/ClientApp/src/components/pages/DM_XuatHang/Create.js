@@ -67,24 +67,16 @@ const ModalCreate = () => {
         getDonVi()
     }, [])
     const onSubmit = (data) => {
-        moment.tz.setDefault("Asia/Ho_Chi_Minh")
-        const tzDate = moment.tz("2014-06-01 12:00", "Asia/Ho_Chi_Minh")
-        console.log(tzDate.toDate())
-        var NgayHenGiao = data.NgayHenGiao ? new Date(data.NgayHenGiao.toDate()) : null;
-        var obj = {
-            ...data,
-            NgayHenGiao
-        }
-
-        var ChiTietNhapHangs = []
+        var tzDate = data.NgayHenGiao ? moment.tz(data.NgayHenGiao, "Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm") : null;
+        var ChiTietXuatHangs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
                 ID_SanPham: sp[i].querySelector(".ID_SanPham").value,
                 SoLuong: Number.parseInt(sp[i].querySelector(".SoLuong").querySelector(".ant-input-number-input").value),
-                GiaNhap: Number.parseInt(sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0)
+                GiaXuat: Number.parseInt(sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0)
             }
-            ChiTietNhapHangs.push(obj)
+            ChiTietXuatHangs.push(obj)
         }
         var ThanhToanDonHang = {
             TongTienDaTra: Number.parseInt(data.TongTienDaTra ?? 0),
@@ -96,8 +88,8 @@ const ModalCreate = () => {
             Status: 0,
             NhapKho: 1,
             Created_By: getCurrentLogin().id,
-            ChiTietNhapHangs: ChiTietNhapHangs,
-            NgayHenGiao,
+            ChiTietXuatHangs: ChiTietXuatHangs,
+            strNgayHenGiao: tzDate,
             ThanhToanDonHang: ThanhToanDonHang,
             ChietKhau: chietKhau,
             TongTien: tomTatSP.TongGiaTien,
@@ -106,7 +98,7 @@ const ModalCreate = () => {
             ThanhToan: data.SoTienThanhToan == tienPhaiTra ? 1 : (data.TongTienDaTra < tienPhaiTra && data.TongTienDaTra != 0) ? 3 : data.TongTienDaTra == 0 ? 2 : -1
         }
         console.log(obj)
-        //onPostCreateItem(obj)
+        onPostCreateItem(obj)
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -143,8 +135,10 @@ const ModalCreate = () => {
     const handleSearch = async (value) => {
         if (value.length > 2) {
             var obj = {
-                Name: value
+                Name: value,
+                Id_Kho: getCurrentLogin().donViId
             }
+            //console.log(obj)
             var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
             if (fetchData.status == true) {
                 var data = fetchData.result
@@ -291,7 +285,7 @@ const ModalCreate = () => {
             var TongSl = 0;
             var TongGiaTien = 0
             result = DataSanPhamSubmit.map((item, index) => {
-                var giaNhap = item.giaBanLe;
+                var giaNhap = getCurrentLogin().capDoDonVi == 1 ? item.giaNhap : item.giaBanLe;
                 TongSl += 1;
                 TongGiaTien += Number.parseInt(giaNhap)
                 return (
@@ -480,11 +474,11 @@ const ModalCreate = () => {
                                 title={
                                     <Space size={8}>
                                         <AntdIcons.InfoCircleOutlined />
-                                   Thông tin nhà cung cấp
+                                   Thông tin khách hàng
                                 </Space>
                                 }>
                                 <Row>
-                                    <Col style={{ display: isVisibleInfoNCC ? "none" : "inherit" }}>
+                                    <Col>
                                         <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>
                                             <label htmlFor="nest-messages_KhachHang" className="ant-form-item-required" title="Tên khách hàng">
                                                 Tên khách hàng
@@ -511,7 +505,7 @@ const ModalCreate = () => {
                                                 ({ getFieldValue }) => ({
                                                     validator(_, value) {
                                                         //console.log(value)
-                                                        if (value==="") {
+                                                        if (value === "") {
                                                             return Promise.reject(new Error('Số điện thoại khách hàng không được để trống'));
                                                         }
                                                         if ((Number.isNaN(value) || (/(84|0[3|5|7|8|9])+([0-9]{8})\b/g).test(value) == false)) {
@@ -566,6 +560,7 @@ const ModalCreate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
+                                                                    <Col>(Số lượng: {item.soLuongTrongKho})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>

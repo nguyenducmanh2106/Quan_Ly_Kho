@@ -8,8 +8,8 @@ import logoDefault from "../../../static/images/user-profile.jpeg"
 import * as AntdIcons from '@ant-design/icons';
 import {
     Form, Input, InputNumber, Button, Select
-    , Skeleton, Col, Row, Card, Tooltip, Space, notification,
-    AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Timeline, Steps, Divider, Dropdown
+    , Skeleton, Col, Row, Card, Tooltip, Space, notification, AutoComplete, Descriptions, Spin, Image, Menu, DatePicker,
+    Checkbox, Empty, Popover, Typography, Timeline, Steps, Divider, Dropdown
 } from 'antd';
 import { useParams, useHistory } from 'react-router-dom';
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
@@ -21,7 +21,6 @@ const ModalCreate = () => {
     const [DataNCC, setDataNCC] = useState([]);
     const [nhapHang, setNhapHang] = useState([]);
     const [thanhToan, setThanhToan] = useState([]);
-    const [tomTatSP, setTomTatSP] = useState({ TongSl: 0, TongGiaTien: 0 });
     const [TongSl, setTongSl] = useState(0);
     const [TongGiaTien, setTongGiaTien] = useState(0)
     const [chietKhau, setChietKhau] = useState(0);
@@ -32,7 +31,7 @@ const ModalCreate = () => {
             var fetchData = await getAPI(`api/dm_xuathang/find-by-id?Code=${id}`);
             if (fetchData.status == true) {
                 setNhapHang(fetchData.result)
-                setDataSanPham(fetchData.result.chiTietNhapHangs)
+                setDataSanPham(fetchData.result.chiTietXuatHangs)
                 setDataNCC(fetchData.result.nhaCungCaps)
                 setThanhToan(fetchData.result.thanhToanDonHangs)
             }
@@ -77,7 +76,7 @@ const ModalCreate = () => {
             let tongGiaTien = 0
             DataSanPham.map(item => {
                 tongSl += item.soLuong;
-                tongGiaTien += item.soLuong * item.giaNhap
+                tongGiaTien += item.soLuong * item.giaXuat
             })
             setTongSl(tongSl)
             setTongGiaTien(tongGiaTien)
@@ -142,7 +141,7 @@ const ModalCreate = () => {
     const HoanThanh = async (item) => {
         //console.log(item)
         var ChiTietKho = []
-        item.chiTietNhapHangs.map(value => {
+        item.chiTietXuatHangs.map(value => {
             var nhaphang = {
                 Id_SanPham: value.iD_SanPham,
                 Id_Kho: item.iD_ChiNhanhNhan,
@@ -150,12 +149,12 @@ const ModalCreate = () => {
             }
             ChiTietKho.push(nhaphang)
         })
-        setIsRefresh(false)
+        setIsRefresh(true)
         var obj = {
             Code: item.code,
             ChiTietKho: ChiTietKho
         }
-        //console.log(obj)
+        console.log(obj)
         var result = await postAPI('api/dm_xuathang/hoanthanh', JSON.stringify(obj))
         if (result.status) {
             notification.success({
@@ -163,7 +162,7 @@ const ModalCreate = () => {
                 duration: 3
             })
 
-            setIsRefresh(result.status)
+            setIsRefresh(!result.status)
 
         }
         else {
@@ -205,7 +204,7 @@ const ModalCreate = () => {
             var TongSl = 0;
             var TongGiaTien = 0
             result = DataSanPham.map((item, index) => {
-                var giaNhap = item.giaNhap;
+                var giaNhap = item.giaXuat ?? 0;
                 TongSl += 1;
                 TongGiaTien += Number.parseInt(giaNhap)
                 return (
@@ -256,7 +255,7 @@ const ModalCreate = () => {
                 </Menu.Item> :
                 ""
             }
-            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_XUATHANG) && getCurrentLogin().id == nhapHang?.created_By ?
+            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_XUATHANG) && getCurrentLogin().id == nhapHang?.created_By && nhapHang?.status == 0 ?
                 <Menu.Item key="1" style={{ borderBottom: "1px solid #d8dee6" }}>
                     <a href="javascript:void(0)" onClick={() => onUpdateItem(nhapHang)}>Sửa</a>
                 </Menu.Item> :
@@ -269,250 +268,275 @@ const ModalCreate = () => {
             </Menu.Item>
         </Menu>
     );
-    console.log(nhapHang)
     return (
-        <Form
-            layout="horizontal"
-            name="nest-messages" id="myFormCreate"
-            initialValues={{
-            }}
-        >
-            <Row>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>
-                    <Dropdown overlay={menu} trigger={['click']}>
-                        <Button>
-                            Thêm thao tác <AntdIcons.DownOutlined />
-                        </Button>
-                    </Dropdown>
-                </Col>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
-                    <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : 4}
+        <Spin spinning={isRefresh}>
+            <Form
+                layout="horizontal"
+                name="nest-messages" id="myFormCreate"
+                initialValues={{
+                }}
+            >
+                <Row>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>
+                        <Dropdown overlay={menu} trigger={['click']}>
+                            <Button>
+                                Thêm thao tác <AntdIcons.DownOutlined />
+                            </Button>
+                        </Dropdown>
+                    </Col>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
+                        <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : 4}
 
-                        size="small">
-                        <Steps.Step title="Đặt hàng" description={nhapHang.created_At ? moment(nhapHang.created_At).format('DD/MM/YYYY, HH:mm') : ""} />
-                        <Steps.Step status={nhapHang?.status == 4 ? 'wait' : (nhapHang?.status > 0 && nhapHang?.status != 4) ? 'finish' : 'process'} title="Duyệt" description={nhapHang.ngayDuyet && nhapHang?.status != 4 ? moment(nhapHang.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""} />
-                        <Steps.Step status={nhapHang?.status == 4 ? 'wait' : nhapHang?.status == 0 ? 'wait' : (nhapHang?.status > 1 && nhapHang?.status != 4) ? 'finish' : 'process'} title="Nhập kho" description={nhapHang.ngayNhapKho && nhapHang?.status != 4 ? moment(nhapHang.ngayNhapKho).format('DD/MM/YYYY, HH:mm') : ""} />
-                        {nhapHang?.status != 4 ?
-                            <Steps.Step title="Hoàn thành" description={nhapHang.ngayHoanThanh ? moment(nhapHang.ngayHoanThanh).format('DD/MM/YYYY, HH:mm') : ""} />
-                            :
-                            <Steps.Step title={<Typography.Text type="danger">Huỷ đơn</Typography.Text>} description={nhapHang.ngayHuyDon ? moment(nhapHang.ngayHuyDon).format('DD/MM/YYYY, HH:mm') : ""} />
-                        }
+                            size="small">
+                            <Steps.Step title="Tạo đơn" description={nhapHang.created_At ? moment(nhapHang.created_At).format('DD/MM/YYYY, HH:mm') : ""} />
+                            <Steps.Step status={nhapHang?.status == 4 ? 'wait' : (nhapHang?.status > 0 && nhapHang?.status != 4) ? 'finish' : 'process'} title="Duyệt" description={nhapHang.ngayDuyet && nhapHang?.status != 4 ? moment(nhapHang.ngayDuyet).format('DD/MM/YYYY, HH:mm') : ""} />
+                            <Steps.Step status={nhapHang?.status == 4 ? 'wait' : nhapHang?.status == 0 ? 'wait' : (nhapHang?.status > 1 && nhapHang?.status != 4) ? 'finish' : 'process'} title="Xuất kho" description={nhapHang.ngayXuatKho && nhapHang?.status != 4 ? moment(nhapHang.ngayXuatKho).format('DD/MM/YYYY, HH:mm') : ""} />
+                            {nhapHang?.status != 4 ?
+                                <Steps.Step title="Hoàn thành" description={nhapHang.ngayHoanThanh ? moment(nhapHang.ngayHoanThanh).format('DD/MM/YYYY, HH:mm') : ""} />
+                                :
+                                <Steps.Step title={<Typography.Text type="danger">Huỷ đơn</Typography.Text>} description={nhapHang.ngayHuyDon ? moment(nhapHang.ngayHuyDon).format('DD/MM/YYYY, HH:mm') : ""} />
+                            }
 
-                    </Steps>
-                </Col>
-            </Row>
-            <Row gutter={16}>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 17 }}>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.InfoCircleOutlined />
-                                                    Thông tin nhà cung cấp
-                                                </Space>
-                        }>
-                        <Row>
-                            <Col>
-                                <Descriptions title="Thông tin" >
-                                    <Descriptions.Item label="Tên nhà cung cấp">{DataNCC.name}</Descriptions.Item>
-                                </Descriptions>
-                                <Descriptions>
-                                    <Descriptions.Item label="Số điện thoại">{DataNCC.phone}</Descriptions.Item>
-                                </Descriptions>
-                                <Descriptions>
-                                    <Descriptions.Item label="Địa chỉ">{DataNCC.address}</Descriptions.Item>
-                                </Descriptions>
-                            </Col>
-                        </Row>
-                    </Card>
-                    <Row gutter={16}>
-                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                        </Steps>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 17 }}>
+                        {getCurrentLogin().capDoDonVi == 1 && DataNCC ?
                             <Card
                                 style={{ marginTop: 16 }}
                                 title={
                                     <Space size={8}>
                                         <AntdIcons.InfoCircleOutlined />
-                                                    Thông tin sản phẩm
+                                                    Thông tin nhà cung cấp
                                                 </Space>
                                 }>
-                                <Row className="ThongTinSP">
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
-                                        <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
-                                            <div className="ant-table-container">
-                                                <div className="ant-table-content">
-                                                    <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
-                                                        <thead className="ant-table-thead">
-                                                            <tr>
-                                                                <th className="sapxep" id="Name">
-                                                                    Tên
-                                                        </th>
-
-                                                                <th className="sapxep" id="Code">
-                                                                    Mã SP
-                                                        </th>
-                                                                <th className="" id="Barcode">
-                                                                    ĐVT
-                                        </th>
-                                                                <th className="">
-                                                                    Số lượng
-                                        </th>
-                                                                <th className="" style={{ width: "25%" }}>
-                                                                    Giá nhập
-                                        </th>
-                                                                <th className="">
-                                                                    Thành tiền
-                                        </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody className="ant-table-tbody">
-                                                            {renderBody()}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }} className="TomTat">
-                                        <Descriptions title="" >
-                                            <Descriptions.Item label="Số lượng" className="TongSoLuong">{TongSl}</Descriptions.Item>
+                                <Row>
+                                    <Col>
+                                        <Descriptions title="Thông tin" >
+                                            <Descriptions.Item label="Tên nhà cung cấp">{DataNCC.name}</Descriptions.Item>
                                         </Descriptions>
                                         <Descriptions>
-                                            <Descriptions.Item label="Tổng tiền" className="TongGiaTien">
-                                                {FormatMoney(TongGiaTien, " đ")}
-                                            </Descriptions.Item>
+                                            <Descriptions.Item label="Số điện thoại">{DataNCC.phone}</Descriptions.Item>
                                         </Descriptions>
                                         <Descriptions>
-                                            <Descriptions.Item label={<Typography.Link href="javascript:void(0)">
-                                                Chiết khẩu <AntdIcons.DownOutlined />
-                                            </Typography.Link>
-                                            }>
-                                                {FormatMoney(nhapHang.chietKhau ?? 0, " đ")}
-                                            </Descriptions.Item>
+                                            <Descriptions.Item label="Địa chỉ">{DataNCC.address}</Descriptions.Item>
                                         </Descriptions>
-                                        <Descriptions>
-                                            <Descriptions.Item label={<Typography.Text type="warning">Tiền phải trả</Typography.Text>}>
-                                                {FormatMoney(nhapHang.tongTienPhaiTra ?? 0, " đ")}
-                                            </Descriptions.Item>
-                                        </Descriptions>
-
                                     </Col>
                                 </Row>
                             </Card>
-                        </Col>
-                    </Row>
-                    {/*<Card*/}
-                    {/*    style={{ marginTop: 16 }}*/}
-                    {/*    title={*/}
-                    {/*        <Row>*/}
-                    {/*            <Col>*/}
-                    {/*                <Space size={8}>*/}
-                    {/*                    <AntdIcons.CreditCardOutlined />*/}
-                    {/*                               Thanh toán*/}
-                    {/*                </Space>*/}
-                    {/*            </Col>*/}
-                    {/*            <Col>*/}
-                    {/*                <Row>*/}
-                    {/*                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
-                    {/*                        <Descriptions>*/}
-                    {/*                            <Descriptions.Item label="Đã thanh toán">*/}
-                    {/*                                {FormatMoney(nhapHang.tongDaThanhToan ?? 0, " đ")}*/}
-                    {/*                            </Descriptions.Item>*/}
-                    {/*                        </Descriptions>*/}
-                    {/*                    </Col>*/}
-                    {/*                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
-                    {/*                        <Descriptions>*/}
-                    {/*                            <Descriptions.Item label="Còn phải trả">*/}
-                    {/*                                {FormatMoney(nhapHang.tongTienPhaiTra - nhapHang.tongDaThanhToan, " đ")}*/}
-                    {/*                            </Descriptions.Item>*/}
-                    {/*                        </Descriptions>*/}
-                    {/*                    </Col>*/}
-                    {/*                </Row>*/}
-                    {/*            </Col>*/}
-                    {/*        </Row>*/}
-
-                    {/*    }*/}
-                    {/*    extra={<Button>Xác nhận thanh toán</Button>}*/}
-                    {/*>*/}
-                    {/*    <Row gutter={24}>*/}
-                    {/*        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>*/}
-                    {/*            <Timeline>*/}
-                    {/*                {thanhToan.map(item => {*/}
-                    {/*                    return (*/}
-                    {/*                        <Timeline.Item>*/}
-                    {/*                            <p> Xác nhận thanh toán {FormatMoney(item.tongTienDaTra ?? 0, " đ")}</p>*/}
-                    {/*                            <p>{item.ngayThanhToan ? moment(item.ngayThanhToan).format('DD/MM/YYYY, HH:mm') : ""}</p>*/}
-                    {/*                            <p>Người thanh toán: {item.tenNguoiThanhToan}</p>*/}
-                    {/*                            <p>Phương thức thanh toán: {item.tenHinhThucThanhToan}</p>*/}
-                    {/*                        </Timeline.Item>*/}
-                    {/*                    )*/}
-                    {/*                })}*/}
-                    {/*            </Timeline>*/}
-                    {/*        </Col>*/}
-                    {/*    </Row>*/}
-                    {/*</Card>*/}
-                </Col>
-                <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 7 }}>
-                    <Card
-                        style={{ marginTop: 16 }}
-                        title={
-                            <Space size={8}>
-                                <AntdIcons.DollarOutlined />
-                                                   Thông tin đơn nhập hàng
+                            :
+                            getCurrentLogin().capDoDonVi != 1 && nhapHang.khachHang ?
+                                <Card
+                                    style={{ marginTop: 16 }}
+                                    title={
+                                        <Space size={8}>
+                                            <AntdIcons.InfoCircleOutlined />
+                                                    Thông tin khách hàng
                                                 </Space>
+                                    }>
+                                    <Row>
+                                        <Col>
+                                            <Descriptions title="Thông tin" >
+                                                <Descriptions.Item label="Tên khách hàng">{nhapHang.khachHang}</Descriptions.Item>
+                                            </Descriptions>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Số điện thoại khách hàng">{nhapHang.sdtKhachHang}</Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                                : ""
                         }
-                    >
-                        <Row>
-                            <Col>
-                                <Row gutter={24}>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                        <Descriptions>
-                                            <Descriptions.Item label="Chi nhánh nhận">
-                                                {nhapHang.tenChiNhanhNhan}
-                                            </Descriptions.Item>
-                                        </Descriptions>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                        <Descriptions>
-                                            <Descriptions.Item label="Ngày hẹn giao">
-                                                {nhapHang.ngayHenGiao ? moment(nhapHang.ngayHenGiao).format('DD/MM/YYYY, HH:mm') : ""}
-                                            </Descriptions.Item>
-                                        </Descriptions>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
-                                        <Descriptions>
-                                            <Descriptions.Item label="Ghi chú">
-                                                {nhapHang.description}
-                                            </Descriptions.Item>
-                                        </Descriptions>
-                                    </Col>
+                        <Row gutter={16}>
+                            <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                <Card
+                                    style={{ marginTop: 16 }}
+                                    title={
+                                        <Space size={8}>
+                                            <AntdIcons.InfoCircleOutlined />
+                                                    Thông tin sản phẩm
+                                                </Space>
+                                    }>
+                                    <Row className="ThongTinSP">
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
+                                            <div className="ant-table ant-table-bordered ant-table-ping-right ant-table-fixed-column ant-table-scroll-horizontal ant-table-has-fix-left ant-table-has-fix-right">
+                                                <div className="ant-table-container">
+                                                    <div className="ant-table-content">
+                                                        <table /*className="ant-table"*/ id="SanPhams" style={{ tableLayout: "auto" }}>
+                                                            <thead className="ant-table-thead">
+                                                                <tr>
+                                                                    <th className="sapxep" id="Name">
+                                                                        Tên
+                                                        </th>
 
-                                </Row>
+                                                                    <th className="sapxep" id="Code">
+                                                                        Mã SP
+                                                        </th>
+                                                                    <th className="" id="Barcode">
+                                                                        ĐVT
+                                        </th>
+                                                                    <th className="">
+                                                                        Số lượng
+                                        </th>
+                                                                    <th className="" style={{ width: "25%" }}>
+                                                                        Giá nhập
+                                        </th>
+                                                                    <th className="">
+                                                                        Thành tiền
+                                        </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody className="ant-table-tbody">
+                                                                {renderBody()}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }} className="TomTat">
+                                            <Descriptions title="" >
+                                                <Descriptions.Item label="Số lượng" className="TongSoLuong">{TongSl}</Descriptions.Item>
+                                            </Descriptions>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Tổng tiền" className="TongGiaTien">
+                                                    {FormatMoney(TongGiaTien, " đ")}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                            <Descriptions>
+                                                <Descriptions.Item label={<Typography.Link href="javascript:void(0)">
+                                                    Chiết khẩu
+                                            </Typography.Link>
+                                                }>
+                                                    {FormatMoney(nhapHang.chietKhau ?? 0, " đ")}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                            <Descriptions>
+                                                <Descriptions.Item label={<Typography.Text type="warning">Tiền phải trả</Typography.Text>}>
+                                                    {FormatMoney(nhapHang.tongTienPhaiTra ?? 0, " đ")}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+
+                                        </Col>
+                                    </Row>
+                                </Card>
                             </Col>
                         </Row>
-                    </Card>
-                </Col>
-            </Row>
-            <Divider />
-            <Row>
-                <Col style={{ textAlign: "right" }}>
-                    {nhapHang?.status == 0 && _isPermission(PERMISSION.DUYET, PERMISSION.DM_XUATHANG) ?
-                        <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => PheDuyet(nhapHang)}>
-                            Duyệt đơn
-                                    </Button> :
-                        nhapHang?.status == 1 && _isPermission(PERMISSION.XUATKHO, PERMISSION.DM_XUATHANG) ?
-                            <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => NhapKho(nhapHang)}>
-                                Nhập kho
-                                    </Button> :
-                            nhapHang?.status == 2 && _isPermission(PERMISSION.XUATKHO, PERMISSION.DM_XUATHANG) ?
-                                <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => HoanThanh(nhapHang)}>
-                                    Hoàn thành
-                                    </Button> :
-                                ""
+                        {/*<Card*/}
+                        {/*    style={{ marginTop: 16 }}*/}
+                        {/*    title={*/}
+                        {/*        <Row>*/}
+                        {/*            <Col>*/}
+                        {/*                <Space size={8}>*/}
+                        {/*                    <AntdIcons.CreditCardOutlined />*/}
+                        {/*                               Thanh toán*/}
+                        {/*                </Space>*/}
+                        {/*            </Col>*/}
+                        {/*            <Col>*/}
+                        {/*                <Row>*/}
+                        {/*                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
+                        {/*                        <Descriptions>*/}
+                        {/*                            <Descriptions.Item label="Đã thanh toán">*/}
+                        {/*                                {FormatMoney(nhapHang.tongDaThanhToan ?? 0, " đ")}*/}
+                        {/*                            </Descriptions.Item>*/}
+                        {/*                        </Descriptions>*/}
+                        {/*                    </Col>*/}
+                        {/*                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>*/}
+                        {/*                        <Descriptions>*/}
+                        {/*                            <Descriptions.Item label="Còn phải trả">*/}
+                        {/*                                {FormatMoney(nhapHang.tongTienPhaiTra - nhapHang.tongDaThanhToan, " đ")}*/}
+                        {/*                            </Descriptions.Item>*/}
+                        {/*                        </Descriptions>*/}
+                        {/*                    </Col>*/}
+                        {/*                </Row>*/}
+                        {/*            </Col>*/}
+                        {/*        </Row>*/}
 
-                    }
-                </Col>
-            </Row>
-        </Form >
+                        {/*    }*/}
+                        {/*    extra={<Button>Xác nhận thanh toán</Button>}*/}
+                        {/*>*/}
+                        {/*    <Row gutter={24}>*/}
+                        {/*        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>*/}
+                        {/*            <Timeline>*/}
+                        {/*                {thanhToan.map(item => {*/}
+                        {/*                    return (*/}
+                        {/*                        <Timeline.Item>*/}
+                        {/*                            <p> Xác nhận thanh toán {FormatMoney(item.tongTienDaTra ?? 0, " đ")}</p>*/}
+                        {/*                            <p>{item.ngayThanhToan ? moment(item.ngayThanhToan).format('DD/MM/YYYY, HH:mm') : ""}</p>*/}
+                        {/*                            <p>Người thanh toán: {item.tenNguoiThanhToan}</p>*/}
+                        {/*                            <p>Phương thức thanh toán: {item.tenHinhThucThanhToan}</p>*/}
+                        {/*                        </Timeline.Item>*/}
+                        {/*                    )*/}
+                        {/*                })}*/}
+                        {/*            </Timeline>*/}
+                        {/*        </Col>*/}
+                        {/*    </Row>*/}
+                        {/*</Card>*/}
+                    </Col>
+                    <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 7 }}>
+                        <Card
+                            style={{ marginTop: 16 }}
+                            title={
+                                <Space size={8}>
+                                    <AntdIcons.DollarOutlined />
+                                                   Thông tin đơn nhập hàng
+                                                </Space>
+                            }
+                        >
+                            <Row>
+                                <Col>
+                                    <Row gutter={24}>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Chi nhánh xuất">
+                                                    {nhapHang.tenChiNhanhNhan}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Ngày hẹn giao">
+                                                    {nhapHang.ngayHenGiao ? moment(nhapHang.ngayHenGiao).format('DD/MM/YYYY, HH:mm') : ""}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
+                                            <Descriptions>
+                                                <Descriptions.Item label="Ghi chú">
+                                                    {nhapHang.description}
+                                                </Descriptions.Item>
+                                            </Descriptions>
+                                        </Col>
+
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Card>
+                    </Col>
+                </Row>
+                <Divider />
+                <Row>
+                    <Col style={{ textAlign: "right" }}>
+                        {nhapHang?.status == 0 && _isPermission(PERMISSION.DUYET, PERMISSION.DM_XUATHANG) ?
+                            <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => PheDuyet(nhapHang)}>
+                                Duyệt đơn
+                                    </Button> :
+                            nhapHang?.status == 1 && _isPermission(PERMISSION.XUATKHO, PERMISSION.DM_XUATHANG) ?
+                                <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => NhapKho(nhapHang)}>
+                                    Xuất kho
+                                    </Button> :
+                                nhapHang?.status == 2 && _isPermission(PERMISSION.XUATKHO, PERMISSION.DM_XUATHANG) ?
+                                    <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => HoanThanh(nhapHang)}>
+                                        Hoàn thành
+                                    </Button> :
+                                    ""
+
+                        }
+                    </Col>
+                </Row>
+            </Form >
+        </Spin>
     )
 }
 export default ModalCreate;

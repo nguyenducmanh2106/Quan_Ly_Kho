@@ -6,11 +6,14 @@ import moment from 'moment'
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import * as AntdIcons from '@ant-design/icons';
+import useModal from './../../elements/modal/useModal';
+import FormView from './../DM_SanPham/View';
 import {
     Form, Input, InputNumber, Button, Select
     , Skeleton, Col, Row, Card, Tooltip, Space, notification,
     AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Divider
 } from 'antd';
+
 const ModalCreate = () => {
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
@@ -24,6 +27,8 @@ const ModalCreate = () => {
     const [TongSl, setTongSl] = useState(0);
     const [chietKhau, setChietKhau] = useState(0);
     const [tienPhaiTra, setTienPhaiTra] = useState(0);
+    const [isShowingView, toggleView] = useModal();
+    const [ItemShow, setItemShow] = useState({})
     const [isVisible, setIsVisible] = useState(false)
     const [form] = Form.useForm();
     const onReset = () => {
@@ -61,7 +66,7 @@ const ModalCreate = () => {
         getDonVi()
     }, [])
     const onSubmit = (data) => {
-        const tzDate = data.NgayHenGiao ? moment.tz(data.NgayHenGiao, "Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm") : null;
+        var tzDate = data.NgayHenGiao ? moment.tz(data.NgayHenGiao, "Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm") : null;
         var ChiTietNhapHangs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
@@ -93,6 +98,11 @@ const ModalCreate = () => {
         }
         console.log(obj)
         onPostCreateItem(obj)
+    }
+    const onHandleShowItem = (item) => {
+        console.log(item)
+        setItemShow(item)
+        toggleView()
     }
     const validateMessages = {
         required: '${label} không được để trống',
@@ -129,7 +139,8 @@ const ModalCreate = () => {
     const handleSearch = async (value) => {
         if (value.length > 2) {
             var obj = {
-                Name: value
+                Name: value,
+                Id_Kho: getCurrentLogin().donViId
             }
             var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
             if (fetchData.status == true) {
@@ -175,7 +186,18 @@ const ModalCreate = () => {
                         barCode: data.barCode,
                         tenDonViTinh: data.tenDonViTinh,
                         SoLuongYeuCau: 1,
-                        giaNhap: data.giaNhap
+                        giaBanLe: data.giaBanLe,
+                        khoiLuong: data.khoiLuong,
+                        giaCu: data.giaCu,
+                        giaNhap: data.giaNhap,
+                        giaBanBuon: data.giaBanBuon,
+                        created_At: data.created_At,
+                        tenLoaiSanPham: data.tenLoaiSanPham,
+                        tenThuongHieu: data.tenThuongHieu,
+                        xuatXu: data.xuatXu,
+                        thuocTinhs: data.thuocTinhs,
+                        pathAvatar: data.pathAvatar,
+                        avatar: data.avatar
                     }
                     var isExist = false
                     if (DataSanPhamSubmit.length > 0) {
@@ -276,7 +298,9 @@ const ModalCreate = () => {
                         </td>
 
                         <td style={{ textAlign: "center" }}>
-                            {item.code}
+                            <Typography.Link href="javascript:void(0)" onClick={() => onHandleShowItem(item)}>
+                                {item.code}
+                            </Typography.Link>
                         </td>
                         <td>
                             {item.tenDonViTinh}
@@ -368,6 +392,12 @@ const ModalCreate = () => {
     }
     return (
         <Spin spinning={isLoading}>
+            <FormView
+                isShowing={isShowingView}
+                hide={toggleView}
+                item={ItemShow}
+            /*confirmLoading={confirmLoading}*/
+            />
             <Form
                 form={form}
                 layout="horizontal"
@@ -471,6 +501,7 @@ const ModalCreate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
+                                                                    <Col>(Số lượng: {item.soLuongTrongKho})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>

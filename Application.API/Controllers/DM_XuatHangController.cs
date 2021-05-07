@@ -138,6 +138,7 @@ namespace Application.API.Controllers
                     NgayHenGiao = g.NgayHenGiao,
                     NgayXuatKho = g.NgayXuatKho,
                     NgayHuyDon = g.NgayHuyDon,
+                    nhaCungCaps = g.nhaCungCaps,
                     NgayHoanThanh = g.NgayHoanThanh,
                     ID_NhaCungCap = g.ID_NhaCungCap,
                     Description = g.Description,
@@ -246,9 +247,9 @@ namespace Application.API.Controllers
         {
             try
             {
+                await _managerChiTietKho.CreateOrUpdateXuatHang(obj.ChiTietKho);
                 obj.Status = (int)DatHangStatus.HoanThanh;
                 await _manager.HoanThanh(obj);
-                await _managerChiTietKho.CreateOrUpdate(obj.ChiTietKho);
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS
@@ -258,7 +259,7 @@ namespace Application.API.Controllers
             {
                 return Ok(new MessageError()
                 {
-                    message = MessageConst.UPDATE_FAIL
+                    message = ex.Message
                 });
             }
         }

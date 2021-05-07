@@ -27,9 +27,10 @@ namespace Application.Services.DM_XuatHangSerVices
         {
             try
             {
+                DateTime? isNull = null;
+                obj.NgayHenGiao = obj.strNgayHenGiao != null ? Convert.ToDateTime(obj.strNgayHenGiao) : isNull;
                 obj.Created_At = DateTime.Now;
                 obj.Code = Common.GenerateCodeItem();
-                obj.NgayHenGiao = Convert.ToDateTime(obj.strNgayHenGiao);
                 var data = await _unitOfWork.DM_XuatHangRepository.Add(obj);
                 return data;
             }
@@ -198,13 +199,16 @@ namespace Application.Services.DM_XuatHangSerVices
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
+                DateTime? isNull = null;
+                exist.NgayHenGiao = obj.strNgayHenGiao != null ? Convert.ToDateTime(obj.strNgayHenGiao) : isNull;
                 exist.Updated_At = DateTime.Now.Date;
                 exist.Updated_By = obj.Updated_By;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;
+                exist.KhachHang = obj.KhachHang;
+                exist.SdtKhachHang = obj.SdtKhachHang;
                 exist.ID_NhaCungCap = obj.ID_NhaCungCap;
                 exist.TongTienPhaiTra = obj.TongTienPhaiTra;
                 exist.TongTien = obj.TongTien;
-                obj.NgayHenGiao = Convert.ToDateTime(obj.strNgayHenGiao);
                 exist.TongSoLuong = obj.TongSoLuong;
                 exist.Description = obj.Description;
                 exist.ChietKhau = obj.ChietKhau;

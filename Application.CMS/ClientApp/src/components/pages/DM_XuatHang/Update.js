@@ -13,6 +13,8 @@ import {
     , Skeleton, Col, Row, Card, Tooltip, Space, notification,
     AutoComplete, Descriptions, Spin, Image, Menu, DatePicker, Checkbox, Empty, Popover, Typography, Divider
 } from 'antd';
+import useModal from './../../elements/modal/useModal';
+import FormView from './../DM_SanPham/View';
 const ModalUpdate = () => {
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataSanPham, setDataSanPham] = useState([]);
@@ -29,6 +31,8 @@ const ModalUpdate = () => {
     const [form] = Form.useForm();
     const [nhapHang, setNhapHang] = useState({});
     const [ngayHenGiao, setNgayHenGiao] = useState(null);
+    const [isShowingView, toggleView] = useModal();
+    const [ItemShow, setItemShow] = useState({})
     const onReset = () => {
         form.resetFields();
     };
@@ -67,7 +71,7 @@ const ModalUpdate = () => {
                 console.log(data)
                 setNhapHang(data);
                 setNhaCungCapSelected(data.nhaCungCaps);
-                setDataSanPhamSubmit(data.chiTietNhapHangs);
+                setDataSanPhamSubmit(data.chiTietXuatHangs);
                 setChietKhau(data.chietKhau);
                 setTomTatSP({
                     ...tomTatSP,
@@ -80,7 +84,9 @@ const ModalUpdate = () => {
                     NgayHenGiao: moment(data.ngayHenGiao, 'YYYY-MM-DD HH:mm').isValid() ? moment(data.ngayHenGiao, 'YYYY-MM-DD HH:mm') : null,
                     Description: data.description,
                     ID_ChiNhanhNhan: data.iD_ChiNhanhNhan,
-                    ID_NhaCungCap: data.iD_NhaCungCap
+                    ID_NhaCungCap: data.iD_NhaCungCap,
+                    KhachHang: data.khachHang,
+                    SdtKhachHang: data.sdtKhachHang
                 })
             }
         }
@@ -90,18 +96,16 @@ const ModalUpdate = () => {
         getData()
     }, [])
     const onSubmit = (data) => {
-        var NgayHenGiao = data.NgayHenGiao ? new Date(data.NgayHenGiao) : null;
-        var date = moment(NgayHenGiao, 'YYYY-MM-DD HH:mm').tz("Asia/Ho_Chi_Minh").format('YYYY-MM-DD HH:mm');
-        console.log(new Date(date))
-        var ChiTietNhapHangs = []
+        var tzDate = data.NgayHenGiao ? moment.tz(data.NgayHenGiao, "Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm") : null;
+        var chiTietXuatHangs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
                 iD_SanPham: sp[i].querySelector(".iD_SanPham").value,
                 SoLuong: Number.parseInt(sp[i].querySelector(".SoLuong").querySelector(".ant-input-number-input").value),
-                GiaNhap: Number.parseInt(sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0)
+                GiaXuat: Number.parseInt(sp[i].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value.replace(/\đ\s?|(,*)/g, '') ?? 0)
             }
-            ChiTietNhapHangs.push(obj)
+            chiTietXuatHangs.push(obj)
         }
         var ThanhToanDonHang = {
             TongTienDaTra: Number.parseInt(data.TongTienDaTra ?? 0),
@@ -113,9 +117,9 @@ const ModalUpdate = () => {
             Status: 0,
             Code: nhapHang.code,
             NhapKho: 1,
-            NgayHenGiao: new Date(date),
+            strNgayHenGiao: tzDate,
             Created_By: getCurrentLogin().id,
-            ChiTietNhapHangs: ChiTietNhapHangs,
+            chiTietXuatHangs: chiTietXuatHangs,
             ThanhToanDonHang: ThanhToanDonHang,
             ChietKhau: chietKhau,
             TongTien: tomTatSP.TongGiaTien,
@@ -161,7 +165,8 @@ const ModalUpdate = () => {
     const handleSearch = async (value) => {
         if (value.length > 2) {
             var obj = {
-                Name: value
+                Name: value,
+                Id_Kho: getCurrentLogin().donViId
             }
             var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
             if (fetchData.status == true) {
@@ -174,7 +179,8 @@ const ModalUpdate = () => {
     const handleSearchNCC = async (value) => {
         if (value.length > 2) {
             var obj = {
-                Name: value
+                Name: value,
+                Id_Kho: getCurrentLogin().donViId
             }
             var fetchData = await postAPI(`api/dm_nhacungcap/find-by-attributes`, JSON.stringify(obj));
             if (fetchData.status == true) {
@@ -203,11 +209,23 @@ const ModalUpdate = () => {
                     var obj = {
                         iD_SanPham: data.code,
                         tenSanPham: data.name,
+                        name: data.name,
                         code: data.code,
                         barCode: data.barCode,
                         tenDonViTinh: data.tenDonViTinh,
                         soLuong: 0,
-                        giaNhap: data.giaNhap
+                        giaBanLe: data.giaBanLe,
+                        khoiLuong: data.khoiLuong,
+                        giaCu: data.giaCu,
+                        giaNhap: data.giaNhap,
+                        giaBanBuon: data.giaBanBuon,
+                        created_At: data.created_At,
+                        tenLoaiSanPham: data.tenLoaiSanPham,
+                        tenThuongHieu: data.tenThuongHieu,
+                        xuatXu: data.xuatXu,
+                        thuocTinhs: data.thuocTinhs,
+                        pathAvatar: data.pathAvatar,
+                        avatar: data.avatar
                     }
                     var isExist = false
                     if (DataSanPhamSubmit.length > 0) {
@@ -292,13 +310,18 @@ const ModalUpdate = () => {
         </tr>
         return data;
     }
+    const onHandleShowItem = (item) => {
+        console.log(item)
+        setItemShow(item)
+        toggleView()
+    }
     const renderBody = useCallback(
         () => {
             var result = ""
             var TongSl = 0;
             var TongGiaTien = 0
             result = DataSanPhamSubmit.map((item, index) => {
-                var giaNhap = item.giaNhap;
+                var giaNhap = item.giaXuat ?? 0;
                 TongSl += 1;
                 TongGiaTien += Number.parseInt(giaNhap)
                 return (
@@ -309,7 +332,9 @@ const ModalUpdate = () => {
                         </td>
 
                         <td style={{ textAlign: "center" }}>
-                            {item.code}
+                            <Typography.Link href="javascript:void(0)" onClick={() => onHandleShowItem(item)}>
+                                {item.code}
+                            </Typography.Link>
                         </td>
                         <td>
                             {item.tenDonViTinh}
@@ -400,6 +425,12 @@ const ModalUpdate = () => {
     }
     return (
         <Spin spinning={isLoading}>
+            <FormView
+                isShowing={isShowingView}
+                hide={toggleView}
+                item={ItemShow}
+            /*confirmLoading={confirmLoading}*/
+            />
             <Form
                 form={form}
                 layout="horizontal"
@@ -411,58 +442,113 @@ const ModalUpdate = () => {
             >
                 <Row gutter={16}>
                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 17 }}>
-                        <Card
-                            style={{ marginTop: 16 }}
-                            title={
-                                <Space size={8}>
-                                    <AntdIcons.InfoCircleOutlined />
-                                                    Thông tin nhà cung cấp
-                                                </Space>
-                            }>
-                            <Row>
-                                <Col style={{ display: isVisibleInfoNCC ? "none" : "inherit" }}>
-                                    <Form.Item name="ID_NhaCungCap" label="" rules={[{ required: true }]}>
-                                        <AutoComplete
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                            onFocus={() => setDataNCC([])}
-                                            onSelect={onHandleSelectNCC}
-                                            onSearch={handleSearchNCC}
-                                            placeholder="Tìm kiếm nhà cung cấp theo SĐT, tên, mã nhà cung cấp"
-                                            notFoundContent="Không tìm thấy nhà cung cấp nào"
-                                        >
-                                            {/*<Option key={0} value={0}>*/}
-                                            {/*    <Row>*/}
-                                            {/*        <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>*/}
-                                            {/*            <AntdIcons.PlusCircleOutlined />*/}
-                                            {/*        </Col>*/}
-                                            {/*        <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>*/}
-                                            {/*            Thêm mới nhà cung cấp*/}
-                                            {/*        </Col>*/}
-                                            {/*    </Row>*/}
-                                            {/*</Option>*/}
-                                            {DataNCC.map((item) => (
-                                                <Option key={item.id} value={item.id}>
-                                                    <Row>
-                                                        <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
-                                                            {item.name}
-                                                        </Col>
-                                                        <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
-                                                            {item.phone}
-                                                        </Col>
-                                                    </Row>
-                                                </Option>
-                                            ))}
-                                        </AutoComplete>
-                                    </Form.Item>
+                        {getCurrentLogin().capDoDonVi == 1 ?
+                            <Card
+                                style={{ marginTop: 16 }}
+                                title={
+                                    <Space size={8}>
+                                        <AntdIcons.InfoCircleOutlined />
+                                   Thông tin nhà cung cấp
+                                </Space>
+                                }>
+                                <Row>
+                                    <Col style={{ display: isVisibleInfoNCC ? "none" : "inherit" }}>
+                                        <Form.Item name="ID_NhaCungCap" label="" rules={[{ required: true }]}>
+                                            <AutoComplete
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                                onFocus={() => setDataNCC([])}
+                                                onSelect={onHandleSelectNCC}
+                                                onSearch={handleSearchNCC}
+                                                placeholder="Tìm kiếm nhà cung cấp theo SĐT, tên, mã nhà cung cấp"
+                                                notFoundContent="Không tìm thấy nhà cung cấp nào"
+                                            >
+                                                {/*<Option key={0} value={0}>*/}
+                                                {/*    <Row>*/}
+                                                {/*        <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>*/}
+                                                {/*            <AntdIcons.PlusCircleOutlined />*/}
+                                                {/*        </Col>*/}
+                                                {/*        <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>*/}
+                                                {/*            Thêm mới nhà cung cấp*/}
+                                                {/*        </Col>*/}
+                                                {/*    </Row>*/}
+                                                {/*</Option>*/}
+                                                {DataNCC.map((item) => (
+                                                    <Option key={item.id} value={item.id}>
+                                                        <Row>
+                                                            <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
+                                                                {item.name}
+                                                            </Col>
+                                                            <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
+                                                                {item.phone}
+                                                            </Col>
+                                                        </Row>
+                                                    </Option>
+                                                ))}
+                                            </AutoComplete>
+                                        </Form.Item>
 
-                                </Col>
-                                <Col style={{ display: isVisibleInfoNCC ? "inherit" : "none" }}>
-                                    {renderNCC()}
-                                </Col>
-                            </Row>
-                        </Card>
+                                    </Col>
+                                    <Col style={{ display: isVisibleInfoNCC ? "inherit" : "none" }}>
+                                        {renderNCC()}
+                                    </Col>
+                                </Row>
+                            </Card>
+                            :
+                            <Card
+                                style={{ marginTop: 16 }}
+                                title={
+                                    <Space size={8}>
+                                        <AntdIcons.InfoCircleOutlined />
+                                   Thông tin khách hàng
+                                </Space>
+                                }>
+                                <Row>
+                                    <Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>
+                                            <label htmlFor="nest-messages_KhachHang" className="ant-form-item-required" title="Tên khách hàng">
+                                                Tên khách hàng
+                                            </label>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
+                                            <Form.Item name="KhachHang" label="" rules={[{ required: true, message: 'Tên khách hàng không được để trống' }]}>
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                    </Col>
+                                    <Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }}>
+                                            <label htmlFor="nest-messages_SdtKhachHang" className="ant-form-item-required" title="Số điện thoại khách hàng">
+                                                Số điện thoại khách hàng
+                                            </label>
+                                        </Col>
+                                        <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
+                                            <Form.Item name="SdtKhachHang" label="" rules={[
+                                                {
+                                                    required: true, message: 'Số điện thoại khách hàng không được để trống', type: "regexp",
+                                                    pattern: new RegExp(/\d+/g),
+                                                },
+                                                ({ getFieldValue }) => ({
+                                                    validator(_, value) {
+                                                        //console.log(value)
+                                                        if (value === "") {
+                                                            return Promise.reject(new Error('Số điện thoại khách hàng không được để trống'));
+                                                        }
+                                                        if ((Number.isNaN(value) || (/(84|0[3|5|7|8|9])+([0-9]{8})\b/g).test(value) == false)) {
+                                                            return Promise.reject(new Error('Số điện thoại định dạng không đúng'));
+                                                        }
+                                                        return Promise.resolve();
+                                                    },
+                                                }),
+                                            ]}>
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                    </Col>
+                                </Row>
+                            </Card>
+                        }
                         <Row gutter={16}>
                             <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
                                 <Card
@@ -500,6 +586,7 @@ const ModalUpdate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
+                                                                    <Col>(Số lượng: {item.soLuongTrongKho})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>

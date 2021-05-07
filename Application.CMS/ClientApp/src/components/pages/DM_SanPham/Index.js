@@ -91,7 +91,9 @@ function Index({ onSetSanPhamUpdate }) {
             var obj = {
                 Name: name,
                 Status: status,
-                nameSort: nameSort
+                nameSort: nameSort,
+                page,
+                pageSize
             }
             var fetchData = await postAPI(`api/dm_sanpham/list_data/`, JSON.stringify(obj));
             if (fetchData.status == true) {

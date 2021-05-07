@@ -65,6 +65,8 @@ namespace Application.MODELS
         public string tenLoaiSanPham { get; set; }
         [NotMapped]
         public string tenDonViTinh { get; set; }
+        [NotMapped]
+        public int? SoLuongTrongKho { get; set; }
 
     }
 }

@@ -20,7 +20,7 @@ namespace Application.MODELS
         public DateTime? NgayDuyet { get; set; }
         public int? TaiKhoanDuyet { get; set; }
         [Column("Status")]
-        [Description("0-Đặt hàng,1-Duyệt, 2-Nhập kho,3-Hoàn thành,4-Huỷ đơn")]
+        [Description("0-Đơn trả hàng,1-Duyệt, 2-Xuất kho,3-Hoàn thành,4-Huỷ đơn")]
         public int? Status { get; set; }
         public string Description { get; set; }
         public decimal? ChietKhau { get; set; }

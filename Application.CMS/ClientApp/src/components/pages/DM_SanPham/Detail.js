@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 
 const DetailComponent = ({ item }) => {
+    console.log(item)
     const renderThuocTinh = () => {
         var thuocTinhs = item?.thuocTinhs;
         console.log(thuocTinhs?.length ?? "")
