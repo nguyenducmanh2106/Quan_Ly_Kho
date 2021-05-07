@@ -69,6 +69,7 @@ namespace Application.Services.DM_NhapHangSerVices
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
                 exist.Status = obj.Status;
+                exist.TaiKhoanDuyet = obj.TaiKhoanDuyet;
                 exist.NgayDuyet = DateTime.Now;
                 await _unitOfWork.DM_NhapHangRepository.Update(exist);
                 await _unitOfWork.SaveChange();

@@ -12,7 +12,7 @@ import useModal from './../../elements/modal/useModal';
 import * as AntdIcons from '@ant-design/icons';
 import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
 import {
-    useParams
+    useParams, Link
 } from "react-router-dom";
 
 const FormUpdate = () => {
@@ -65,6 +65,7 @@ const FormUpdate = () => {
     }, [])
     const onSubmit = (data) => {
         var ChiTietDeNghiDieuDongs = []
+        var ChiTietKhos = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
             var obj = {
@@ -73,6 +74,14 @@ const FormUpdate = () => {
                 SoLuongDuyet: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
             }
             ChiTietDeNghiDieuDongs.push(obj)
+            var chitietkho = {
+                Id_SanPham: sp[i].querySelector(".ID_SanPham").value,
+                //Id_Kho: item.iD_ChiNhanhNhan,
+                ID_ChiNhanhGui: ItemUpdate.iD_ChiNhanhGui,
+                ID_ChiNhanhNhan: ItemUpdate.iD_ChiNhanhNhan,
+                SoLuong: Number.parseInt(sp[i].querySelector(".ant-input-number-input").value)
+            }
+            ChiTietKhos.push(chitietkho)
         }
         var obj = {
             ...data,
@@ -81,9 +90,11 @@ const FormUpdate = () => {
             Status: 1,
             Created_By: getCurrentLogin().id,
             ID_ChiNhanhGui: getCurrentLogin().donViId,
-            ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs
+            ChiTietDeNghiDieuDongs: ChiTietDeNghiDieuDongs,
+            ChiTietKhos,
+            TaiKhoanDuyet: getCurrentLogin().id
         }
-        console.log(obj)
+        //console.log(obj)
         onPostUpdateItem(obj)
     }
     const validateMessages = {
@@ -96,9 +107,10 @@ const FormUpdate = () => {
             range: '${label} must be between ${min} and ${max}',
         },
     };
-    async function onPostUpdateItem(obj) {
-        //console.log(obj)
-        //setConfirmLoading(true)
+    async function onPostUpdateItem(item) {
+        console.log(item)
+
+        setConfirmLoading(true)
         Modal.confirm({
             title: 'Bạn có chắc chắn không?',
             icon: <AntdIcons.ExclamationCircleOutlined />,
@@ -107,13 +119,14 @@ const FormUpdate = () => {
             cancelText: 'Quay lại',
             //okButtonProps: { loading: confirmLoading },
             onOk: () => {
-                return postAPI('api/dm_denghidieudong/pheduyet', JSON.stringify(obj)).then(result => {
+                return postAPI('api/dm_denghidieudong/pheduyet', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         notification.success({
                             message: result.message,
                             duration: 3
 
                         })
+                        setConfirmLoading(!result.status)
                     }
                     else {
                         notification.error({
@@ -121,59 +134,14 @@ const FormUpdate = () => {
                             duration: 3
 
                         })
+                        setConfirmLoading(result.status)
                     }
                 });
             }
         });
 
     }
-    const onSubmitReject = (obj) => {
-        console.log(obj)
-    }
-    const onReject = async (obj) => {
-        Modal.confirm({
-            title: 'Bạn có chắc chắn từ chối không?',
-            icon: <AntdIcons.ExclamationCircleOutlined />,
-            content: <Form {...layout} name="nest-messages" onFinish={onSubmitReject} id="myFormReject"
-                validateMessages={validateMessages}
-                initialValues={{
-                    ["Ordering"]: 0,
-                    ["TinhId"]: -1,
-                    ["HuyenId"]: -1,
-                    ["XaId"]: -1,
-                    ["CapDo"]: 1
-                }}
-            >
-                <Form.Item name="Name" label="Tên đơn vị" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-            </Form>,
-            okButtonProps: { form: 'myFormReject', key: 'reject', htmlType: 'submit' },
-            okText: 'Đồng ý',
-            cancelText: 'Quay lại',
-            //okButtonProps: { loading: confirmLoading },
-            //onOk: () => {
-            //    console.log(document.querySelector('#lydo').value)
-            //    return postAPI('api/dm_denghidieudong/update', JSON.stringify(obj)).then(result => {
-            //        if (result.status) {
-            //            notification.success({
-            //                message: result.message,
-            //                duration: 3
-
-            //            })
-            //        }
-            //        else {
-            //            notification.error({
-            //                message: result.message,
-            //                duration: 3
-
-            //            })
-            //        }
-            //    });
-            //}
-        });
-
-    }
+    console.log(DataSanPhamSubmit)
     const renderBody = () => {
         var result = ""
         result = DataSanPhamSubmit.map((item, index) => {
@@ -184,13 +152,15 @@ const FormUpdate = () => {
                     </td>
 
                     <td style={{ textAlign: "center" }}>
-                        {item.code}
-                    </td>
-                    <td>
-                        {item.barcode}
+                        <Link to={{ pathname: `/dm_sanpham/view/${item.iD_SanPham}`, state: { controller: "Xem chi tiết sản phẩm", action: item.tenSanPham } }}>
+                            {item.code}
+                        </Link>
                     </td>
                     <td>
                         {item.tenDonViTinh}
+                    </td>
+                    <td>
+                        {item.soLuongTrongKho}
                     </td>
                     <td>
                         <input type="hidden" className="ID_SanPham" defaultValue={item.iD_SanPham} />
@@ -199,7 +169,7 @@ const FormUpdate = () => {
                         {item.soLuongYeuCau}
                     </td>
                     <td>
-                        <InputNumber min={1} max={99} />
+                        <InputNumber min={1} max={99} required />
                     </td>
                 </tr>
 
@@ -332,12 +302,10 @@ const FormUpdate = () => {
                                                             <th className="sapxep" id="Code">
                                                                 Mã SP
                                                         </th>
-                                                            <th className="" id="Barcode">
-                                                                Mã vạch
-                                        </th>
                                                             <th className="">
                                                                 ĐVT
                                         </th>
+                                                            <th>Số lượng trong kho</th>
                                                             <th className="">
                                                                 Số lượng cần
                                         </th>

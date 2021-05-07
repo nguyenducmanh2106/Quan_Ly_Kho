@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import { Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, Tabs } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import DetailComponent from "./Detail";
+import SoLuongKhoSanPham from "./SoLuongKhoSanPham";
 const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
-   console.log(item)
+    console.log(item)
     const validateMessages = {
         required: '${label} không được để trống',
         types: {
@@ -38,8 +39,8 @@ const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
                                     }
                                     key="1"
                                 >
-                                    <DetailComponent item={item}/>
-    </Tabs.TabPane>
+                                    <DetailComponent item={item} />
+                                </Tabs.TabPane>
                                 <Tabs.TabPane
                                     tab={
                                         <span>
@@ -49,8 +50,8 @@ const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
                                     }
                                     key="2"
                                 >
-                                    Tab 2
-    </Tabs.TabPane>
+                                    <SoLuongKhoSanPham item={item} />
+                                </Tabs.TabPane>
                             </Tabs>
                         </Modal>
                     </  React.Fragment>, document.body

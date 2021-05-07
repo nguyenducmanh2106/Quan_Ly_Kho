@@ -129,7 +129,7 @@ function Table(props) {
                                         </Menu.Item>
                                     }
 
-                                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : item.status == 2 ? null :
+                                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status == 2 || item.status == 5) ? null :
                                         <Menu.Item style={{ textAlign: "center" }} key="3">
                                             <Tooltip title="Duyệt đơn">
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.AuditOutlined />} onClick={() => update(item)} />

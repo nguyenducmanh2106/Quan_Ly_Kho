@@ -284,6 +284,7 @@ namespace Application.API.Controllers
         {
             try
             {
+                await _managerChiTietKho.CheckKhoGuiSanPham(obj.ChiTietKhos);
                 obj.Status = (int)ContentStatusEnum.Approved;
                 await _manager.PheDuyet(obj);
                 if (obj.ChiTietDeNghiDieuDongs != null)
@@ -302,7 +303,7 @@ namespace Application.API.Controllers
             {
                 return Ok(new MessageError()
                 {
-                    message = MessageConst.UPDATE_FAIL
+                    message = ex.Message
                 });
             }
         }
@@ -331,9 +332,10 @@ namespace Application.API.Controllers
         {
             try
             {
+                await _managerChiTietKho.DieuDong(obj.ChiTietKhos);
                 obj.Status = (int)ContentStatusEnum.Received;
                 await _manager.NhanHang(obj);
-                await _managerChiTietKho.CreateOrUpdate(obj.ChiTietKhos);
+                
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS
@@ -343,7 +345,7 @@ namespace Application.API.Controllers
             {
                 return Ok(new MessageError()
                 {
-                    message = MessageConst.UPDATE_FAIL
+                    message = ex.Message
                 });
             }
         }

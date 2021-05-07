@@ -55,24 +55,74 @@ namespace Application.Services.ChiTietKhoSerVices
                 foreach (var item in obj)
                 {
                     var isExistKhoNhan = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.ID_ChiNhanhGui && g.Id_SanPham == item.Id_SanPham));
-                    var isExistGui = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.ID_ChiNhanhGui && g.Id_SanPham == item.Id_SanPham));
+                    var isExistKhoGui = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.ID_ChiNhanhNhan && g.Id_SanPham == item.Id_SanPham));
                     if (isExistKhoNhan != null)
                     {
                         isExistKhoNhan.SoLuong += item.SoLuong;
                         await _unitOfWork.ChiTietKhoRepository.Update(isExistKhoNhan);
                     }
-                    else
+                    else if (isExistKhoNhan == null)
                     {
                         item.Id_Kho = item.ID_ChiNhanhGui;
                         await _unitOfWork.ChiTietKhoRepository.Add(item);
                     }
-                    if (isExistGui != null)
+                    if (isExistKhoGui != null)
                     {
-                        isExistKhoNhan.SoLuong -= item.SoLuong;
-                        await _unitOfWork.ChiTietKhoRepository.Update(isExistKhoNhan);
+                        isExistKhoGui.SoLuong -= item.SoLuong;
+                        await _unitOfWork.ChiTietKhoRepository.Update(isExistKhoGui);
+                    }
+                    else if (isExistKhoGui == null)
+                    {
+                        throw new Exception(MessageConst.CAN_NHAP_THEM_HANG);
+                    }
+                    else
+                    {
+                        throw new Exception(MessageConst.UPDATE_FAIL);
                     }
                 }
                 await _unitOfWork.SaveChange();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task CheckKhoGuiSanPham(List<ChiTietKhos> obj)
+        {
+            try
+            {
+                List<string> arrSanPham = new List<string>();
+                foreach (var item in obj)
+                {
+                    var data = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.ID_ChiNhanhNhan && g.Id_SanPham == item.Id_SanPham));
+                    if (data == null || data.SoLuong < item.SoLuong)
+                    {
+                        arrSanPham.Add(item.Id_SanPham);
+                    }
+                }
+                if (arrSanPham.Count() > 0)
+                {
+                    var strSanPham = string.Join(",", arrSanPham);
+                    throw new Exception($"Sản phẩm {strSanPham} không đủ số lượng");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<int> getSoLuongByID_KhoAndID_SanPham(ChiTietKhos obj)
+        {
+            try
+            {
+                var data = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == obj.Id_Kho && g.Id_SanPham == obj.Id_SanPham));
+                if (data == null)
+                {
+                    return 0;
+                }
+                else return data.SoLuong ?? 0;
             }
             catch (Exception ex)
             {

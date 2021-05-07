@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
-import { getAPI, postAPI, postFormData, getLocalStorage } from './../../../utils/helpers';
+import { getAPI, postAPI, postFormData, getLocalStorage, getCurrentLogin } from './../../../utils/helpers';
 import { USER_LOCALSTORAGE } from './../../../utils/constants';
 import ListData from './ListData';
 import FormView from './View';
@@ -325,7 +325,8 @@ function Index({ onSetSanPhamUpdate }) {
     }
     const onUpdateItem = async (item) => {
         var obj = {
-            Code: item.code
+            Code: item.code,
+            TaiKhoanDuyet: getCurrentLogin().id
         }
         var result = await postAPI('api/dm_nhaphang/pheduyet', JSON.stringify(obj))
         if (result.status) {
@@ -345,6 +346,7 @@ function Index({ onSetSanPhamUpdate }) {
             })
             setAction(result.status)
         }
+        //console.log(obj)
     }
     const onShowItem = async (item) => {
         setItemShow(item)

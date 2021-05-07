@@ -111,6 +111,7 @@ namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
                     ID_DeNghiDieuDong = g.ID_DeNghiDieuDong,
                     ID_SanPham = g.ID_SanPham,
                     SoLuongDuyet = g.SoLuongDuyet,
+                    SoLuongTrongKho = g.SoLuongTrongKho,
                     SoLuongYeuCau = g.SoLuongYeuCau,
                     tenSanPham = g.tenSanPham,
                     tenDonViTinh = g.tenDonViTinh,

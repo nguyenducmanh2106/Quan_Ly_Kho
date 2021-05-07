@@ -93,7 +93,8 @@ const ModalCreate = () => {
     const PheDuyet = async (item) => {
         setIsRefresh(false)
         var obj = {
-            Code: item.code
+            Code: item.code,
+            TaiKhoanDuyet: getCurrentLogin().id,
         }
         var result = await postAPI('api/dm_nhaphang/pheduyet', JSON.stringify(obj))
         if (result.status) {
@@ -113,6 +114,7 @@ const ModalCreate = () => {
             })
             setIsRefresh(result.status)
         }
+        //console.log(obj)
     }
     const NhapKho = async (item) => {
         setIsRefresh(false)

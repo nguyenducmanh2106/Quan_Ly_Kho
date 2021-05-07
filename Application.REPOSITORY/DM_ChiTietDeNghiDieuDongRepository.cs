@@ -28,6 +28,7 @@ namespace Application.REPOSITORY
                             from sanPhamEmty in SanPhamDefault.DefaultIfEmpty()
                             join donViTinh in db.DM_DonViTinhs on sanPhamEmty.DonViTinh_Id equals donViTinh.Id into DVTDefault
                             from donvitinhEmty in DVTDefault.DefaultIfEmpty()
+                            join dieudong in db.DM_DeNghiDieuDongs on chitiet.ID_DeNghiDieuDong equals dieudong.Code
                             where chitiet.ID_DeNghiDieuDong == ID_DieuDong
                             select new DM_ChiTietDeNghiDieuDongs()
                             {
@@ -39,6 +40,7 @@ namespace Application.REPOSITORY
                                 tenSanPham = sanPhamEmty.Name ?? "",
                                 tenDonViTinh = donvitinhEmty.Name ?? "",
                                 code = sanPhamEmty.Code ?? "",
+                                SoLuongTrongKho = db.ChiTietKhos.SingleOrDefault(g => g.Id_SanPham == chitiet.ID_SanPham && g.Id_Kho == dieudong.ID_ChiNhanhNhan).SoLuong ?? 0,
                                 barCode = sanPhamEmty.Barcode ?? "",
                                 imgSanPham = sanPhamEmty.pathAvatar
                             }
