@@ -133,8 +133,8 @@ namespace Application.API.Controllers
                     NgayHenGiao = g.NgayHenGiao,
                     NgayNhapKho = g.NgayNhapKho,
                     NgayHoanThanh = g.NgayHoanThanh,
-                    TongSoLuong=g.TongSoLuong,
-                    TongTien=g.TongTien,
+                    TongSoLuong = g.TongSoLuong,
+                    TongTien = g.TongTien,
                     NgayHuyDon = g.NgayHuyDon,
                     ID_NhaCungCap = g.ID_NhaCungCap,
                     Description = g.Description,
@@ -166,7 +166,7 @@ namespace Application.API.Controllers
             try
             {
                 var data = await _manager.Create(obj);
-                if (obj.ChiTietNhapHangs != null)
+                if (obj.ChiTietNhapHangs.Count > 0)
                 {
                     foreach (var item in obj.ChiTietNhapHangs)
                     {
@@ -199,7 +199,7 @@ namespace Application.API.Controllers
             try
             {
                 await _manager.Update(obj);
-                if (obj.ChiTietNhapHangs != null)
+                if (obj.ChiTietNhapHangs.Count > 0)
                 {
                     foreach (var item in obj.ChiTietNhapHangs)
                     {

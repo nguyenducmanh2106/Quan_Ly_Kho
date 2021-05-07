@@ -30,6 +30,8 @@ namespace Application.MODELS
         [Description("1-Chờ Nhập hàng,2-Đã Nhập Hàng,3-Hoàn trả một phần,4-hoàn trả toàn bộ")]
         public int? NhapKho { get; set; }
         public decimal? ChietKhau { get; set; }
+        [NotMapped]
+        public string strNgayHenGiao { get; set; }
         public DateTime? NgayHenGiao { get; set; }
         public DateTime? NgayNhapKho { get; set; }
         public DateTime? NgayHoanThanh { get; set; }

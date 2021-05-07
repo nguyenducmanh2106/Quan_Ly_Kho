@@ -33,6 +33,11 @@ import DM_NhapHang from './components/pages/DM_NhapHang/Index';
 import DM_NhapHang_Create from './components/pages/DM_NhapHang/Create';
 import DM_NhapHang_Update from './components/pages/DM_NhapHang/Update';
 import DM_NhapHang_DetailNewPage from './components/pages/DM_NhapHang/DetailNewPage';
+
+import DM_XuatHang from './components/pages/DM_XuatHang/Index';
+import DM_XuatHang_Create from './components/pages/DM_XuatHang/Create';
+import DM_XuatHang_Update from './components/pages/DM_XuatHang/Update';
+import DM_XuatHang_DetailNewPage from './components/pages/DM_XuatHang/DetailNewPage';
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -74,6 +79,10 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_nhaphang/create' component={DM_NhapHang_Create} />
             <PrivateRoute exact path='/dm_nhaphang/update/:id' component={DM_NhapHang_Update} />
             <PrivateRoute exact path='/dm_nhaphang/view/:id' component={DM_NhapHang_DetailNewPage} />
+            <PrivateRoute exact path='/dm_xuathang' component={DM_XuatHang} />
+            <PrivateRoute exact path='/dm_xuathang/create' component={DM_XuatHang_Create} />
+            <PrivateRoute exact path='/dm_xuathang/update/:id' component={DM_XuatHang_Update} />
+            <PrivateRoute exact path='/dm_xuathang/view/:id' component={DM_XuatHang_DetailNewPage} />
         </Switch>
     );
 }

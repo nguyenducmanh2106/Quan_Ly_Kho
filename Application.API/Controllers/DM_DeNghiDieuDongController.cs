@@ -227,7 +227,7 @@ namespace Application.API.Controllers
             try
             {
                 var data = await _manager.Create(obj);
-                if (obj.ChiTietDeNghiDieuDongs != null)
+                if (obj.ChiTietDeNghiDieuDongs.Count > 0)
                 {
                     foreach (var item in obj.ChiTietDeNghiDieuDongs)
                     {
@@ -256,7 +256,7 @@ namespace Application.API.Controllers
             try
             {
                 await _manager.Update(obj);
-                if (obj.ChiTietDeNghiDieuDongs != null)
+                if (obj.ChiTietDeNghiDieuDongs.Count > 0)
                 {
                     foreach (var item in obj.ChiTietDeNghiDieuDongs)
                     {
@@ -287,7 +287,7 @@ namespace Application.API.Controllers
                 await _managerChiTietKho.CheckKhoGuiSanPham(obj.ChiTietKhos);
                 obj.Status = (int)ContentStatusEnum.Approved;
                 await _manager.PheDuyet(obj);
-                if (obj.ChiTietDeNghiDieuDongs != null)
+                if (obj.ChiTietDeNghiDieuDongs.Count > 0)
                 {
                     foreach (var item in obj.ChiTietDeNghiDieuDongs)
                     {
@@ -335,7 +335,7 @@ namespace Application.API.Controllers
                 await _managerChiTietKho.DieuDong(obj.ChiTietKhos);
                 obj.Status = (int)ContentStatusEnum.Received;
                 await _manager.NhanHang(obj);
-                
+
                 return Ok(new MessageSuccess()
                 {
                     message = MessageConst.UPDATE_SUCCESS

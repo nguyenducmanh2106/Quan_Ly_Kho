@@ -30,6 +30,8 @@ using Application.Services.DM_NhapHangSerVices;
 using Application.Services.DM_ChiTietNhapHangSerVices;
 using Application.Services.ThanhToanDonHangSerVices;
 using Application.Services.ChiTietKhoSerVices;
+using Application.Services.DM_ChiTietXuatHangSerVices;
+using Application.Services.DM_XuatHangSerVices;
 
 namespace Application.DependencyInjection
 {
@@ -67,6 +69,8 @@ namespace Application.DependencyInjection
             services.AddTransient<IDM_ChiTietNhapHangServices, DM_ChiTietNhapHangServices>();
             services.AddTransient<IThanhToanDonHangServices, ThanhToanDonHangServices>();
             services.AddTransient<IChiTietKhoServices, ChiTietKhoServices>();
+            services.AddTransient<IDM_ChiTietXuatHangServices, DM_ChiTietXuatHangServices>();
+            services.AddTransient<IDM_XuatHangServices, DM_XuatHangServices>();
         }
     }
 }

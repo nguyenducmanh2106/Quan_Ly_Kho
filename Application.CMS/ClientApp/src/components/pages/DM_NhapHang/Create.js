@@ -2,6 +2,7 @@
 import ReactDOM from 'react-dom';
 import { getAPI, postAPI, postFormData, getCurrentLogin, FormatMoney } from './../../../utils/helpers';
 import { url_upload } from './../../../utils/constants';
+import moment from 'moment'
 import { decode as base64_decode, encode as base64_encode } from 'base-64';
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import * as AntdIcons from '@ant-design/icons';
@@ -60,12 +61,7 @@ const ModalCreate = () => {
         getDonVi()
     }, [])
     const onSubmit = (data) => {
-        var NgayHenGiao = data.NgayHenGiao ? new Date(data.NgayHenGiao.toDate()) : null;
-        var obj = {
-            ...data,
-            NgayHenGiao
-        }
-
+        const tzDate = data.NgayHenGiao ? moment.tz(data.NgayHenGiao, "Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm") : null;
         var ChiTietNhapHangs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
@@ -87,7 +83,7 @@ const ModalCreate = () => {
             NhapKho: 1,
             Created_By: getCurrentLogin().id,
             ChiTietNhapHangs: ChiTietNhapHangs,
-            NgayHenGiao,
+            strNgayHenGiao: tzDate,
             ThanhToanDonHang: ThanhToanDonHang,
             ChietKhau: chietKhau,
             TongTien: tomTatSP.TongGiaTien,
@@ -380,7 +376,8 @@ const ModalCreate = () => {
                 initialValues={{
                     "SoTienThanhToan": 0,
                     "HinhThucThanhToan": 1,
-                    "TongTienDaTra": 0
+                    "TongTienDaTra": 0,
+                    "ID_ChiNhanhNhan": getCurrentLogin().donViId
                 }}
             >
                 <Row gutter={16}>
@@ -647,8 +644,9 @@ const ModalCreate = () => {
                                         <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }}>
                                             <Form.Item name="NgayHenGiao" label="Ngày hẹn giao" style={{ width: '100%' }}>
                                                 <DatePicker placeholder="Ngày hẹn giao"
+                                                    showTime
                                                     style={{ width: '100%' }}
-                                                    format={"DD/MM/YYYY"}
+                                                    format={"DD/MM/YYYY HH:mm"}
                                                     getPopupContainer={trigger => trigger.parentElement}
                                                     onChange={onChangeDatePicker}
                                                 />

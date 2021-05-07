@@ -27,6 +27,8 @@ namespace Application.Services.DM_NhapHangSerVices
         {
             try
             {
+                DateTime? isNull = null;
+                obj.NgayHenGiao = obj.strNgayHenGiao != null ? Convert.ToDateTime(obj.strNgayHenGiao) : isNull;
                 obj.Created_At = DateTime.Now;
                 obj.Code = Common.GenerateCodeItem();
                 var data = await _unitOfWork.DM_NhapHangRepository.Add(obj);
@@ -197,13 +199,14 @@ namespace Application.Services.DM_NhapHangSerVices
                 {
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
+                DateTime? isNull = null;
+                obj.NgayHenGiao = obj.strNgayHenGiao != null ? Convert.ToDateTime(obj.strNgayHenGiao) : isNull;
                 exist.Updated_At = DateTime.Now.Date;
                 exist.Updated_By = obj.Updated_By;
                 exist.ID_ChiNhanhNhan = obj.ID_ChiNhanhNhan;
                 exist.ID_NhaCungCap = obj.ID_NhaCungCap;
                 exist.TongTienPhaiTra = obj.TongTienPhaiTra;
                 exist.TongTien = obj.TongTien;
-                exist.NgayHenGiao = obj.NgayHenGiao;
                 exist.TongSoLuong = obj.TongSoLuong;
                 exist.Description = obj.Description;
                 exist.ChietKhau = obj.ChietKhau;
@@ -276,7 +279,7 @@ namespace Application.Services.DM_NhapHangSerVices
                 var date = Convert.ToDateTime(inputModel.NgayNhapKho).Date;
                 if (inputModel.TypeFilterNgayNhapKho == (int)TypeFilter.Bigger_Or_Equal)
                 {
-                    data = data.Where(g => (g.NgayNhapKho >= date));
+                    data = data.Where(g => (g.NgayNhapKho.HasValue && g.NgayNhapKho >= date));
                 }
                 if (inputModel.TypeFilterNgayNhapKho == (int)TypeFilter.Smaller_Or_Equal)
                 {
@@ -292,7 +295,7 @@ namespace Application.Services.DM_NhapHangSerVices
                 var date = Convert.ToDateTime(inputModel.NgayHenGiao).Date;
                 if (inputModel.TypeFilterNgayHenGiao == (int)TypeFilter.Bigger_Or_Equal)
                 {
-                    data = data.Where(g => (g.NgayHenGiao >= date));
+                    data = data.Where(g => (g.NgayHenGiao.HasValue && g.NgayHenGiao >= date));
                 }
                 if (inputModel.TypeFilterNgayHenGiao == (int)TypeFilter.Smaller_Or_Equal)
                 {

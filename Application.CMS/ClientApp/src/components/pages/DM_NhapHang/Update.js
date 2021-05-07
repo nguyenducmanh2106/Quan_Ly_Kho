@@ -90,9 +90,7 @@ const ModalUpdate = () => {
         getData()
     }, [])
     const onSubmit = (data) => {
-        var NgayHenGiao = data.NgayHenGiao ? new Date(data.NgayHenGiao) : null;
-        var date = moment(NgayHenGiao, 'YYYY-MM-DD HH:mm').tz("Asia/Ho_Chi_Minh").format('YYYY-MM-DD HH:mm');
-        console.log(new Date(date))
+        const tzDate = data.NgayHenGiao ? moment.tz(data.NgayHenGiao, "Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm") : null;
         var ChiTietNhapHangs = []
         var sp = document.querySelectorAll("#SanPhams .ant-table-row")
         for (var i = 0; i < sp.length; i++) {
@@ -113,7 +111,7 @@ const ModalUpdate = () => {
             Status: 0,
             Code: nhapHang.code,
             NhapKho: 1,
-            NgayHenGiao: new Date(date),
+            strNgayHenGiao: tzDate,
             Created_By: getCurrentLogin().id,
             ChiTietNhapHangs: ChiTietNhapHangs,
             ThanhToanDonHang: ThanhToanDonHang,
