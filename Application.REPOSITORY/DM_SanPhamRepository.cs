@@ -16,6 +16,7 @@ namespace Application.REPOSITORY
         List<DM_SanPhams> getDataRepository(SanPhamFilterModel inputModel);
         DM_SanPhams FindByID_Repository(string Code);
         List<DM_SanPhams> FindByName_Repository(string name);
+        List<DM_SanPhams> FindByNameByID_Kho_Repository(string name, int Id_Kho);
     }
     public class DM_SanPhamRepository : Repository<DM_SanPhams>, IDM_SanPhamRepository
     {
@@ -69,6 +70,59 @@ namespace Application.REPOSITORY
                                 ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Code).ToList()
                             }
                          ).SingleOrDefault();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<DM_SanPhams> FindByNameByID_Kho_Repository(string name, int Id_Kho)
+        {
+            try
+            {
+                var data = (from sp in db.DM_SanPhams
+                            join thuonghieu in db.DM_ThuongHieus on sp.ThuongHieu_Id equals thuonghieu.Id into tblThuongHieu_SPDefault
+                            from thuonghieuEmty in tblThuongHieu_SPDefault.DefaultIfEmpty()
+                            join chitietkho in db.ChiTietKhos on sp.Code equals chitietkho.Id_SanPham
+                            join xuatxu in db.DM_XuatXus on sp.XuatXu_Id equals xuatxu.Id into tblXuatXu_SPDefault
+                            from xuatxuEmty in tblXuatXu_SPDefault.DefaultIfEmpty()
+                            join loaisp in db.DM_LoaiSanPhams on sp.LoaiSP equals loaisp.Id into tblLoaiSPDefault
+                            from loaispEmty in tblLoaiSPDefault.DefaultIfEmpty()
+                            join dvt in db.DM_DonViTinhs on sp.DonViTinh_Id equals dvt.Id into tblDVTDefault
+                            from dvtEmpty in tblDVTDefault.DefaultIfEmpty()
+                            where (chitietkho.Id_Kho == Id_Kho && sp.Name.ToLower().Contains(name.ToLower().TrimStart()))
+                            select new DM_SanPhams()
+                            {
+                                Id = sp.Id,
+                                Name = sp.Name,
+                                Code = sp.Code,
+                                Barcode = sp.Barcode,
+                                LoaiSP = sp.LoaiSP,
+                                ThuongHieu_Id = sp.ThuongHieu_Id,
+                                XuatXu_Id = sp.XuatXu_Id,
+                                KhoiLuong = sp.KhoiLuong,
+                                DonViTinh_Id = sp.DonViTinh_Id,
+                                KichThuoc = sp.KichThuoc,
+                                Avatar = sp.Avatar,
+                                Status = sp.Status,
+                                Created_At = sp.Created_At,
+                                Updated_At = sp.Updated_At,
+                                Created_By = sp.Created_By,
+                                Updated_By = sp.Updated_By,
+                                GiaNhap = sp.GiaNhap,
+                                GiaBanBuon = sp.GiaBanBuon,
+                                GiaBanLe = sp.GiaBanLe,
+                                GiaCu = sp.GiaCu,
+                                pathAvatar = sp.pathAvatar,
+                                tenLoaiSanPham = loaispEmty.Name ?? "",
+                                tenThuongHieu = thuonghieuEmty.Name ?? "",
+                                tenDonViTinh = dvtEmpty.Name ?? "",
+                                xuatXu = xuatxuEmty.Name ?? "",
+                                ThuocTinhs = db.DM_ThuocTinhSPs.Where(g => g.sanPhamId == sp.Code).ToList()
+                            }
+                         ).ToList();
                 return data;
             }
             catch (Exception ex)

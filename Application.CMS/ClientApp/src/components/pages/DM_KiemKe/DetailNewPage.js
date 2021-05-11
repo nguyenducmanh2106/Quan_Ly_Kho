@@ -318,7 +318,7 @@ const ModalCreate = () => {
                             {item.tonThucTe}
                         </td>
                         <td>
-                            {item.tonChiNhanh - item.tonThucTe}
+                            {item.tonThucTe-item.tonChiNhanh}
                         </td>
                         <td>
                             {item.ghiChu}
@@ -371,7 +371,7 @@ const ModalCreate = () => {
                         </Dropdown>
                     </Col>
                     <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
-                        <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : 1}
+                        <Steps current={nhapHang?.status == 0 ? 1 : nhapHang?.status == 1 ? 2 : nhapHang?.status == 2 ? 3 : nhapHang?.status == 3 ? 4 : 1}
 
                             size="small">
                             <Steps.Step title="Tạo phiếu" description={nhapHang.created_At ? moment(nhapHang.created_At).format('DD/MM/YYYY, HH:mm') : ""} />
@@ -478,14 +478,14 @@ const ModalCreate = () => {
                                                                     <th className="">
                                                                         Tồn chi nhánh
                                         </th>
-                                                                    {nhapHang.status == 1 || nhapHang.status == 3 ?
+                                                                    {nhapHang.status == 1  || nhapHang.status == 4 ?
                                                                         <>
                                                                             <th className="">
                                                                                 Tồn thực tế
                                         </th>
                                                                             <th className="">
                                                                                 Ghi chú
-                                        </th> </> : nhapHang.status == 2 ?
+                                        </th> </> : nhapHang.status == 2 || nhapHang.status == 3?
                                                                             <>
                                                                                 <th className="">
                                                                                     Tồn thực tế

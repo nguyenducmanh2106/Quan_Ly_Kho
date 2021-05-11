@@ -255,5 +255,16 @@ namespace Application.Services.DM_SanPhamSerVices
                 throw ex;
             }
         }
+        public async Task<List<DM_SanPhams>> FindByNameById_Kho(string name, int Id_kho)
+        {
+            try
+            {
+                return _unitOfWork.DM_SanPhamRepository.FindByNameByID_Kho_Repository(name, Id_kho);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

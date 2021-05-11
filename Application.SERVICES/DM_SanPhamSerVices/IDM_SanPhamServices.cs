@@ -13,6 +13,7 @@ namespace Application.Services.DM_SanPhamSerVices
         Task<List<DM_SanPhams>> getData(SanPhamFilterModel inputModel);
         Task<List<DM_SanPhams>> getAllActive();
         Task<List<DM_SanPhams>> FindByName(string name);
+        Task<List<DM_SanPhams>> FindByNameById_Kho(string name,int Id_kho);
         Task<DM_SanPhams> Create(DM_SanPhams obj);
         Task Update(DM_SanPhams obj);
         Task ToggleStatus(DM_SanPhams obj);

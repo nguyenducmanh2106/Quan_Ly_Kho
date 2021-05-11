@@ -81,7 +81,7 @@ const DetailComponent = ({ item, toggleStatus, onReceived, hide }) => {
                             Lấy lại
                             </Button>
                         : null}
-                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 2) ? null :
+                    {!_isPermission(constantPermission.DUYET, constantPermission.DM_DENGHI_DIEUDONG) ? null : (item.status != 2) ? null : getCurrentLogin().donViId != item.iD_ChiNhanhGui ? null :
                         <Button style={{ margin: "0 !important" }} type="primary" icon={<AntdIcons.FileDoneOutlined />} onClick={() => NhanHang(item)}>
                             Nhận hàng
                             </Button>

@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import { useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { getAPI, postAPI, postFormData, getCurrentLogin, FormatMoney } from './../../../utils/helpers';
 import { url_upload } from './../../../utils/constants';
 import moment from 'moment'
@@ -16,7 +16,7 @@ import {
 } from 'antd';
 
 const ModalCreate = () => {
-    let history=useHistory()
+    let history = useHistory()
     const [users, setUsers] = useState([]);
     const [DataDonVi, setDataDonVi] = useState([]);
     const [DataDonViCurrent, setDataDonViCurrent] = useState(-1);
@@ -137,7 +137,7 @@ const ModalCreate = () => {
                 Name: value,
                 Id_Kho: DataDonViCurrent > 0 ? DataDonViCurrent : getCurrentLogin().donViId
             }
-            var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
+            var fetchData = await postAPI(`api/dm_sanpham/find-by-name-by-kho`, JSON.stringify(obj));
             if (fetchData.status == true) {
                 var data = fetchData.result
                 setDataSanPham(data)

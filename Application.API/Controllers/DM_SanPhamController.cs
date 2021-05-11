@@ -368,5 +368,55 @@ namespace Application.API.Controllers
             }
 
         }
+        [HttpPost("find-by-name-by-kho")]
+        public async Task<IActionResult> FindByNameById_Kho([FromBody] SanPhamFilterModel input)
+        {
+            try
+            {
+                var g = (await _manager.FindByNameById_Kho(input.Name, input.Id_Kho)).Select(g => new DM_SanPhams()
+                {
+                    SoLuongTrongKho = _managerChiTietKho.getSoLuongByID_KhoAndID_SanPham(input.Id_Kho, g.Code),
+                    Id = g.Id,
+                    Name = g.Name,
+                    Code = g.Code,
+                    Barcode = g.Barcode,
+                    LoaiSP = g.LoaiSP,
+                    ThuongHieu_Id = g.ThuongHieu_Id,
+                    XuatXu_Id = g.XuatXu_Id,
+                    KhoiLuong = g.KhoiLuong,
+                    DonViTinh_Id = g.DonViTinh_Id,
+                    KichThuoc = g.KichThuoc,
+                    Avatar = g.Avatar,
+                    Status = g.Status,
+                    Created_At = g.Created_At,
+                    Updated_At = g.Updated_At,
+                    Created_By = g.Created_By,
+                    Updated_By = g.Updated_By,
+                    GiaNhap = g.GiaNhap,
+                    GiaBanBuon = g.GiaBanBuon,
+                    GiaBanLe = g.GiaBanLe,
+                    GiaCu = g.GiaCu,
+                    pathAvatar = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.pathAvatar),
+                    tenThuongHieu = g.tenThuongHieu,
+                    tenLoaiSanPham = g.tenLoaiSanPham,
+                    tenDonViTinh = g.tenDonViTinh,
+                    xuatXu = g.xuatXu,
+                    ThuocTinhs = g.ThuocTinhs
+                });
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = g
+                };
+                return Ok(success);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.DELETE_FAIL
+                });
+            }
+
+        }
     }
 }
