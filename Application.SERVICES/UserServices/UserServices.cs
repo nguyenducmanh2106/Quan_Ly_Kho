@@ -274,5 +274,17 @@ namespace Application.Services.UserServices
                 throw ex;
             }
         }
+
+        public async Task<List<Users>> GetUserByDonVi(int Id_DonVi)
+        {
+            try
+            {
+                return (await _unitOfWork.UserRepository.FindBy(g => g.DonViId == Id_DonVi)).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

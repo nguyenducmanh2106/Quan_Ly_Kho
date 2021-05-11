@@ -18,6 +18,7 @@ namespace Application.Services.UserServices
         Task MultiDelete(string listItemDelete);
         Task<Users> Login(Users login);
         Task<Users> FindById(int id);
+        Task<List<Users>> GetUserByDonVi(int Id_DonVi);
         Task ChangePermission(Users obj);
         string GetTenChucVu(int Id);
     }

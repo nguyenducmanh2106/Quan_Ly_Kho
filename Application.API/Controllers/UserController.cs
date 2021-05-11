@@ -356,14 +356,18 @@ namespace Application.API.Controllers
             }
 
         }
-        [RoleAuthorize("Dm_DonVi.View")]
-        [HttpGet("get-user")]
-        public async Task<IActionResult> GetUser()
+        //[RoleAuthorize("Dm_DonVi.View")]
+        [HttpGet("get-user-by-donvi")]
+        public async Task<IActionResult> GetUserByDonVi(int Id_DonVi)
         {
             try
             {
-                var jwt = "Xin chafo";
-                return Ok(jwt);
+                var data = await _manager.GetUserByDonVi(Id_DonVi);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
             }
             catch (Exception ex)
             {

@@ -176,5 +176,30 @@ namespace Application.Services.ChiTietKhoSerVices
                 throw ex;
             }
         }
+
+        public async Task CanBangKho(List<ChiTietKhos> obj)
+        {
+            try
+            {
+                foreach (var item in obj)
+                {
+                    var isExist = (await _unitOfWork.ChiTietKhoRepository.Get(g => g.Id_Kho == item.Id_Kho && g.Id_SanPham == item.Id_SanPham));
+                    if (isExist != null)
+                    {
+                        isExist.SoLuong = item.SoLuong;
+                        await _unitOfWork.ChiTietKhoRepository.Update(isExist);
+                    }
+                    else
+                    {
+                        throw new Exception(MessageConst.DATA_NOT_FOUND);
+                    }
+                }
+                await _unitOfWork.SaveChange();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

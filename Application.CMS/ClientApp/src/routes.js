@@ -38,6 +38,10 @@ import DM_XuatHang from './components/pages/DM_XuatHang/Index';
 import DM_XuatHang_Create from './components/pages/DM_XuatHang/Create';
 import DM_XuatHang_Update from './components/pages/DM_XuatHang/Update';
 import DM_XuatHang_DetailNewPage from './components/pages/DM_XuatHang/DetailNewPage';
+
+import DM_KiemKe from './components/pages/DM_KiemKe/Index';
+import DM_KiemKe_Create from './components/pages/DM_KiemKe/Create';
+import DM_KiemKe_DetailNewPage from './components/pages/DM_KiemKe/DetailNewPage';
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -83,6 +87,10 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_xuathang/create' component={DM_XuatHang_Create} />
             <PrivateRoute exact path='/dm_xuathang/update/:id' component={DM_XuatHang_Update} />
             <PrivateRoute exact path='/dm_xuathang/view/:id' component={DM_XuatHang_DetailNewPage} />
+            //
+            <PrivateRoute exact path='/dm_kiemke' component={DM_KiemKe} />
+            <PrivateRoute exact path='/dm_kiemke/create' component={DM_KiemKe_Create} />
+            <PrivateRoute exact path='/dm_kiemke/view/:id' component={DM_KiemKe_DetailNewPage} />
         </Switch>
     );
 }

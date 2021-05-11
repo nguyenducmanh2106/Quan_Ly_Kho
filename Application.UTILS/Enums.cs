@@ -66,6 +66,21 @@ namespace Application.UTILS
 
     }
 }
+public enum KiemKeStatus
+{
+    [Description("Tất cả")]
+    All = -1,
+    [Description("Lên danh sách(Đang kiểm kho)")]
+    TaoPhieu = 0,
+    [Description("Kiểm hàng")] // == Đăng tải
+    KiemHang = 1,
+    [Description("Cân bằng")] // == bị từ chối
+    CanBang = 2,
+    [Description("Hoàn thành")] // == bị từ chối
+    HoanThanh = 3,
+    [Description("Đang kiểm")] // == bị từ chối
+    DangKiem = 4,
+}
 public enum DatHangStatus
 {
     [Description("Tất cả")]

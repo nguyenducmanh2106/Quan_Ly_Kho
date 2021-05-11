@@ -47,6 +47,8 @@ namespace Application.MODELS
         public DbSet<ChiTietKhos> ChiTietKhos { get; set; }
         public DbSet<DM_XuatHangs> DM_XuatHangs { get; set; }
         public DbSet<DM_ChiTietXuatHangs> DM_ChiTietXuatHangs { get; set; }
+        public DbSet<DM_KiemKes> DM_KiemKes { get; set; }
+        public DbSet<DM_ChiTietKiemKes> DM_ChiTietKiemKes { get; set; }
 
     }
 }

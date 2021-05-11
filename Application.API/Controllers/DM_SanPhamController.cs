@@ -110,13 +110,14 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("find-by-id")]
-        public async Task<IActionResult> FindById(string Code = "")
+        public async Task<IActionResult> FindById(string Code = "", int Id_Kho = -1)
         {
             try
             {
                 var g = await _manager.FindById(Code);
                 var data = new DM_SanPhams()
                 {
+                    SoLuongTrongKho = _managerChiTietKho.getSoLuongByID_KhoAndID_SanPham(Id_Kho, g.Code),
                     Id = g.Id,
                     Name = g.Name,
                     Code = g.Code,
