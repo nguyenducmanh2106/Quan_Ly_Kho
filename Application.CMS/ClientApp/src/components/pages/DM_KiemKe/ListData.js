@@ -74,6 +74,32 @@ function Table(props) {
     const onDelete = (item) => {
         props.onDeleteItem(item)
     }
+    const onSort = (name) => {
+        var itemClick = document.querySelectorAll("table th.sapxep");
+        for (var item of itemClick) {
+            var current_ClassName = item.className;
+            //console.log(current_ClassName)
+            //console.log(item.getAttribute("id") + " " + name)
+            if (item.getAttribute("id") == name) {
+                if (current_ClassName == "sapxep" || current_ClassName == "sapxep _desc") {
+                    item.className = "sapxep _asc"
+                    item.childNodes[1].className = "fa fa-sort fa-sort-up";
+                    name += "_asc";
+                }
+                else {
+                    item.className = "sapxep _desc"
+                    item.childNodes[1].className = "fa fa-sort fa-sort-down";
+                    name += "_desc";
+                }
+
+            }
+            else {
+                item.className = "sapxep"
+                item.childNodes[1].className = "fa fa-sort";
+            }
+        }
+        props.onSetNameSort(name)
+    }
     const renderBody = () => {
         var result = ""
         if (array.length > 0) {
@@ -167,20 +193,22 @@ function Table(props) {
                                             </label>
                                         </th>
                                         <th className="">STT</th>
-                                        <th className="sapxep" >
+                                        <th className="" >
                                             Mã đơn
                                         </th>
                                         <th className="">
                                             Kho kiểm hàng
                                         </th>
-                                        <th className="sapxep"  >
+                                        <th className=""  >
                                             Trạng thái
                                         </th>
-                                        <th className="">
+                                        <th className="sapxep" id="NgayTao" onClick={() => onSort("NgayTao")}>
                                             Ngày tạo
+                                             <i className="fa fa-sort"></i>
                                         </th>
-                                        <th className="">
+                                        <th className="sapxep" id="NgayKiem" onClick={() => onSort("NgayKiem")}>
                                             Ngày kiểm
+                                             <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">
                                             Nhân viên tạo

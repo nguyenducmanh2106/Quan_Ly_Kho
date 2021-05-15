@@ -61,7 +61,7 @@ namespace Application.Services.DM_ChiTietKiemKeSerVices
         {
             try
             {
-                foreach(var obj in item)
+                foreach (var obj in item)
                 {
                     var data = await _unitOfWork.DM_ChiTietKiemKeRepository.Get(g => g.Id == obj.Id);
                     if (data == null)
@@ -72,7 +72,7 @@ namespace Application.Services.DM_ChiTietKiemKeSerVices
                     data.GhiChu = obj.GhiChu;
                     await _unitOfWork.DM_ChiTietKiemKeRepository.Update(data);
                 }
-                
+
                 await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
@@ -125,6 +125,23 @@ namespace Application.Services.DM_ChiTietKiemKeSerVices
             {
                 throw ex;
             }
+        }
+
+        public async Task Update(List<DM_ChiTietKiemKes> obj)
+        {
+            var data = await _unitOfWork.DM_ChiTietKiemKeRepository.FindBy(g => g.ID_KiemKe == obj[0].ID_KiemKe);
+            if (data != null)
+            {
+                await _unitOfWork.DM_ChiTietKiemKeRepository.BulkDelete(data);
+                await _unitOfWork.SaveChange();
+            }
+            List<DM_ChiTietKiemKes> insertObj = obj.Select(g => new DM_ChiTietKiemKes()
+            {
+                ID_KiemKe = g.ID_KiemKe,
+                TonChiNhanh = g.TonChiNhanh,
+                ID_SanPham = g.ID_SanPham,
+            }).ToList();
+            await _unitOfWork.DM_ChiTietKiemKeRepository.BulkInsert(insertObj);
         }
     }
 }

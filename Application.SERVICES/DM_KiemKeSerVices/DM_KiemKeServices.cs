@@ -205,19 +205,33 @@ namespace Application.Services.DM_KiemKeSerVices
                 var date = Convert.ToDateTime(inputModel.NgayKiem).Date;
                 if (inputModel.TypeFilterNgayKiem == (int)TypeFilter.Bigger_Or_Equal)
                 {
-                    data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem >= date));
+                    data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem.Value.Date >= date));
                 }
                 if (inputModel.TypeFilterNgayKiem == (int)TypeFilter.Smaller_Or_Equal)
                 {
-                    data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem <= date));
+                    data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem.Value.Date <= date));
                 }
                 if (inputModel.TypeFilterNgayKiem == (int)TypeFilter.Equal)
                 {
-                    data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem == date));
+                    data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem.Value.Date == date));
                 }
             }
             return data.LongCount();
         }
 
+        public async Task Update(DM_KiemKes obj)
+        {
+            try
+            {
+                var isExist = await _unitOfWork.DM_KiemKeRepository.Get(g => g.Code == obj.Code);
+                isExist.GhiChu = obj.GhiChu;
+                await _unitOfWork.DM_KiemKeRepository.Update(isExist);
+                await _unitOfWork.SaveChange();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

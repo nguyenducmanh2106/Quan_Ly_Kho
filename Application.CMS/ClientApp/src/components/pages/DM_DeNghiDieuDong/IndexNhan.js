@@ -283,36 +283,13 @@ function Index({ onSetSanPhamUpdate }) {
             NgayTao: NgayTao,
             NgayDuyet: NgayDuyet,
             NgayNhanSanPham: NgayNhanSanPham,
-            Name: data.Name ?? "",
             ID_ChiNhanhNhan: Id,
-            Status: search.Status
         }
         var fetchData = await postAPI(`api/dm_denghidieudong/list_data_nhan`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
         console.log(obj)
-    }
-    const onChangeDatePickerNgayTao = (date, dateString) => {
-        //console.log(date, dateString)
-        setSearch({
-            ...search,
-            NgayTao: dateString
-        })
-    }
-    const onChangeDatePickerNgayDuyet = (date, dateString) => {
-        //console.log(date, dateString)
-        setSearch({
-            ...search,
-            NgayDuyet: dateString
-        })
-    }
-    const onChangeDatePickerNgayNhanSanPham = (date, dateString) => {
-        //console.log(date, dateString)
-        setSearch({
-            ...search,
-            NgayNhanSanPham: dateString
-        })
     }
     const onClose = () => {
         setIsVisibleDrawer(false)
@@ -357,7 +334,7 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker placeholder="Ngày tạo"
                                                 style={{ width: '100%' }}
                                                 format={"DD/MM/YYYY"}
-                                                onChange={onChangeDatePickerNgayTao} />
+                                            />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 8 }}>
@@ -366,7 +343,6 @@ function Index({ onSetSanPhamUpdate }) {
                                                 style={{ width: '100%' }}
                                                 format={"DD/MM/YYYY"}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayDuyet}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -376,7 +352,6 @@ function Index({ onSetSanPhamUpdate }) {
                                                 style={{ width: '100%' }}
                                                 format={"DD/MM/YYYY"}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayNhanSanPham}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -393,7 +368,6 @@ function Index({ onSetSanPhamUpdate }) {
                                                 <Option value={-1}>Tất cả</Option>
                                                 <Option value={1}>Chờ phê duyệt</Option>
                                                 <Option value={2}>Đã phê duyệt</Option>
-                                                <Option value={3}>Trả về</Option>
                                                 <Option value={5}>Đã nhận hàng</Option>
                                             </Select>
                                         </Form.Item>
@@ -415,9 +389,9 @@ function Index({ onSetSanPhamUpdate }) {
                                 {/*                            <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>*/}
                                 {/*                                Thêm mới*/}
                                 {/*</Button>*/}
-                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                    Xoá nhiều
-    </Button>
+    {/*                            <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>*/}
+    {/*                                Xoá nhiều*/}
+    {/*</Button>*/}
                                 <Button type="primary" className="primary" onClick={showDrawer} icon={<AntdIcons.ControlOutlined />}>
                                     Tìm kiếm nâng cao
     </Button>
@@ -473,9 +447,7 @@ function Index({ onSetSanPhamUpdate }) {
                                 form={form}
                                 layout="vertical"
                                 initialValues={{
-                                    ["ThuongHieu_Id"]: -1,
-                                    ["XuatXu_Id"]: -1,
-                                    ["LoaiSP"]: -1,
+                                    ["Status"]: -1,
                                     ["TypeFilterNgayTao"]: -1,
                                     ["TypeFilterNgayDuyet"]: -1,
                                     ["TypeFilterNgayNhanSanPham"]: -1,
@@ -494,7 +466,6 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayTao}
                                                 format={"DD/MM/YYYY"}
                                             />
                                         </Form.Item>
@@ -522,7 +493,6 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayDuyet}
                                                 format={"DD/MM/YYYY"}
                                             />
                                         </Form.Item>
@@ -550,7 +520,6 @@ function Index({ onSetSanPhamUpdate }) {
                                             <DatePicker
                                                 style={{ width: '100%' }}
                                                 getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayNhanSanPham}
                                                 format={"DD/MM/YYYY"}
                                             />
                                         </Form.Item>
@@ -567,6 +536,28 @@ function Index({ onSetSanPhamUpdate }) {
                                                 <Option value={2}>Nhỏ hơn hoặc bằng</Option>
                                             </Select>
                                         </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={16}>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item name="Status" label="" style={{ width: '100%' }}>
+                                            <Select
+                                                showSearch
+                                                placeholder="-Chọn trạng thái-"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                <Option value={-1}>Tất cả</Option>
+                                                <Option value={1}>Chờ phê duyệt</Option>
+                                                <Option value={2}>Đã phê duyệt</Option>
+                                                <Option value={5}>Đã nhận hàng</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+
                                     </Col>
                                 </Row>
                             </Form>

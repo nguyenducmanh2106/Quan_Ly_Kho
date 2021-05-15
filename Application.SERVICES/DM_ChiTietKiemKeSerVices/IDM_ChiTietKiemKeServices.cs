@@ -15,5 +15,6 @@ namespace Application.Services.DM_ChiTietKiemKeSerVices
         Task DeleteByID_KiemKe(string ID_KiemKe);
         Task BulkDeleteByID_KiemKe(string listItemDelete);
         List<DM_ChiTietKiemKes> GetAllDataByID_KiemKe(string ID_KiemKe);
+        Task Update(List<DM_ChiTietKiemKes> obj);
     }
 }

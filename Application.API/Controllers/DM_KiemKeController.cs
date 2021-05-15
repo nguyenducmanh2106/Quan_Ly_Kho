@@ -168,6 +168,35 @@ namespace Application.API.Controllers
                 });
             }
         }
+        [HttpPost("update")]
+        public async Task<IActionResult> Update([FromBody] DM_KiemKes obj)
+        {
+            try
+            {
+                await _manager.Update(obj);
+                if (obj.ChiTietKiemKes.Count > 0)
+                {
+                    foreach (var item in obj.ChiTietKiemKes)
+                    {
+                        item.Id = 0;
+                        item.ID_KiemKe = obj.Code;
+                    }
+                    await _managerChiTiet.Update(obj.ChiTietKiemKes);
+                }
+                return Ok(new MessageSuccess()
+                {
+                    message = MessageConst.UPDATE_SUCCESS,
+                    result = obj.Code
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new MessageError()
+                {
+                    message = MessageConst.CREATE_FAIL
+                });
+            }
+        }
         [HttpPost("kiemhang")]
         public async Task<IActionResult> KiemHang([FromBody] DM_KiemKes obj)
         {

@@ -1,5 +1,6 @@
 ﻿import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useHistory } from 'react-router-dom'
 import {
     Form, Input, InputNumber, Button, Modal, Select, Checkbox, Upload, notification
 } from 'antd';
@@ -7,6 +8,7 @@ import * as AntdIcons from '@ant-design/icons';
 import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
 const ModalForm = ({ isShowing, hide, item, confirmLoading }) => {
     const [form] = Form.useForm();
+    let history = useHistory()
     const onReset = () => {
         form.resetFields();
     };
@@ -50,6 +52,7 @@ const ModalForm = ({ isShowing, hide, item, confirmLoading }) => {
         }
         console.log(data)
         //setConfirmLoading(true)
+        hide()
         postAPI('api/dm_denghidieudong/tuchoi', JSON.stringify(data)).then(result => {
             if (result.status) {
                 notification.success({
@@ -57,6 +60,12 @@ const ModalForm = ({ isShowing, hide, item, confirmLoading }) => {
                     duration: 3
 
                 })
+                setTimeout(() => {
+                    history.push({
+                        pathname: `/dm_denghidieudong/xuat`,
+                        state: { controller: "Yêu cầu nhập-xuất hàng", action: "Xuất" }
+                    });
+                }, 1000)
             }
             else {
                 notification.error({
@@ -65,6 +74,7 @@ const ModalForm = ({ isShowing, hide, item, confirmLoading }) => {
 
                 })
             }
+           
         });
     }
     return (

@@ -111,15 +111,17 @@ const ModalCreate = () => {
         var result = await postAPI('api/dm_kiemke/create', JSON.stringify(obj))
         if (result.status) {
             setIsLoading(!result.status)
-            history.push({
-                pathname: `/dm_kiemke/view/${result.result}`,
-                state: { controller: "Phiếu kiểm hàng", action: result.result }
-            });
-            //notification.success({
-            //    message: result.message,
-            //    duration: 3
+            notification.success({
+                message: result.message,
+                duration: 3
 
-            //})
+            })
+            setTimeout(() => {
+                history.push({
+                    pathname: `/dm_kiemke/view/${result.result}`,
+                    state: { controller: "Phiếu kiểm hàng", action: result.result }
+                });
+            }, 1500)
 
         }
         else {
@@ -407,7 +409,7 @@ const ModalCreate = () => {
                                                                         ĐVT
                                         </th>
                                                                     <th className="">
-                                                                        Số lượng
+                                                                        Tồn chi nhánh
                                         </th>
 
                                                                     <th className="">

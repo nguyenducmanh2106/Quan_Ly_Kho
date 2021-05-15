@@ -12,13 +12,14 @@ import useModal from './../../elements/modal/useModal';
 import * as AntdIcons from '@ant-design/icons';
 import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
 import {
-    useParams, Link
+    useParams, Link,useHistory
 } from "react-router-dom";
 
 const FormUpdate = () => {
     const [isShowing, toggle] = useModal();
     const [confirmLoading, setConfirmLoading] = useState(false);
     let { id } = useParams();
+    let history=useHistory()
     const [DataSanPham, setDataSanPham] = useState([]);
     const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
     const [ItemUpdate, setItemUpdate] = useState({});
@@ -121,12 +122,18 @@ const FormUpdate = () => {
             onOk: () => {
                 return postAPI('api/dm_denghidieudong/pheduyet', JSON.stringify(item)).then(result => {
                     if (result.status) {
+                        setConfirmLoading(!result.status)
                         notification.success({
                             message: result.message,
                             duration: 3
 
                         })
-                        setConfirmLoading(!result.status)
+                        setTimeout(() => {
+                            history.push({
+                                pathname: `/dm_denghidieudong/xuat`,
+                                state: { controller: "Yêu cầu nhập-xuất hàng", action: "Xuất" }
+                            });
+                        }, 1000)
                     }
                     else {
                         notification.error({

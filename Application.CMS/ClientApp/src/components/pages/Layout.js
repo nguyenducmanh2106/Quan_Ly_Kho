@@ -9,7 +9,7 @@ import { Layout, Menu, Breadcrumb, Button, Input, Avatar, Switch, Skeleton } fro
 import Main from './Mains';
 import MyIcon from "../elements/Icon-Antd/Icon";
 import MenuSidebar from './menu-sidebar/MenuSidebar';
-import Logo from "./../../static/images/logo-re.png"
+import Logo from "./../../static/images/logo_icon.png"
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -42,8 +42,8 @@ const LayoutForm = () => {
                     theme="dark"
                 >
                     <div className={menusidebarState ? "logo toggleLogo" : "logo"}>
-                        <a>
-                            <img className="logo--full" src={Logo} width={130} />
+                        <a style={{ textAlign: 'center' }}>
+                            <img className="logo--full" src={Logo} style={{width:'60%'}} />
                         </a>
                         <MoreOutlined onClick={toggleMenuSidebar} twoToneColor="#eb2f96" style={{ fontSize: "30px" }} />
                     </div>

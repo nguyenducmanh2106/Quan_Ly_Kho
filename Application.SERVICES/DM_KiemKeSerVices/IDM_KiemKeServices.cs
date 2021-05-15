@@ -12,6 +12,7 @@ namespace Application.Services.DM_KiemKeSerVices
     {
         Task<List<DM_KiemKes>> getData(DM_KiemKeFilterModel inputModel);
         Task<DM_KiemKes> Create(DM_KiemKes obj);
+        Task Update(DM_KiemKes obj);
         Task<DM_KiemKes> Delete(DM_KiemKes obj);
         Task MultiDelete(string listItemDelete);
         Task<DM_KiemKes> FindById(string Code);

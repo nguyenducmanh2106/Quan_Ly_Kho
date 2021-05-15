@@ -32,6 +32,7 @@ function Index({ onSetSanPhamUpdate }) {
     })
     //Thực hiện thao tác update,create,delete sẽ load lại trang
     const [isAction, setAction] = useState(false);
+    const [nameSort, setNameSort] = useState('');
     const [DataDonVi, setDataDonVi] = useState({});
     const [DataDonViById, setDataDonViById] = useState({});
     const [pageSize, setPageSize] = useState(10);
@@ -82,6 +83,7 @@ function Index({ onSetSanPhamUpdate }) {
                 Name: name,
                 Status: status,
                 ID_ChiNhanh: Id,
+                nameSort: nameSort,
                 page,
                 pageSize
             }
@@ -97,34 +99,35 @@ function Index({ onSetSanPhamUpdate }) {
             setAction(false)
             setConfirmLoading(false)
         }
-    }, [isAction, page, pageSize])
+    }, [isAction, nameSort, page, pageSize])
     const onChangePage = (page, pageSize) => {
         setPage(page);
         setPageSize(pageSize);
     }
-
+    const onSetNameSort = (name) => {
+        console.log(name)
+        setNameSort(name)
+    }
     async function onHandleSearch(data) {
-        //console.log(data.NgayTao.toDate())
-        var NgayTao = data.NgayTao ? new Date(data.NgayTao.toDate()) : "";
-        var NgayKiem = data.NgayKiem ? new Date(data.NgayKiem.toDate()) : "";
+        var NgayTao = data.NgayTao ? moment(data.NgayTao).format('YYYY/MM/DD') : "";
+        var NgayKiem = data.NgayKiem ? moment(data.NgayKiem).format('YYYY/MM/DD') : "";
         var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
             NgayTao: NgayTao,
             NgayKiem: NgayKiem,
-            Status: data.Status ? data.Status : -1,
+            Status: data.Status,
             page: page,
             pageSize: pageSize,
             ID_ChiNhanh: Id,
             TypeFilterNgayTao: 0,
             TypeFilterNgayKiem: 0,
-
         }
         //setSearch({
         //    ...search,
         //    Status: data.Status ? data.Status : -1
         //})
         console.log(obj)
-        var fetchData = await postAPI(`api/dm_nhaphang/list_data`, JSON.stringify(obj));
+        var fetchData = await postAPI(`api/dm_kiemke/list_data`, JSON.stringify(obj));
         if (fetchData.status == true) {
             setState(fetchData.result)
         }
@@ -205,15 +208,17 @@ function Index({ onSetSanPhamUpdate }) {
         setIsVisibleDrawer(true)
     };
     const onSubmitTimKiemNangCao = async (data) => {
-        var Id = getLocalStorage(USER_LOCALSTORAGE).donViId;
-        var NgayTao = data.NgayTao ? new Date(data.NgayTao.toDate()) : "";
-        var NgayKiem = data.NgayKiem ? new Date(data.NgayKiem.toDate()) : "";
+        var NgayTao = data.NgayTao ? moment(data.NgayTao).format('YYYY/MM/DD') : "";
+        var NgayKiem = data.NgayKiem ? moment(data.NgayKiem).format('YYYY/MM/DD') : "";
+        var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
             ...data,
             NgayTao: NgayTao,
             NgayKiem: NgayKiem,
+            Status: data.Status,
+            page: page,
+            pageSize: pageSize,
             ID_ChiNhanh: Id,
-            Status: search.Status
         }
         var fetchData = await postAPI(`api/dm_kiemke/list_data`, JSON.stringify(obj));
         if (fetchData.status == true) {
@@ -320,9 +325,10 @@ function Index({ onSetSanPhamUpdate }) {
                                                 }
                                             >
                                                 <Option value={-1}>Tất cả</Option>
-                                                <Option value={1}>Đang kiểm kho</Option>
-                                                <Option value={2}>Đã kiểm kho</Option>
-                                                <Option value={3}>Đã cân bằng</Option>
+                                                <Option value={0}>Tạo phiếu</Option>
+                                                <Option value={1}>Đã kiểm kho</Option>
+                                                <Option value={2}>Đang cân bằng kho</Option>
+                                                <Option value={3}>Hoàn thành</Option>
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -363,7 +369,7 @@ function Index({ onSetSanPhamUpdate }) {
                             onToggleView={toggleView}
                             onMultiDelete={setListItemRemove}
                             onShowItem={onShowItem}
-
+                            onSetNameSort={onSetNameSort}
                         />
                         <Drawer
                             title="Tìm kiếm nâng cao"
@@ -394,6 +400,7 @@ function Index({ onSetSanPhamUpdate }) {
                                 initialValues={{
                                     ["TypeFilterNgayTao"]: -1,
                                     ["TypeFilterNgayKiem"]: -1,
+                                    ["Status"]: -1,
                                     //["NgayTao"]: moment(NgayTao, 'YYYY-MM-DD').isValid() ? moment(NgayTao, 'YYYY-MM-DD') : moment(new Date(), 'YYYY-MM-DD'),
                                     //["NgayDuyet"]: moment(NgayDuyet, 'YYYY-MM-DD').isValid() ? moment(NgayDuyet, 'YYYY-MM-DD') : "",
                                     //["NgayNhanSanPham"]: moment(NgayNhanSanPham, 'YYYY-MM-DD').isValid() ? moment(NgayNhanSanPham, 'YYYY-MM-DD') : "",
@@ -454,6 +461,29 @@ function Index({ onSetSanPhamUpdate }) {
                                                 <Option value={2}>Nhỏ hơn hoặc bằng</Option>
                                             </Select>
                                         </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={16}>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+                                        <Form.Item name="Status" label="" style={{ width: '100%' }}>
+                                            <Select
+                                                showSearch
+                                                placeholder="-Chọn trạng thái-"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                <Option value={-1}>Tất cả</Option>
+                                                <Option value={0}>Tạo phiếu</Option>
+                                                <Option value={1}>Đã kiểm kho</Option>
+                                                <Option value={2}>Đang cân bằng kho</Option>
+                                                <Option value={3}>Hoàn thành</Option>
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
+
                                     </Col>
                                 </Row>
                             </Form>

@@ -86,6 +86,27 @@ namespace Application.REPOSITORY
                         tenNguoiKiem = db.Users.Where(g => g.Id == denghi.NhanVienKiem).SingleOrDefault().FullName ?? "",
                     }
                     );
+                if (!string.IsNullOrEmpty(inputModel.nameSort))
+                {
+                    switch (inputModel.nameSort)
+                    {
+                        case "NgayTao_asc":
+                            data = data.OrderBy(g => g.Created_At);
+                            break;
+                        case "NgayTao_desc":
+                            data = data.OrderByDescending(g => g.Created_At);
+                            break;
+                        case "NgayKiem_asc":
+                            data = data.OrderBy(g => g.NgayKiem);
+                            break;
+                        case "NgayKiem_desc":
+                            data = data.OrderByDescending(g => g.NgayKiem);
+                            break;
+                        default:
+                            data = data.OrderByDescending(g => g.Created_At);
+                            break;
+                    }
+                }
                 if (!string.IsNullOrEmpty(inputModel.NgayTao))
                 {
                     var date = Convert.ToDateTime(inputModel.NgayTao).Date;
@@ -101,29 +122,21 @@ namespace Application.REPOSITORY
                     {
                         data = data.Where(g => g.Created_At.Date == date);
                     }
-                    if (inputModel.TypeFilterNgayTao == -1)
-                    {
-                        data = data.Where(g => g.Created_At.Date >= date);
-                    }
                 }
                 if (!string.IsNullOrEmpty(inputModel.NgayKiem))
                 {
                     var date = Convert.ToDateTime(inputModel.NgayKiem).Date;
                     if (inputModel.TypeFilterNgayKiem == (int)TypeFilter.Bigger_Or_Equal)
                     {
-                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem >= date));
+                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem.Value.Date >= date));
                     }
                     if (inputModel.TypeFilterNgayKiem == (int)TypeFilter.Smaller_Or_Equal)
                     {
-                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem <= date));
+                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem.Value.Date <= date));
                     }
                     if (inputModel.TypeFilterNgayKiem == (int)TypeFilter.Equal)
                     {
-                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem == date));
-                    }
-                    if (inputModel.TypeFilterNgayKiem == -1)
-                    {
-                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem == date));
+                        data = data.Where(g => (g.NgayKiem.HasValue && g.NgayKiem.Value.Date == date));
                     }
                 }
                 var result = data.Skip((inputModel.page - 1) * inputModel.pageSize).Take(inputModel.pageSize).ToList();

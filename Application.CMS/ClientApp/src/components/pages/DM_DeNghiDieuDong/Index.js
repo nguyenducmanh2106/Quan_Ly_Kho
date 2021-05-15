@@ -22,6 +22,7 @@ import IndexNhan from './IndexNhan'
 function Index({ onSetSanPhamUpdate }) {
     let history = useHistory()
     //khai báo state
+    console.log(history.location)
     const { Header, Content, Footer } = Layout;
     const changeTab = (key) => {
         //console.log(key)
@@ -33,7 +34,7 @@ function Index({ onSetSanPhamUpdate }) {
                 pathname: "/dm_denghidieudong", state: { controller: "Yêu cầu nhập-xuất hàng", action: "Nhập" }
             });
         }
-        else {
+        if (key == 2) {
             history.push({
                 pathname: "/dm_denghidieudong/xuat", state: {
                     controller: "Yêu cầu nhập-xuất hàng", action: "Xuất"
@@ -45,11 +46,10 @@ function Index({ onSetSanPhamUpdate }) {
         <Content className="main-container main-container-component">
             <Card>
 
-                <Tabs defaultActiveKey="1" onChange={changeTab}>
+                <Tabs defaultActiveKey={history.location.pathname == "/dm_denghidieudong" ? "1" : "2"} onChange={changeTab}>
                     <Tabs.TabPane tab=" Yêu cầu nhập hàng" key="1">
-                        {/*<PrivateRoute exact path='/dm_denghidieudong/update/:id' component={DM_DeNghiDieuDong_Update} />*/}
-                        {/*<PrivateRoute exact path='/dm_denghidieudong/create' component={DM_DeNghiDieuDong_Create} />*/}
-                        <PrivateRoute exact path='/dm_denghidieudong' component={IndexGui} />
+                        {/*<PrivateRoute exact path='/dm_denghidieudong' component={IndexGui} />*/}
+                        <IndexGui />
                         {/*<IndexGui />*/}
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="Yêu cầu xuất hàng" key="2">
