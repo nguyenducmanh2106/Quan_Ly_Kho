@@ -141,22 +141,19 @@ function Index({ onSetSanPhamUpdate }) {
 
     async function onHandleSearch(data) {
         //console.log(data.NgayTao.toDate())
-        var NgayTao = data.NgayTao ? new Date(data.NgayTao.toDate()) : "";
-        var NgayDuyet = data.NgayDuyet ? new Date(data.NgayDuyet.toDate()) : "";
-        var NgayNhanSanPham = data.NgayNhanSanPham ? new Date(data.NgayNhanSanPham.toDate()) : "";
+        var NgayTao = data.NgayTao ? moment(data.NgayTao).format('YYYY/MM/DD') : "";
+        var NgayHenGiao = data.NgayHenGiao ? moment(data.NgayHenGiao).format('YYYY/MM/DD') : "";
         var Id = getLocalStorage(USER_LOCALSTORAGE).donViId
         var obj = {
             NgayTao: NgayTao,
-            NgayDuyet: NgayDuyet,
-            NgayNhanSanPham: NgayNhanSanPham,
+            NgayHenGiao: NgayHenGiao,
             Status: data.Status ? data.Status : -1,
             page: page,
             pageSize: pageSize,
             nameSort: nameSort,
             ID_ChiNhanhNhan: Id,
             TypeFilterNgayTao: 0,
-            TypeFilterNgayDuyet: 0,
-            TypeFilterNgayNhanSanPham: 0,
+            TypeFilterNgayHenGiao: 0,
         }
         //setSearch({
         //    ...search,
@@ -373,7 +370,7 @@ function Index({ onSetSanPhamUpdate }) {
                                         ["Status"]: -1
                                     }}
                                 >
-                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 8 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 8 }}>
                                         <Form.Item name="NgayTao" label="" style={{ width: '100%' }}>
                                             <DatePicker placeholder="Ngày tạo"
                                                 style={{ width: '100%' }}
@@ -381,9 +378,9 @@ function Index({ onSetSanPhamUpdate }) {
                                                 onChange={onChangeDatePickerNgayTao} />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 8 }}>
-                                        <Form.Item name="NgayDuyet" label="" style={{ width: '100%' }}>
-                                            <DatePicker placeholder="Ngày duyệt"
+                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 8 }}>
+                                        <Form.Item name="NgayHenGiao" label="" style={{ width: '100%' }}>
+                                            <DatePicker placeholder="Ngày hẹn giao"
                                                 style={{ width: '100%' }}
                                                 format={"DD/MM/YYYY"}
                                                 getPopupContainer={trigger => trigger.parentElement}
@@ -391,17 +388,7 @@ function Index({ onSetSanPhamUpdate }) {
                                             />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 8 }}>
-                                        <Form.Item name="NgayNhanSanPham" label="" style={{ width: '100%' }}>
-                                            <DatePicker placeholder="Ngày hàng về"
-                                                style={{ width: '100%' }}
-                                                format={"DD/MM/YYYY"}
-                                                getPopupContainer={trigger => trigger.parentElement}
-                                                onChange={onChangeDatePickerNgayNhanSanPham}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 8 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 8 }}>
                                         <Form.Item name="Status" label="" style={{ width: '100%' }}>
                                             <Select
                                                 showSearch
@@ -419,7 +406,7 @@ function Index({ onSetSanPhamUpdate }) {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={{ span: 24 }} lg={{ span: 4 }} md={{ span: 12 }}>
+                                    <Col xs={{ span: 24 }} lg={{ span: 6 }} md={{ span: 12 }}>
                                         <Form.Item label="" colon={false} style={{ width: '100%' }}>
                                             <Button type="primary" htmlType="submit" icon={<AntdIcons.SearchOutlined />}>
                                                 Tìm Kiếm
