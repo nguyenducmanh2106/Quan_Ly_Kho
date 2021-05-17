@@ -141,6 +141,9 @@ function Table(props) {
                             {item.tenNguoiTao}
                         </td>
                         <td>
+                            {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""}
+                        </td>
+                        <td>
                             {item.ngayHenGiao ? moment(item.ngayHenGiao).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
@@ -184,7 +187,7 @@ function Table(props) {
 
         return result
     }
-    const onSortNhan = (name) => {
+    const onSort = (name) => {
         var itemClick = document.querySelectorAll("table th.sapxep");
         for (var item of itemClick) {
             var current_ClassName = item.className;
@@ -228,12 +231,12 @@ function Table(props) {
                                             </label>
                                         </th>
                                         <th className="">STT</th>
-                                        <th className="sapxep" >
+                                        <th className="" >
                                             Mã đơn
                                         </th>
                                         {getCurrentLogin().capDoDonVi == 1 ?
                                             <th className="">
-                                                Tên Nhà cung cấp
+                                                Nhà cung cấp
                                         </th>
                                             :
                                             <th className="">
@@ -241,7 +244,7 @@ function Table(props) {
                                         </th>
 
                                         }
-                                        <th className="sapxep"  >
+                                        <th className="" >
                                             Trạng thái
                                         </th>
                                         {/*<th className="sapxep" >*/}
@@ -256,8 +259,13 @@ function Table(props) {
                                         <th className="">
                                             Nhân viên tạo
                                         </th>
-                                        <th className="">
+                                        <th className="sapxep" id="NgayTao" onClick={() => onSort("NgayTao")}>
+                                            Ngày tạo
+                                            <i className="fa fa-sort"></i>
+                                        </th>
+                                        <th className="sapxep" id="NgayHenGiao" onClick={() => onSort("NgayHenGiao")}>
                                             Ngày hẹn giao
+                                            <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">
                                             Thao tác

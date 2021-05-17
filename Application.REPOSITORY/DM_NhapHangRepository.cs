@@ -111,11 +111,17 @@ namespace Application.REPOSITORY
                 {
                     switch (inputModel.nameSort)
                     {
-                        case "Created_At_asc":
+                        case "NgayTao_asc":
                             data = data.OrderBy(g => g.Created_At);
                             break;
-                        case "Created_At_desc":
+                        case "NgayTao_desc":
                             data = data.OrderByDescending(g => g.Created_At);
+                            break;
+                        case "NgayHenGiao_asc":
+                            data = data.OrderBy(g => g.NgayHenGiao);
+                            break;
+                        case "NgayHenGiao_desc":
+                            data = data.OrderByDescending(g => g.NgayHenGiao);
                             break;
                         case "NgayDuyet_asc":
                             data = data.OrderBy(g => g.NgayDuyet);

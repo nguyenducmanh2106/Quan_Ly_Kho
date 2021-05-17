@@ -111,7 +111,7 @@ function Table(props) {
                                 <Typography.Link href="javascript:void(0)">
                                     Duyệt
                                 </Typography.Link>
-                                : item.status == 2 ? <Typography.Text type="success">Nhập hàng</Typography.Text> : item.status == 0 ?
+                                : item.status == 2 ? <Typography.Text type="success">Đang nhập kho</Typography.Text> : item.status == 0 ?
                                     <Typography.Text type="warning">Đặt hàng</Typography.Text> : item.status == 3 ?
                                         <Typography.Text type="success">Hoàn thành</Typography.Text> : item.status == 4 ?
                                             <Typography.Text type="danger">Huỷ đơn</Typography.Text> : ""
@@ -139,6 +139,9 @@ function Table(props) {
                         </td>
                         <td>
                             {item.tenNguoiTao}
+                        </td>
+                        <td>
+                            {item.created_At ? moment(item.created_At).format('DD/MM/YYYY, HH:mm') : ""}
                         </td>
                         <td>
                             {item.ngayHenGiao ? moment(item.ngayHenGiao).format('DD/MM/YYYY, HH:mm') : ""}
@@ -184,12 +187,12 @@ function Table(props) {
 
         return result
     }
-    const onSortNhan = (name) => {
+    const onSort = (name) => {
         var itemClick = document.querySelectorAll("table th.sapxep");
         for (var item of itemClick) {
             var current_ClassName = item.className;
             //console.log(current_ClassName)
-            console.log(item.getAttribute("id") + " " + name)
+            //console.log(item.getAttribute("id") + " " + name)
             if (item.getAttribute("id") == name) {
                 if (current_ClassName == "sapxep" || current_ClassName == "sapxep _desc") {
                     item.className = "sapxep _asc"
@@ -208,6 +211,7 @@ function Table(props) {
                 item.childNodes[1].className = "fa fa-sort";
             }
         }
+        console.log(name)
         props.onSetNameSort(name)
     }
     return (
@@ -228,13 +232,13 @@ function Table(props) {
                                             </label>
                                         </th>
                                         <th className="">STT</th>
-                                        <th className="sapxep" >
+                                        <th className="" >
                                             Mã đơn
                                         </th>
                                         <th className="">
-                                            Tên Nhà cung cấp
+                                            Nhà cung cấp
                                         </th>
-                                        <th className="sapxep"  >
+                                        <th className=""  >
                                             Trạng thái
                                         </th>
                                         {/*<th className="sapxep" >*/}
@@ -249,8 +253,13 @@ function Table(props) {
                                         <th className="">
                                             Nhân viên tạo
                                         </th>
-                                        <th className="">
+                                        <th className="sapxep" id="NgayTao" onClick={() => onSort("NgayTao")}>
+                                            Ngày tạo
+                                            <i className="fa fa-sort"></i>
+                                        </th>
+                                        <th className="sapxep" id="NgayHenGiao" onClick={() => onSort("NgayHenGiao")}>
                                             Ngày hẹn giao
+                                            <i className="fa fa-sort"></i>
                                         </th>
                                         <th className="">
                                             Thao tác
