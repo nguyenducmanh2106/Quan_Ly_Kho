@@ -2,6 +2,7 @@
 import ReactDOM from 'react-dom';
 import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown, Space } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
+import {useHistory } from 'react-router-dom'
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import { Can } from "../../elements/Config_Roles/Can"
@@ -11,6 +12,7 @@ import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
 function Table(props) {
     //khai báo state
     //console.log(Can)
+    let history =useHistory()
     const [array, setArray] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -76,6 +78,12 @@ function Table(props) {
         props.onMultiDelete(arrayRemove)
 
     }
+    const DetailNewPage = (item) => {
+        history.push({
+            pathname: `/dm_sanpham/view/${item.code}`,
+            state: { controller: "Xem chi tiết sản phẩm", action: item.code }
+        });
+    }
     const onDelete = (item) => {
         props.onDeleteItem(item)
     }
@@ -124,7 +132,8 @@ function Table(props) {
                                 <Menu>
                                     <Menu.Item style={{ textAlign: "center" }} key="2">
                                         <Tooltip title="Thông tin">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
+                                            {/*<Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />*/}
+                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => DetailNewPage(item)} />
                                         </Tooltip>
                                     </Menu.Item>
                                     <Menu.Item style={{ textAlign: "center" }} key="3">

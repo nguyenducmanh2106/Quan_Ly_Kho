@@ -212,6 +212,7 @@ namespace Application.Services.ChiTietKhoSerVices
                     Id_Kho = g.Id_Kho,
                     tenKho = g.tenKho,
                     MaSP = g.MaSP,
+                    CapDoDonVi = g.CapDoDonVi,
                     tenSanPham = g.tenSanPham,
                     SoLuongTon = g.SoLuongTon,
                     SoLuongDangChuyenKho = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP),
@@ -220,6 +221,19 @@ namespace Application.Services.ChiTietKhoSerVices
                     SoLuongDangXuat = _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP),
                     SoLuongThucTrongKho = g.SoLuongTon - _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP) - _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP)
                 }).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int getSoLuongCoTheXuatByID_KhoAndID_SanPham(int Id_Kho, string ID_SanPham)
+        {
+            try
+            {
+                var data = _unitOfWork.ChiTietKhoRepository.getSoLuongByID_KhoAndID_SanPham(Id_Kho, ID_SanPham) - _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(Id_Kho, ID_SanPham) - _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(Id_Kho, ID_SanPham);
                 return data;
             }
             catch (Exception ex)

@@ -528,7 +528,7 @@ const ModalUpdate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
-                                                                    <Col>(Số lượng: {item.soLuongTrongKho})</Col>
+                                                                    <Col>(Số lượn(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>

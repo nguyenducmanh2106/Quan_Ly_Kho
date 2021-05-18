@@ -173,11 +173,12 @@ const ModalCreate = () => {
     const onHandleSelect = useCallback(
         async (value, option) => {
             if (value > 0) {
-                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
+                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}&Id_Kho=${getCurrentLogin().donViId}`);
                 if (fetchData.status == true) {
                     var data = await fetchData.result
                     //console.log(data)
                     var obj = {
+                        ...data,
                         ID_SanPham: data.code,
                         name: data.name,
                         code: data.code,
@@ -230,20 +231,45 @@ const ModalCreate = () => {
                             ]
                         )
                     }
-                    renderTomTat()
                 }
             }
 
         },
         [DataSanPhamSubmit]
     )
+
+    const onHandleDelete = (value) => {
+        var result = DataSanPhamSubmit.filter(item => {
+            return item.ID_SanPham !== value.ID_SanPham
+        })
+        setDataSanPhamSubmit(result)
+        setTimeout(() => {
+            tinhTongTien()
+        })
+    }
+    const onChangeChietKhau = (TongTien) => {
+        let Chietkhau = 0
+        let dvt = form.getFieldsValue("prefix").prefix;
+        let ck = form.getFieldsValue("ChietKhau").ChietKhau ?? 0;
+        //console.log(TongTien)
+        //console.log(ck)
+        if (dvt == 1) {
+            Chietkhau = TongTien * ck / 100;
+        }
+        else {
+            Chietkhau = Number.parseInt(ck);
+        }
+        setChietKhau(Chietkhau)
+        setTienPhaiTra(TongTien - Chietkhau)
+    }
     const tinhTongTien = () => {
         let arraySanPham = []
         let tongSl = 0;
         let tongTienDonHang = 0;
         let sp = document.querySelectorAll("#SanPhams .ant-table-row");
         for (let index = 0; index < sp.length; index++) {
-            let soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
+            let soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value > sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").getAttribute("aria-valuemax") ?
+                sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").getAttribute("aria-valuemax") : sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
             let giaNhap = sp[index].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value ?? 0;
             let tongTien = soLuong * giaNhap.replace(/\đ\s?|(,*)/g, '')
             let obj = {
@@ -262,32 +288,20 @@ const ModalCreate = () => {
             TongGiaTien: tongTienDonHang
         })
         onChangeChietKhau(tongTienDonHang)
-        console.log(arraySanPham)
+        //console.log(arraySanPham)
     }
-    const onHandleDelete = (value) => {
-        var result = DataSanPhamSubmit.filter(item => {
-            return item.ID_SanPham !== value.ID_SanPham
-        })
 
-        setDataSanPhamSubmit(result)
-    }
-    const renderTomTat = (TongSl, TongGiaTien) => {
-        //console.log(TongSl)
-        var data = ""
-        data = <tr>
-            <td>Số lượng :{TongSl}</td>
-        </tr>
-        return data;
-    }
-    const renderBody = useCallback(
+    const renderBody = useMemo(
         () => {
             var result = ""
             var TongSl = 0;
             var TongGiaTien = 0
+
             result = DataSanPhamSubmit.map((item, index) => {
                 var giaNhap = getCurrentLogin().capDoDonVi == 1 ? item.giaNhap : item.giaBanLe;
                 TongSl += 1;
                 TongGiaTien += Number.parseInt(giaNhap)
+
                 return (
                     <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                         <td>
@@ -304,7 +318,7 @@ const ModalCreate = () => {
                             {item.tenDonViTinh}
                         </td>
                         <td className="SoLuong" id={item.ID_SanPham}>
-                            <InputNumber min={1} max={99} onChange={tinhTongTien} />
+                            <InputNumber defaultValue={0} min={1} max={item.soLuongCoTheXuat} onChange={tinhTongTien} />
                         </td>
                         <td className="GiaNhap">
                             <InputNumber
@@ -329,32 +343,11 @@ const ModalCreate = () => {
 
                 );
             })
-            renderTomTat(TongSl, TongGiaTien)
             return (result)
 
         },
         [DataSanPhamSubmit]
     )
-
-    const onChangeDatePicker = (date, dateString) => {
-        //console.log(date, dateString)
-
-    }
-    const onChangeChietKhau = (TongTien) => {
-        let Chietkhau = 0
-        let dvt = form.getFieldsValue("prefix").prefix;
-        let ck = form.getFieldsValue("ChietKhau").ChietKhau ?? 0;
-        console.log(TongTien)
-        console.log(ck)
-        if (dvt == 1) {
-            Chietkhau = TongTien * ck / 100;
-        }
-        else {
-            Chietkhau = Number.parseInt(ck);
-        }
-        setChietKhau(Chietkhau)
-        setTienPhaiTra(TongTien - Chietkhau)
-    }
     const prefixSelector = (
 
         <Form.Item name="prefix" noStyle>
@@ -560,7 +553,7 @@ const ModalCreate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
-                                                                    <Col>(Số lượng: {item.soLuongTrongKho})</Col>
+                                                                    <Col>(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>
@@ -600,7 +593,7 @@ const ModalCreate = () => {
                                                                 </tr>
                                                             </thead>
                                                             <tbody className="ant-table-tbody">
-                                                                {renderBody()}
+                                                                {renderBody}
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -738,7 +731,7 @@ const ModalCreate = () => {
                                                     style={{ width: '100%' }}
                                                     format={"DD/MM/YYYY HH:mm"}
                                                     getPopupContainer={trigger => trigger.parentElement}
-                                                    onChange={onChangeDatePicker}
+
                                                 />
                                             </Form.Item>
                                         </Col>

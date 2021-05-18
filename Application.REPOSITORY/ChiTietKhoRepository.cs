@@ -154,7 +154,8 @@ namespace Application.REPOSITORY
                             select new ThongKeSoLuongViewModel()
                             {
                                 Id_Kho = chitietkho.Id_Kho ?? 0,
-                                tenKho = db.DM_DonVis.SingleOrDefault(g => g.Id == chitietkho.Id).Name,
+                                tenKho = db.DM_DonVis.SingleOrDefault(g => g.Id == obj.Id_Kho).Name,
+                                CapDoDonVi = db.DM_DonVis.SingleOrDefault(g => g.Id == obj.Id_Kho).CapDo ?? 0,
                                 MaSP = chitietkho.Id_SanPham,
                                 tenSanPham = db.DM_SanPhams.SingleOrDefault(g => g.Code == chitietkho.Id_SanPham).Name,
                                 SoLuongTon = chitietkho.SoLuong ?? 0,

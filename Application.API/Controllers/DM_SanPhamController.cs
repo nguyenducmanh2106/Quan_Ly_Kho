@@ -135,6 +135,7 @@ namespace Application.API.Controllers
                 var g = await _manager.FindById(Code);
                 var data = new DM_SanPhams()
                 {
+                    SoLuongCoTheXuat = _managerChiTietKho.getSoLuongCoTheXuatByID_KhoAndID_SanPham(Id_Kho, g.Code),
                     SoLuongTrongKho = _managerChiTietKho.getSoLuongByID_KhoAndID_SanPham(Id_Kho, g.Code),
                     Id = g.Id,
                     Name = g.Name,
@@ -343,6 +344,7 @@ namespace Application.API.Controllers
             {
                 var g = (await _manager.FindByName(input.Name)).Select(g => new DM_SanPhams()
                 {
+                    SoLuongCoTheXuat = _managerChiTietKho.getSoLuongCoTheXuatByID_KhoAndID_SanPham(input.Id_Kho, g.Code),
                     SoLuongTrongKho = _managerChiTietKho.getSoLuongByID_KhoAndID_SanPham(input.Id_Kho, g.Code),
                     Id = g.Id,
                     Name = g.Name,

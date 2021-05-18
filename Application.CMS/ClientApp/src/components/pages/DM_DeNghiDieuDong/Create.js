@@ -366,7 +366,7 @@ const ModalCreate = () => {
                                                         <Row>
                                                             <Col>{item.name}</Col>
                                                             <Col>({item.code})</Col>
-                                                            <Col>(Số lượng: {item.soLuongTrongKho})</Col>
+                                                            <Col>(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
                                                         </Row>
                                                     </Col>
                                                 </Row>
