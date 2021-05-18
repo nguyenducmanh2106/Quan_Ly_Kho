@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.UTILS;
 using Microsoft.AspNetCore.Hosting;
+using Application.MODELS.ViewModels;
 
 namespace Application.Services.ChiTietKhoSerVices
 {
@@ -195,6 +196,31 @@ namespace Application.Services.ChiTietKhoSerVices
                     }
                 }
                 await _unitOfWork.SaveChange();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<ThongKeSoLuongViewModel>> ThongKeSoLuong(ThongKeSoLuongViewModel obj)
+        {
+            try
+            {
+                var data = _unitOfWork.ChiTietKhoRepository.ThongKeSoLuong(obj).Select(g => new ThongKeSoLuongViewModel()
+                {
+                    Id_Kho = g.Id_Kho,
+                    tenKho = g.tenKho,
+                    MaSP = g.MaSP,
+                    tenSanPham = g.tenSanPham,
+                    SoLuongTon = g.SoLuongTon,
+                    SoLuongDangChuyenKho = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP),
+                    SoLuongChoNhapHangKhoKhac = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChoNhapTuKhoKhacByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP),
+                    SoLuongChoNhapHangNhaCungCap = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChoNhapTuNhaCungCapByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP),
+                    SoLuongDangXuat = _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP),
+                    SoLuongThucTrongKho = g.SoLuongTon - _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP) - _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(obj.Id_Kho, g.MaSP)
+                }).ToList();
+                return data;
             }
             catch (Exception ex)
             {

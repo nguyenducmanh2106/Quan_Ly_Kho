@@ -280,50 +280,27 @@ const FormUpdate = () => {
                                     </Descriptions>
                                 </Col>
                                 <Col>
-                                    {getCurrentLogin().capDoDonVi == 1 ?
-                                        <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
-                                            < Select
-                                                showSearch
-                                                //style={{ width: 200 }}
-                                                placeholder="-- Chọn --"
-                                                optionFilterProp="children"
-                                                filterOption={(input, option) =>
-                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                                }
-                                                filterSort={(optionA, optionB) =>
-                                                    optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-                                                }
-                                            >
-                                                <Option value={0}>-- Chọn --</Option>
-                                                {DataDonVi.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </Form.Item> :
-                                        <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
-                                            <Select
-                                                showSearch
-                                                //style={{ width: 200 }}
-                                                placeholder="-- Chọn --"
-                                                optionFilterProp="level"
-                                                filterOption={(input, option) =>
-                                                    option.level.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                                }
-                                                filterSort={(optionA, optionB) =>
-                                                    optionA.level.toLowerCase().localeCompare(optionB.level.toLowerCase())
-                                                }
-                                            >
-                                                <Option value={0}>-- Chọn --</Option>
-                                                {DataDonViCapDo.map(item => {
-                                                    return (
-                                                        <Option key={item.id} value={item.id}>{item.name}</Option>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </Form.Item>
-                                    }
+                                    <Form.Item name="ID_ChiNhanhNhan" label="Đến kho" rules={[{ required: true }]}>
+                                        < Select
+                                            showSearch
+                                            //style={{ width: 200 }}
+                                            placeholder="-- Chọn --"
+                                            optionFilterProp="children"
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            filterSort={(optionA, optionB) =>
+                                                optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
+                                            }
+                                        >
+                                            <Option value={0}>-- Chọn --</Option>
+                                            {DataDonVi.map(item => {
+                                                return (
+                                                    <Option key={item.id} value={item.id}>{item.name}</Option>
+                                                )
+                                            })}
+                                        </Select>
+                                    </Form.Item>
                                 </Col>
                             </Row>
                         </Card>
