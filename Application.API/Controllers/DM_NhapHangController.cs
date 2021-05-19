@@ -78,7 +78,7 @@ namespace Application.API.Controllers
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenNhaCungCap = g.tenNhaCungCap,
                     tenNguoiTao = g.tenNguoiTao,
-                    ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code)
+                    ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code, g.ID_ChiNhanhNhan ?? 0)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -110,7 +110,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("find-by-id")]
-        public async Task<IActionResult> FindById(string Code = "")
+        public async Task<IActionResult> FindById(string Code = "", int Id_Kho = -1)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace Application.API.Controllers
                     tenNguoiTao = g.tenNguoiTao,
                     TongDaThanhToan = _managerThanhToan.TongDaThanhToan(g.Code),
                     ThanhToanDonHangs = _managerThanhToan.GetAllDataActiveByID_NhapHang(g.Code),
-                    ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code)
+                    ChiTietNhapHangs = _managerChiTiet.GetAllDataByID_NhapHang(g.Code, Id_Kho)
                 };
                 MessageSuccess success = new MessageSuccess()
                 {

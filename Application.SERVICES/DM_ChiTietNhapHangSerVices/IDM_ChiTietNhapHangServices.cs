@@ -14,6 +14,6 @@ namespace Application.Services.DM_ChiTietNhapHangSerVices
         Task BulkInsert(List<DM_ChiTietNhapHangs> obj);
         Task DeleteByID_NhapHang(string ID_NhapHang);
         Task BulkDeleteByID_NhapHang(string listItemDelete);
-        List<DM_ChiTietNhapHangs> GetAllDataByID_NhapHang(string ID_NhapHang);
+        List<DM_ChiTietNhapHangs> GetAllDataByID_NhapHang(string ID_NhapHang, int Id_Kho);
     }
 }

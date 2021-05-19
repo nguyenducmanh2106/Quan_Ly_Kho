@@ -32,7 +32,6 @@ const ModalUpdate = () => {
     const [nhapHang, setNhapHang] = useState({});
     const [isShowingView, toggleView] = useModal();
     const [ItemShow, setItemShow] = useState({})
-    const [ngayHenGiao, setNgayHenGiao] = useState(null);
     const onReset = () => {
         form.resetFields();
     };
@@ -65,7 +64,7 @@ const ModalUpdate = () => {
             }
         }
         async function getData() {
-            var fetchData = await getAPI(`api/dm_nhaphang/find-by-id?Code=${id}`);
+            var fetchData = await getAPI(`api/dm_nhaphang/find-by-id?Code=${id}&Id_Kho=${getCurrentLogin().donViId}`);
             if (fetchData.status == true) {
                 var data = fetchData.result;
                 console.log(data)
@@ -78,7 +77,6 @@ const ModalUpdate = () => {
                     TongSl: data.tongSoLuong,
                     TongGiaTien: data.tongTien
                 })
-                setNgayHenGiao(moment(data.ngayHenGiao, 'YYYY-MM-DD HH:mm').isValid() ? moment(data.ngayHenGiao, 'YYYY-MM-DD HH:mm') : null);
                 setTienPhaiTra(data.tongTienPhaiTra);
                 form.setFieldsValue({
                     NgayHenGiao: moment(data.ngayHenGiao, 'YYYY-MM-DD HH:mm').isValid() ? moment(data.ngayHenGiao, 'YYYY-MM-DD HH:mm') : null,
@@ -205,17 +203,18 @@ const ModalUpdate = () => {
     const onHandleSelect = useCallback(
         async (value, option) => {
             if (value > 0) {
-                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
+                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}&Id_Kho=${getCurrentLogin().donViId}`);
                 if (fetchData.status == true) {
                     var data = await fetchData.result
                     var obj = {
+                        ...data,
                         iD_SanPham: data.code,
                         tenSanPham: data.name,
                         name: data.name,
                         code: data.code,
                         barCode: data.barCode,
                         tenDonViTinh: data.tenDonViTinh,
-                        soLuong: 0,
+                        soLuong: "",
                         giaBanLe: data.giaBanLe,
                         khoiLuong: data.khoiLuong,
                         giaCu: data.giaCu,
@@ -262,7 +261,6 @@ const ModalUpdate = () => {
                             ]
                         )
                     }
-                    renderTomTat()
                 }
             }
 
@@ -301,26 +299,16 @@ const ModalUpdate = () => {
         var result = DataSanPhamSubmit.filter(item => {
             return item.iD_SanPham !== value.iD_SanPham
         })
-
         setDataSanPhamSubmit(result)
-    }
-    const renderTomTat = (TongSl, TongGiaTien) => {
-        //console.log(TongSl)
-        var data = ""
-        data = <tr>
-            <td>Số lượng :{TongSl}</td>
-        </tr>
-        return data;
+        setTimeout(() => {
+            tinhTongTien()
+        })
     }
     const renderBody = useCallback(
         () => {
             var result = ""
-            var TongSl = 0;
-            var TongGiaTien = 0
             result = DataSanPhamSubmit.map((item, index) => {
                 var giaNhap = item.giaNhap;
-                TongSl += 1;
-                TongGiaTien += Number.parseInt(giaNhap)
                 return (
                     <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                         <td>
@@ -337,7 +325,7 @@ const ModalUpdate = () => {
                             {item.tenDonViTinh}
                         </td>
                         <td className="SoLuong" id={item.iD_SanPham}>
-                            <InputNumber min={1} max={99} onChange={tinhTongTien} defaultValue={item.soLuong} />
+                            <InputNumber required min={1} max={99} onChange={tinhTongTien} defaultValue={item.soLuong} />
                         </td>
                         <td className="GiaNhap">
                             <InputNumber
@@ -362,16 +350,12 @@ const ModalUpdate = () => {
 
                 );
             })
-            renderTomTat(TongSl, TongGiaTien)
             return (result)
 
         },
         [DataSanPhamSubmit]
     )
 
-    const onChangeDatePicker = (date, dateString) => {
-        setNgayHenGiao(dateString)
-    }
     const onChangeChietKhau = (TongTien) => {
         let Chietkhau = 0
         let dvt = form.getFieldsValue("prefix").prefix;
@@ -528,7 +512,7 @@ const ModalUpdate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
-                                                                    <Col>(Số lượn(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
+                                                                    <Col>(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>
@@ -706,7 +690,6 @@ const ModalUpdate = () => {
                                                     style={{ width: '100%' }}
                                                     format="DD/MM/YYYY HH:mm"
                                                     getPopupContainer={trigger => trigger.parentElement}
-                                                    onChange={onChangeDatePicker}
                                                 />
                                             </Form.Item>
                                         </Col>

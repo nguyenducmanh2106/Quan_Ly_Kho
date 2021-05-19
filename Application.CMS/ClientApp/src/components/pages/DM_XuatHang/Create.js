@@ -268,8 +268,9 @@ const ModalCreate = () => {
         let tongTienDonHang = 0;
         let sp = document.querySelectorAll("#SanPhams .ant-table-row");
         for (let index = 0; index < sp.length; index++) {
-            let soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value > sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").getAttribute("aria-valuemax") ?
-                sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").getAttribute("aria-valuemax") : sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
+            let soLuongMax = Number.parseInt(sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").getAttribute("aria-valuemax") ?? 0)
+            let soLuong = Number.parseInt(sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value) > soLuongMax ?
+                soLuongMax : sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
             let giaNhap = sp[index].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value ?? 0;
             let tongTien = soLuong * giaNhap.replace(/\đ\s?|(,*)/g, '')
             let obj = {
@@ -318,7 +319,7 @@ const ModalCreate = () => {
                             {item.tenDonViTinh}
                         </td>
                         <td className="SoLuong" id={item.ID_SanPham}>
-                            <InputNumber defaultValue={0} min={1} max={item.soLuongCoTheXuat} onChange={tinhTongTien} />
+                            <InputNumber required min={1} max={item.soLuongCoTheXuat} onChange={tinhTongTien} />
                         </td>
                         <td className="GiaNhap">
                             <InputNumber
@@ -539,7 +540,7 @@ const ModalCreate = () => {
                                                 notFoundContent="Không tìm thấy sản phẩm"
                                             >
                                                 {DataSanPham.map((item) => (
-                                                    <Option key={item.code} value={item.code}>
+                                                    <Option disabled={item.soLuongCoTheXuat > 0 ? false : true} key={item.code} value={item.code}>
                                                         <Row>
                                                             <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
                                                                 <Image

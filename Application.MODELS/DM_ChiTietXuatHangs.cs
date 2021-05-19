@@ -23,5 +23,9 @@ namespace Application.MODELS
         public string tenDonViTinh { get; set; }
         [NotMapped]
         public dynamic imgSanPham { get; set; }
+        [NotMapped]
+        public int SoLuongCoTheXuat { get; set; }
+        [NotMapped]
+        public int SoLuongTrongKho { get; set; }
     }
 }

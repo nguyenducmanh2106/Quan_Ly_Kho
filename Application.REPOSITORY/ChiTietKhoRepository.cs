@@ -33,7 +33,7 @@ namespace Application.REPOSITORY
                 var data = (from chitiet in db.ChiTietKhos
                             where chitiet.Id_Kho == obj.Id_Kho && chitiet.Id_SanPham == obj.Id_SanPham
                             select chitiet).SingleOrDefault();
-                return data.SoLuong ?? 0;
+                return data?.SoLuong ?? 0;
             }
             catch (Exception ex)
             {

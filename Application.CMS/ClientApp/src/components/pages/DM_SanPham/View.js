@@ -41,17 +41,17 @@ const ModalView = ({ item, isShowing, hide, confirmLoading }) => {
                                 >
                                     <DetailComponent item={item} />
                                 </Tabs.TabPane>
-                                <Tabs.TabPane
-                                    tab={
-                                        <span>
-                                            <AntdIcons.HistoryOutlined />
-          Tồn kho
-        </span>
-                                    }
-                                    key="2"
-                                >
-                                    <SoLuongKhoSanPham item={item} />
-                                </Tabs.TabPane>
+        {/*                        <Tabs.TabPane*/}
+        {/*                            tab={*/}
+        {/*                                <span>*/}
+        {/*                                    <AntdIcons.HistoryOutlined />*/}
+        {/*  Tồn kho*/}
+        {/*</span>*/}
+        {/*                            }*/}
+        {/*                            key="2"*/}
+        {/*                        >*/}
+        {/*                            <SoLuongKhoSanPham item={item} />*/}
+        {/*                        </Tabs.TabPane>*/}
                             </Tabs>
                         </Modal>
                     </  React.Fragment>, document.body

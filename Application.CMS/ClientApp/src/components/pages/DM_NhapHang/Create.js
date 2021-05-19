@@ -176,10 +176,11 @@ const ModalCreate = () => {
     const onHandleSelect = useCallback(
         async (value, option) => {
             if (value > 0) {
-                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
+                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}&Id_Kho=${getCurrentLogin().donViId}`);
                 if (fetchData.status == true) {
                     var data = await fetchData.result
                     var obj = {
+                        ...data,
                         ID_SanPham: data.code,
                         name: data.name,
                         code: data.code,
@@ -232,7 +233,7 @@ const ModalCreate = () => {
                             ]
                         )
                     }
-                    renderTomTat()
+
                 }
             }
 
@@ -270,16 +271,10 @@ const ModalCreate = () => {
         var result = DataSanPhamSubmit.filter(item => {
             return item.ID_SanPham !== value.ID_SanPham
         })
-
         setDataSanPhamSubmit(result)
-    }
-    const renderTomTat = (TongSl, TongGiaTien) => {
-        console.log(TongSl)
-        var data = ""
-        data = <tr>
-            <td>Số lượng :{TongSl}</td>
-        </tr>
-        return data;
+        setTimeout(() => {
+            tinhTongTien()
+        })
     }
     const renderBody = useCallback(
         () => {
@@ -306,7 +301,7 @@ const ModalCreate = () => {
                             {item.tenDonViTinh}
                         </td>
                         <td className="SoLuong" id={item.ID_SanPham}>
-                            <InputNumber min={1} max={99} onChange={tinhTongTien} />
+                            <InputNumber min={1} max={99} onChange={tinhTongTien} required />
                         </td>
                         <td className="GiaNhap">
                             <InputNumber
@@ -331,17 +326,12 @@ const ModalCreate = () => {
 
                 );
             })
-            renderTomTat(TongSl, TongGiaTien)
             return (result)
 
         },
         [DataSanPhamSubmit]
     )
 
-    const onChangeDatePicker = (date, dateString) => {
-        //console.log(date, dateString)
-
-    }
     const onChangeChietKhau = (TongTien) => {
         let Chietkhau = 0
         let dvt = form.getFieldsValue("prefix").prefix;
@@ -679,7 +669,6 @@ const ModalCreate = () => {
                                                     style={{ width: '100%' }}
                                                     format={"DD/MM/YYYY HH:mm"}
                                                     getPopupContainer={trigger => trigger.parentElement}
-                                                    onChange={onChangeDatePicker}
                                                 />
                                             </Form.Item>
                                         </Col>

@@ -53,7 +53,7 @@ namespace Application.API.Controllers
                 long total = 0;
                 var stt = (inputModel.page - 1) * inputModel.pageSize;
                 var dataExist = (await _manager.getData(inputModel));
-                var result = dataExist.Select(g => new DM_XuatHangs()
+                var result = dataExist.OrderByDescending(g => g.Created_At).Select(g => new DM_XuatHangs()
                 {
                     Id = g.Id,
                     Code = g.Code,
@@ -82,7 +82,7 @@ namespace Application.API.Controllers
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenNguoiTao = g.tenNguoiTao,
-                    ChiTietXuatHangs = _managerChiTiet.GetAllDataByID_XuatHang(g.Code)
+                    ChiTietXuatHangs = _managerChiTiet.GetAllDataByID_XuatHang(g.Code,g.ID_ChiNhanhNhan??0)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -114,7 +114,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("find-by-id")]
-        public async Task<IActionResult> FindById(string Code = "")
+        public async Task<IActionResult> FindById(string Code = "",int Id_Kho=-1)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace Application.API.Controllers
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
                     tenNguoiDuyet = g.tenNguoiDuyet,
                     tenNguoiTao = g.tenNguoiTao,
-                    ChiTietXuatHangs = _managerChiTiet.GetAllDataByID_XuatHang(g.Code)
+                    ChiTietXuatHangs = _managerChiTiet.GetAllDataByID_XuatHang(g.Code,Id_Kho)
                 };
                 MessageSuccess success = new MessageSuccess()
                 {

@@ -101,7 +101,7 @@ namespace Application.Services.DM_ChiTietXuatHangSerVices
             }
         }
 
-        public List<DM_ChiTietXuatHangs> GetAllDataByID_XuatHang(string ID_XuatHang)
+        public List<DM_ChiTietXuatHangs> GetAllDataByID_XuatHang(string ID_XuatHang, int Id_Kho)
         {
             try
             {
@@ -117,6 +117,9 @@ namespace Application.Services.DM_ChiTietXuatHangSerVices
                     tenDonViTinh = g.tenDonViTinh,
                     code = g.code,
                     barCode = g.barCode,
+                    SoLuongTrongKho = _unitOfWork.ChiTietKhoRepository.getSoLuongByID_KhoAndID_SanPham(new ChiTietKhos() { Id_Kho = Id_Kho, Id_SanPham = g.ID_SanPham }),
+                    SoLuongCoTheXuat = _unitOfWork.ChiTietKhoRepository.getSoLuongByID_KhoAndID_SanPham(new ChiTietKhos() { Id_Kho = Id_Kho, Id_SanPham = g.ID_SanPham }) -
+                     _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(Id_Kho, g.ID_SanPham) - _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(Id_Kho, g.ID_SanPham),
                     imgSanPham = CustomConfigurationExtensions.ReadFileToBase64(_hostingEnvironment, g.imgSanPham)
                 }).ToList();
                 return result;

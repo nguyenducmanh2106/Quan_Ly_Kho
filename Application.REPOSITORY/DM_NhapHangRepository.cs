@@ -78,6 +78,7 @@ namespace Application.REPOSITORY
                     && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
                     )
+                    orderby denghi.Created_At descending
                     select new DM_NhapHangs()
                     {
                         Id = denghi.Id,

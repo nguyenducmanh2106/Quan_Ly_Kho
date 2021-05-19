@@ -65,7 +65,7 @@ const ModalUpdate = () => {
             }
         }
         async function getData() {
-            var fetchData = await getAPI(`api/dm_xuathang/find-by-id?Code=${id}`);
+            var fetchData = await getAPI(`api/dm_xuathang/find-by-id?Code=${id}&Id_Kho=${getCurrentLogin().donViId}`);
             if (fetchData.status == true) {
                 var data = fetchData.result;
                 console.log(data)
@@ -203,10 +203,11 @@ const ModalUpdate = () => {
     const onHandleSelect = useCallback(
         async (value, option) => {
             if (value > 0) {
-                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}`);
+                var fetchData = await getAPI(`api/dm_sanpham/find-by-id?Code=${value}&Id_Kho=${getCurrentLogin().donViId}`);
                 if (fetchData.status == true) {
                     var data = await fetchData.result
                     var obj = {
+                        ...data,
                         iD_SanPham: data.code,
                         tenSanPham: data.name,
                         name: data.name,
@@ -260,7 +261,6 @@ const ModalUpdate = () => {
                             ]
                         )
                     }
-                    renderTomTat()
                 }
             }
 
@@ -273,7 +273,9 @@ const ModalUpdate = () => {
         let tongTienDonHang = 0;
         let sp = document.querySelectorAll("#SanPhams .ant-table-row");
         for (let index = 0; index < sp.length; index++) {
-            let soLuong = sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
+            let soLuongMax = Number.parseInt(sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").getAttribute("aria-valuemax") ?? 0)
+            let soLuong = Number.parseInt(sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value) > soLuongMax ?
+                soLuongMax : sp[index].querySelector(".SoLuong").querySelector(".ant-input-number-input").value;
             let giaNhap = sp[index].querySelector(".GiaNhap").querySelector(".ant-input-number-input").value ?? 0;
             let tongTien = soLuong * giaNhap.replace(/\đ\s?|(,*)/g, '')
             let obj = {
@@ -301,14 +303,9 @@ const ModalUpdate = () => {
         })
 
         setDataSanPhamSubmit(result)
-    }
-    const renderTomTat = (TongSl, TongGiaTien) => {
-        //console.log(TongSl)
-        var data = ""
-        data = <tr>
-            <td>Số lượng :{TongSl}</td>
-        </tr>
-        return data;
+        setTimeout(() => {
+            tinhTongTien()
+        })
     }
     const onHandleShowItem = (item) => {
         console.log(item)
@@ -318,12 +315,9 @@ const ModalUpdate = () => {
     const renderBody = useCallback(
         () => {
             var result = ""
-            var TongSl = 0;
-            var TongGiaTien = 0
+            //console.log(DataSanPhamSubmit)
             result = DataSanPhamSubmit.map((item, index) => {
                 var giaNhap = item.giaXuat ?? 0;
-                TongSl += 1;
-                TongGiaTien += Number.parseInt(giaNhap)
                 return (
                     <tr key={item.id} className="ant-table-row ant-table-row-level-0">
                         <td>
@@ -340,7 +334,9 @@ const ModalUpdate = () => {
                             {item.tenDonViTinh}
                         </td>
                         <td className="SoLuong" id={item.iD_SanPham}>
-                            <InputNumber min={1} max={99} onChange={tinhTongTien} defaultValue={item.soLuong} />
+                            <InputNumber min={1} max={item.soLuongCoTheXuat > 1 ? item.soLuongCoTheXuat : 1} onChange={tinhTongTien} defaultValue={item.soLuong}
+
+                            />
                         </td>
                         <td className="GiaNhap">
                             <InputNumber
@@ -365,16 +361,12 @@ const ModalUpdate = () => {
 
                 );
             })
-            renderTomTat(TongSl, TongGiaTien)
             return (result)
 
         },
         [DataSanPhamSubmit]
     )
 
-    const onChangeDatePicker = (date, dateString) => {
-        setNgayHenGiao(dateString)
-    }
     const onChangeChietKhau = (TongTien) => {
         let Chietkhau = 0
         let dvt = form.getFieldsValue("prefix").prefix;
@@ -571,27 +563,29 @@ const ModalUpdate = () => {
                                                 placeholder="Sản phẩm"
                                                 notFoundContent="Không tìm thấy sản phẩm"
                                             >
-                                                {DataSanPham.map((item) => (
-                                                    <Option key={item.code} value={item.code}>
-                                                        <Row>
-                                                            <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
-                                                                <Image
-                                                                    width={50}
-                                                                    preview={false}
-                                                                    src={"data:image/png;base64," + item.pathAvatar}
-                                                                    fallback={logoDefault}
-                                                                />
-                                                            </Col>
-                                                            <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
-                                                                <Row>
-                                                                    <Col>{item.name}</Col>
-                                                                    <Col>({item.code})</Col>
-                                                                    <Col>(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
-                                                                </Row>
-                                                            </Col>
-                                                        </Row>
-                                                    </Option>
-                                                ))}
+                                                {DataSanPham.map((item) => {
+                                                    return (
+                                                        <Option disabled={item.soLuongCoTheXuat > 0 ? false : true} key={item.code} value={item.code}>
+                                                            <Row>
+                                                                <Col lg={{ span: 5 }} md={{ span: 5 }} xs={{ span: 5 }}>
+                                                                    <Image
+                                                                        width={50}
+                                                                        preview={false}
+                                                                        src={"data:image/png;base64," + item.pathAvatar}
+                                                                        fallback={logoDefault}
+                                                                    />
+                                                                </Col>
+                                                                <Col lg={{ span: 19 }} md={{ span: 19 }} xs={{ span: 19 }}>
+                                                                    <Row>
+                                                                        <Col>{item.name}</Col>
+                                                                        <Col>({item.code})</Col>
+                                                                        <Col>(Số lượng có thể xuất: {item.soLuongCoTheXuat})</Col>
+                                                                    </Row>
+                                                                </Col>
+                                                            </Row>
+                                                        </Option>
+                                                    )
+                                                })}
                                             </AutoComplete>
                                         </Col>
                                         <Col xs={{ span: 24 }} md={{ span: 24 }} lg={{ span: 24 }} style={{ marginTop: "16px" }}>
@@ -764,7 +758,6 @@ const ModalUpdate = () => {
                                                     style={{ width: '100%' }}
                                                     format="DD/MM/YYYY HH:mm"
                                                     getPopupContainer={trigger => trigger.parentElement}
-                                                    onChange={onChangeDatePicker}
                                                 />
                                             </Form.Item>
                                         </Col>
