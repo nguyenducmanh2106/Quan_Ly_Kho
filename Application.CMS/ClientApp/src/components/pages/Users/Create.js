@@ -102,7 +102,7 @@ const ModalCreate = ({ isShowing, hide, onPostCreateItem, confirmLoading, donvi,
                                 <Form.Item name="FullName" label="Tên đầy đủ" rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
-                                <Form.Item name="DonViId" label="Đơn vị">
+                                <Form.Item name="DonViId" label="Đơn vị" rules={[{ required: true }]}>
                                     <Select
                                         showSearch
                                         //style={{ width: 200 }}

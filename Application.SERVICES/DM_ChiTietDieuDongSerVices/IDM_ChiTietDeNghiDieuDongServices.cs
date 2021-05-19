@@ -14,6 +14,6 @@ namespace Application.Services.DM_ChiTietDeNghiDieuDongSerVices
         Task BulkInsert(List<DM_ChiTietDeNghiDieuDongs> obj);
         Task DeleteByID_DeNghiDieuDong(string ID_DeNghiDieuDong);
         Task BulkDeleteByID_DeNghiDieuDong(string listItemDelete);
-        List<DM_ChiTietDeNghiDieuDongs> GetAllDataByID_DeNghiDieuDong(string ID_DeNghiDieuDong);
+        List<DM_ChiTietDeNghiDieuDongs> GetAllDataByID_DeNghiDieuDong(string ID_DeNghiDieuDong,int Id_Kho);
     }
 }

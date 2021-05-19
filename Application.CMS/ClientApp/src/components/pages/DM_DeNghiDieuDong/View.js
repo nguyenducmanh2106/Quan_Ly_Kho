@@ -29,7 +29,7 @@ const ModalView = ({ item, isShowing, hide, confirmLoading, toggleStatus, onRece
                             /*okButtonProps={{ form: 'myFormCreate', key: 'submit', htmlType: 'submit' }}*/
                             footer={null}
                         >
-                            <DetailComponent item={item} toggleStatus={toggleStatus} onReceived={onReceived} />
+                            <DetailComponent item={item} toggleStatus={toggleStatus} onReceived={onReceived} hide={hide}/>
                         </Modal>
                     </  React.Fragment>, document.body
                 ) : null

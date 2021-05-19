@@ -26,10 +26,12 @@ const DetailComponent = ({ item, toggleStatus, onReceived, hide }) => {
     const onToggleStatus = (status, item) => {
         item.status = status;
         toggleStatus(item)
+        //hide()
         //console.log(item)
     }
     const NhanHang = (item) => {
         onReceived(item)
+        //hide()
     }
     const renderBody = () => {
         var result = ""

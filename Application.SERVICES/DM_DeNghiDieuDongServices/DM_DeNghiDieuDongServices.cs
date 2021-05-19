@@ -47,7 +47,7 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
                     throw new Exception(MessageConst.DATA_NOT_FOUND);
                 }
                 exist.Status = obj.Status;
-                exist.NgayDuyet = DateTime.Now;
+                //exist.NgayDuyet = DateTime.Now;
                 await _unitOfWork.DM_DeNghiDieuDongRepository.Update(exist);
                 await _unitOfWork.SaveChange();
                 //_unitOfWork.Commit();

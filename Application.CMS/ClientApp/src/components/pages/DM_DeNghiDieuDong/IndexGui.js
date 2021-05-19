@@ -186,7 +186,7 @@ function Index({ onSetSanPhamUpdate }) {
                 return postAPI('api/dm_denghidieudong/toggle-status', JSON.stringify(item)).then(result => {
                     if (result.status) {
                         setAction(true)
-                        //toggleView()
+                        toggleView()
                         notification.success({
                             message: result.message,
                             duration: 3
@@ -232,6 +232,7 @@ function Index({ onSetSanPhamUpdate }) {
                 return postAPI('api/dm_denghidieudong/nhanhang', JSON.stringify(obj)).then(result => {
                     if (result.status) {
                         setAction(true)
+                        toggleView()
                         notification.success({
                             message: result.message,
                             duration: 3

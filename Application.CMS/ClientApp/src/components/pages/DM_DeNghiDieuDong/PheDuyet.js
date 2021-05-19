@@ -12,14 +12,14 @@ import useModal from './../../elements/modal/useModal';
 import * as AntdIcons from '@ant-design/icons';
 import { getAPI, postAPI, getCurrentLogin } from './../../../utils/helpers';
 import {
-    useParams, Link,useHistory
+    useParams, Link, useHistory
 } from "react-router-dom";
 
 const FormUpdate = () => {
     const [isShowing, toggle] = useModal();
     const [confirmLoading, setConfirmLoading] = useState(false);
     let { id } = useParams();
-    let history=useHistory()
+    let history = useHistory()
     const [DataSanPham, setDataSanPham] = useState([]);
     const [DataSanPhamSubmit, setDataSanPhamSubmit] = useState([]);
     const [ItemUpdate, setItemUpdate] = useState({});
@@ -48,7 +48,7 @@ const FormUpdate = () => {
     useEffect(() => {
 
         async function getItemUpdate() {
-            var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Code=${id}`);
+            var fetchData = await getAPI(`api/dm_denghidieudong/find-by-id?Code=${id}&Id_Kho=${getCurrentLogin().donViId}`);
             if (fetchData.status == true) {
                 var data = fetchData.result;
                 setItemUpdate(data)
@@ -167,7 +167,8 @@ const FormUpdate = () => {
                         {item.tenDonViTinh}
                     </td>
                     <td>
-                        {item.soLuongTrongKho}
+                        {/*{item.soLuongTrongKho}*/}
+                        {item.soLuongCoTheXuat}
                     </td>
                     <td>
                         <input type="hidden" className="ID_SanPham" defaultValue={item.iD_SanPham} />
@@ -176,7 +177,7 @@ const FormUpdate = () => {
                         {item.soLuongYeuCau}
                     </td>
                     <td>
-                        <InputNumber min={1} max={99} required />
+                        <InputNumber min={0} max={item.soLuongCoTheXuat} required />
                     </td>
                 </tr>
 

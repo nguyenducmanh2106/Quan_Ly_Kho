@@ -10,6 +10,10 @@ import { URL_ERROR } from './../../../utils/constants';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
+import { getLocalStorage } from './../../../utils/helpers';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Index() {
     //khai báo state
     let history = useHistory()
@@ -58,7 +62,7 @@ function Index() {
         }
         //gọi hàm
         getData(page, pageSize);
-
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
         return () => {
             setAction(false)
             setConfirmLoading(false)
@@ -275,12 +279,12 @@ function Index() {
                                 <Form name="nest-messages" layout="inline" onFinish={onHandleSearch} id="myFormSearch"
                                     validateMessages={validateMessages}
                                     initialValues={{
-                                        //["Ordering"]: 0
+                                        ["Status"]: -1
                                     }}
                                 >
                                     <Col xs={{ span: 24 }} lg={{ span: 14 }} md={{ span: 12 }}>
                                         <Form.Item name="Name" label="" style={{ width: '100%' }}>
-                                            <Input placeholder="Tên/Mã chức vụ" allowClear prefix={<AntdIcons.SearchOutlined />}/>
+                                            <Input placeholder="Tên/Mã chức vụ" allowClear prefix={<AntdIcons.SearchOutlined />} />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={{ span: 24 }} lg={{ span: 5 }} md={{ span: 12 }}>
@@ -294,9 +298,9 @@ function Index() {
                                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                                 }
                                             >
-                                                <Option value="-1">Tất cả</Option>
-                                                <Option value="1">Hoạt động</Option>
-                                                <Option value="2">Ngừng hoạt động</Option>
+                                                <Option value={-1}>Tất cả</Option>
+                                                <Option value={1}>Hoạt động</Option>
+                                                <Option value={2}>Ngừng hoạt động</Option>
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -314,12 +318,19 @@ function Index() {
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Space size={8}>
-                                <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
-                                    Thêm mới
-    </Button>
-                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                    Xoá nhiều
-    </Button>
+                                {_isPermission(constantPermission.CREATE, constantPermission.DM_CHUCVU) ?
+                                    <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                        Thêm mới
+                                    </Button>
+                                    : ""
+                                }
+                                {_isPermission(constantPermission.DELETE, constantPermission.DM_CHUCVU) ?
+                                    <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                        Xoá nhiều
+                                    </Button>
+                                    : ""
+                                }
+
                             </Space>
                         </Skeleton>
                     </Col>

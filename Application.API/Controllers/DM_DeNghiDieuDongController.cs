@@ -76,7 +76,7 @@ namespace Application.API.Controllers
                     tenChiNhanhGui = g.tenChiNhanhGui,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
                     tenBoPhanGui = _managerUser.GetTenChucVu(g.Created_By),
-                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code)
+                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code, g.ID_ChiNhanhGui ?? 0)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -142,7 +142,7 @@ namespace Application.API.Controllers
                     tenChiNhanhGui = g.tenChiNhanhGui,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
                     tenBoPhanGui = _managerUser.GetTenChucVu(g.Created_By),
-                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code)
+                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code, g.ID_ChiNhanhNhan ?? 0)
                 }).ToList();
                 if (dataExist == null)
                 {
@@ -174,7 +174,7 @@ namespace Application.API.Controllers
             }
         }
         [HttpGet("find-by-id")]
-        public async Task<IActionResult> FindById(string Code = "")
+        public async Task<IActionResult> FindById(string Code = "", int Id_Kho = -1)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace Application.API.Controllers
                     tenChiNhanhGui = g.tenChiNhanhGui,
                     tenChiNhanhNhan = g.tenChiNhanhNhan,
                     tenBoPhanGui = _managerUser.GetTenChucVu(g.Created_By),
-                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code)
+                    ChiTietDeNghiDieuDongs = _managerChiTiet.GetAllDataByID_DeNghiDieuDong(g.Code, Id_Kho)
                 };
                 MessageSuccess success = new MessageSuccess()
                 {

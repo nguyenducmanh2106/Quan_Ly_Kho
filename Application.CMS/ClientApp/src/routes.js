@@ -74,7 +74,6 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_sanpham/update/:id' component={DM_SanPham_Update} />
             <PrivateRoute exact path='/dm_sanpham/view/:id' component={DM_SanPham_Detail_NewPage} />
             <PrivateRoute exact path='/dm_loaidenghi' component={DM_LoaiDeNghi} />
-            <PrivateRoute exact path='/dm_loaidenghi' component={DM_LoaiDeNghi} />
             <PrivateRoute path='/dm_denghidieudong' component={DM_DeNghiDieuDong} />
             <PrivateRoute exact path='/dm_denghidieudong-create/create' component={DM_DeNghiDieuDong_Create} />
             <PrivateRoute exact path='/dm_denghidieudong-update/update/:id' component={DM_DeNghiDieuDong_Update} />
