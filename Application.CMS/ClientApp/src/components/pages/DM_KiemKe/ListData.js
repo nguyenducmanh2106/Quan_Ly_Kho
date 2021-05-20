@@ -145,22 +145,18 @@ function Table(props) {
                         <td>
                             <Dropdown placement="bottomCenter" overlay={() => (
                                 <Menu>
-                                    {!_isPermission(constantPermission.VIEW, constantPermission.DM_NHAPHANG) ? null :
-                                        <Menu.Item style={{ textAlign: "center" }} key="2">
-                                            <Tooltip title="Thông tin">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
-                                            </Tooltip>
-                                        </Menu.Item>
-                                    }
-                                    {!_isPermission(constantPermission.DELETE, constantPermission.DM_NHAPHANG) ? null :
+                                    <Menu.Item style={{ textAlign: "center" }} key="2">
+                                        <Tooltip title="Thông tin">
+                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
+                                        </Tooltip>
+                                    </Menu.Item>
+                                    {!_isPermission(constantPermission.DELETE, constantPermission.DM_KIEMKE) ? null :
                                         <Menu.Item style={{ textAlign: "center" }} key="4">
                                             <Tooltip title="Xoá">
                                                 <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
                                             </Tooltip>
                                         </Menu.Item>
                                     }
-
-
                                 </Menu>
                             )} trigger={['click']}>
                                 <Button>

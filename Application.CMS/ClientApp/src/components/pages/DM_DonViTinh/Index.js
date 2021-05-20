@@ -311,7 +311,7 @@ function Menu() {
                                         Thêm mới
                                     </Button> : null
                                 }
-                                {_isPermission(constantPermission.CREATE, constantPermission.DM_DONVITINH) ?
+                                {_isPermission(constantPermission.DELETE, constantPermission.DM_DONVITINH) ?
                                     <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
                                         Xoá nhiều
                                     </Button> : null

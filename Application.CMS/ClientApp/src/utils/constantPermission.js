@@ -21,6 +21,7 @@ export const DM_KIEMKE = "dm_kiemke";
 
 //Export action
 export const VIEW = "view";
+export const AUTHORIZATION = "authorization";
 export const EDIT = "edit";
 export const CREATE = "create";
 export const DELETE = "delete";

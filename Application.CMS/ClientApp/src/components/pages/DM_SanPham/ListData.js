@@ -2,17 +2,17 @@
 import ReactDOM from 'react-dom';
 import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown, Space } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
-import {useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
-import { Can } from "../../elements/Config_Roles/Can"
-import { getLocalStorage } from "../../../utils/helpers"
+import { getLocalStorage } from './../../../utils/helpers';
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
-import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Table(props) {
     //khai báo state
     //console.log(Can)
-    let history =useHistory()
+    let history = useHistory()
     const [array, setArray] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -136,17 +136,20 @@ function Table(props) {
                                             <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => DetailNewPage(item)} />
                                         </Tooltip>
                                     </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="3">
-                                        <Tooltip title="Chỉnh sửa">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
-                                    <Menu.Item style={{ textAlign: "center" }} key="4">
-                                        <Tooltip title="Xoá">
-                                            <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                                        </Tooltip>
-                                    </Menu.Item>
-
+                                    {_isPermission(constantPermission.EDIT, constantPermission.DM_SANPHAM) ?
+                                        <Menu.Item style={{ textAlign: "center" }} key="3">
+                                            <Tooltip title="Chỉnh sửa">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                            </Tooltip>
+                                        </Menu.Item> : null
+                                    }
+                                    {_isPermission(constantPermission.DELETE, constantPermission.DM_SANPHAM) ?
+                                        <Menu.Item style={{ textAlign: "center" }} key="4">
+                                            <Tooltip title="Xoá">
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                            </Tooltip>
+                                        </Menu.Item> : null
+                                    }
                                 </Menu>
                             )} trigger={['click']}>
                                 <Button>

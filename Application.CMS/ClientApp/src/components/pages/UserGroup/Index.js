@@ -9,6 +9,10 @@ import { getAPI, postAPI, postFormData } from './../../../utils/helpers';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
+import { getLocalStorage } from './../../../utils/helpers';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Index() {
     //khai báo state
     const [state, setState] = useState([]);
@@ -64,6 +68,7 @@ function Index() {
         getData(page, pageSize);
         getDataPermission()
         getDataPermission_TraiPhang()
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
         return () => {
             setAction(false)
             setConfirmLoading(false)
@@ -389,12 +394,16 @@ function Index() {
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Space>
-                                <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
-                                    Thêm mới
-    </Button>
-                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                    Xoá nhiều
-    </Button>
+                                {_isPermission(constantPermission.CREATE, constantPermission.USER_GROUP) ?
+                                    <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                        Thêm mới
+                                    </Button> : null
+                                }
+                                {_isPermission(constantPermission.DELETE, constantPermission.USER_GROUP) ?
+                                    <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                        Xoá nhiều
+                                    </Button> : null
+                                }
                             </Space>
                         </Skeleton>
                     </Col>

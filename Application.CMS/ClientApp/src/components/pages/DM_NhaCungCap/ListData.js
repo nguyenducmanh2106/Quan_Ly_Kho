@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom';
 import { Form, Input, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
+import { getLocalStorage } from './../../../utils/helpers';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Table(props) {
     //khai báo state
     const [array, setArray] = useState([]);
@@ -20,6 +24,7 @@ function Table(props) {
         props.obj ? setPageSize(props.obj.pageSize) : setPageSize(pageSize);
         props.obj ? setTotal(props.obj.total) : setTotal(0);
         props.obj ? setTotalPage(props.obj.totalPage) : setTotal(0);
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
         return () => {
             setIndeterminate(false)
             setCheckAll(false)
@@ -105,26 +110,32 @@ function Table(props) {
                                 <Badge status="error" text="Ngừng giao dịch" />
                             </Button>}
                     </td>
-                    <td>
-                        <Dropdown placement="bottomCenter" overlay={() => (
-                            <Menu>
-                                <Menu.Item style={{ textAlign: "center" }} key="2">
-                                    <Tooltip title="Chỉnh sửa">
-                                        <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
-                                    </Tooltip>
-                                </Menu.Item>
-                                <Menu.Item style={{ textAlign: "center" }} key="3">
-                                    <Tooltip title="Xoá">
-                                        <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                                    </Tooltip>
-                                </Menu.Item>
-                            </Menu>
-                        )} trigger={['click']}>
-                            <Button>
-                                <AntdIcons.UnorderedListOutlined /> <AntdIcons.DownOutlined />
-                            </Button>
-                        </Dropdown>
-                    </td>
+                    {_isPermission(constantPermission.EDIT, constantPermission.DM_NHACUNGCAP) || _isPermission(constantPermission.DELETE, constantPermission.DM_NHACUNGCAP) ?
+                        <td>
+                            <Dropdown placement="bottomCenter" overlay={() => (
+                                <Menu>
+                                    {_isPermission(constantPermission.EDIT, constantPermission.DM_NHACUNGCAP) ?
+                                        <Menu.Item style={{ textAlign: "center" }} key="2">
+                                            <Tooltip title="Chỉnh sửa">
+                                                <Button type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                            </Tooltip>
+                                        </Menu.Item> : null
+                                    }
+                                    {_isPermission(constantPermission.DELETE, constantPermission.DM_NHACUNGCAP) ?
+                                        <Menu.Item style={{ textAlign: "center" }} key="3">
+                                            <Tooltip title="Xoá">
+                                                <Button type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                            </Tooltip>
+                                        </Menu.Item> : null
+                                    }
+                                </Menu>
+                            )} trigger={['click']}>
+                                <Button>
+                                    <AntdIcons.UnorderedListOutlined /> <AntdIcons.DownOutlined />
+                                </Button>
+                            </Dropdown>
+                        </td> : null
+                    }
                 </tr>
             );
         }) : <span>Dữ liệu đang cập nhật...</span>
@@ -184,9 +195,11 @@ function Table(props) {
                                         <th className="text-center">
                                             Trạng thái
         </th>
-                                        <th className="text-center">
-                                            Thao tác
-        </th>
+                                        {_isPermission(constantPermission.EDIT, constantPermission.DM_NHACUNGCAP) || _isPermission(constantPermission.DELETE, constantPermission.DM_NHACUNGCAP) ?
+                                            <th className="text-center">
+                                                Thao tác
+                                            </th> : null
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody className="ant-table-tbody">

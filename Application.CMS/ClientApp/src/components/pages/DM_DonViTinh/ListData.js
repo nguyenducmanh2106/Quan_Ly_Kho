@@ -191,9 +191,11 @@ function Table(props) {
                                         <th className="text-center">
                                             Trạng thái
         </th>
-                                        <th className="text-center">
-                                            Thao tác
-        </th>
+                                        {_isPermission(constantPermission.EDIT, constantPermission.DM_DONVITINH) || _isPermission(constantPermission.DELETE, constantPermission.DM_DONVITINH) ?
+                                            <th className="text-center">
+                                                Thao tác
+                                            </th> : null
+                                        }
                                     </tr>
                                 </thead>
 

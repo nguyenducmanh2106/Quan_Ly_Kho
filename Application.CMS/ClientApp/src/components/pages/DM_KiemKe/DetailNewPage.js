@@ -318,7 +318,7 @@ const ModalCreate = () => {
                             {item.tonThucTe}
                         </td>
                         <td>
-                            {item.tonThucTe-item.tonChiNhanh}
+                            {item.tonThucTe - item.tonChiNhanh}
                         </td>
                         <td>
                             {item.ghiChu}
@@ -340,7 +340,7 @@ const ModalCreate = () => {
     }
     const menu = (
         <Menu>
-            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_NHAPHANG) && getCurrentLogin().id == nhapHang?.created_By && nhapHang?.status == 0 ?
+            {_isPermission(PERMISSION.EDIT, PERMISSION.DM_KIEMKE) && getCurrentLogin().id == nhapHang?.created_By && nhapHang?.status == 0 ?
                 <Menu.Item key="1" style={{ borderBottom: "1px solid #d8dee6" }}>
                     <a href="javascript:void(0)" onClick={() => onUpdateItem(nhapHang)}>Sửa</a>
                 </Menu.Item> :
@@ -478,14 +478,14 @@ const ModalCreate = () => {
                                                                     <th className="">
                                                                         Tồn chi nhánh
                                         </th>
-                                                                    {nhapHang.status == 1  || nhapHang.status == 4 ?
+                                                                    {nhapHang.status == 1 || nhapHang.status == 4 ?
                                                                         <>
                                                                             <th className="">
                                                                                 Tồn thực tế
                                         </th>
                                                                             <th className="">
                                                                                 Ghi chú
-                                        </th> </> : nhapHang.status == 2 || nhapHang.status == 3?
+                                        </th> </> : nhapHang.status == 2 || nhapHang.status == 3 ?
                                                                             <>
                                                                                 <th className="">
                                                                                     Tồn thực tế
@@ -521,19 +521,19 @@ const ModalCreate = () => {
                 <Divider />
                 <Row>
                     <Col style={{ textAlign: "right" }}>
-                        {nhapHang?.status == 0 && _isPermission(PERMISSION.DUYET, PERMISSION.DM_NHAPHANG) ?
+                        {nhapHang?.status == 0 && _isPermission(PERMISSION.DUYET, PERMISSION.DM_KIEMKE) ?
                             <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => DangKiemHang(nhapHang)}>
                                 Kiểm hàng
                                     </Button> :
-                            nhapHang?.status == 4 && _isPermission(PERMISSION.NHAPKHO, PERMISSION.DM_NHAPHANG) ?
+                            nhapHang?.status == 4 && _isPermission(PERMISSION.EDIT, PERMISSION.DM_KIEMKE) ?
                                 <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => KiemHang(nhapHang)}>
                                     Hoàn thành kiểm
                                     </Button> :
-                                nhapHang?.status == 1 && _isPermission(PERMISSION.NHAPKHO, PERMISSION.DM_NHAPHANG) ?
+                                nhapHang?.status == 1 && _isPermission(PERMISSION.EDIT, PERMISSION.DM_KIEMKE) ?
                                     <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => CanBangKho(nhapHang)}>
                                         Cân băng kho
                                     </Button> :
-                                    nhapHang?.status == 2 && _isPermission(PERMISSION.NHAPKHO, PERMISSION.DM_NHAPHANG) ?
+                                    nhapHang?.status == 2 && _isPermission(PERMISSION.EDIT, PERMISSION.DM_KIEMKE) ?
                                         <Button type="primary" icon={<AntdIcons.SaveOutlined />} onClick={() => HoanThanh(nhapHang)}>
                                             Hoàn thành
                                     </Button> :

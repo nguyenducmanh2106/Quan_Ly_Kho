@@ -10,6 +10,10 @@ import { URL_ERROR } from '../../../utils/constants';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import BounceLoader from 'react-spinners/BounceLoader'
+import { getLocalStorage } from './../../../utils/helpers';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Index() {
     //khai báo state
     let history = useHistory()
@@ -49,7 +53,7 @@ function Index() {
         }
         //gọi hàm
         getData(page, pageSize);
-
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
         return () => {
             setAction(false)
             setConfirmLoading(false)
@@ -321,12 +325,17 @@ function Index() {
                         <Skeleton loading={isLoading} active>
                             <Space size={8}>
 
-                                <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
-                                    Thêm mới
-    </Button>
-                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                    Xoá nhiều
-    </Button>
+                                {_isPermission(constantPermission.CREATE, constantPermission.DM_NHACUNGCAP) ?
+                                    <Button type="primary" className="success" onClick={toggle} icon={<AntdIcons.PlusOutlined />}>
+                                        Thêm mới
+                                    </Button> : null
+                                }
+                                {_isPermission(constantPermission.DELETE, constantPermission.DM_NHACUNGCAP) ?
+                                    <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                        Xoá nhiều
+                                    </Button> : null
+                                }
+
                             </Space>
                         </Skeleton>
                     </Col>

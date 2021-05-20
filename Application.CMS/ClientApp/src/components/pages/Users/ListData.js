@@ -5,9 +5,10 @@ import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
 import logoDefault from "../../../static/images/user-profile.jpeg"
 import { Can } from "../../elements/Config_Roles/Can"
-import { getLocalStorage } from "../../../utils/helpers"
+import { getLocalStorage } from './../../../utils/helpers';
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
-import { defineAbilitiesFor } from "../../elements/Config_Roles/appAbility"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Table(props) {
     //khai báo state
     //console.log(Can)
@@ -122,52 +123,46 @@ function Table(props) {
                                     <Badge status="error" text="Ngừng hoạt động" />
                                 </Button>}
                         </td>
-                        <td>
-                            <Dropdown placement="bottomCenter" overlay={() => (
-                                <Menu>
-
-                                    <Menu.Item style={{ textAlign: "center" }} key="1">
-                                        <Can I="role" a="user">
-                                            {item.isRoot ? "" : <Tooltip title="Phân quyền">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
-                                            </Tooltip>}
-                                        </Can>
-                                    </Menu.Item>
-
-
-                                    <Menu.Item style={{ textAlign: "center" }} key="2">
-                                        <Can I="change_pass" a="user">
-                                            <Tooltip title="Đổi mật khẩu">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="warning" icon={<AntdIcons.KeyOutlined />} onClick={() => onChangePassWord(item)} />
-                                            </Tooltip>
-                                        </Can>
-                                    </Menu.Item>
-
-
-                                    <Menu.Item style={{ textAlign: "center" }} key="3">
-                                        <Can I="edit" a="user">
-                                            <Tooltip title="Chỉnh sửa">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
-                                            </Tooltip>
-                                        </Can>
-                                    </Menu.Item>
-
-
-                                    <Menu.Item style={{ textAlign: "center" }} key="4">
-                                        <Can I="delete" a="user">
-                                            <Tooltip title="Xoá">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
-                                            </Tooltip>
-                                        </Can>
-                                    </Menu.Item>
-
-                                </Menu>
-                            )} trigger={['click']}>
-                                <Button>
-                                    <AntdIcons.UnorderedListOutlined /> <AntdIcons.DownOutlined />
-                                </Button>
-                            </Dropdown>
-                        </td>
+                        {_isPermission(constantPermission.EDIT, constantPermission.USER) || _isPermission(constantPermission.AUTHORIZATION, constantPermission.USER) || _isPermission(constantPermission.DELETE, constantPermission.USER) ?
+                            <td>
+                                <Dropdown placement="bottomCenter" overlay={() => (
+                                    <Menu>
+                                        {_isPermission(constantPermission.AUTHORIZATION, constantPermission.USER) ?
+                                            <Menu.Item style={{ textAlign: "center" }} key="1">
+                                                {item.isRoot ? "" : <Tooltip title="Phân quyền">
+                                                    <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.SettingOutlined />} onClick={() => onCreatePermission(item)} />
+                                                </Tooltip>}
+                                            </Menu.Item> : null
+                                        }
+                                        {_isPermission(constantPermission.EDIT, constantPermission.USER) ?
+                                            <Menu.Item style={{ textAlign: "center" }} key="2">
+                                                <Tooltip title="Đổi mật khẩu">
+                                                    <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="warning" icon={<AntdIcons.KeyOutlined />} onClick={() => onChangePassWord(item)} />
+                                                </Tooltip>
+                                            </Menu.Item> : null
+                                        }
+                                        {_isPermission(constantPermission.EDIT, constantPermission.USER) ?
+                                            <Menu.Item style={{ textAlign: "center" }} key="3">
+                                                <Tooltip title="Chỉnh sửa">
+                                                    <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EditOutlined />} onClick={() => update(item)} />
+                                                </Tooltip>
+                                            </Menu.Item> : null
+                                        }
+                                        {_isPermission(constantPermission.DELETE, constantPermission.USER) ?
+                                            <Menu.Item style={{ textAlign: "center" }} key="4">
+                                                <Tooltip title="Xoá">
+                                                    <Button style={{ margin: "0 !important" }} type="primary" shape="circle" className="danger" icon={<AntdIcons.DeleteOutlined />} onClick={() => onDelete(item)} />
+                                                </Tooltip>
+                                            </Menu.Item> : null
+                                        }
+                                    </Menu>
+                                )} trigger={['click']}>
+                                    <Button>
+                                        <AntdIcons.UnorderedListOutlined /> <AntdIcons.DownOutlined />
+                                    </Button>
+                                </Dropdown>
+                            </td> : null
+                        }
                     </tr>
                 );
             })
@@ -235,9 +230,11 @@ function Table(props) {
                                         <th className="text-center">
                                             Trạng thái
         </th>
-                                        <th className="text-center">
-                                            Thao tác
-        </th>
+                                        {_isPermission(constantPermission.EDIT, constantPermission.USER) || _isPermission(constantPermission.AUTHORIZATION, constantPermission.USER) || _isPermission(constantPermission.DELETE, constantPermission.USER) ?
+                                            <th className="text-center">
+                                                Thao tác
+                                            </th> : null
+                                        }
                                     </tr>
                                 </thead>
 

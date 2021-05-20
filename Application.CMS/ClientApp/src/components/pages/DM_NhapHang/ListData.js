@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom'
 import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown, Space, Typography } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import renderHTML from 'react-render-html';
@@ -10,7 +11,6 @@ import { getLocalStorage, getCurrentLogin, FormatMoney } from "../../../utils/he
 import { PERMISS_USER_CURRENT } from "../../../utils/constants"
 import * as constantPermission from "../../../utils/constantPermission"
 import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
-import { useHistory } from 'react-router-dom'
 function Table(props) {
     //khai báo state
     //console.log(Can)

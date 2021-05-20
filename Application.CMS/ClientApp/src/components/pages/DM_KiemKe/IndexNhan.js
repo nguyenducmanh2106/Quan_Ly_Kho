@@ -8,12 +8,16 @@ import {
 } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
 import useModal from './../../elements/modal/useModal';
-import { getAPI, postAPI, postFormData, getLocalStorage, getCurrentLogin } from './../../../utils/helpers';
+import { getAPI, postAPI, postFormData, getCurrentLogin } from './../../../utils/helpers';
 import { USER_LOCALSTORAGE } from './../../../utils/constants';
 import ListData from './ListData';
 import LoadingOverlay from 'react-loading-overlay'
 import PrivateRoute from "../../../utils/PrivateRoute"
 import BounceLoader from 'react-spinners/BounceLoader'
+import { getLocalStorage } from './../../../utils/helpers';
+import { PERMISS_USER_CURRENT } from "../../../utils/constants"
+import * as constantPermission from "../../../utils/constantPermission"
+import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/appAbility"
 function Index({ onSetSanPhamUpdate }) {
     let history = useHistory()
     //khai báo state
@@ -95,6 +99,7 @@ function Index({ onSetSanPhamUpdate }) {
         }
         //gọi hàm
         getData(page, pageSize);
+        defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
         return () => {
             setAction(false)
             setConfirmLoading(false)
@@ -346,15 +351,19 @@ function Index({ onSetSanPhamUpdate }) {
                     <Col xs={{ span: 24 }} lg={{ span: 24 }} style={{ marginBottom: "16px" }}>
                         <Skeleton loading={isLoading} active>
                             <Space size={8}>
-                                <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>
-                                    Thêm mới
-                                </Button>
-                                <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
-                                    Xoá nhiều
-    </Button>
+                                {_isPermission(constantPermission.CREATE, constantPermission.DM_KIEMKE) ?
+                                    <Button type="primary" className="success" onClick={openCreate} icon={<AntdIcons.PlusOutlined />}>
+                                        Thêm mới
+                                    </Button> : null
+                                }
+                                {_isPermission(constantPermission.DELETE, constantPermission.DM_KIEMKE) ?
+                                    <Button type="primary" className="danger" onClick={onMultiDelete} icon={<AntdIcons.DeleteOutlined />}>
+                                        Xoá nhiều
+                                    </Button> : null
+                                }
                                 <Button type="primary" className="primary" onClick={showDrawer} icon={<AntdIcons.ControlOutlined />}>
                                     Tìm kiếm nâng cao
-    </Button>
+                                </Button>
                             </Space>
                         </Skeleton>
                     </Col>
