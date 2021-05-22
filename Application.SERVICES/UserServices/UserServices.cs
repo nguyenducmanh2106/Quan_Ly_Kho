@@ -25,7 +25,7 @@ namespace Application.Services.UserServices
             try
             {
 
-                var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName || x.Email == login.Email) && (x.PassWord == login.PassWord) && (x.Status == (int)StatusEnum.Active)));
+                var data = (await _unitOfWork.UserRepository.Get(x => (x.UserName == login.UserName || (!string.IsNullOrEmpty(x.Email)&&x.Email == login.Email)) && (x.PassWord == login.PassWord) && (x.Status == (int)StatusEnum.Active)));
                 if (data == null)
                 {
                     throw new Exception("Tài khoản hoặc mật khẩu không chính xác");

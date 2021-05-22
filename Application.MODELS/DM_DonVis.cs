@@ -29,6 +29,11 @@ namespace Application.MODELS
         public int? CapDo { get; set; }
         [NotMapped]
         public int Level { get; set; }
-
+        [NotMapped]
+        public string tenTinh { get; set; }
+        [NotMapped]
+        public string tenHuyen { get; set; }
+        [NotMapped]
+        public string tenXa { get; set; }
     }
 }

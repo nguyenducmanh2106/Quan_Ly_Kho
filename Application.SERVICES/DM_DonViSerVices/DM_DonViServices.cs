@@ -55,7 +55,14 @@ namespace Application.Services.DM_DonViSerVices
         {
             try
             {
-                return await _unitOfWork.DM_DonViRepository.Get(g => g.Id == Id);
+                var data = await _unitOfWork.DM_DonViRepository.Get(g => g.Id == Id);
+                var tenTinh=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==data.TinhId)).Name;
+                var tenHuyen=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==data.HuyenId)).Name;
+                var tenXa=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==data.XaId)).Name;
+                data.tenTinh=tenTinh;
+                data.tenHuyen=tenHuyen;
+                data.tenXa=tenXa;
+                return data;
             }
             catch (Exception ex)
             {
