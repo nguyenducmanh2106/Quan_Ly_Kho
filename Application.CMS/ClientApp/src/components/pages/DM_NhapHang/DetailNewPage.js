@@ -305,6 +305,7 @@ const ModalCreate = () => {
           )}
           content={() => componentRef.current}
           documentTitle={"PhieuNhapHang_"+history.location.state.action}
+          bodyClass="whiteBackground"
         />
         <div style={{ display: "none" }}><ExportPDF item={nhapHang} ref={componentRef} /></div>
       </Menu.Item>

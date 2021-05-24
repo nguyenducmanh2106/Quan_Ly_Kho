@@ -93,7 +93,7 @@ export default class ComponentToPrint extends React.Component {
         <Divider />
         <Row>
           <Col style={{ textAlign: "center" }}>
-            <Typography.Title level={3}>Đơn nhập hàng</Typography.Title>
+            <Typography.Title level={3}>Đơn xuất hàng</Typography.Title>
           </Col>
         </Row>
         <Row>
@@ -143,7 +143,7 @@ export default class ComponentToPrint extends React.Component {
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody">
-                      {item.chiTietNhapHangs.map((value, index) => {
+                      {item.chiTietXuatHangs.map((value, index) => {
                         return (
                           <tr key={value.iD_SanPham}>
                             <td style={{ textAlign: "center" }}>{index + 1}</td>

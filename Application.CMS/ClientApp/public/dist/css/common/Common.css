@@ -79,3 +79,35 @@
     box-shadow: inset 0 0 0 10px;
     border-radius: 10px
 }
+/*  */
+.whiteBackground{
+    background-color: #fff;
+}
+@media all {
+    .page-break {
+      display: none;
+      background-color: #fff;
+    }
+  }
+  
+  @media print {
+    html, body {
+      height: initial !important;
+      overflow: initial !important;
+      -webkit-print-color-adjust: exact;
+    }
+  }
+  
+  @media print {
+    .page-break {
+      margin-top: 1rem;
+      display: block;
+      page-break-before: auto;
+    }
+  }
+  
+  @page {
+    size: auto;
+    margin: 20mm;
+  }
+  
