@@ -12,6 +12,7 @@ import { getAPI, postAPI, postFormData, getCurrentLogin } from './../../../utils
 import { USER_LOCALSTORAGE } from './../../../utils/constants';
 import ListData from './ListData';
 import FormView from './View';
+import ExportExcel from './ExportExcel';
 import LoadingOverlay from 'react-loading-overlay'
 import PrivateRoute from "../../../utils/PrivateRoute"
 import BounceLoader from 'react-spinners/BounceLoader'
@@ -416,6 +417,7 @@ function Index({ onSetSanPhamUpdate }) {
                                 <Button type="primary" className="primary" onClick={showDrawer} icon={<AntdIcons.ControlOutlined />}>
                                     Tìm kiếm nâng cao
                                 </Button>
+                                <ExportExcel/>
                             </Space>
                         </Skeleton>
                     </Col>
@@ -477,7 +479,8 @@ function Index({ onSetSanPhamUpdate }) {
                                     //["NgayNhanSanPham"]: moment(NgayNhanSanPham, 'YYYY-MM-DD').isValid() ? moment(NgayNhanSanPham, 'YYYY-MM-DD') : "",
                                 }}
                                 onFinish={onSubmitTimKiemNangCao}
-                                hideRequiredMark                            >
+                                hideRequiredMark
+                            >
                                 <Row gutter={16}>
                                     <Col lg={{ span: 12 }} md={{ span: 24 }} xs={{ span: 24 }}>
                                         <Form.Item
