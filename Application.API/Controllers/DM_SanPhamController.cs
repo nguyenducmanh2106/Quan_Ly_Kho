@@ -422,7 +422,7 @@ namespace Application.API.Controllers
                     tenDonViTinh = g.tenDonViTinh,
                     xuatXu = g.xuatXu,
                     ThuocTinhs = g.ThuocTinhs
-                });
+                }).ToList();
                 MessageSuccess success = new MessageSuccess()
                 {
                     result = g

@@ -78,7 +78,7 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_denghidieudong-create/create' component={DM_DeNghiDieuDong_Create} />
             <PrivateRoute exact path='/dm_denghidieudong-update/update/:id' component={DM_DeNghiDieuDong_Update} />
             <PrivateRoute exact path='/dm_denghidieudong-pheduyet/pheduyet/:id' component={DM_DeNghiDieuDong_PheDuyet} />
-            {/*<PrivateRoute path='/dm_denghidieudong/view/:id' component={DM_DeNghiDieuDong_Detail_NewPage} />*/}
+            <PrivateRoute exact path='/dm_denghidieudong-view/detail/:id' component={DM_DeNghiDieuDong_Detail_NewPage} />
             <PrivateRoute exact path='/dm_nhaphang' component={DM_NhapHang} />
             <PrivateRoute exact path='/dm_nhaphang/create' component={DM_NhapHang_Create} />
             <PrivateRoute exact path='/dm_nhaphang/update/:id' component={DM_NhapHang_Update} />

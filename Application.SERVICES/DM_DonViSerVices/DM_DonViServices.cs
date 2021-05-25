@@ -56,9 +56,12 @@ namespace Application.Services.DM_DonViSerVices
             try
             {
                 var data = await _unitOfWork.DM_DonViRepository.Get(g => g.Id == Id);
-                var tenTinh=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==data.TinhId)).Name;
-                var tenHuyen=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==data.HuyenId)).Name;
-                var tenXa=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==data.XaId)).Name;
+                var tinhid=data.TinhId??0;
+                var huyenid=data.HuyenId??0;
+                var xaid=data.XaId??0;
+                var tenTinh=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==tinhid))?.Name??"";
+                var tenHuyen=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==huyenid))?.Name??"";
+                var tenXa=(await _unitOfWork.DM_DonViHanhChinhRepository.Get(g=>g.Id==xaid))?.Name??"";
                 data.tenTinh=tenTinh;
                 data.tenHuyen=tenHuyen;
                 data.tenXa=tenXa;

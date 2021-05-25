@@ -134,12 +134,23 @@ const ModalCreate = () => {
         }
     }
     const handleSearch = async (value) => {
+        // if (value.length > 2) {
+        //     var obj = {
+        //         Name: value,
+        //         Id_Kho: DataDonViCurrent > 0 ? DataDonViCurrent : getCurrentLogin().donViId
+        //     }
+        //     var fetchData = await postAPI(`api/dm_sanpham/find-by-name-by-kho`, JSON.stringify(obj));
+        //     if (fetchData.status == true) {
+        //         var data = fetchData.result
+        //         setDataSanPham(data)
+        //     }
+        // }
         if (value.length > 2) {
             var obj = {
                 Name: value,
-                Id_Kho: DataDonViCurrent > 0 ? DataDonViCurrent : getCurrentLogin().donViId
+                Id_Kho: getCurrentLogin().donViId
             }
-            var fetchData = await postAPI(`api/dm_sanpham/find-by-name-by-kho`, JSON.stringify(obj));
+            var fetchData = await postAPI(`api/dm_sanpham/find-by-name`, JSON.stringify(obj));
             if (fetchData.status == true) {
                 var data = fetchData.result
                 setDataSanPham(data)
@@ -383,7 +394,7 @@ const ModalCreate = () => {
                                                                 <Row>
                                                                     <Col>{item.name}</Col>
                                                                     <Col>({item.code})</Col>
-                                                                    <Col>(Số lượng: {item.soLuongTrongKho})</Col>
+                                                                    <Col>(Tồn kho: {item.soLuongTrongKho})</Col>
                                                                 </Row>
                                                             </Col>
                                                         </Row>

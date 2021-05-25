@@ -33,15 +33,14 @@ export default class ComponentToPrint extends React.Component {
   }
   render() {
     const { item } = this.props;
-   
+    console.log(item);
     const { ThongTinKho } = this.state;
-    console.log(ThongTinKho);
     return (
       <div>
         <Row gutter={10}>
           <Col>
             <Col xs={{ span: 12 }} md={{ span: 12 }} lg={{ span: 12 }}>
-              Chi nhánh: <strong>{item.tenChiNhanhNhan}</strong>
+              Chi nhánh: <strong>{ThongTinKho.name}</strong>
             </Col>
             <Col
               xs={{ span: 12 }}
@@ -49,7 +48,7 @@ export default class ComponentToPrint extends React.Component {
               lg={{ span: 12 }}
               style={{ textAlign: "right" }}
             >
-              Mã đơn xuất: <strong>{item.code}</strong>
+              Mã đơn nhập: <strong>{item.code}</strong>
             </Col>
           </Col>
           <Col>
@@ -83,10 +82,10 @@ export default class ComponentToPrint extends React.Component {
               lg={{ span: 12 }}
               style={{ textAlign: "right" }}
             >
-              Ngày xuất hàng:{" "}
+              Ngày nhận hàng:{" "}
               <strong>
-                {item.ngayXuatKho
-                  ? moment(item.ngayXuatKho).format("DD/MM/YYYY")
+                {item.ngayNhanSanPham
+                  ? moment(item.ngayNhanSanPham).format("DD/MM/YYYY")
                   : ""}
               </strong>
             </Col>
@@ -95,66 +94,30 @@ export default class ComponentToPrint extends React.Component {
         <Divider />
         <Row>
           <Col style={{ textAlign: "center" }}>
-            <Typography.Title level={3}>Đơn xuất hàng</Typography.Title>
-            <Typography.Text>
-              Kiểu:{" "}
-              {getCurrentLogin().capDoDonVi == 1
-                ? "Trả hàng nhà cung cấp"
-                : "xuất cho khách hàng"}
-            </Typography.Text>
+            <Typography.Title level={3}>Đơn luân chuyển kho</Typography.Title>
           </Col>
         </Row>
         <Row>
-          {getCurrentLogin().capDoDonVi == 1 ? (
-            <Col>
-              <Descriptions size="small">
-                <Descriptions.Item
-                  label={
-                    <Typography.Title level={5}>Nhà cung cấp</Typography.Title>
-                  }
-                >
-                  {item.nhaCungCaps.name}
-                </Descriptions.Item>
-              </Descriptions>
-              <Descriptions size="small">
-                <Descriptions.Item
-                  label={
-                    <Typography.Title level={5}>Số điện thoại</Typography.Title>
-                  }
-                >
-                  {item.nhaCungCaps.phone}
-                </Descriptions.Item>
-              </Descriptions>
-              <Descriptions size="small">
-                <Descriptions.Item
-                  label={<Typography.Title level={5}>Địa chỉ</Typography.Title>}
-                >
-                  {item.nhaCungCaps.address}
-                </Descriptions.Item>
-              </Descriptions>
-            </Col>
-          ) : (
-            <Col>
-              <Descriptions size="small">
-                <Descriptions.Item
-                  label={
-                    <Typography.Title level={5}>Khách hàng</Typography.Title>
-                  }
-                >
-                  {item.khachHang}
-                </Descriptions.Item>
-              </Descriptions>
-              <Descriptions size="small">
-                <Descriptions.Item
-                  label={
-                    <Typography.Title level={5}>SĐT khách hàng</Typography.Title>
-                  }
-                >
-                  {item.sdtKhachHang}
-                </Descriptions.Item>
-              </Descriptions>
-            </Col>
-          )}
+          <Col>
+            <Descriptions size="small">
+              <Descriptions.Item
+                label={
+                  <Typography.Title level={5}>Kho gửi hàng</Typography.Title>
+                }
+              >
+                {item.tenChiNhanhNhan}
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions size="small">
+              <Descriptions.Item
+                label={
+                  <Typography.Title level={5}>Kho nhận hàng</Typography.Title>
+                }
+              >
+                {item.tenChiNhanhGui}
+              </Descriptions.Item>
+            </Descriptions>
+          </Col>
         </Row>
         <Row style={{ marginTop: "16px" }}>
           <Col>
@@ -170,23 +133,21 @@ export default class ComponentToPrint extends React.Component {
                         <th style={{ textAlign: "center" }}>STT</th>
                         <th style={{ textAlign: "center" }}>Tên sản phẩm</th>
                         <th style={{ textAlign: "center" }}>Đơn vị</th>
-                        <th style={{ textAlign: "center" }}>Số lượng</th>
-                        <th style={{ textAlign: "center" }}>Đơn giá</th>
-                        <th style={{ textAlign: "center" }}>Thành tiền</th>
+                        <th style={{ textAlign: "center" }}>
+                          Số lượng yêu cầu
+                        </th>
+                        <th style={{ textAlign: "center" }}>Số lượng duyệt</th>
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody">
-                      {item.chiTietXuatHangs.map((value, index) => {
+                      {item?.chiTietDeNghiDieuDongs?.map((value, index) => {
                         return (
                           <tr key={value.iD_SanPham}>
                             <td style={{ textAlign: "center" }}>{index + 1}</td>
                             <td>{value.tenSanPham}</td>
                             <td>{value.tenDonViTinh}</td>
-                            <td>{value.soLuong}</td>
-                            <td>{FormatMoney(value.giaXuat ?? 0, " đ")}</td>
-                            <td>
-                              {FormatMoney(value.giaXuat * value.soLuong, " đ")}
-                            </td>
+                            <td>{value.soLuongYeuCau}</td>
+                            <td>{value.soLuongDuyet}</td>
                           </tr>
                         );
                       })}
@@ -197,7 +158,7 @@ export default class ComponentToPrint extends React.Component {
             </div>
           </Col>
         </Row>
-        <Row style={{ marginTop: "16px" }}>
+        {/* <Row style={{ marginTop: "16px" }}>
           <Col xs={{ span: 16 }} md={{ span: 16 }} lg={{ span: 16 }}></Col>
           <Col xs={{ span: 8 }} md={{ span: 8 }} lg={{ span: 8 }}>
             <Descriptions size="small">
@@ -221,8 +182,8 @@ export default class ComponentToPrint extends React.Component {
               </Descriptions.Item>
             </Descriptions>
           </Col>
-        </Row>
-        <Row>
+        </Row> */}
+        <Row style={{ marginTop: "16px" }}>
           <Col
             xs={{ span: 5 }}
             md={{ span: 5 }}

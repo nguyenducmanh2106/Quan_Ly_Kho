@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import {useHistory} from 'react-router-dom'
 import moment from 'moment';
 import { Form, Input, Image, Badge, InputNumber, Menu, Button, Modal, Select, Checkbox, Upload, Pagination, Col, Row, Tooltip, Dropdown, Space } from 'antd';
 import * as AntdIcons from '@ant-design/icons';
@@ -13,6 +14,7 @@ import { defineAbilitiesFor, _isPermission } from "../../elements/Config_Roles/a
 function Table(props) {
     //khai báo state
     //console.log(Can)
+    let history = useHistory();
     const [array, setArray] = useState([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -81,6 +83,12 @@ function Table(props) {
     const onDelete = (item) => {
         props.onDeleteItem(item)
     }
+    const Detail=(item)=>{
+        history.push({
+            pathname: `/dm_denghidieudong-view/detail/${item.code}`,
+            state: { controller: "Yêu cầu xuất hàng", action: item.code }
+        });
+    }
     const renderBody = () => {
         var result = ""
         if (array.length > 0) {
@@ -124,7 +132,7 @@ function Table(props) {
                                     {!_isPermission(constantPermission.VIEW, constantPermission.DM_DENGHI_DIEUDONG) ? null :
                                         <Menu.Item style={{ textAlign: "center" }} key="2">
                                             <Tooltip title="Thông tin">
-                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => onShow(item)} />
+                                                <Button style={{ margin: "0 !important" }} type="primary" shape="circle" icon={<AntdIcons.EyeOutlined />} onClick={() => Detail(item)} />
                                             </Tooltip>
                                         </Menu.Item>
                                     }

@@ -279,7 +279,7 @@ namespace Application.API.Controllers
             {
                 return Ok(new MessageError()
                 {
-                    message = MessageConst.DELETE_FAIL
+                    message = MessageConst.DATA_NOT_FOUND
                 });
             }
 
