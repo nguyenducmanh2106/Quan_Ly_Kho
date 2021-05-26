@@ -77,6 +77,7 @@ namespace Application.REPOSITORY
                     where (((inputModel.Status == (int)ContentStatusEnum.All || denghi.Status == inputModel.Status))
                     && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
+                    && (inputModel.NhaCungCap == -1 || denghi.ID_NhaCungCap == inputModel.NhaCungCap)
                     )
                     orderby denghi.Created_At descending
                     select new DM_NhapHangs()
@@ -108,6 +109,16 @@ namespace Application.REPOSITORY
                         tenNguoiTao = db.Users.Where(g => g.Id == denghi.Created_By).SingleOrDefault().FullName ?? "",
                     }
                     );
+                if (!string.IsNullOrEmpty(inputModel.TuNgay))
+                {
+                    var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                    data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+                }
+                if (!string.IsNullOrEmpty(inputModel.DenNgay))
+                {
+                    var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                    data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+                }
                 if (!string.IsNullOrEmpty(inputModel.nameSort))
                 {
                     switch (inputModel.nameSort)
