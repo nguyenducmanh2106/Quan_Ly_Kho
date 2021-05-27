@@ -86,6 +86,16 @@ namespace Application.REPOSITORY
                         tenNguoiKiem = db.Users.Where(g => g.Id == denghi.NhanVienKiem).SingleOrDefault().FullName ?? "",
                     }
                     );
+                if (!string.IsNullOrEmpty(inputModel.TuNgay))
+                {
+                    var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                    data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+                }
+                if (!string.IsNullOrEmpty(inputModel.DenNgay))
+                {
+                    var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                    data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+                }
                 if (!string.IsNullOrEmpty(inputModel.nameSort))
                 {
                     switch (inputModel.nameSort)

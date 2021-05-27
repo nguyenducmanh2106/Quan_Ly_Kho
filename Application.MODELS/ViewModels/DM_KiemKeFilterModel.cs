@@ -6,6 +6,8 @@ namespace Application.MODELS.ViewModels
 {
     public class DM_KiemKeFilterModel
     {
+        public string TuNgay { get; set; }="";
+        public string DenNgay { get; set; }="";
         public int page { get; set; } = 1;
         public string nameSort { get; set; } = "";
         public int pageSize { get; set; } = 10;

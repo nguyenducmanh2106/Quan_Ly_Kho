@@ -8,14 +8,15 @@ import {
   getCurrentLogin,
   FormatMoney,
   getLocalStorage,
-} from "./../../../utils/helpers";
+} from "../../../utils/helpers";
 import ReactExport from "react-data-export";
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExportExcel = ({ items,TuNgay,DenNgay }) => {
-  var tungay=TuNgay?TuNgay:"...";
-  var denngay=DenNgay?DenNgay:"..."
-  var timeExport="Từ "+tungay+" đến "+denngay
+const ExportExcel = ({ items, TuNgay, DenNgay }) => {
+  console.log(items);
+  var tungay = TuNgay ? TuNgay : "...";
+  var denngay = DenNgay ? DenNgay : "...";
+  var timeExport = "Từ " + tungay + " đến " + denngay;
   const styleBorder = {
     top: { style: "thin" },
     right: { style: "thin" },
@@ -30,47 +31,73 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
   items.map((item, index) => {
     var trangthai =
       item.status == 1
-        ? "Duyệt"
+        ? "Đang chờ phê duyệt"
         : item.status == 2
-        ? "Đang nhập kho"
-        : item.status == 0
-        ? "Đặt hàng"
+        ? "Đã phê duyệt"
         : item.status == 3
-        ? "Hoàn thành"
+        ? "Trả về"
         : item.status == 4
-        ? "Huỷ đơn"
+        ? "Nhận lại"
+        : item.status == 5
+        ? "Đã nhận hàng"
         : "";
 
     var arrays = [
       {
         value: index + 1,
-        style: { border: styleBorder, font:{name:"Times New Roman"},alignment: { horizontal: "center" } },
+        style: {
+          border: styleBorder,
+          font: { name: "Times New Roman" },
+          alignment: { horizontal: "center" },
+        },
       },
       {
         value: item.code,
-        style: { border: styleBorder, font: { shadow: true,name:"Times New Roman" } },
-      },
-      {
-        value: item.tenNhaCungCap,
-        style: { border: styleBorder, font: { shadow: true ,name:"Times New Roman"} },
-      },
-      {
-        value: trangthai,
-        style: { border: styleBorder, font: { shadow: true ,name:"Times New Roman"} },
-      },
-      {
-        value: item.tongTienPhaiTra,
-        style: { border: styleBorder, font: { shadow: true ,name:"Times New Roman"} },
-      },
-      {
-        value: item.tenNguoiTao,
-        style: { border: styleBorder, font: { shadow: true ,name:"Times New Roman"} },
+        style: {
+          border: styleBorder,
+          font: { shadow: true, name: "Times New Roman" },
+        },
       },
       {
         value: item.created_At
           ? moment(item.created_At).format("DD/MM/YYYY, HH:mm")
           : "",
-        style: { border: styleBorder, font: { shadow: true,name:"Times New Roman" } },
+        style: {
+          border: styleBorder,
+          font: { shadow: true, name: "Times New Roman" },
+        },
+      },
+      {
+        value: item.tenChiNhanhNhan,
+        style: {
+          border: styleBorder,
+          font: { shadow: true, name: "Times New Roman" },
+        },
+      },
+      {
+        value: item.ngayDuyet
+          ? moment(item.ngayDuyet).format("DD/MM/YYYY, HH:mm")
+          : "",
+        style: {
+          border: styleBorder,
+          font: { shadow: true, name: "Times New Roman" },
+        },
+      },
+      {
+        value: item.ngayNhanSanPham
+          ? moment(item.ngayNhanSanPham).format("DD/MM/YYYY, HH:mm")
+          : "",
+        style: {
+          border: styleBorder,
+          font: { shadow: true, name: "Times New Roman" },
+        },
+      },
+      {
+        value: trangthai,
+        style: {
+          border: styleBorder,
+          font: { shadow: true, name: "Times New Roman" },
+        },
       },
     ];
     records.push(arrays);
@@ -79,13 +106,20 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
     {
       ySteps: 2,
       columns: [
-        { title: "Thống kê phiếu nhập hàng từ nhà cung cấp" ,style:{font:{bold:true,name:"Times New Roman"}}},
+        {
+          title: "Thống kê phiếu yêu cầu nhập hàng",
+          style: { font: { bold: true, name: "Times New Roman" } },
+        },
       ],
       data: [],
     },
     {
       columns: [
-        { title: timeExport,style:{ font:{ bold:false}} ,style:{font:{name:"Times New Roman"}}},
+        {
+          title: timeExport,
+          style: { font: { bold: false } },
+          style: { font: { name: "Times New Roman" } },
+        },
       ],
       data: [],
     },
@@ -112,7 +146,34 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
           },
         }, //char width
         {
-          title: "Nhà cung cấp",
+          title: "Ngày gửi",
+          width: { wpx: 90 },
+          style: {
+            font: fontCustom,
+            border: styleBorder,
+            alignment: { horizontal: "center" },
+          },
+        },
+        {
+          title: "Gửi đến kho",
+          width: { wpx: 90 },
+          style: {
+            font: fontCustom,
+            border: styleBorder,
+            alignment: { horizontal: "center" },
+          },
+        },
+        {
+          title: "Ngày duyệt",
+          width: { wpx: 90 },
+          style: {
+            font: fontCustom,
+            border: styleBorder,
+            alignment: { horizontal: "center" },
+          },
+        },
+        {
+          title: "Ngày nhận hàng",
           width: { wpx: 90 },
           style: {
             font: fontCustom,
@@ -129,39 +190,12 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
             alignment: { horizontal: "center" },
           },
         },
-        {
-          title: "Tổng tiền",
-          width: { wpx: 90 },
-          style: {
-            font: fontCustom,
-            border: styleBorder,
-            alignment: { horizontal: "center" },
-          },
-        },
-        {
-          title: "Nhân viên tạo",
-          width: { wpx: 120 },
-          style: {
-            font: fontCustom,
-            border: styleBorder,
-            alignment: { horizontal: "center" },
-          },
-        },
-        {
-          title: "Ngày tạo",
-          width: { wpx: 120 },
-          style: {
-            font: fontCustom,
-            border: styleBorder,
-            alignment: { horizontal: "center" },
-          },
-        },
       ],
       data: records,
     },
   ];
   const dataCurrent = moment(new Date()).format("DD_MM_YYYY").toString();
-  const fileName = "PhieuNhapHang_" + dataCurrent;
+  const fileName = "PhieuYeuCauNhapHang_" + dataCurrent;
   return (
     <div>
       <ExcelFile
@@ -172,7 +206,7 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
           </Button>
         }
       >
-        <ExcelSheet dataSet={multiDataSet} name="PhieuNhapHang_NhaCungCap" />
+        <ExcelSheet dataSet={multiDataSet} name={fileName} />
       </ExcelFile>
     </div>
   );

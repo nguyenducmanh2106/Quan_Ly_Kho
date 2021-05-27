@@ -184,6 +184,16 @@ namespace Application.Services.DM_KiemKeSerVices
             var data = (await _unitOfWork.DM_KiemKeRepository.FindBy(g => ((inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status)
                     && (inputModel.Id_ChiNhanh == -1 || g.Id_ChiNhanh == inputModel.Id_ChiNhanh)
                     )));
+            if (!string.IsNullOrEmpty(inputModel.TuNgay))
+            {
+                var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+            }
+            if (!string.IsNullOrEmpty(inputModel.DenNgay))
+            {
+                var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+            }
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
                 var date = Convert.ToDateTime(inputModel.NgayTao).Date;

@@ -29,17 +29,11 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
   var records = [];
   items.map((item, index) => {
     var trangthai =
-      item.status == 1
-        ? "Duyệt"
-        : item.status == 2
-        ? "Đang nhập kho"
-        : item.status == 0
-        ? "Đặt hàng"
-        : item.status == 3
-        ? "Hoàn thành"
-        : item.status == 4
-        ? "Huỷ đơn"
-        : "";
+    item.status == 1 ?"Duyệt"
+    : item.status == 2 ? "Xuất hàng" : item.status == 0 ?
+        "Đơn xuất hàng" : item.status == 3 ?
+           "Hoàn thành" : item.status == 4 ?
+                "Huỷ đơn" : ""
 
     var arrays = [
       {
@@ -51,7 +45,7 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
         style: { border: styleBorder, font: { shadow: true,name:"Times New Roman" } },
       },
       {
-        value: item.tenNhaCungCap,
+        value: getCurrentLogin().capDoDonVi==1?item.tenNhaCungCap:item.khachHang,
         style: { border: styleBorder, font: { shadow: true ,name:"Times New Roman"} },
       },
       {
@@ -79,7 +73,7 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
     {
       ySteps: 2,
       columns: [
-        { title: "Thống kê phiếu nhập hàng từ nhà cung cấp" ,style:{font:{bold:true,name:"Times New Roman"}}},
+        { title: getCurrentLogin().capDoDonVi==1?"Thống kê phiếu trả hàng về nhà cung cấp":"Thống kê phiếu xuất hàng cho khách hàng" ,style:{font:{bold:true,name:"Times New Roman"}}},
       ],
       data: [],
     },
@@ -112,7 +106,7 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
           },
         }, //char width
         {
-          title: "Nhà cung cấp",
+          title: getCurrentLogin().capDoDonVi==1?"Nhà cung cấp":"Khách hàng",
           width: { wpx: 90 },
           style: {
             font: fontCustom,
@@ -161,7 +155,9 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
     },
   ];
   const dataCurrent = moment(new Date()).format("DD_MM_YYYY").toString();
-  const fileName = "PhieuNhapHang_" + dataCurrent;
+  var nameC1="PhieuTraHang_NhaCungCap" + dataCurrent
+  var nameC2="PhieuXuatHang_KhachHang" + dataCurrent
+  const fileName = getCurrentLogin().capDoDonVi==1?nameC1:nameC2;
   return (
     <div>
       <ExcelFile
@@ -172,7 +168,7 @@ const ExportExcel = ({ items,TuNgay,DenNgay }) => {
           </Button>
         }
       >
-        <ExcelSheet dataSet={multiDataSet} name="PhieuNhapHang_NhaCungCap" />
+        <ExcelSheet dataSet={multiDataSet} name={fileName} />
       </ExcelFile>
     </div>
   );

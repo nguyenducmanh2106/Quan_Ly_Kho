@@ -222,7 +222,28 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
                     && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || g.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
+                    && (inputModel.KhoYeuCau == -1 || g.ID_ChiNhanhGui == inputModel.KhoYeuCau)
                     )));
+            if (!string.IsNullOrEmpty(inputModel.TuNgay))
+            {
+                var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+            }
+            if (!string.IsNullOrEmpty(inputModel.DenNgay))
+            {
+                var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+            }
+            if (!string.IsNullOrEmpty(inputModel.TuNgay))
+            {
+                var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+            }
+            if (!string.IsNullOrEmpty(inputModel.DenNgay))
+            {
+                var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+            }
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
                 var date = Convert.ToDateTime(inputModel.NgayTao).Date;
@@ -278,7 +299,18 @@ namespace Application.Services.DM_DeNghiDieuDongSerVices
             var data = (await _unitOfWork.DM_DeNghiDieuDongRepository.FindBy(g => ((inputModel.LoaiDeNghi_Id == -1 || g.LoaiDeNghi_Id == inputModel.LoaiDeNghi_Id)
                     && (inputModel.Status == (int)ContentStatusEnum.All || g.Status == inputModel.Status) && (string.IsNullOrEmpty(inputModel.Name) || g.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhGui == -1 || g.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
+                    && (inputModel.GuiDenKho == -1 || g.ID_ChiNhanhNhan == inputModel.GuiDenKho)
                     )));
+            if (!string.IsNullOrEmpty(inputModel.TuNgay))
+            {
+                var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+            }
+            if (!string.IsNullOrEmpty(inputModel.DenNgay))
+            {
+                var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+            }
             if (!string.IsNullOrEmpty(inputModel.NgayTao))
             {
                 var date = Convert.ToDateTime(inputModel.NgayTao).Date;

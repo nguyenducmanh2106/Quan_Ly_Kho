@@ -6,6 +6,9 @@ namespace Application.MODELS.ViewModels
 {
     public class DM_XuatHangFilterModel
     {
+        public string TuNgay { get; set; } = "";
+        public string DenNgay { get; set; } = "";
+        public int NhaCungCap { get; set; } = -1;
         public int page { get; set; } = 1;
         public int pageSize { get; set; } = 10;
         public string Name { get; set; } = "";

@@ -79,6 +79,7 @@ namespace Application.REPOSITORY
                     && ((inputModel.Status == (int)ContentStatusEnum.All && denghi.Status != (int)ContentStatusEnum.Rollback && denghi.Status != (int)ContentStatusEnum.Revoked) || denghi.Status == inputModel.Status)
                     && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhNhan == -1 || denghi.ID_ChiNhanhNhan == inputModel.ID_ChiNhanhNhan)
+                    && (inputModel.KhoYeuCau == -1 || denghi.ID_ChiNhanhGui == inputModel.KhoYeuCau)
                     )
                     select new DM_DeNghiDieuDongs()
                     {
@@ -107,6 +108,16 @@ namespace Application.REPOSITORY
                         tenChiNhanhNhan = db.DM_DonVis.Where(g => g.Id == denghi.ID_ChiNhanhNhan).SingleOrDefault().Name ?? "",
                     }
                     );
+                if (!string.IsNullOrEmpty(inputModel.TuNgay))
+                {
+                    var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                    data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+                }
+                if (!string.IsNullOrEmpty(inputModel.DenNgay))
+                {
+                    var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                    data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+                }
                 if (!string.IsNullOrEmpty(inputModel.nameSort))
                 {
                     switch (inputModel.nameSort)
@@ -218,6 +229,7 @@ namespace Application.REPOSITORY
                     && (inputModel.Status == -1 || denghi.Status == inputModel.Status)
                     && (string.IsNullOrEmpty(inputModel.Name) || denghi.Code.ToLower().Contains(inputModel.Name.ToLower()))
                     && (inputModel.ID_ChiNhanhGui == -1 || denghi.ID_ChiNhanhGui == inputModel.ID_ChiNhanhGui)
+                    && (inputModel.GuiDenKho == -1 || denghi.ID_ChiNhanhNhan == inputModel.GuiDenKho)
                     )
                     select new DM_DeNghiDieuDongs()
                     {
@@ -246,6 +258,16 @@ namespace Application.REPOSITORY
                         tenChiNhanhNhan = db.DM_DonVis.Where(g => g.Id == denghi.ID_ChiNhanhNhan).SingleOrDefault().Name ?? "",
                     }
                     );
+                if (!string.IsNullOrEmpty(inputModel.TuNgay))
+                {
+                    var dateTuNgay = Convert.ToDateTime(inputModel.TuNgay).Date;
+                    data = data.Where(g => g.Created_At.Date >= dateTuNgay);
+                }
+                if (!string.IsNullOrEmpty(inputModel.DenNgay))
+                {
+                    var dateDenNgay = Convert.ToDateTime(inputModel.DenNgay).Date;
+                    data = data.Where(g => g.Created_At.Date <= dateDenNgay);
+                }
                 if (!string.IsNullOrEmpty(inputModel.nameSort))
                 {
                     switch (inputModel.nameSort)
