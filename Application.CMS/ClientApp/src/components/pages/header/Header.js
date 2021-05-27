@@ -29,14 +29,14 @@ const HeaderForm = () => {
                     <Menu mode="horizontal"
                         style={{textAlign:"right"}}
                     >
-                        <Menu.Item key="1">
+                        {/* <Menu.Item key="1">
                             <SettingTwoTone/>
                         </Menu.Item>
                         <Menu.Item key="2">
                             <Badge size="small" count={5} offset={[10, 0]}>
                                 <BellTwoTone/>
                             </Badge>
-                        </Menu.Item>
+                        </Menu.Item> */}
                         <Menu.Item key="3">
                             <Dropdown overlay={() => (
                                 <Menu>

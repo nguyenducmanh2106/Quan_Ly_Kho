@@ -19,7 +19,7 @@ import {
 } from "react-router-dom";
 
 const DetailComponent = ({ item, toggleStatus, onReceived, hide }) => {
-    const base64_avatar = "data:image/png;base64," + item.pathAvatar;
+    const base64_avatar = "data:image/png;base64," + item?.pathAvatar;
     useEffect(() => {
         defineAbilitiesFor(getLocalStorage(PERMISS_USER_CURRENT))
     }, [])

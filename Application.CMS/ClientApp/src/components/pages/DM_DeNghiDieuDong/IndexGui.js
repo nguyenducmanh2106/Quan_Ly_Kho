@@ -28,7 +28,7 @@ import {
 } from "./../../../utils/helpers";
 import { USER_LOCALSTORAGE } from "./../../../utils/constants";
 import ListData from "./ListDataGui";
-import FormView from "./View";
+// import FormView from "./View";
 import ExportExcel from "./ExportExcelGui";
 import LoadingOverlay from "react-loading-overlay";
 import PrivateRoute from "../../../utils/PrivateRoute";
@@ -547,14 +547,14 @@ function Index({ onSetSanPhamUpdate }) {
         </Row>
         <Row>
           <Skeleton loading={isLoading} active paragraph={false}>
-            <FormView
+            {/* <FormView
               isShowing={isShowingView}
               hide={toggleView}
               item={ItemShow}
               toggleStatus={onToggleStatus}
               onReceived={onReceived}
               confirmLoading={confirmLoading}
-            />
+            /> */}
             <ListData
               obj={state}
               onChangePage={onChangePage}

@@ -125,7 +125,7 @@ const ModalCreate = () => {
     });
   };
   const PheDuyet = async (item) => {
-    setIsRefresh(false);
+    setIsRefresh(true);
     var obj = {
       Code: item.code,
       TaiKhoanDuyet: getCurrentLogin().id,
@@ -136,7 +136,7 @@ const ModalCreate = () => {
         message: result.message,
         duration: 3,
       });
-      setIsRefresh(result.status);
+      setIsRefresh(!result.status);
     } else {
       notification.error({
         message: result.message,
@@ -147,7 +147,7 @@ const ModalCreate = () => {
     //console.log(obj)
   };
   const NhapKho = async (item) => {
-    setIsRefresh(false);
+    setIsRefresh(true);
     var obj = {
       Code: item.code,
     };
@@ -158,7 +158,7 @@ const ModalCreate = () => {
         duration: 3,
       });
 
-      setIsRefresh(result.status);
+      setIsRefresh(!result.status);
     } else {
       notification.error({
         message: result.message,

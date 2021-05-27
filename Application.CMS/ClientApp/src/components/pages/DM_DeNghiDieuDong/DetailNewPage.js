@@ -49,7 +49,7 @@ const DetailComponent = () => {
     //gọi hàm
     getItemUpdate();
   }, []);
-  const base64_avatar = "data:image/png;base64," + item.pathAvatar;
+  const base64_avatar = "data:image/png;base64," + item?.pathAvatar;
   const renderBody = () => {
     var result = "";
     var chiTietDeNghiDieuDongs = item?.chiTietDeNghiDieuDongs;
