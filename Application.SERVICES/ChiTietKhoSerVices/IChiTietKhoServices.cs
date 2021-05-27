@@ -20,5 +20,6 @@ namespace Application.Services.ChiTietKhoSerVices
         int getSoLuongByID_KhoAndID_SanPham(int Id_Kho, string ID_SanPham);
         int getSoLuongCoTheXuatByID_KhoAndID_SanPham(int Id_Kho, string ID_SanPham);
         Task<List<ThongKeSoLuongViewModel>> ThongKeSoLuong(ThongKeSoLuongViewModel obj);
+        Task<List<ThongKeSoLuongViewModel>> QuanLyKho(ThongKeSoLuongViewModel obj);
     }
 }

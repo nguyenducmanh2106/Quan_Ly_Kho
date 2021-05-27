@@ -127,6 +127,24 @@ namespace Application.API.Controllers
                 throw ex;
             }
         }
+        [HttpPost("quanlykho")]
+        public async Task<IActionResult> QuanLyKho(ThongKeSoLuongViewModel inputModel)
+        {
+            try
+            {
+                var data = await _managerChiTietKho.QuanLyKho(inputModel);
+                MessageSuccess success = new MessageSuccess()
+                {
+                    result = data
+                };
+                return Ok(success);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet("find-by-id")]
         public async Task<IActionResult> FindById(string Code = "", int Id_Kho = -1)
         {

@@ -241,5 +241,31 @@ namespace Application.Services.ChiTietKhoSerVices
                 throw ex;
             }
         }
+
+        public async Task<List<ThongKeSoLuongViewModel>> QuanLyKho(ThongKeSoLuongViewModel obj)
+        {
+            try
+            {
+                var data = _unitOfWork.ChiTietKhoRepository.QuanLyKho(obj).Select(g => new ThongKeSoLuongViewModel()
+                {
+                    Id_Kho = g.Id_Kho,
+                    tenKho = g.tenKho,
+                    MaSP = g.MaSP,
+                    CapDoDonVi = g.CapDoDonVi,
+                    tenSanPham = g.tenSanPham,
+                    SoLuongTon = g.SoLuongTon,
+                    SoLuongDangChuyenKho = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(g.Id_Kho, g.MaSP),
+                    SoLuongChoNhapHangKhoKhac = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChoNhapTuKhoKhacByID_KhoAndID_SanPham(g.Id_Kho, g.MaSP),
+                    SoLuongChoNhapHangNhaCungCap = _unitOfWork.ChiTietKhoRepository.getSoLuongDangChoNhapTuNhaCungCapByID_KhoAndID_SanPham(g.Id_Kho, g.MaSP),
+                    SoLuongDangXuat = _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(g.Id_Kho, g.MaSP),
+                    SoLuongThucTrongKho = g.SoLuongTon - _unitOfWork.ChiTietKhoRepository.getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(g.Id_Kho, g.MaSP) - _unitOfWork.ChiTietKhoRepository.getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(g.Id_Kho, g.MaSP)
+                }).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace Application.REPOSITORY
         int getSoLuongDangChoNhapTuNhaCungCapByID_KhoAndID_SanPham(int Id_Kho, string ID_SanPham);
         int getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(int Id_Kho, string ID_SanPham);
         List<ThongKeSoLuongViewModel> ThongKeSoLuong(ThongKeSoLuongViewModel obj);
+        List<ThongKeSoLuongViewModel> QuanLyKho(ThongKeSoLuongViewModel obj);
     }
     public class ChiTietKhoRepository : Repository<ChiTietKhos>, IChiTietKhoRepository
     {
@@ -138,6 +139,36 @@ namespace Application.REPOSITORY
                     ).Sum(g => g.SoLuong);
                 return data;
 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<ThongKeSoLuongViewModel> QuanLyKho(ThongKeSoLuongViewModel obj)
+        {
+            try
+            {
+                var data = (from chitietkho in db.ChiTietKhos
+                            where ((obj.Id_Kho==-1||chitietkho.Id_Kho == obj.Id_Kho) && chitietkho.Id_SanPham == obj.MaSP
+                            
+                            )
+                            select new ThongKeSoLuongViewModel()
+                            {
+                                Id_Kho = chitietkho.Id_Kho ?? 0,
+                                tenKho = db.DM_DonVis.SingleOrDefault(g => g.Id == chitietkho.Id_Kho).Name,
+                                CapDoDonVi = db.DM_DonVis.SingleOrDefault(g => g.Id == obj.Id_Kho).CapDo ?? 0,
+                                MaSP = chitietkho.Id_SanPham,
+                                tenSanPham = db.DM_SanPhams.SingleOrDefault(g => g.Code == chitietkho.Id_SanPham).Name,
+                                SoLuongTon = chitietkho.SoLuong ?? 0,
+                                //SoLuongDangChuyenKho = getSoLuongDangChuyenKhoByID_KhoAndID_SanPham(obj.Id_Kho, chitietkho.Id_SanPham),
+                                //SoLuongChoNhapHangKhoKhac = getSoLuongDangChoNhapTuKhoKhacByID_KhoAndID_SanPham(obj.Id_Kho, chitietkho.Id_SanPham),
+                                //SoLuongChoNhapHangNhaCungCap = getSoLuongDangChoNhapTuNhaCungCapByID_KhoAndID_SanPham(obj.Id_Kho, chitietkho.Id_SanPham),
+                                //SoLuongDangXuat = getSoLuongDangXuatHangKhacByID_KhoAndID_SanPham(obj.Id_Kho, chitietkho.Id_SanPham)
+                            }
+                          ).ToList();
+                return data;
             }
             catch (Exception ex)
             {

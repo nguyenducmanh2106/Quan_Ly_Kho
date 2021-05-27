@@ -8,7 +8,7 @@ namespace Application.MODELS.ViewModels
     public class ThongKeSoLuongViewModel
     {
         public int CapDoDonVi { get; set; }
-        public int Id_Kho { get; set; }
+        public int Id_Kho { get; set; }=-1;
         public string tenKho { get; set; }
         public string MaSP { get; set; }
         public string tenSanPham { get; set; }

@@ -43,6 +43,7 @@ import DM_KiemKe from './components/pages/DM_KiemKe/Index';
 import DM_KiemKe_Create from './components/pages/DM_KiemKe/Create';
 import DM_KiemKe_Update from './components/pages/DM_KiemKe/Update';
 import DM_KiemKe_DetailNewPage from './components/pages/DM_KiemKe/DetailNewPage';
+
 // import our users pages
 
 //const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -92,6 +93,7 @@ const RouteSinglePage = () => {
             <PrivateRoute exact path='/dm_kiemke/create' component={DM_KiemKe_Create} />
             <PrivateRoute exact path='/dm_kiemke/view/:id' component={DM_KiemKe_DetailNewPage} />
             <PrivateRoute exact path='/dm_kiemke/update/:id' component={DM_KiemKe_Update} />
+            
         </Switch>
     );
 }
